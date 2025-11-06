@@ -42,6 +42,7 @@ const HeroText = () => {
       
         {/* Video */}
         <video
+        controls
           autoPlay
           loop
           muted
