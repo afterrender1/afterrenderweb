@@ -138,7 +138,7 @@ const Portfolio = () => {
 
   return (
    <div
-  className="min-h-screen bg-cover bg-center bg-no-repeat relative py-20 px-4"
+  className="min-h-screen bg-contain bg-center bg-no-repeat relative py-20 px-4"
   style={{
     backgroundImage: "url('/images/herobg.png')",
     fontFamily: "poppins",
