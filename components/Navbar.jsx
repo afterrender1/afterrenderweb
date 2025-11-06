@@ -24,15 +24,15 @@ export default function Navbar() {
         </Link>
 
         {/* Center Nav Links */}
-        <div className="flex items-center space-x-8">
-          <Link href="/" className="hover:text-[#00FFC6] transition-colors">Home</Link>
-          <Link href="/about" className="hover:text-[#00FFC6] transition-colors">About</Link>
+        <div className="flex items-center space-x-8" style={{fontFamily : "montserrat"}}>
+          <Link href="/" className="hover:text-[#59B7FF] transition-colors">Home</Link>
+          <Link href="/about" className="hover:text-[#59B7FF] transition-colors">About</Link>
 
           {/* Dropdown */}
           <div className="relative">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-1 hover:text-[#00FFC6] transition-colors"
+              className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
             >
               Services <ChevronDown size={18} />
             </button>
@@ -86,8 +86,7 @@ export default function Navbar() {
 
           <Link
             href="/book-call"
-            className="ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]
- text-black px-5 py-2 rounded font-medium hover:bg-[#00e0ac] transition-all"
+            style={{fontFamily : "montserrat"}} className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg  shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
           >
             Book a Call
           </Link>

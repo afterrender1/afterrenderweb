@@ -1,5 +1,6 @@
 import React from "react";
 import { Poppins, Montserrat } from "next/font/google";
+import BookACall from "./BookACall";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -51,11 +52,12 @@ const HeroText = () => {
           <source src="/videos/saasarvideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+          <div>
+        <BookACall />
+      </div>
       </div>
 
-      <div>
-      
-      </div>
+    
     </section>
   );
 };
