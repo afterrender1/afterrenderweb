@@ -69,7 +69,7 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link href="/contact" className="hover:text-[#00FFC6] transition-colors">Contact</Link>
+          <Link href="/contact" className="hover:text-[#59B7FF] transition-colors">Contact</Link>
         </div>
 
         {/* Social + CTA */}
