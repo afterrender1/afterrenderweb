@@ -5,7 +5,7 @@ import Image from "next/image";
 const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
   return (
     <div
-      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/60 transition-all duration-500 rounded-3xl p-8 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
+      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/60 transition-all duration-500 rounded-3xl p-6 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
     >
       {/* Rating Stars */}
       <div className="flex gap-1 mb-6">
@@ -15,7 +15,7 @@ const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
       </div>
 
       {/* Quote */}
-      <p className="text-gray-200 text-lg leading-relaxed mb-8 grow" style={{fontFamily : "poppins"}}>
+      <p className="text-gray-200 text-base leading-relaxed mb-8 grow" style={{fontFamily : "poppins"}}>
         "{quote}"
       </p>
 
@@ -60,7 +60,7 @@ const testimonials = [
   {
     rating: 5,
     quote:
-      "They didn't just run ads — they really understood our brand and built creatives that actually felt like us.",
+      "They didn’t just run ads – they really understood our brand and built creatives that actually felt like us.. What stood out most is how they nail not just the video side but also the copywriting — especially important in B2B, where the words matter as much as the visuals",
     name: "Deal fuel",
     title: "Ecom Creator",
     img: "/images/clients/c3.png",
@@ -102,7 +102,7 @@ const testimonials = [
         backgroundImage: "url('/images/testimonialbg.png')",
       }}>
         {/* Heading */}
-        <div className="text-center mb-1">
+        <div className="text-center mb-20">
           <p className="text-white text-sm  tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
             Client Testimonials
           </p>
@@ -117,11 +117,12 @@ const testimonials = [
 
         {/* Asymmetric Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 w-full">
-          <TestimonialCard {...testimonials[0]} className="lg:col-span-3" />
-          <TestimonialCard {...testimonials[1]} className="lg:col-span-3" />
+          <TestimonialCard {...testimonials[0]} className="mb-8 lg:col-span-2" />
+          <TestimonialCard {...testimonials[1]} className="mb-26 lg:col-span-2" />
           <TestimonialCard {...testimonials[2]} className="lg:col-span-2" />
-          <TestimonialCard {...testimonials[3]} className=" mt-22 lg:col-span-2" />
-          <TestimonialCard {...testimonials[4]} className="lg:col-span-2" />
+          <TestimonialCard {...testimonials[3]} className="mb-10 lg:col-span-2" />
+          <TestimonialCard {...testimonials[4]} className="mb-2 lg:col-span-2" />
+          <TestimonialCard {...testimonials[5]} className="lg:col-span-2" />
         </div>
       </div>
     </section>
