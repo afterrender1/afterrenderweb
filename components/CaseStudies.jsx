@@ -60,6 +60,7 @@ Case Studies
           <div className="flex flex-col items-center justify-center gap-6" style={{fontFamily : "poppins"}}>
             <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-lg">
               <iframe
+              loading="lazy"
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/x4gjRFvwoxc?si=UFz7NZimm00rYtgN"
                 title="YouTube video"
@@ -114,6 +115,7 @@ Case Studies
           <div className="flex flex-col items-center justify-center gap-6">
             <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-lg">
               <iframe
+              loading="lazy"
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/5q1njhBzdF0?si=r9jRJFX1InXKFQs4"
                 title="YouTube video"

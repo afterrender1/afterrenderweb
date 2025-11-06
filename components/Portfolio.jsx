@@ -24,6 +24,7 @@ const VideoCard = ({ thumbnail, title, tags }) => {
       <div className="relative rounded overflow-hidden mb-6 bg-gray-800 aspect-video">
         {thumbnail.includes("youtube") ? (
           <iframe
+          loading="lazy"
             src={thumbnail}
             title={title}
             className="w-full h-full object-cover"
@@ -155,7 +156,7 @@ const Portfolio = () => {
       style={{ fontFamily: "poppins" }}
     >
       <h2
-        className="text-4xl md:text-5xl lg:text-[2.8rem] font-bold text-[#48A2FF] mb-4"
+        className="text-4xl md:text-5xl mb-4 font-bold lg:text-[2.8rem] text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"
         style={{ fontFamily: "michroma" }}
       >
         Portfolio
