@@ -19,7 +19,7 @@ export default function Navbar() {
             src="/logos/logo.png"
             alt="AfterRender Logo"
             width={220}
-            height={205}
+            height={56}
           />
         </Link>
 
