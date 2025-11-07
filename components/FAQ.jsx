@@ -43,7 +43,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="p-6 md:p-5 pt-0 bg-transparent">
+        <div className="p-6 md:p-5 pt-0 bg-transparent ">
           <p className="text-gray-300 text-base leading-relaxed">
             {answer}
           </p>
