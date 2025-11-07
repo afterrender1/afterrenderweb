@@ -26,14 +26,14 @@ const HeroText = () => {
   const lines = [
     <>
       We will build you a{" "}
-      <span className="text-[#48A2FF]">Youtube organic</span> +{" "}
-      <span className="text-[#48A2FF]">Paid</span>
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">Youtube organic</span> +{" "}
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">Paid</span>
     </>,
     <>
       ads funnel that will book you 
-      <span className="text-[#48A2FF]"> 20+ calls per month.</span>
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"> 20+ calls per </span>
     </>,
-    <>if we don’t you don’t pay us</>,
+    <><span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"> month.</span> if we don’t you don’t pay us</>,
   ];
 
   return (
@@ -55,7 +55,7 @@ const HeroText = () => {
       >
         {/* === Animated Blur Heading === */}
         <motion.div
-          className="text-[2.6rem] font-bold mb-6 leading-tight "
+          className="text-[2.5rem] font-bold mb-6 leading-tight "
           initial="hidden"
           animate="visible"
           variants={{
