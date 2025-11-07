@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Poppins, Montserrat } from "next/font/google";
-import BookACall from "./BookACall";
 import { motion } from "framer-motion";
+import BookACall from "./BookACall";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,9 +18,23 @@ const HeroText = () => {
   const [showBackground, setShowBackground] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowBackground(true), 600); // show after 3s
+    const timer = setTimeout(() => setShowBackground(true), 1300);
     return () => clearTimeout(timer);
   }, []);
+
+  // lines for animated blur text
+  const lines = [
+    <>
+      We will build you a{" "}
+      <span className="text-[#48A2FF]">Youtube organic</span> +{" "}
+      <span className="text-[#48A2FF]">Paid</span>
+    </>,
+    <>
+      ads funnel that will book you 
+      <span className="text-[#48A2FF]"> 20+ calls per month.</span>
+    </>,
+    <>if we don’t you don’t pay us</>,
+  ];
 
   return (
     <section
@@ -34,23 +48,42 @@ const HeroText = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60"></div>
 
-      {/* Content Box */}
+      {/* Content */}
       <div
-        className="relative text-center text-white max-w-5xl px-4"
+        className="relative text-center text-white max-w-6xl px-4"
         style={{ fontFamily: "poppins" }}
       >
-        <h1 className="text-[2.8rem] font-bold mb-6 leading-tight">
-          We will build you a{" "}
-          <span className="text-[#48A2FF]">Youtube organic</span> +{" "}
-          <span className="text-[#48A2FF]">Paid</span> ads funnel that will book
-          you{" "}
-          <span className="text-[#48A2FF]">20+ calls per month.</span> if we
-          don’t you don’t pay us
-        </h1>
+        {/* === Animated Blur Heading === */}
+        <motion.div
+          className="text-[2.6rem] font-bold mb-6 leading-tight "
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.4 } },
+          }}
+        >
+          {lines.map((line, i) => (
+            <motion.p
+              key={i}
+              variants={{
+                hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
+                visible: {
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  y: 0,
+                  transition: { duration: 0.9, ease: "easeOut" },
+                },
+              }}
+            >
+              {line}
+            </motion.p>
+          ))}
+        </motion.div>
 
-        {/* Video */}
+        {/* === Video === */}
         <video
-        loading="lazy"
+          loading="lazy"
           controls
           autoPlay
           loop
@@ -63,7 +96,13 @@ const HeroText = () => {
           Your browser does not support the video tag.
         </video>
 
-        <motion.div className="mt-10" initial={{ opacity: 0 , y : 12 }} animate={{ opacity: 1 , y : 0 }} transition={{ duration: 1, delay: 1 }}>
+        {/* === Button === */}
+        <motion.div
+          className="mt-2"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
           <BookACall />
         </motion.div>
       </div>
