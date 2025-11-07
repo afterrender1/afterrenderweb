@@ -6,6 +6,7 @@ import CaseStudies from './CaseStudies'
 import Portfolio from './Portfolio'
 import HowItWorks from './HowItWorks'
 import OurOffers from './OurOffres'
+import FAQ from './FAQ'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
 <Portfolio/>
 <HowItWorks/>
 <OurOffers/>
+<FAQ/>
 </>
   )
 }
