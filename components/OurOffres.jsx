@@ -19,7 +19,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
       <button
         style={{ fontFamily: 'poppins' }}
         className="cursor-pointer w-full font-bold 
-             bg-gray-900/80 text-white text-xl 
+             bg-black/25 backdrop-blur-md text-white text-xl 
              py-4 px-6 rounded-2xl 
              border border-gray-700 
              hover:border-gray-500 

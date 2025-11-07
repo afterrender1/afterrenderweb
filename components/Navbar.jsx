@@ -7,7 +7,11 @@ import { ChevronDown, Facebook, Instagram, Youtube } from "lucide-react";
 import Image from "next/image";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const toggleMenu = (menu) => {
+    setOpenMenu(openMenu === menu ? null : menu);
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md">
@@ -24,69 +28,83 @@ export default function Navbar() {
         </Link>
 
         {/* Center Nav Links */}
-        <div className="flex items-center space-x-8" style={{fontFamily : "montserrat"}}>
-          <Link href="/" className="hover:text-[#59B7FF] transition-colors">Home</Link>
-          <Link href="/about" className="hover:text-[#59B7FF] transition-colors">About</Link>
-
-          {/* Dropdown */}
+        <div className="flex items-center space-x-8" style={{ fontFamily: "montserrat" }}>
+          
+          {/* --- VIDEOS Dropdown --- */}
           <div className="relative">
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => toggleMenu("videos")}
               className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
             >
-              Services <ChevronDown size={18} />
+              Videos <ChevronDown size={18} />
             </button>
 
             <AnimatePresence>
-              {isOpen && (
+              {openMenu === "videos" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-10 left-0 bg-white text-black shadow-lg rounded-xl w-48 py-2"
+                  className="absolute top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
                 >
-                  <Link
-                    href="/services/video-editing"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Video Editing
-                  </Link>
-                  <Link
-                    href="/services/web-development"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Web Development
-                  </Link>
-                  <Link
-                    href="/services/reels-shorts"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Reels & Shorts
-                  </Link>
+            {[
+  { name: "VSL Videos", href: "/videos/vsl" },
+  { name: "SaaS Videos", href: "/videos/saas" },
+  { name: "Talking Head Videos", href: "/videos/talking-head" },
+  { name: "Documentaries", href: "/videos/documentaries" },
+].map((item, i) => (
+  <motion.div
+    key={i}
+    whileHover={{ x: 4 }}
+    transition={{ duration: 0.15 }}
+  >
+    <Link
+      href={item.href}
+      className="block px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
+    >
+      {/* Left hover accent line */}
+      <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
+
+      <span className="relative z-10 group-hover:text-[#48A2FF] transition-colors duration-300">
+        {item.name}
+      </span>
+    </Link>
+  </motion.div>
+))}
+
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          <Link href="/contact" className="hover:text-[#59B7FF] transition-colors">Contact</Link>
+          <Link href="/about" className="hover:text-[#59B7FF] transition-colors">
+            About
+          </Link>
+          <Link href="/services" className="hover:text-[#59B7FF] transition-colors">
+            Services
+          </Link>
+          <Link href="/contact" className="hover:text-[#59B7FF] transition-colors">
+            Contact
+          </Link>
         </div>
 
         {/* Social + CTA */}
         <div className="flex items-center space-x-5">
-          <Link href="https://facebook.com" target="_blank" className="hover:text-[#00FFC6]">
+          <Link href="https://facebook.com" target="_blank" className="hover:text-[#59B7FF]">
             <Facebook size={20} />
           </Link>
-          <Link href="https://instagram.com" target="_blank" className="hover:text-[#00FFC6]">
+          <Link href="https://instagram.com" target="_blank" className="hover:text-[#59B7FF]">
             <Instagram size={20} />
           </Link>
-          <Link href="https://youtube.com" target="_blank" className="hover:text-[#00FFC6]">
+          <Link href="https://youtube.com" target="_blank" className="hover:text-[#59B7FF]">
             <Youtube size={20} />
           </Link>
 
           <Link
             href="/book-call"
-            style={{fontFamily : "montserrat"}} className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg  shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
+            style={{ fontFamily: "montserrat" }}
+            className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
           >
             Book a Call
           </Link>

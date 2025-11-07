@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Poppins, Montserrat } from "next/font/google";
 import BookACall from "./BookACall";
+import { motion } from "framer-motion";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -13,12 +15,20 @@ const montserrat = Montserrat({
 });
 
 const HeroText = () => {
+  const [showBackground, setShowBackground] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowBackground(true), 600); // show after 3s
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section
-      className="h-screen flex pt-32 justify-center bg-no-repeat bg-center relative"
+      className="h-screen flex pt-32 justify-center bg-no-repeat bg-center relative transition-opacity duration-1000 ease-in-out"
       style={{
-        backgroundImage: "url('/images/hb1.png')",
+        backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
         backgroundSize: "88%",
+        opacity: showBackground ? 1 : 0.5,
       }}
     >
       {/* Overlay */}
@@ -38,11 +48,9 @@ const HeroText = () => {
           don’t you don’t pay us
         </h1>
 
-        {/* YouTube Logo */}
-      
         {/* Video */}
         <video
-        controls
+          controls
           autoPlay
           loop
           muted
@@ -53,12 +61,11 @@ const HeroText = () => {
           <source src="/videos/saasarvideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-          <div>
-        <BookACall />
-      </div>
-      </div>
 
-    
+        <motion.div className="mt-10" initial={{ opacity: 0 , y : 12 }} animate={{ opacity: 1 , y : 0 }} transition={{ duration: 1, delay: 1 }}>
+          <BookACall />
+        </motion.div>
+      </div>
     </section>
   );
 };
