@@ -23,6 +23,7 @@ const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
       <div className="flex items-center gap-4 mt-auto">
         <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#48A2FF] to-[#C9E4FF] flex items-center justify-center text-[#0A1A2F] font-bold text-lg">
          <Image
+            loading="lazy"
            src={img}
            alt={name}
            width={48}

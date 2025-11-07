@@ -50,6 +50,7 @@ const HeroText = () => {
 
         {/* Video */}
         <video
+        loading="lazy"
           controls
           autoPlay
           loop

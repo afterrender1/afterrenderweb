@@ -31,6 +31,7 @@ const TeamMemberCard = ({ image, name, title, socials }) => {
       <div className="mb-6">
         <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-gray-800">
           <Image 
+          loading='lazy'
             src={image} 
             alt={name}
            height={300}
