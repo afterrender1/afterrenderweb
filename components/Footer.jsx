@@ -76,7 +76,7 @@ const Footer = () => {
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Navigation</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
-            {["Home", "Pricing", "Portfolio", "Blog", "Contact"].map((item, i) => (
+            {["Home",  "Videos", "Contact"].map((item, i) => (
               <motion.li key={i} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                 <Link
                   href={`/${item.toLowerCase()}`}
@@ -102,12 +102,12 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="flex flex-col sm:flex-row items-center bg-white/10 border border-[#48A2FF]/30 rounded-2xl p-2 backdrop-blur-lg shadow-lg hover:shadow-[#48A2FF]/40 transition-all duration-300 w-full"
+            className="flex flex-col sm:flex-row items-center bg-white/10 border border-[#48A2FF]/30 rounded-2xl p-2 backdrop-blur-lg shadow-md hover:shadow-[#48A2FF]/40 transition-all duration-300 w-full"
           >
             <motion.div className="flex-1 w-full">
               <input
                 type="email"
-                placeholder="Enter your email address"
+                placeholder="Enter your email"
                 className="w-full bg-transparent text-sm px-4 py-3 text-white placeholder-[#9FC8F1] outline-none focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5 rounded-xl sm:rounded-full transition-all duration-300"
               />
             </motion.div>
@@ -119,7 +119,7 @@ const Footer = () => {
                 boxShadow: "0 0 25px rgba(72,162,255,0.6)",
               }}
               whileTap={{ scale: 0.96 }}
-              className="mt-3 sm:mt-0 sm:ml-3 w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-6 py-3 rounded-xl sm:rounded-full transition-all duration-300"
+              className="mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300"
             >
               Subscribe
             </motion.button>
