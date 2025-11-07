@@ -77,13 +77,55 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
+          <div className="relative">
+            <button
+              onClick={() => toggleMenu("Social Media Presence")}
+              className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
+            >
+              Social Media Presence <ChevronDown size={18} />
+            </button>
 
-          <Link href="/about" className="hover:text-[#59B7FF] transition-colors">
-            About
-          </Link>
-          <Link href="/services" className="hover:text-[#59B7FF] transition-colors">
-            Services
-          </Link>
+            <AnimatePresence>
+              {openMenu === "Social Media Presence" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
+                >
+            {[
+  { name: "Website Development", href: "/videos/vsl" },
+  { name: "SaaS Videos", href: "/videos/saas" },
+  { name: "Talking Head Videos", href: "/videos/talking-head" },
+  { name: "Documentaries", href: "/videos/documentaries" },
+].map((item, i) => (
+  <motion.div
+    key={i}
+    whileHover={{ x: 4 }}
+    transition={{ duration: 0.15 }}
+  >
+    <Link
+      href={item.href}
+      className="block px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
+    >
+      {/* Left hover accent line */}
+      <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
+
+      <span className="relative z-10 group-hover:text-[#48A2FF] transition-colors duration-300">
+        {item.name}
+      </span>
+    </Link>
+  </motion.div>
+))}
+
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+        
+        
           <Link href="/contact" className="hover:text-[#59B7FF] transition-colors">
             Contact
           </Link>
