@@ -8,6 +8,7 @@ import HowItWorks from './HowItWorks'
 import OurOffers from './OurOffres'
 import FAQ from './FAQ'
 import MeetOurTeam from './MeetOurTeam'
+import Footer from './Footer'
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
 <OurOffers/>
 <FAQ/>
 <MeetOurTeam/>
+<Footer/>
 </>
   )
 }
