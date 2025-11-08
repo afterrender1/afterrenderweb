@@ -22,26 +22,40 @@ const HeroText = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // lines for animated blur text
   const lines = [
     <>
       We will build you a{" "}
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">Youtube organic</span> +{" "}
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">Paid</span>
+      <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
+        Youtube organic
+      </span>{" "}
+      +{" "}
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
+        Paid
+      </span>
     </>,
     <>
-      ads funnel that will book you 
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"> 20+ calls per </span>
+      ads funnel that will book you
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
+        {" "}
+        20+ calls per{" "}
+      </span>
     </>,
-    <><span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"> month.</span> if we don’t you don’t pay us</>,
+    <>
+      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
+        month.
+      </span>{" "}
+      if we don’t you don’t pay us
+    </>,
   ];
 
   return (
     <section
-      className="h-screen flex pt-32 justify-center bg-no-repeat bg-center relative transition-opacity duration-1000 ease-in-out"
+      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
-        backgroundSize: "88%",
+        backgroundSize: "contain", // ensures full coverage
+        backgroundPosition: "",
+        backgroundRepeat: "no-repeat",
         opacity: showBackground ? 1 : 0.5,
       }}
     >
@@ -50,12 +64,12 @@ const HeroText = () => {
 
       {/* Content */}
       <div
-        className="relative text-center text-white max-w-6xl px-4"
-        style={{ fontFamily: "poppins" }}
+        className="relative z-10 text-center px-4 sm:px-8 max-w-6xl"
+        style={{ fontFamily: poppins.style.fontFamily }}
       >
-        {/* === Animated Blur Heading === */}
+        {/* === Animated Text === */}
         <motion.div
-          className="text-[2.5rem] font-bold mb-6 leading-tight "
+          className="font-bold mb-6 leading-tight text-[1.8rem] sm:text-[2rem] md:text-[2.3rem] lg:text-[2.7rem] xl:text-[3rem]"
           initial="hidden"
           animate="visible"
           variants={{
@@ -64,44 +78,47 @@ const HeroText = () => {
           }}
         >
           {lines.map((line, i) => (
-            <motion.p
-              key={i}
-              variants={{
-                hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
-                visible: {
-                  opacity: 1,
-                  filter: "blur(0px)",
-                  y: 0,
-                  transition: { duration: 0.9, ease: "easeOut" },
-                },
-              }}
-            >
-              {line}
-            </motion.p>
+                <motion.p
+      key={i}
+      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.8rem]"
+      variants={{
+        hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
+        visible: {
+          opacity: 1,
+          filter: "blur(0px)",
+          y: 0,
+          transition: { duration: 0.9, ease: "easeOut" },
+        },
+      }}
+    >
+      {line}
+    </motion.p>
           ))}
         </motion.div>
 
         {/* === Video === */}
-        <video
+        <motion.video
           loading="lazy"
           controls
           autoPlay
           loop
           muted
           playsInline
-          className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40"
-          style={{ width: "80%", height: "auto" }}
+          className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
         >
           <source src="/videos/saasarvideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
+        </motion.video>
 
-        {/* === Button === */}
+        {/* === CTA Button === */}
         <motion.div
-          className="mt-2"
+          className="mt-4 sm:mt-6"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 1, delay: 1.4 }}
         >
           <BookACall />
         </motion.div>
