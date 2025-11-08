@@ -160,7 +160,7 @@ export default function Navbar() {
         <div className="mb-4">
           <button
             onClick={() => toggleMenu("videos-mobile")}
-            className="flex items-center justify-between w-full py-3 text-white hover:text-[#59B7FF] transition-colors text-2xl font-semibold"
+            className="flex items-center justify-between w-full py-3 text-white hover:text-[#59B7FF] transition-colors text-xl font-semibold"
           >
             VIDEOS
             <ChevronDown
@@ -195,7 +195,7 @@ export default function Navbar() {
                     <Link
                       href={item.href}
                       onClick={closeMobileMenu}
-                      className="block py-2.5 text-lg text-gray-200 hover:text-[#59B7FF] transition-all flex items-center gap-2"
+                      className=" py-2.5 text-lg text-gray-200 hover:text-[#59B7FF] transition-all flex items-center gap-2"
                     >
                       <motion.span
                         className="w-1.5 h-1.5 rounded-full bg-[#48A2FF]"
@@ -217,7 +217,7 @@ export default function Navbar() {
         <Link
           href="/social-media"
           onClick={closeMobileMenu}
-          className="py-3 text-white hover:text-[#59B7FF] font-semibold transition-colors text-2xl"
+          className="py-3 text-white hover:text-[#59B7FF] font-semibold transition-colors text-xl"
         >
           Social Media Presence
         </Link>
@@ -225,7 +225,7 @@ export default function Navbar() {
         <Link
           href="/contact"
           onClick={closeMobileMenu}
-          className="py-3 text-white hover:text-[#59B7FF] transition-colors  font-semibold text-2xl"
+          className="py-3 text-white hover:text-[#59B7FF] transition-colors  font-semibold text-xl"
         >
           Contact
         </Link>
