@@ -96,7 +96,7 @@ const OurOffers = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `url('/images/herobg.png')`,
             backgroundSize: 'cover',
@@ -143,7 +143,17 @@ const OurOffers = () => {
       </div>
 
       {/* Decorative Blur Elements */}
-   <div className="absolute top-1/2 left-180 w-96 h-96 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-40 pointer-events-none" />
+  <div
+  className="absolute 
+             md:left-[400px] lg:left-[600px] xl:left-[800px] 2xl:left-[900px]  md:top-1/2 
+             lg:top-1/2
+             left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+             w-96 h-96 
+             bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] 
+             rounded-full blur-3xl opacity-40 
+             pointer-events-none"
+/>
+
 
     </div>
   );
