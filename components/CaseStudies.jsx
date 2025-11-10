@@ -44,7 +44,7 @@ Case Studies
             <h2 className="text-4xl md:text-[2.8rem] font-bold leading-tight">
               Growing{" "}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-                Paladin Bhutia
+              TMG
               </span>{" "}
               to 100K+ Followers
             </h2>
@@ -100,7 +100,7 @@ Case Studies
             <h2 className="text-4xl md:text-5xl font-bold leading-tight">
               Scaling{" "}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-                Next Creator
+                Farming Creator
               </span>{" "}
               to Millions of Impressions Monthly
             </h2>

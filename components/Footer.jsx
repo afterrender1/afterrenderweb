@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, Youtube, Linkedin, Dribbble } from "lucide-react";
+import { Instagram, Youtube, Facebook } from "lucide-react";
 import { Space_Grotesk } from "next/font/google";
 
 const spaceGrotesk = Space_Grotesk({
@@ -55,6 +55,7 @@ const Footer = () => {
             {[
               { Icon: Instagram, href: "https://www.instagram.com/afterrender/?hl=en" },
               { Icon: Youtube, href: "https://www.youtube.com/@AfterRender" },
+              { Icon: Facebook, href: "https://www.facebook.com/p/AfterRender-61563053082911/" },
             ].map(({ Icon, href }, i) => (
               <motion.a
                 key={i}
@@ -88,11 +89,11 @@ const Footer = () => {
         </div>
 
         {/* --- Newsletter --- */}
-      <div>
-  <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Stay Updated</h4>
+<div>
+  <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Get a Quote</h4>
   <p className="text-[#9FC8F1] mb-4">
-    Enter your email below — we’ll reach out with our latest offers, exclusive discounts, 
-    and sneak peeks of future collections. Be the first to know what’s coming next!
+    Enter your email below — our team will get back to you with a personalized quote, 
+    project details, and exclusive offers tailored to your needs.
   </p>
 
   <motion.form
@@ -120,21 +121,21 @@ const Footer = () => {
       whileTap={{ scale: 0.96 }}
       className="mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300"
     >
-      Subscribe
+      Get Quote
     </motion.button>
   </motion.form>
 
   <p className="text-xs text-[#9FC8F1] mt-3">
-    We’ll never spam you — only send thoughtful updates and deals you’ll love.
+    We respect your time — expect a fast, personalized response from our team.
   </p>
 </div>
+
 
 
         {/* --- Contact --- */}
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Contact</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
-            <li>Karachi, Pakistan</li>
             <li>video@afterrender.com</li>
           </ul>
         </div>

@@ -92,15 +92,8 @@ export default function Navbar() {
 
         {/* Desktop Social + CTA - Hidden on mobile/tablet */}
         <div className="hidden lg:flex items-center space-x-5">
-          <Link href="https://www.facebook.com/p/AfterRender-61563053082911/" target="_blank" className="hover:text-[#59B7FF]">
-            <Facebook size={20} />
-          </Link>
-          <Link href="https://www.instagram.com/afterrender/?hl=en" target="_blank" className="hover:text-[#59B7FF]">
-            <Instagram size={20} />
-          </Link>
-          <Link href="https://www.youtube.com/@AfterRender" target="_blank" className="hover:text-[#59B7FF]">
-            <Youtube size={20} />
-          </Link>
+          
+      
 
           <Link
             href="/book-call"

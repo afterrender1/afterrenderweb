@@ -61,18 +61,16 @@ const OurOffers = () => {
   const offers = [
     {
       label: 'Slots currently open for',
-      title: 'ONE TIME OFFERS',
-      subtitle:
-        '20 FB / IG CREATIVES ( GET CPC,CPL CPA DOWN IN ONE MONTH )',
+      title: 'ONE-TIME OFFER',
+      subtitle: '20 Coaching Videos (Get cuts, editing, motion graphics, and design)',
       buttonText: 'I need this',
       includes: [
-        'Multiple hook based variation creatives',
-        'Proven winning video scripts',
-        'Faceless organic creatives',
-        'High Quality VSLs',
-        'Dedicated UGC/Spokesperson',
-        'Recreating already winning ad creative formulas',
-        '5 Static Creatives',
+        'Multiple hook-based video variations',
+        'Proven video script templates',
+        'Talking head coaching video options',
+        'High-quality VSLs (Video Sales Letters)',
+        'Recreation of proven, high-performing video styles',
+        '40 custom thumbnails (two variations for each video)',
       ],
     },
     {
@@ -142,19 +140,17 @@ const OurOffers = () => {
         </div>
       </div>
 
-      {/* Decorative Blur Elements */}
-  <div
-  className="absolute 
-             md:left-[400px] lg:left-[600px] xl:left-[800px] 2xl:left-[900px]  md:top-1/2 
-             lg:top-1/2
+      {/* Decorative Blur Element */}
+      <div
+        className="absolute 
+             md:left-[400px] lg:left-[600px] xl:left-[800px] 2xl:left-[900px]  
+             md:top-1/2 lg:top-1/2
              left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
              w-96 h-96 
              bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] 
              rounded-full blur-3xl opacity-40 
              pointer-events-none"
-/>
-
-
+      />
     </div>
   );
 };

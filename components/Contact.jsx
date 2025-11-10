@@ -86,26 +86,10 @@ const ContactForm = () => {
             </div>
 
             {/* Phone */}
-            <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
-              <Phone className="text-[#48A2FF] w-6 h-6 shrink-0" />
-              <div className="text-left">
-                <p className="font-medium text-sm sm:text-base">Phone</p>
-                <p className="text-gray-400 text-sm sm:text-base">
-                  +92 300 1234567
-                </p>
-              </div>
-            </div>
+         
 
             {/* Location */}
-            <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
-              <MapPin className="text-[#48A2FF] w-6 h-6 shrink-0" />
-              <div className="text-left">
-                <p className="font-medium text-sm sm:text-base">Location</p>
-                <p className="text-gray-400 text-sm sm:text-base">
-                  Karachi, Pakistan
-                </p>
-              </div>
-            </div>
+    
           </div>
         </motion.div>
 
