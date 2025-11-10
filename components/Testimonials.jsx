@@ -45,52 +45,53 @@ const testimonials = [
   {
     rating: 5,
     quote:
-      "What impressed me most about addx is how they weave AI into their creatives. It feels like they're operating one or two years ahead of the market — giving brands and creators a real unfair advantage.",
-    name: "Recodemand",
-    title: "Dropshipper",
-    img: "/images/clients/c5.png",
+      "What I liked most was how Arham and his team understood the medical space. The videos came out clean, educational, and still engaging — not easy to pull off.",
+    name: "Deborah",
+    title: "Medical Creator",
+    img: "/images/clients/c1.png",
   },
   {
     rating: 5,
     quote:
-      "My mentorship offer went from crickets to $400K/month. ADDX just gets how to make content that prints attention.",
-    name: "Casper SMC",
-    title: "Trading Creator",
-    img: "/images/clients/c.png",
+      "My content finally looks and feels like my brand. Working with Arham’s team was smooth and easy. They just understand how to speak to coaches.",
+    name: "Traction",
+    title: "Digital Entrepreneur",
+    img: "/images/clients/c2.png",
   },
   {
     rating: 5,
     quote:
-      "They didn’t just run ads – they really understood our brand and built creatives that actually felt like us.. What stood out most is how they nail not just the video side but also the copywriting — especially important in B2B, where the words matter as much as the visuals",
-    name: "Deal fuel",
-    title: "Ecom Creator",
+      "AfterRender didn’t just make videos; they built a full creative system that fits perfectly with our SaaS funnel. We saw better engagement and lower ad costs within weeks.",
+    name: "FinePoint Design and Marketing",
+    title: "SaaS Company",
     img: "/images/clients/c3.png",
   },
   {
     rating: 5,
     quote:
-      "They don't just 'do content' — they run it. I haven't touched a single thing in weeks. Feels like cheating.",
-    name: "Make Money Matt",
-    title: "MMO Creator",
+      "Arham and his team really get the trading world. Every video hits the right tone with clean edits and high watch time.",
+    name: "Crypto Simba",
+    title: "Crypto Trader",
     img: "/images/clients/c4.png",
   },
   {
     rating: 5,
     quote:
-      "If you're in the trading or faceless space, these guys are your unfair advantage. ADDX isn't just another agency—they're operators.",
-    name: "AI Guy",
-    title: "AI Faceless Content",
-    img: "/images/clients/c6.png",
+      "Loved how simple the process was. I sent my clips, and the final videos came back polished and ready to post.",
+    name: "Audrey",
+    title: "Fitness Coach",
+    img: "/images/clients/c5.png",
   },
   {
     rating: 5,
     quote:
-      "Worked with Abdullah and the squad a few times—never missed. Every drop felt like they knew my brand better than I did.",
-    name: "Sebastian Ghiorghiu",
-    title: "Digital Entrepreneur",
-    img: "/images/clients/c1.png",
+      "Super smooth process. I just record, send the footage, and they handle everything else.",
+    name: "BigHots",
+    title: "YouTube Creator",
+    img: "/images/clients/c6.png",
   },
 ];
+
 
 
   return (

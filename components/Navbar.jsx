@@ -224,17 +224,7 @@ export default function Navbar() {
         </Link>
 
         {/* Social Icons */}
-        <div className="flex items-center space-x-6 py-6 border-t border-white/20 mt-6">
-          <Link href="https://www.facebook.com/p/AfterRender-61563053082911/" target="_blank" className="hover:text-[#59B7FF]">
-            <Facebook size={24} />
-          </Link>
-          <Link href="https://www.instagram.com/afterrender/?hl=en" target="_blank" className="hover:text-[#59B7FF]">
-            <Instagram size={24} />
-          </Link>
-          <Link href="https://www.youtube.com/@AfterRender" target="_blank" className="hover:text-[#59B7FF]">
-            <Youtube size={24} />
-          </Link>
-        </div>
+  
 
         {/* CTA */}
         <motion.div
