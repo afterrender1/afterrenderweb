@@ -53,9 +53,8 @@ const Footer = () => {
           </p>
           <div className="flex space-x-4 mt-4">
             {[
-              { Icon: Instagram, href: "https://instagram.com" },
-              { Icon: Youtube, href: "https://youtube.com" },
-              { Icon: Dribbble, href: "https://behance.net" },
+              { Icon: Instagram, href: "https://www.instagram.com/afterrender/?hl=en" },
+              { Icon: Youtube, href: "https://www.youtube.com/@AfterRender" },
             ].map(({ Icon, href }, i) => (
               <motion.a
                 key={i}
@@ -78,7 +77,7 @@ const Footer = () => {
             {[  "Videos", "Contact"].map((item, i) => (
               <motion.li key={i} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                 <Link
-                  href={`/${item.toLowerCase()}`}
+                  href={`/#${item.toLowerCase()}`}
                   className="hover:text-[#48A2FF] transition-colors"
                 >
                   {item}
@@ -89,51 +88,53 @@ const Footer = () => {
         </div>
 
         {/* --- Newsletter --- */}
-        <div>
-          <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Stay Updated</h4>
-          <p className="text-[#9FC8F1] mb-4">
-            Subscribe to our newsletter for design tips, updates, and exclusive offers.
-          </p>
+      <div>
+  <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Stay Updated</h4>
+  <p className="text-[#9FC8F1] mb-4">
+    Enter your email below — we’ll reach out with our latest offers, exclusive discounts, 
+    and sneak peeks of future collections. Be the first to know what’s coming next!
+  </p>
 
-          <motion.form
-            onSubmit={(e) => e.preventDefault()}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row items-center bg-white/10 border border-[#48A2FF]/30 rounded-2xl p-2 backdrop-blur-lg shadow-md hover:shadow-[#48A2FF]/40 transition-all duration-300 w-full"
-          >
-            <motion.div className="flex-1 w-full">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full bg-transparent text-sm px-4 py-3 text-white placeholder-[#9FC8F1] outline-none focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5 rounded-xl sm:rounded-full transition-all duration-300"
-              />
-            </motion.div>
+  <motion.form
+    onSubmit={(e) => e.preventDefault()}
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    viewport={{ once: true }}
+    className="flex flex-col sm:flex-row items-center bg-white/10 border border-[#48A2FF]/30 rounded-2xl p-2 backdrop-blur-lg shadow-md hover:shadow-[#48A2FF]/40 transition-all duration-300 w-full"
+  >
+    <motion.div className="flex-1 w-full">
+      <input
+        type="email"
+        placeholder="Enter your email"
+        className="w-full bg-transparent text-sm px-4 py-3 text-white placeholder-[#9FC8F1] outline-none focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5 rounded-xl sm:rounded-full transition-all duration-300"
+      />
+    </motion.div>
 
-            <motion.button
-              type="submit"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 25px rgba(72,162,255,0.6)",
-              }}
-              whileTap={{ scale: 0.96 }}
-              className="mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300"
-            >
-              Subscribe
-            </motion.button>
-          </motion.form>
+    <motion.button
+      type="submit"
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0 0 25px rgba(72,162,255,0.6)",
+      }}
+      whileTap={{ scale: 0.96 }}
+      className="mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300"
+    >
+      Subscribe
+    </motion.button>
+  </motion.form>
 
-          <p className="text-xs text-[#9FC8F1] mt-3">
-            We respect your privacy. Unsubscribe anytime.
-          </p>
-        </div>
+  <p className="text-xs text-[#9FC8F1] mt-3">
+    We’ll never spam you — only send thoughtful updates and deals you’ll love.
+  </p>
+</div>
+
 
         {/* --- Contact --- */}
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Contact</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
-            <li>Karachi, Pakistan RJ Mall Gate 3</li>
+            <li>Karachi, Pakistan</li>
             <li>video@afterrender.com</li>
           </ul>
         </div>
