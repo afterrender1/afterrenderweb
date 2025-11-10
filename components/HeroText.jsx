@@ -99,10 +99,11 @@ const HeroText = () => {
         {/* === Video === */}
         <motion.video
           loading="lazy"
+          poster="/images/arposter.png"
           controls
-          autoPlay
-          loop
-          muted
+         autoPlay = {false}
+          muted ={false}
+          loop={false}
           playsInline
           className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
           initial={{ opacity: 0, y: 30 }}

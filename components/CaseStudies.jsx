@@ -6,8 +6,8 @@ const CaseStudies = () => {
   return (
 
     <>
-          <div className="text-center mb-10 md:mb-16 px-4">
-          <p className="text-white text-sm  tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
+          <div className="text-center mb-15 md:mb-10 px-4">
+          <p className="text-white text-sm  tracking-wider  rounded-full px-3 py-1 inline-block border border-gray-600">
 Case Studies
 
           </p>
