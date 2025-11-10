@@ -9,6 +9,8 @@ const ContactForm = () => {
     email: "",
     service: "",
     message: "",
+    phone: "",
+    link: "",
   });
 
   const handleChange = (e) => {
@@ -19,7 +21,14 @@ const ContactForm = () => {
     e.preventDefault();
     console.log("Form submitted:", form);
     alert("Thanks for reaching out!");
-    setForm({ name: "", email: "", service: "", message: "" });
+    setForm({
+      name: "",
+      email: "",
+      service: "",
+      message: "",
+      phone: "",
+      link: "",
+    });
   };
 
   return (
@@ -38,17 +47,17 @@ const ContactForm = () => {
           }}
         />
         <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] sm:w-[300px] md:w-[350px] lg:w-[450px] h-[250px] sm:h-[300px] md:h-[350px] lg:h-[450px] bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-30 pointer-events-none" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-30 pointer-events-none" />
       </div>
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        {/* Left Info Section */}
+        {/* Left Info Section - Sticky */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="space-y-10 text-center lg:text-left"
+          className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
           style={{ fontFamily: "poppins" }}
         >
           <div>
@@ -70,7 +79,7 @@ const ContactForm = () => {
               <Mail className="text-[#48A2FF] w-6 h-6 shrink-0" />
               <div className="text-left">
                 <p className="font-medium text-sm sm:text-base">Email</p>
-                <p className="text-gray-400 text-sm sm:text-base wrap-break-word">
+                <p className="text-gray-400 text-sm sm:text-base">
                   video@afterrender.com
                 </p>
               </div>
@@ -109,6 +118,7 @@ const ContactForm = () => {
           className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
           style={{ fontFamily: "poppins" }}
         >
+          {/* Name + Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <label className="text-gray-300 mb-2 text-sm sm:text-base">
@@ -141,6 +151,7 @@ const ContactForm = () => {
             </div>
           </div>
 
+          {/* Service */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
               Service
@@ -154,13 +165,44 @@ const ContactForm = () => {
             >
               <option value="" className="bg-black">Select a Service</option>
               <option value="editing" className="bg-black">Video Editing</option>
-              <option value="production" className="bg-black">Video Production</option>
-              <option value="design" className="bg-black">Creative Design</option>
-              <option value="ads" className="bg-black">Facebook/Instagram Ads</option>
+              <option value="design" className="bg-black">Design</option>
+              <option value="ads" className="bg-black">Ads</option>
+              <option value="website" className="bg-black">Website Development</option>
+              <option value="social" className="bg-black">Social Media Presence</option>
               <option value="other" className="bg-black">Other</option>
             </select>
           </div>
 
+          {/* Optional Fields */}
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2 text-sm sm:text-base">
+              Phone Number <span className="text-gray-500 text-xs">(optional)</span>
+            </label>
+            <input
+              type="number"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="Your Phone Number"
+              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2 text-sm sm:text-base">
+              Website / YouTube Link <span className="text-gray-500 text-xs">(optional)</span>
+            </label>
+            <input
+              type="text"
+              name="link"
+              value={form.link}
+              onChange={handleChange}
+              placeholder="Your Website / YouTube Link"
+              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all w-full"
+            />
+          </div>
+
+          {/* Message */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
               Message
@@ -176,6 +218,7 @@ const ContactForm = () => {
             />
           </div>
 
+          {/* Button */}
           <div className="text-center">
             <motion.button
               whileHover={{ scale: 1.05 }}

@@ -58,19 +58,19 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: "What is your pricing structure?",
+      question: "Did you help scale a social media presence to 100K+?",
       answer:
-        "Our pricing is customized based on your specific needs and goals. We offer flexible packages for both one-time projects and ongoing retainers. Schedule a call with us to discuss a plan that works for your business.",
+        "Yes, we have. We successfully helped two of our clients TMG and Regenerative Farmers of America, grow their social media accounts to over 100,000 followers.",
     },
     {
-      question: "What differentiates you from other agencies?",
+      question: "Do you work with coaches and business owners?",
       answer:
-        "We don't just create content—we build growth systems. With AI-powered workflows, proven frameworks, and a team that understands what actually drives results, we're operating 1-2 years ahead of traditional agencies. Plus, we only work with clients we know we can deliver massive value for.",
+        "Yes, we do. We mainly work with coaches and business owners, and we help hundreds of them with their daily tasks. Our services are designed to support their business growth and make their work easier.",
     },
     {
-      question: "What happens after the call?",
+      question: "Can you create a SaaS video for me?",
       answer:
-        "After our discovery call, if we're a good fit, we'll send over a detailed proposal outlining the strategy, timeline, and investment. Once approved, we onboard you within 48 hours and start executing immediately. You'll have direct access to your dedicated team from day one.",
+        "Yes, we can. We just need your brand guidelines and a short meeting to understand your product and goals. After that, we will handle everything from idea to final video.",
     },
     {
       question: "What do I have to do from my side?",
