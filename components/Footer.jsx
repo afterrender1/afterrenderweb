@@ -55,7 +55,6 @@ const Footer = () => {
             {[
               { Icon: Instagram, href: "https://instagram.com" },
               { Icon: Youtube, href: "https://youtube.com" },
-              { Icon: Linkedin, href: "https://linkedin.com" },
               { Icon: Dribbble, href: "https://behance.net" },
             ].map(({ Icon, href }, i) => (
               <motion.a
@@ -76,7 +75,7 @@ const Footer = () => {
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Navigation</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
-            {["Home",  "Videos", "Contact"].map((item, i) => (
+            {[  "Videos", "Contact"].map((item, i) => (
               <motion.li key={i} whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
                 <Link
                   href={`/${item.toLowerCase()}`}
@@ -135,8 +134,7 @@ const Footer = () => {
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Contact</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
             <li>Karachi, Pakistan RJ Mall Gate 3</li>
-            <li>contact@afterrender.com</li>
-            <li>+92 325373433</li>
+            <li>video@afterrender.com</li>
           </ul>
         </div>
       </div>

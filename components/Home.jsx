@@ -9,6 +9,8 @@ import OurOffers from './OurOffres'
 import FAQ from './FAQ'
 import MeetOurTeam from './MeetOurTeam'
 import Footer from './Footer'
+import { Contact } from 'lucide-react'
+import ContactForm from './Contact'
 
 const Home = () => {
   return (
@@ -21,7 +23,8 @@ const Home = () => {
 <HowItWorks/>
 <OurOffers/>
 <FAQ/>
-<MeetOurTeam/>
+{/* <MeetOurTeam/> */}
+<ContactForm/>
 <Footer/>
 </>
   )

@@ -85,20 +85,20 @@ export default function Navbar() {
           <Link href="/social-media" className="hover:text-[#59B7FF] transition-colors">
             Social Media Presence
           </Link>
-          <Link href="/contact" className="hover:text-[#59B7FF] transition-colors">
+          <Link href="#contact" className="hover:text-[#59B7FF] transition-colors">
             Contact
           </Link>
         </div>
 
         {/* Desktop Social + CTA - Hidden on mobile/tablet */}
         <div className="hidden lg:flex items-center space-x-5">
-          <Link href="https://facebook.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.facebook.com/p/AfterRender-61563053082911/" target="_blank" className="hover:text-[#59B7FF]">
             <Facebook size={20} />
           </Link>
-          <Link href="https://instagram.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.instagram.com/afterrender/?hl=en" target="_blank" className="hover:text-[#59B7FF]">
             <Instagram size={20} />
           </Link>
-          <Link href="https://youtube.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.youtube.com/@AfterRender" target="_blank" className="hover:text-[#59B7FF]">
             <Youtube size={20} />
           </Link>
 
@@ -223,7 +223,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href="/contact"
+          href="#contact"
           onClick={closeMobileMenu}
           className="py-3 text-white hover:text-[#59B7FF] transition-colors  font-semibold text-xl"
         >
@@ -232,13 +232,13 @@ export default function Navbar() {
 
         {/* Social Icons */}
         <div className="flex items-center space-x-6 py-6 border-t border-white/20 mt-6">
-          <Link href="https://facebook.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.facebook.com/p/AfterRender-61563053082911/" target="_blank" className="hover:text-[#59B7FF]">
             <Facebook size={24} />
           </Link>
-          <Link href="https://instagram.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.instagram.com/afterrender/?hl=en" target="_blank" className="hover:text-[#59B7FF]">
             <Instagram size={24} />
           </Link>
-          <Link href="https://youtube.com" target="_blank" className="hover:text-[#59B7FF]">
+          <Link href="https://www.youtube.com/@AfterRender" target="_blank" className="hover:text-[#59B7FF]">
             <Youtube size={24} />
           </Link>
         </div>
