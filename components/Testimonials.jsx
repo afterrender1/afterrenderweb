@@ -98,9 +98,9 @@ const testimonials = [
       className="relative bg-cover bg-center py-20 px-6"
      
     >
-      <div className="absolute inset-0 bg-black/80"></div>
-      <div className="relative max-w-6xl mx-auto z-10 bg-no-repeat bg-cover bg-center "  style={{
-        backgroundImage: "url('/images/testimonialbg.png')",
+      <div className="absolute inset-0 "></div>
+      <div className="relative max-w-6xl mx-auto z-10 bg-no-repeat bg-contain bg-center "  style={{
+        backgroundImage: "url('/images/herobg.png')",
       }}>
         {/* Heading */}
         <div className="text-center mb-20">
