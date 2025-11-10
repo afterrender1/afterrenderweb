@@ -92,7 +92,7 @@ const HowItWorks = () => {
             How it works
           </p>
           <h2
-            className="text-5xl md:text-[2.8rem] font-bold text-white mb-4"
+            className="text-2xl md:text-[2.8rem] font-bold text-white mb-4"
             style={{ fontFamily: "poppins" }}
           >
             Getting started is{" "}

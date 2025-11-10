@@ -117,7 +117,7 @@ Frequently Asked Questions
 
           </p>
           <h2
-            className="text-5xl md:text-[2.8rem] font-bold text-white mb-4"
+            className="text-2xl md:text-[2.8rem] font-bold text-white mb-4"
             style={{ fontFamily: "poppins" }}
           >
           Everything you <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]" style={{fontFamily : "michroma"}}>

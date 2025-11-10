@@ -11,7 +11,7 @@ const CaseStudies = () => {
 Case Studies
 
           </p>
-          <h2 className="text-5xl md:text-[2.8rem] font-bold text-white mb-4" style={{fontFamily : "poppins"}}>
+          <h2 className="text-2xl md:text-[2.8rem] font-bold text-white mb-4" style={{fontFamily : "poppins"}}>
            Typical {" "}
             <span className=" bg-clip-text tracking-wider text-[#48A2FF]">
               results   
@@ -34,7 +34,7 @@ Case Studies
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10
+          className="max-w-6xl mx-5 grid grid-cols-1 lg:grid-cols-2 gap-10
                      backdrop-blur-md bg-white/10 border border-white/10 
                      rounded-3xl p-10 shadow-2xl"
         >
@@ -90,7 +90,7 @@ Case Studies
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10
+          className="max-w-7xl mx-4 grid grid-cols-1 lg:grid-cols-2 gap-10
                      backdrop-blur-3xl bg-black/10 border border-white/10 
                      rounded-3xl p-10 shadow-2xl"
         >
