@@ -1,3 +1,4 @@
+import ContactForm from '@/components/Contact'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import ServicesCards from '@/components/ServiceCards'
@@ -13,6 +14,7 @@ const page = () => {
 <SocialHero/>
 <ServicesCards/>
 <Testimonials/>
+<ContactForm/>
 <Footer/>
 
 </>
