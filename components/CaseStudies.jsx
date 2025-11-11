@@ -86,10 +86,7 @@ Case Studies
       {/* --- SECOND CARD (transparent background) --- */}
       <div className="sticky top-0 h-screen flex items-center justify-center bg-transparent" style={{fontFamily : "poppins"}}>
         <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+       
           className="max-w-7xl mx-4 grid grid-cols-1 lg:grid-cols-2 gap-10
                      backdrop-blur-3xl bg-black/10 border border-white/10 
                      rounded-3xl p-10 shadow-2xl"
