@@ -11,6 +11,7 @@ import MeetOurTeam from './MeetOurTeam'
 import Footer from './Footer'
 import { Contact } from 'lucide-react'
 import ContactForm from './Contact'
+import VideoTestimonials from './VideoTestimonials'
 
 const Home = () => {
   return (
@@ -24,6 +25,7 @@ const Home = () => {
 <OurOffers/>
 <FAQ/>
 {/* <MeetOurTeam/> */}
+<VideoTestimonials/>
 <ContactForm/>
 <Footer/>
 </>
