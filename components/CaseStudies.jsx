@@ -49,10 +49,7 @@ Case Studies
               to 100K+ Followers
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              "Before ADDX, I had just a Twitter account, no real structure, and
-              nothing was hitting. They came in with a full plan and suddenly
-              people were binging my content. We passed 100K followers like it
-              was nothing."
+            "Before AfterRender, I had just a few followers on Instagram and YouTube—no real strategy, no structure, and nothing was really hitting. Then they came in with a full plan, and suddenly people were binge-watching my content. Our reach exploded, engagement soared, and we passed 100K followers like it was nothing."
             </p>
           </div>
 
@@ -102,9 +99,9 @@ Case Studies
               to Millions of Impressions Monthly
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              "ADDX helped us find our voice — they transformed our short-form
+              "Afterrender helped us find our voice — they transformed our short-form
               strategy completely. Engagement went through the roof and the
-              content finally felt like *us*."
+              content finally felt like us."
             </p>
           </div>
 
