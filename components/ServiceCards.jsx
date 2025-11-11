@@ -13,7 +13,7 @@ const SERVICES = [
       "Messaging & tone audit",
       "Creative gap identification",
     ],
-    image: "/images/services/brand-audit.png",
+    image: "/images/services/audut.png",
   },
   {
     id: "website-dev",
@@ -24,7 +24,7 @@ const SERVICES = [
       "Conversion-focused UI",
       "CMS / e-commerce setup",
     ],
-    image: "/images/services/websitedev.png",
+    image: "/images/services/webdev.png",
   },
   {
     id: "creative-design",
@@ -35,7 +35,7 @@ const SERVICES = [
       "Thumbnail & static creatives",
       "Brand-aligned templates",
     ],
-    image: "/images/services/creative-design.png",
+    image: "/images/services/cdesign.png",
   },
   {
     id: "social-handles",
@@ -46,7 +46,7 @@ const SERVICES = [
       "Content calendar",
       "Community & engagement",
     ],
-    image: "/images/services/social-handles.png",
+    image: "/images/services/shandles.png",
   },
   {
     id: "youtube",
@@ -57,7 +57,7 @@ const SERVICES = [
       "Scripts & thumbnails",
       "Publishing + repurposing",
     ],
-    image: "/images/services/ytgrowth.png",
+    image: "/images/services/ytg.png",
   },
 ];
 
@@ -74,9 +74,9 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
         loading="lazy"
           src={image}
           alt={title}
-          width={350}
-          height={350}
-          className="object-cover rounded"
+          width={400}
+          height={400}
+          className="object-cover rounded-md"
         />
       </div>
 
