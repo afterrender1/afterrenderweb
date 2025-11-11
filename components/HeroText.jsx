@@ -101,7 +101,7 @@ const HeroText = () => {
         {/* === Video === */}
    <div className="flex justify-center items-center ">
          <motion.video
-            loading="lazy"
+            // loading="lazy"
             poster="/images/mainvposter.png"
             controls
            autoPlay = {false}

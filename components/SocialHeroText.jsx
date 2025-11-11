@@ -98,7 +98,7 @@ const SocialHeroText = () => {
 
         {/* === Video === */}
         <motion.video
-          loading="lazy"
+          // loading="lazy"
           poster="/images/arposter.png"
           controls
          autoPlay = {false}
