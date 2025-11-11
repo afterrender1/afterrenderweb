@@ -24,6 +24,7 @@ const VideoCard = ({ thumbnail, title, tags }) => {
       <div className="relative rounded overflow-hidden mb-6 bg-gray-800 aspect-video">
         {thumbnail.includes("youtube") ? (
           <iframe
+          
           loading="lazy"
             src={thumbnail}
             title={title}

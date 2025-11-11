@@ -23,7 +23,7 @@ const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
  <div className="flex items-center gap-5 mt-auto">
   <div className="relative w-20 h-20 rounded-full overflow-hidden flex items-center justify-center">
     <Image
-      // loading="lazy"
+      loading="lazy"
       src={img}
       alt={name}
       fill
