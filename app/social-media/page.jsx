@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import ServicesCards from '@/components/ServiceCards'
 import SocialHero from '@/components/SocialHero'
@@ -12,6 +13,7 @@ const page = () => {
 <SocialHero/>
 <ServicesCards/>
 <Testimonials/>
+<Footer/>
 
 </>
   )
