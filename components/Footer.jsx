@@ -41,28 +41,33 @@ const Footer = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Company */}
-        <div>
-          <Link href="/" className="text-2xl font-semibold">
-            <Image src="/logos/logo.png" alt="AfterRender Logo" width={220} height={56} />
-          </Link>
-          <p className="text-[#9FC8F1] leading-relaxed mb-4">
-            Creative studio building digital experiences that inspire and convert.
-          </p>
-          <div className="flex space-x-4 mt-4">
-            {[Instagram, Youtube, Facebook].map((Icon, i) => (
-              <motion.a
-                key={i}
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, y: -2 }}
-                className="p-2 rounded-full bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 transition"
-              >
-                <Icon className="w-5 h-5 text-[#C9E4FF]" />
-              </motion.a>
-            ))}
-          </div>
-        </div>
+ <div>
+  <Link href="/" className="text-2xl font-semibold">
+    <Image src="/logos/logo.png" alt="AfterRender Logo" width={220} height={56} />
+  </Link>
+  <p className="text-[#9FC8F1] leading-relaxed mb-4">
+    Creative studio building digital experiences that inspire and convert.
+  </p>
+  <div className="flex space-x-4 mt-4">
+    {[
+      { Icon: Instagram, url: "https://www.instagram.com/afterrender/?hl=en" },
+      { Icon: Youtube, url: "https://www.youtube.com/@AfterRender" },
+      { Icon: Facebook, url: "https://www.facebook.com/p/AfterRender-61563053082911/" },
+    ].map(({ Icon, url }, i) => (
+      <motion.a
+        key={i}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.2, y: -2 }}
+        className="p-2 rounded-full bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 transition"
+      >
+        <Icon className="w-5 h-5 text-[#C9E4FF]" />
+      </motion.a>
+    ))}
+  </div>
+</div>
+
 
         {/* Navigation */}
         <div>
