@@ -24,9 +24,9 @@ const SocialHeroText = () => {
 
   const lines = [
     <>
-      We will build you a{" "}
+     We’ll build a complete{" "}
       <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        Youtube organic
+       YouTube growth funnel—organic
       </span>{" "}
       +{" "}
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
@@ -34,7 +34,7 @@ const SocialHeroText = () => {
       </span>
     </>,
     <>
-      ads funnel that will book you
+      ads—that consistently books you
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
         {" "}
         20+ calls per{" "}
@@ -44,9 +44,10 @@ const SocialHeroText = () => {
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
         month.
       </span>{" "}
-      if we don’t you don’t pay us
+      And here’s the best part: if we don’t deliver, you don’t pay a single penny.
     </>,
   ];
+
 
   return (
     <section
@@ -80,7 +81,7 @@ const SocialHeroText = () => {
           {lines.map((line, i) => (
                 <motion.p
       key={i}
-      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.8rem]"
+      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.1rem]"
       variants={{
         hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
         visible: {
