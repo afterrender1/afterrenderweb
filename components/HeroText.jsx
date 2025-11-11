@@ -111,7 +111,7 @@ const HeroText = () => {
           title="AfterRender Showcase Video"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          loading="lazy"
+          // loading="lazy"
         ></iframe>
 
         {/* optional: gradient overlay glow effect */}
