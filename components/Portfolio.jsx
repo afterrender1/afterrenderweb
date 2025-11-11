@@ -131,6 +131,7 @@ const Portfolio = () => {
     },
     {
       thumbnail: "https://www.youtube.com/embed/yAK8UcNmsgs?si=-pMxJvMFQAoacAse",
+      
       title:
         "How to Start Your Affiliate Marketing Business using A.I - in 15 days",
       tags: ["Scripting", "ideation", "Editing", "Thumbnails"],

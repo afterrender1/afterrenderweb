@@ -5,7 +5,7 @@ import Image from "next/image";
 const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
   return (
     <div
-      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/60 transition-all duration-500 rounded-3xl p-6 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
+      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/30 cursor-default transition-all duration-500 rounded-3xl p-6 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
     >
       {/* Rating Stars */}
       <div className="flex gap-1 mb-6">
@@ -20,22 +20,22 @@ const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
       </p>
 
       {/* Author */}
-      <div className="flex items-center gap-4 mt-auto">
-        <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#48A2FF] to-[#C9E4FF] flex items-center justify-center text-[#0A1A2F] font-bold text-lg">
-         <Image
-            loading="lazy"
-           src={img}
-           alt={name}
-           width={48}
-           height={48}
-           className="rounded-full"
-         />
-        </div>
-        <div>
-          <h4 className="text-white font-semibold">{name}</h4>
-          <p className="text-gray-400 text-sm">{title}</p>
-        </div>
-      </div>
+ <div className="flex items-center gap-5 mt-auto">
+  <div className="relative w-20 h-20 rounded-full overflow-hidden flex items-center justify-center">
+    <Image
+      loading="lazy"
+      src={img}
+      alt={name}
+      fill
+      className="object-cover rounded-full"
+    />
+  </div>
+  <div>
+    <h4 className="text-white font-semibold text-lg">{name}</h4>
+    <p className="text-gray-400 text-sm">{title}</p>
+  </div>
+</div>
+
     </div>
   );
 };
@@ -48,7 +48,7 @@ const testimonials = [
       "What I liked most was how Arham and his team understood the medical space. The videos came out clean, educational, and still engaging — not easy to pull off.",
     name: "Deborah",
     title: "Medical Creator",
-    img: "/images/clients/c1.png",
+    img: "/images/clients/deborah.png",
   },
   {
     rating: 5,
@@ -56,7 +56,7 @@ const testimonials = [
       "My content finally looks and feels like my brand. Working with Arham’s team was smooth and easy. They just understand how to speak to coaches.",
     name: "Traction",
     title: "Digital Entrepreneur",
-    img: "/images/clients/c2.png",
+    img: "/images/clients/traction.png",
   },
   {
     rating: 5,
@@ -64,7 +64,7 @@ const testimonials = [
       "AfterRender didn’t just make videos; they built a full creative system that fits perfectly with our SaaS funnel. We saw better engagement and lower ad costs within weeks.",
     name: "FinePoint Design and Marketing",
     title: "SaaS Company",
-    img: "/images/clients/c3.png",
+    img: "/images/clients/finepoint.png",
   },
   {
     rating: 5,
@@ -72,7 +72,7 @@ const testimonials = [
       "Arham and his team really get the trading world. Every video hits the right tone with clean edits and high watch time.",
     name: "Crypto Simba",
     title: "Crypto Trader",
-    img: "/images/clients/c4.png",
+    img: "/images/clients/crypto.png",
   },
   {
     rating: 5,
@@ -80,7 +80,7 @@ const testimonials = [
       "Loved how simple the process was. I sent my clips, and the final videos came back polished and ready to post.",
     name: "Audrey",
     title: "Fitness Coach",
-    img: "/images/clients/c5.png",
+    img: "/images/clients/metabolic.png",
   },
   {
     rating: 5,
@@ -88,7 +88,7 @@ const testimonials = [
       "Super smooth process. I just record, send the footage, and they handle everything else.",
     name: "BigHots",
     title: "YouTube Creator",
-    img: "/images/clients/c6.png",
+    img: "/images/clients/bighot.png",
   },
 ];
 

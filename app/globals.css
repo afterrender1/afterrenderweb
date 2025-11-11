@@ -14,3 +14,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* === Custom Scrollbar === */
+::-webkit-scrollbar {
+  width: 8px; /* scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1a2f; /* background of track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #48a2ff, #c9e4ff);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #3a8be8, #b0d2ff);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #48a2ff #0a1a2f;
+}
+
+

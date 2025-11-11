@@ -14,7 +14,7 @@ const montserrat = Montserrat({
   weight: ["400"],
 });
 
-const HeroText = () => {
+const SocialHeroText = () => {
   const [showBackground, setShowBackground] = useState(false);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const HeroText = () => {
 
   return (
     <section
-      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-8"
+      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
         backgroundSize: "contain", // ensures full coverage
@@ -97,40 +97,28 @@ const HeroText = () => {
         </motion.div>
 
         {/* === Video === */}
-   <div className="flex justify-center items-center ">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        className="relative w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] rounded-xl overflow-hidden shadow-lg border-2 border-[#48A2FF]/40"
-      >
-        {/* YouTube Embed */}
-        <iframe
-          className="w-full aspect-video rounded-xl"
-          src="https://www.youtube.com/embed/GO0Z7SW9U10?si=ynbd1J3dZv_gET1F&rel=0&modestbranding=1&showinfo=0"
-          title="AfterRender Showcase Video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
+        <motion.video
           loading="lazy"
-        ></iframe>
-
-        {/* optional: gradient overlay glow effect */}
-        <div className="absolute inset-0 pointer-events-none bg-linear-to-r from-transparent via-[#48A2FF]/5 to-transparent"></div>
-      </motion.div>
-    </div>
+          poster="/images/arposter.png"
+          controls
+         autoPlay = {false}
+          muted ={false}
+          loop={false}
+          playsInline
+          className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <source src="/videos/saasarvideo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </motion.video>
 
         {/* === CTA Button === */}
-        <motion.div
-          className="mt-4 sm:mt-6"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.4 }}
-        >
-          <BookACall />
-        </motion.div>
+       
       </div>
     </section>
   );
 };
 
-export default HeroText;
+export default SocialHeroText;
