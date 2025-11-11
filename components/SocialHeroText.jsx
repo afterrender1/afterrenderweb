@@ -22,29 +22,28 @@ const SocialHeroText = () => {
     return () => clearTimeout(timer);
   }, []);
 
+
   const lines = [
     <>
-     We’ll build a complete{" "}
+    We’ll build your YouTube{" "}
       <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
        YouTube growth funnel—organic
       </span>{" "}
       +{" "}
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        Paid
+        social media presence
       </span>
     </>,
     <>
-      ads—that consistently books you
+     to help you reach your maximum potential
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
         {" "}
-        20+ calls per{" "}
+        . if we don’t deliver,{" "} you don’t pay us.
       </span>
     </>,
     <>
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        month.
-      </span>{" "}
-      And here’s the best part: if we don’t deliver, you don’t pay a single penny.
+     
+     
     </>,
   ];
 
@@ -81,7 +80,7 @@ const SocialHeroText = () => {
           {lines.map((line, i) => (
                 <motion.p
       key={i}
-      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.1rem]"
+      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.5rem]"
       variants={{
         hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
         visible: {
@@ -111,7 +110,7 @@ const SocialHeroText = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <source src="/videos/saasarvideo.mp4" type="video/mp4" />
+          <source src="/videos/saas.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </motion.video>
 

@@ -23,38 +23,36 @@ const HeroText = () => {
   }, []);
 
 
-
+ 
      
 
   const lines = [
     <>
-     We’ll build a complete{" "}
+    We’ll build your YouTube{" "}
       <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
        YouTube growth funnel—organic
       </span>{" "}
       +{" "}
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        Paid
+        social media presence
       </span>
     </>,
     <>
-      ads—that consistently books you
+     to help you reach your maximum potential
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
         {" "}
-        20+ calls per{" "}
+        . if we don’t deliver,{" "} you don’t pay us.
       </span>
     </>,
     <>
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        month.
-      </span>{" "}
-      And here’s the best part: if we don’t deliver, you don’t pay a single penny.
+     
+     
     </>,
   ];
 
   return (
     <section
-      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-25"
+      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
         backgroundSize: "contain", // ensures full coverage
@@ -84,7 +82,7 @@ const HeroText = () => {
           {lines.map((line, i) => (
                 <motion.p
       key={i}
-      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.1rem]"
+      className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.5rem]"
       variants={{
         hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
         visible: {
@@ -102,25 +100,22 @@ const HeroText = () => {
 
         {/* === Video === */}
    <div className="flex justify-center items-center ">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        className="relative w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] rounded-xl overflow-hidden shadow-lg border-2 border-[#48A2FF]/40"
-      >
-        {/* YouTube Embed */}
-        <iframe
-          className="w-full aspect-video rounded-xl"
-          src="https://www.youtube.com/embed/GO0Z7SW9U10?si=ynbd1J3dZv_gET1F&rel=0&modestbranding=1&showinfo=0"
-          title="AfterRender Showcase Video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          // loading="lazy"
-        ></iframe>
-
-        {/* optional: gradient overlay glow effect */}
-        <div className="absolute inset-0 pointer-events-none bg-linear-to-r from-transparent via-[#48A2FF]/5 to-transparent"></div>
-      </motion.div>
+         <motion.video
+            loading="lazy"
+            poster="/images/arposter.png"
+            controls
+           autoPlay = {false}
+            muted ={false}
+            loop={false}
+            playsInline
+            className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <source src="/videos/mainv.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </motion.video>
     </div>
 
         {/* === CTA Button === */}
