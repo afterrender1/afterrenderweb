@@ -87,7 +87,7 @@ const HeroText = () => {
           opacity: 1,
           filter: "blur(0px)",
           y: 0,
-          transition: { duration: 0.9, ease: "easeOut" },
+          transition: { duration: 0.6, ease: "easeOut" },
         },
       }}
     >

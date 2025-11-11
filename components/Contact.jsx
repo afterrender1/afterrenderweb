@@ -54,11 +54,16 @@ const ContactForm = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         {/* Left Info Section - Sticky */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
+      initial={{ opacity: 0, x: -60 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  viewport={{ once: true }}
+  className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
           style={{ fontFamily: "poppins" }}
+
+
+
+          
         >
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">
@@ -98,6 +103,7 @@ const ContactForm = () => {
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{once : true}}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
           style={{ fontFamily: "poppins" }}
