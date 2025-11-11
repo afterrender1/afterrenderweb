@@ -28,7 +28,7 @@ const HeroText = () => {
 
   const lines = [
     <>
-    We’ll build your YouTube{" "}
+    We’ll build your {" "}
       <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
        YouTube growth funnel—organic
       </span>{" "}
@@ -102,7 +102,7 @@ const HeroText = () => {
    <div className="flex justify-center items-center ">
          <motion.video
             loading="lazy"
-            poster="/images/arposter.png"
+            poster="/images/mainvposter.png"
             controls
            autoPlay = {false}
             muted ={false}

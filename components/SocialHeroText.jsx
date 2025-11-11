@@ -25,7 +25,7 @@ const SocialHeroText = () => {
 
   const lines = [
     <>
-    We’ll build your YouTube{" "}
+    We’ll build your{" "}
       <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
        YouTube growth funnel—organic
       </span>{" "}
