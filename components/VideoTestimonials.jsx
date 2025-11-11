@@ -1,129 +1,98 @@
 "use client";
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import React from "react";
 
-const heroVideos = [
-  { src: "https://www.youtube.com/embed/rHfibRZisjI?si=mut7J4LlonzKkbPm", title: "Modern Tailoring", subtitle: "Sharp. Confident. Effortless." },
-  { src: "https://www.youtube.com/embed/5q1njhBzdF0?si=zHVOFtJlPNdw30iq", title: "Urban Edge", subtitle: "For the man who leads the way." },
-  { src: "https://www.youtube.com/embed/lpKpHIhXdy0?si=P2G7138KwbSQz4NM", title: "Classic Revival", subtitle: "Timeless fits, redefined." },
+const videos = [
+  {
+    title: "Client Testimonial 1",
+    src: "https://www.youtube.com/embed/rHfibRZisjI?si=mut7J4LlonzKkbPm",
+  },
+  {
+    title: "Client Testimonial 2",
+    src: "https://www.youtube.com/embed/5q1njhBzdF0?si=zHVOFtJlPNdw30iq",
+  },
+  {
+    title: "Client Testimonial 3",
+    src: "https://www.youtube.com/embed/lpKpHIhXdy0?si=P2G7138KwbSQz4NM",
+  },
 ];
 
-const bottomVideos = [
-  { src: "https://www.youtube.com/embed/rHfibRZisjI?si=mut7J4LlonzKkbPm", title: "Testimonial 1" },
-  { src: "https://www.youtube.com/embed/5q1njhBzdF0?si=zHVOFtJlPNdw30iq", title: "Testimonial 2" },
-  { src: "https://www.youtube.com/embed/lpKpHIhXdy0?si=P2G7138KwbSQz4NM", title: "Testimonial 3" },
-];
-
-const HeroVideoCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () =>
-    setCurrentIndex((prev) => (prev === heroVideos.length - 1 ? 0 : prev + 1));
-  const prevSlide = () =>
-    setCurrentIndex((prev) => (prev === 0 ? heroVideos.length - 1 : prev - 1));
-
+const VideoCard = ({ src, title }) => {
   return (
-    <>
-    <div>
-        <div className="flex items-center justify-center gap-2 mt-10 mb-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white" style={{fontFamily : "poppins"}}>What Our <span className="text-4xl md:text-5xl mb-4 font-bold lg:text-[2.8rem] text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">Clients</span> Say</h2>
+    <div className="relative group h-full">
+      {/* Card Container */}
+      <div className="relative bg-white/5 rounded-3xl p-4 border border-gray-800/50 h-full overflow-hidden flex flex-col justify-between hover:shadow-[0_0_25px_rgba(72,162,255,0.4)] transition-all duration-300">
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-30 transition-all duration-300"
+          style={{ backgroundImage: "url('/images/herobg.png')" }}
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-linear-to-br from-black/60 via-black/40 to-transparent z-0 rounded-3xl"></div>
+
+        {/* Video */}
+        <div className="relative z-10 rounded-2xl overflow-hidden shadow-lg">
+          <div className="relative pb-[56.25%]">
+            <iframe
+              loading="lazy"
+              className="absolute top-0 left-0 w-full h-full rounded-2xl"
+              src={src}
+              title={title}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
-        <p className="text-center text-gray-300 mb-10 px-4 sm:px-0" style={{fontFamily : "poppins"}}>Discover how we've transformed brands with our video expertise</p>
+
+        {/* Title */}
+        <h3 className="relative z-10 text-white text-xl font-semibold text-center mt-4">
+          {title}
+        </h3>
+      </div>
     </div>
-    <section className="w-full">
-      {/* HERO CAROUSEL */}
-      <div className="relative hidden  h-[90vh] sm:h-[80vh] xs:h-[60vh] lg:flex items-center justify-center overflow-hidden bg-black">
-        <div className="relative w-full h-full flex items-center justify-center">
-          {heroVideos.map((video, idx) => {
-            const isActive = idx === currentIndex;
-            const isPrev = idx === (currentIndex - 1 + heroVideos.length) % heroVideos.length;
-            const isNext = idx === (currentIndex + 1) % heroVideos.length;
-
-            return (
-              <div
-                key={idx}
-                className={`absolute transition-all duration-700 ease-in-out ${
-                  isActive
-                    ? "z-20 scale-100 opacity-100"
-                    : isPrev || isNext
-                    ? "z-10 scale-90 opacity-20"
-                    : "z-0 scale-75 opacity-0"
-                }`}
-                style={{
-                  transform: isActive
-                    ? "translateX(0)"
-                    : isPrev
-                    ? "translateX(-40%)"
-                    : isNext
-                    ? "translateX(40%)"
-                    : "translateX(0)",
-                }}
-              >
-                <div className="rounded-2xl overflow-hidden shadow-lg w-[90vw] sm:w-[70vw] md:w-[60vw] lg:w-[50vw] h-[50vh] sm:h-[60vh] md:h-[70vh]">
-                  <iframe
-                  loading="lazy"
-                    className="w-full h-full border-2 rounded-2xl"
-                    src={video.src}
-                    title={video.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Controls */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-2 sm:left-10 top-1/2 -translate-y-1/2 backdrop-blur-xl p-3 sm:p-6 rounded-full hover:scale-110 cursor-pointer transition-all duration-300 shadow-[0_0_25px_rgba(255,255,255,0.2)] z-40"
-        >
-          <ChevronLeft className="w-5 sm:w-8 h-5 sm:h-8 text-white" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-2 sm:right-10 top-1/2 -translate-y-1/2 backdrop-blur-xl p-3 sm:p-6 rounded-full hover:scale-110 cursor-pointer transition-all duration-300 shadow-[0_0_25px_rgba(255,255,255,0.2)] z-40"
-        >
-          <ChevronRight className="w-5 sm:w-8 h-5 sm:h-8 text-white" />
-        </button>
-      </div>
-
-      {/* BOTTOM VIDEOS - 3 COLUMNS */}
-  <div className="py-16 px-4 sm:px-10 lg:hidden">
-  <h2 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold mb-8">
-    Video Testimonials
-  </h2>
-  <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
-    {bottomVideos.map((video, idx) => (
-      <div
-        key={idx}
-        className="bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-      >
-        <div className="relative pb-[56.25%]"> {/* 16:9 ratio */}
-          <iframe
-            loading="lazy"
-            className="absolute top-0 left-0 w-full h-full rounded-2xl"
-            src={video.src}
-            title={video.title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-        <div className="p-4 text-center">
-          <h3 className="text-lg font-semibold text-white">{video.title}</h3>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-    </section>
-    </>
-
   );
 };
 
-export default HeroVideoCarousel;
+const VideoTestimonials = () => {
+  return (
+    <div className="relative min-h-screen bg-black py-20 px-4 overflow-hidden">
+      {/* Background Layers */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-30"
+        style={{ backgroundImage: "url('/images/herobg.png')" }}
+      ></div>
+      <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black z-0"></div>
+
+      {/* Header */}
+      <div className="relative z-10 text-center mb-20">
+        <p className="text-white text-sm tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
+          Client Stories
+        </p>
+        <h2
+          className="text-2xl md:text-[2.8rem] font-bold text-white mb-4"
+          style={{ fontFamily: "poppins" }}
+        >
+          See what our{" "}
+          <span
+            className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"
+            style={{ fontFamily: "michroma" }}
+          >
+            clients say
+          </span>
+        </h2>
+        <p className="text-gray-400 text-lg">
+          Real people. Real results. Real transformations.
+        </p>
+      </div>
+
+      {/* Cards Grid */}
+      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        {videos.map((video, i) => (
+          <VideoCard key={i} src={video.src} title={video.title} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default VideoTestimonials;
