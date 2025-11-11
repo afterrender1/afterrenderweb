@@ -87,7 +87,7 @@ const SocialHeroText = () => {
           opacity: 1,
           filter: "blur(0px)",
           y: 0,
-          transition: { duration: 0.9, ease: "easeOut" },
+          transition: { duration: 0.5, ease: "easeOut" },
         },
       }}
     >

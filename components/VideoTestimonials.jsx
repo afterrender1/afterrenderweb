@@ -91,29 +91,35 @@ const HeroVideoCarousel = () => {
       </div>
 
       {/* BOTTOM VIDEOS - 3 COLUMNS */}
-      <div className="py-16 px-4 sm:px-10 lg:hidden ">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold mb-10">
-          Video Testimonials
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
-          {bottomVideos.map((video, idx) => (
-            <div key={idx} className="w-full rounded-2xl overflow-hidden shadow-lg">
-              <div className="relative pb-[56.25%]">
-                <iframe
-                loading="lazy"
-                  className="absolute top-0 left-0 w-full h-full"
-                  src={video.src}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              {/* <p className="text-center mt-2 font-semibold text-gray-800">{video.title}</p> */}
-            </div>
-          ))}
+  <div className="py-16 px-4 sm:px-10 lg:hidden">
+  <h2 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold mb-8">
+    Video Testimonials
+  </h2>
+  <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6">
+    {bottomVideos.map((video, idx) => (
+      <div
+        key={idx}
+        className="bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+      >
+        <div className="relative pb-[56.25%]"> {/* 16:9 ratio */}
+          <iframe
+            loading="lazy"
+            className="absolute top-0 left-0 w-full h-full rounded-2xl"
+            src={video.src}
+            title={video.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+        <div className="p-4 text-center">
+          <h3 className="text-lg font-semibold text-white">{video.title}</h3>
         </div>
       </div>
+    ))}
+  </div>
+</div>
+
     </section>
     </>
 
