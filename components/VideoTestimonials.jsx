@@ -44,9 +44,9 @@ const HeroVideoCarousel = () => {
                   : "translateX(0)",
               }}
             >
-              <div className="rounded-2xl overflow-hidden shadow-lg w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[50vw] h-[50vh] sm:h-[60vh] md:h-[70vh]">
+              <div className="rounded-2xl overflow-hidden shadow-lg w-[90vw] sm:w-[70vw] md:w-[60vw] lg:w-[50vw] h-[50vh] sm:h-[60vh] md:h-[70vh]">
                 <iframe
-                  className="w-full h-full border-2 rounded-2xl"
+                  className="w-full h-60 sm:h-90 md:h-[40vh] lg:h-[50vh] xl:h-[60vh] border-2 rounded-2xl"
                   src={video.src}
                   title={video.title}
                   frameBorder="0"
