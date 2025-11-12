@@ -5,23 +5,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
-
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setOpenMenu(null);
   };
 
-  const scrollToId = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-      closeMobileMenu();
+  const handleVideoClick = (id) => {
+    closeMobileMenu();
+    if (pathname === "/") {
+      // Already on Home page
+      const section = document.getElementById(id);
+      section?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Go to home page with hash
+      router.push(`/#${id}`);
     }
   };
 
@@ -47,7 +53,10 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav Links */}
-        <div className="hidden lg:flex items-center space-x-8" style={{ fontFamily: "montserrat" }}>
+        <div
+          className="hidden lg:flex items-center space-x-8"
+          style={{ fontFamily: "montserrat" }}
+        >
           <div className="relative">
             <button
               onClick={() => toggleMenu("videos")}
@@ -66,9 +75,13 @@ export default function Navbar() {
                   className="absolute top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
                 >
                   {videoLinks.map((item, i) => (
-                    <motion.div key={i} whileHover={{ x: 4 }} transition={{ duration: 0.15 }}>
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 4 }}
+                      transition={{ duration: 0.15 }}
+                    >
                       <button
-                        onClick={() => scrollToId(item.id)}
+                        onClick={() => handleVideoClick(item.id)}
                         className="block w-full text-left px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
                       >
                         <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
@@ -83,10 +96,16 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link href="/social-media" className="hover:text-[#59B7FF] transition-colors">
+          <Link
+            href="/social-media"
+            className="hover:text-[#59B7FF] transition-colors"
+          >
             Social Media Presence
           </Link>
-          <Link href="#contact" className="hover:text-[#59B7FF] transition-colors">
+          <Link
+            href="#contact"
+            className="hover:text-[#59B7FF] transition-colors"
+          >
             Contact
           </Link>
         </div>
@@ -129,7 +148,10 @@ export default function Navbar() {
             />
             <div className="absolute inset-0 bg-black/60" />
 
-            <div className="relative flex flex-col h-full pt-20 px-6 text-white z-10" style={{ fontFamily: "montserrat" }}>
+            <div
+              className="relative flex flex-col h-full pt-20 px-6 text-white z-10"
+              style={{ fontFamily: "montserrat" }}
+            >
               {/* Videos Dropdown */}
               <div className="mb-4">
                 <button
@@ -139,7 +161,9 @@ export default function Navbar() {
                   VIDEOS
                   <ChevronDown
                     size={20}
-                    className={`transform transition-transform ${openMenu === "videos-mobile" ? "rotate-180" : ""}`}
+                    className={`transform transition-transform ${
+                      openMenu === "videos-mobile" ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
 
@@ -160,13 +184,10 @@ export default function Navbar() {
                           transition={{ delay: i * 0.1 }}
                         >
                           <button
-                            onClick={() => scrollToId(item.id)}
+                            onClick={() => handleVideoClick(item.id)}
                             className="py-2.5 text-lg text-gray-200 hover:text-[#59B7FF] transition-all flex items-center gap-2 w-full text-left"
                           >
-                            <span
-                              className="w-1.5 h-1.5 rounded-full bg-[#48A2FF]"
-                              whileHover={{ scale: 1.5, boxShadow: "0 0 6px #48A2FF" }}
-                            />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#48A2FF]" />
                             {item.name}
                           </button>
                         </motion.div>
@@ -176,17 +197,28 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              {/* Other Links */}
-            
-              <Link href="/social-media" onClick={closeMobileMenu} className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl">
-                Social Mesdia Presence
+              <Link
+                href="/social-media"
+                onClick={closeMobileMenu}
+                className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
+              >
+                Social Media Presence
               </Link>
-              <Link href="#contact" onClick={closeMobileMenu} className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl">
+
+              <Link
+                href="#contact"
+                onClick={closeMobileMenu}
+                className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
+              >
                 Contact
               </Link>
 
               {/* CTA */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 <Link
                   href="/book-call"
                   onClick={closeMobileMenu}
@@ -200,7 +232,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile Menu Overlay */}
+      {/* Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

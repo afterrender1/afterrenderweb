@@ -71,7 +71,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
       {/* Image */}
       <div className="w-full h-64 sm:h-90 mb-6 rounded-xl overflow-hidden flex items-center justify-center ">
         <Image
-        loading="lazy"
           src={image}
           alt={title}
           width={400}
