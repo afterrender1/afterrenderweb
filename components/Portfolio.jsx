@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Michroma } from "next/font/google";
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
@@ -15,8 +15,10 @@ const VideoCard = ({ thumbnail, title, tags }) => {
   };
 
   return (
-    <div className="rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 p-6 group" style={{ fontFamily: "poppins" }}>
-      {/* Video */}
+    <div
+      className="rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 p-6 group"
+      style={{ fontFamily: "poppins" }}
+    >
       <div className="relative rounded overflow-hidden mb-6 bg-gray-800 aspect-video">
         {thumbnail.includes("youtube") ? (
           <iframe
@@ -33,11 +35,18 @@ const VideoCard = ({ thumbnail, title, tags }) => {
         )}
       </div>
 
-      <h3 className="text-white text-lg font-normal mb-4 leading-relaxed min-h-24">{title}</h3>
+      <h3 className="text-white text-lg font-normal mb-4 leading-relaxed min-h-24">
+        {title}
+      </h3>
 
       <div className="flex flex-wrap gap-2">
         {tags.map((tag, index) => (
-          <span key={index} className={`${tagColors[tag] || "bg-gray-600 text-white"} px-4 py-1.5 rounded-full text-sm font-medium`}>
+          <span
+            key={index}
+            className={`${
+              tagColors[tag] || "bg-gray-600 text-white"
+            } px-4 py-1.5 rounded-full text-sm font-medium`}
+          >
             {tag}
           </span>
         ))}
@@ -47,6 +56,19 @@ const VideoCard = ({ thumbnail, title, tags }) => {
 };
 
 const Portfolio = () => {
+  useEffect(() => {
+    // Handle hash scroll on load
+    if (window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      }
+    }
+  }, []);
+
 const videos = [
   {
     id: "v1",
@@ -110,11 +132,15 @@ const videos = [
   },
 ];
 
+
   return (
     <div
       id="videos"
       className="min-h-screen bg-contain bg-center bg-no-repeat relative py-20 px-4"
-      style={{ backgroundImage: "url('/images/herobg.png')", fontFamily: "poppins" }}
+      style={{
+        backgroundImage: "url('/images/herobg.png')",
+        fontFamily: "poppins",
+      }}
     >
       <div className="absolute inset-0 bg-black/70"></div>
 
@@ -126,13 +152,19 @@ const videos = [
           >
             Portfolio
           </h2>
-          <p className="text-gray-300 text-lg">Explore our latest projects and success stories</p>
+          <p className="text-gray-300 text-lg">
+            Explore our latest projects and success stories
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {videos.map((video) => (
             <div key={video.id} id={video.id}>
-              <VideoCard thumbnail={video.thumbnail} title={video.title} tags={video.tags} />
+              <VideoCard
+                thumbnail={video.thumbnail}
+                title={video.title}
+                tags={video.tags}
+              />
             </div>
           ))}
         </div>
