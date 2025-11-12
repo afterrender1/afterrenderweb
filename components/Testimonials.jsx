@@ -64,7 +64,7 @@ const testimonials = [
       "AfterRender didn’t just make videos; they built a full creative system that fits perfectly with our SaaS funnel. We saw better engagement and lower ad costs within weeks.",
     name: "FinePoint Design and Marketing",
     title: "SaaS Company",
-    img: "/images/clients/finepoint.png",
+    img: "/images/clients/finep.png",
   },
   {
     rating: 5,
