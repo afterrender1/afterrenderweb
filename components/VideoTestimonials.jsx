@@ -8,28 +8,13 @@ const videos = [
     title: "Client Testimonial 1",
     src: "https://www.youtube.com/embed/rHfibRZisjI?si=mut7J4LlonzKkbPm",
   },
-  {
-    number: "2",
-    title: "Client Testimonial 2",
-    src: "https://www.youtube.com/embed/5q1njhBzdF0?si=zHVOFtJlPNdw30iq",
-  },
-  {
-    number: "3",
-    title: "Client Testimonial 3",
-    src: "https://www.youtube.com/embed/lpKpHIhXdy0?si=P2G7138KwbSQz4NM",
-  },
 ];
 
 const VideoCard = ({ src, title, number }) => {
   return (
-    <div className="relative group flex flex-col items-center">
+    <div className="relative group flex flex-col items-center max-w-xl w-full">
       {/* Number Badge */}
-      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="px-6 py-1 rounded-full bg-white/10 backdrop-blur-xl border border-gray-700 flex items-center justify-center shadow-md">
-          <span className="text-white font-semibold text-lg">{number}</span>
-        </div>
-      </div>
-
+     
       {/* Card */}
       <div className="relative bg-white/5 rounded-3xl p-6 sm:p-8 border border-gray-800/50 overflow-hidden flex flex-col justify-between transition-all duration-500 transform hover:scale-[1.03] mt-8 w-full">
         {/* Background */}
@@ -101,8 +86,8 @@ const VideoTestimonials = () => {
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-16">
+        {/* Cards Centered */}
+        <div className="flex justify-center">
           {videos.map((video, i) => (
             <VideoCard
               key={i}

@@ -1,9 +1,14 @@
+import Link from 'next/link';
 import React from 'react';
 
 const BookACall = () => {
   return (
     <div className="flex justify-center">
+      <Link href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
+      
+      
       <button
+    
         style={{ fontFamily: "montserrat" }}
         className="cursor-pointer 
                    bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] 
@@ -17,6 +22,8 @@ const BookACall = () => {
       >
         Book a Call
       </button>
+      </Link>
+
     </div>
   );
 };

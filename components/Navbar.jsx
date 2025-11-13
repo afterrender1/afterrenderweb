@@ -113,7 +113,8 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden lg:flex items-center space-x-5">
           <Link
-            href="/book-call"
+          target="_blank"
+            href="https://calendly.com/afterrenderagency/30min"
             style={{ fontFamily: "montserrat" }}
             className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
           >
@@ -220,7 +221,8 @@ export default function Navbar() {
                 transition={{ delay: 0.2 }}
               >
                 <Link
-                  href="/book-call"
+                             href="https://calendly.com/afterrenderagency/30min"
+                             target="_blank" rel="noopener noreferrer"
                   onClick={closeMobileMenu}
                   className="mt-4 block text-center bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-semibold px-6 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
                 >
