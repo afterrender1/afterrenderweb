@@ -19,9 +19,17 @@ const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    try {
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
     console.log("Form submitted:", form);
-    alert("Thanks for reaching out!");
-    setForm({
+     setForm({
       name: "",
       email: "",
       service: "",
@@ -29,6 +37,11 @@ const ContactForm = () => {
       phone: "",
       link: "",
     });
+
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+   
   };
 
   return (
