@@ -15,6 +15,9 @@ const spaceGrotesk = Space_Grotesk({
 const Footer = () => {
   const [currentYear, setCurrentYear] = useState(null);
   const [form, setForm] = useState({ email: "" });
+  const [messageSent, setMessageSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,23 +25,34 @@ const Footer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessageSent(false);
+    setError("");
+
     try {
       const res = await fetch("/api/footer-send-mail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-      }); 
+      });
+
       if (res.ok) {
-        alert("Email sent successfully!");
         setForm({ email: "" });
+        setMessageSent(true);
+        setTimeout(() => setMessageSent(false), 3000);
+      } else {
+        setError("Failed to send message. Please try again later.");
+        setTimeout(() => setError(""), 3000);
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("Failed to send email. Please try again later.");
+      setError("Something went wrong. Try again.");
+      setTimeout(() => setError(""), 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Ensure currentYear is only calculated on the client
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
@@ -53,7 +67,6 @@ const Footer = () => {
     >
       {/* 🌌 Background */}
       <div className="absolute inset-0 bg-white/5 backdrop-blur-xl z-0" />
-
       <Image
         src="/images/herobg.png"
         alt="background glow"
@@ -64,33 +77,32 @@ const Footer = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Company */}
- <div>
-  <Link href="/" className="text-2xl font-semibold">
-    <Image src="/logos/logo.png" alt="AfterRender Logo" width={220} height={56} />
-  </Link>
-  <p className="text-[#9FC8F1] leading-relaxed mb-4">
-    Creative studio building digital experiences that inspire and convert.
-  </p>
-  <div className="flex space-x-4 mt-4">
-    {[
-      { Icon: Instagram, url: "https://www.instagram.com/afterrender/?hl=en" },
-      { Icon: Youtube, url: "https://www.youtube.com/@AfterRender" },
-      { Icon: Facebook, url: "https://www.facebook.com/p/AfterRender-61563053082911/" },
-    ].map(({ Icon, url }, i) => (
-      <motion.a
-        key={i}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ scale: 1.2, y: -2 }}
-        className="p-2 rounded-full bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 transition"
-      >
-        <Icon className="w-5 h-5 text-[#C9E4FF]" />
-      </motion.a>
-    ))}
-  </div>
-</div>
-
+        <div>
+          <Link href="/" className="text-2xl font-semibold">
+            <Image src="/logos/logo.png" alt="AfterRender Logo" width={220} height={56} />
+          </Link>
+          <p className="text-[#9FC8F1] leading-relaxed mb-4">
+            Creative studio building digital experiences that inspire and convert.
+          </p>
+          <div className="flex space-x-4 mt-4">
+            {[
+              { Icon: Instagram, url: "https://www.instagram.com/afterrender/?hl=en" },
+              { Icon: Youtube, url: "https://www.youtube.com/@AfterRender" },
+              { Icon: Facebook, url: "https://www.facebook.com/p/AfterRender-61563053082911/" },
+            ].map(({ Icon, url }, i) => (
+              <motion.a
+                key={i}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, y: -2 }}
+                className="p-2 rounded-full bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 transition"
+              >
+                <Icon className="w-5 h-5 text-[#C9E4FF]" />
+              </motion.a>
+            ))}
+          </div>
+        </div>
 
         {/* Navigation */}
         <div>
@@ -123,7 +135,8 @@ const Footer = () => {
           >
             <div className="flex-1 w-full">
               <input
-                 type="email"
+              required
+                type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
@@ -136,11 +149,26 @@ const Footer = () => {
               type="submit"
               whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(72,162,255,0.6)" }}
               whileTap={{ scale: 0.96 }}
-              className="mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto cursor-pointer bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300"
+              disabled={loading}
+              className={`mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto cursor-pointer bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300 ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Get Quote
+              {loading ? "Sending..." : "Get Quote"}
             </motion.button>
           </motion.form>
+
+          {/* ✅ Feedback messages */}
+          {messageSent && (
+            <p className="text-green-400 text-sm mt-3 transition-opacity duration-500">
+              ✅ Message sent successfully!
+            </p>
+          )}
+          {error && (
+            <p className="text-red-400 text-sm mt-3 transition-opacity duration-500">
+              ❌ {error}
+            </p>
+          )}
 
           <p className="text-xs text-[#9FC8F1] mt-3">
             We respect your time — expect a fast, personalized response.
