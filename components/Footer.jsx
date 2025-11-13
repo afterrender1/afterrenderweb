@@ -14,6 +14,29 @@ const spaceGrotesk = Space_Grotesk({
 
 const Footer = () => {
   const [currentYear, setCurrentYear] = useState(null);
+  const [form, setForm] = useState({ email: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/footer-send-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      }); 
+      if (res.ok) {
+        alert("Email sent successfully!");
+        setForm({ email: "" });
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again later.");
+    }
+  };
 
   // Ensure currentYear is only calculated on the client
   useEffect(() => {
@@ -91,7 +114,7 @@ const Footer = () => {
           </p>
 
           <motion.form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -100,7 +123,10 @@ const Footer = () => {
           >
             <div className="flex-1 w-full">
               <input
-                type="email"
+                 type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full bg-transparent text-sm px-4 py-3 text-white placeholder-[#9FC8F1] outline-none focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5 rounded-xl sm:rounded-full transition-all duration-300"
               />
