@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader, Mail } from "lucide-react";
 
 const ContactForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ type: "", message: "" });
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -17,31 +19,48 @@ const ContactForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setStatus({ type: "", message: "" });
 
     try {
-      fetch("/api/send-email", {
+      const res = await fetch("/api/send-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-    console.log("Form submitted:", form);
-     setForm({
-      name: "",
-      email: "",
-      service: "",
-      message: "",
-      phone: "",
-      link: "",
-    });
 
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus({
+          type: "success",
+          message: "✅ Message sent successfully! We'll reach out soon.",
+        });
+        setForm({
+          name: "",
+          email: "",
+          service: "",
+          message: "",
+          phone: "",
+          link: "",
+        });
+      } else {
+        setStatus({
+          type: "error",
+          message: "❌ Failed to send message. Please try again later.",
+        });
+      }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      setStatus({
+        type: "error",
+        message: "⚠️ Something went wrong. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+      setTimeout(() => setStatus({ type: "", message: "" }), 4000);
     }
-   
   };
 
   return (
@@ -65,18 +84,14 @@ const ContactForm = () => {
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        {/* Left Info Section - Sticky */}
+        {/* Left Info Section */}
         <motion.div
-      initial={{ opacity: 0, x: -60 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.7, ease: "easeOut" }}
-  viewport={{ once: true }}
-  className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
           style={{ fontFamily: "poppins" }}
-
-
-
-          
         >
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">
@@ -92,7 +107,6 @@ const ContactForm = () => {
           </div>
 
           <div className="space-y-5 w-full max-w-md mx-auto lg:mx-0">
-            {/* Email */}
             <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
               <Mail className="text-[#48A2FF] w-6 h-6 shrink-0" />
               <div className="text-left">
@@ -102,12 +116,6 @@ const ContactForm = () => {
                 </p>
               </div>
             </div>
-
-            {/* Phone */}
-         
-
-            {/* Location */}
-    
           </div>
         </motion.div>
 
@@ -116,7 +124,7 @@ const ContactForm = () => {
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{once : true}}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
           style={{ fontFamily: "poppins" }}
@@ -134,7 +142,7 @@ const ContactForm = () => {
                 onChange={handleChange}
                 placeholder="Your Name"
                 required
-                className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all"
+                className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
 
@@ -149,7 +157,7 @@ const ContactForm = () => {
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
-                className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all"
+                className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
           </div>
@@ -164,7 +172,7 @@ const ContactForm = () => {
               value={form.service}
               onChange={handleChange}
               required
-              className="bg-black/10 border cursor-pointer border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all"
+              className="bg-black/10 border cursor-pointer border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all"
             >
               <option value="" className="bg-black">Select a Service</option>
               <option value="editing" className="bg-black">Video Editing</option>
@@ -179,7 +187,8 @@ const ContactForm = () => {
           {/* Optional Fields */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
-              Phone Number <span className="text-gray-500 text-xs">(optional)</span>
+              Phone Number{" "}
+              <span className="text-gray-500 text-xs">(optional)</span>
             </label>
             <input
               type="number"
@@ -187,13 +196,14 @@ const ContactForm = () => {
               value={form.phone}
               onChange={handleChange}
               placeholder="Your Phone Number"
-              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all"
+              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all"
             />
           </div>
 
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
-              Website / YouTube Link <span className="text-gray-500 text-xs">(optional)</span>
+              Website / YouTube Link{" "}
+              <span className="text-gray-500 text-xs">(optional)</span>
             </label>
             <input
               type="text"
@@ -201,7 +211,7 @@ const ContactForm = () => {
               value={form.link}
               onChange={handleChange}
               placeholder="Your Website / YouTube Link"
-              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all w-full"
+              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all"
             />
           </div>
 
@@ -217,7 +227,7 @@ const ContactForm = () => {
               placeholder="Write your message..."
               required
               rows="5"
-              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white text-sm sm:text-base focus:outline-none focus:border-[#48A2FF] transition-all resize-none"
+              className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all resize-none"
             />
           </div>
 
@@ -227,13 +237,42 @@ const ContactForm = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              className="w-full sm:w-auto bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] cursor-pointer font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              disabled={loading}
+              className={`w-full sm:w-auto font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg transition-all duration-300 ${
+                loading
+                  ? "bg-gray-600 text-gray-200 cursor-not-allowed"
+                  : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:shadow-xl"
+              }`}
             >
-              Send Message
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader className="w-5 h-5 animate-spin" />
+                  Sending...
+                </div>
+              ) : (
+                "Send Message"
+              )}
             </motion.button>
           </div>
         </motion.form>
       </div>
+
+      {/* ✅ Animated Status Message */}
+      <AnimatePresence>
+        {status.message && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.4 }}
+            className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 z-50 rounded-full text-white text-sm sm:text-base shadow-xl ${
+              status.type === "success" ? "bg-green-600" : "bg-red-600"
+            }`}
+          >
+            {status.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
