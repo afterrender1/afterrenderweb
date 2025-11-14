@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
@@ -16,6 +17,8 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
       </div>
 
       {/* CTA Button */}
+
+      <Link  href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
       <button
         style={{ fontFamily: 'poppins' }}
         className="cursor-pointer w-full font-bold 
@@ -28,6 +31,8 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
       >
         {buttonText}
       </button>
+      </Link>
+
 
       {/* Includes Section */}
       <div className="grow">
