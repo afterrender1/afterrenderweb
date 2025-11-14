@@ -30,10 +30,7 @@ Case Studies
       >
         
         <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: false }}
+        
           className="max-w-6xl mx-5 grid grid-cols-1 lg:grid-cols-2 gap-10
                      backdrop-blur-md bg-white/10 border border-white/10 
                      rounded-3xl p-10 shadow-2xl"

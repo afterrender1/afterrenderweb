@@ -52,10 +52,10 @@ const HeroText = () => {
 
   return (
     <section
-      className="relative flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
+      className="relative  flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
-        backgroundSize: "contain", // ensures full coverage
+        backgroundSize: "contain", 
         backgroundPosition: "",
         backgroundRepeat: "no-repeat",
         opacity: showBackground ? 1 : 0.5,
