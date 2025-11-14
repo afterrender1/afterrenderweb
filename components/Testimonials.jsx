@@ -101,7 +101,7 @@ const testimonials = [
     >
       <div className="absolute inset-0 "></div>
       <div className="relative max-w-6xl mx-auto z-10 bg-no-repeat bg-contain bg-center "  style={{
-        backgroundImage: "url('/images/herobg.png')",
+        backgroundImage: "url('/images/casebg.png')",
       }}>
         {/* Heading */}
         <div className="text-center mb-20">
