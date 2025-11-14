@@ -6,7 +6,7 @@ const videos = [
   {
     number: "1",
     title: "Client Testimonial 1",
-    src: "https://www.youtube.com/embed/rHfibRZisjI?si=mut7J4LlonzKkbPm",
+    src: "https://www.youtube.com/embed/HBa1FugVjfU?si=rtyxydfZDymImvNE",
   },
 ];
 
