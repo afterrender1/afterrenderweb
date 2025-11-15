@@ -16,11 +16,11 @@ export async function POST(req) {
 
     // Email content
     const mailOptions = {
-      from: `"Mobee Medical Contact" <${process.env.EMAIL_USER}>`,
+      from: `"AfterRender Contact" <${process.env.EMAIL_USER}>`,
       to: process.env.RECEIVER_EMAIL || process.env.EMAIL_USER,
       subject: `New Contact Form Submission - ${service}`,
       html: `
-        <h2>New Inquiry from Mobee Medical Website</h2>
+        <h2>New Inquiry from AfterRender Website</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone || "N/A"}</p>
