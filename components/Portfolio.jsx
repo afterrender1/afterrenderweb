@@ -79,19 +79,19 @@ const videos = [
   {
     id: "v2",
     thumbnail: "https://www.youtube.com/embed/rHfibRZisjI?si=CvW6uG9KJbTZiBwP",
-    title: "High-Impact Fitness Video Edit | AfterRender",
+    title: "Vlog Talking Head Video | Nathaniel Drew & Johnny Harris Style (Client Work)",
     tags: ["Scripting", "ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
     id: "v3",
-    thumbnail: "https://www.youtube.com/embed/5q1njhBzdF0?si=VzTTvt4Kre5BJ0d2",
+    thumbnail: "https://www.youtube.com/embed/BFBv_FlfehI?si=hDn_u4MINSz0LVAd",
     title: "I found an UNTAPPED Faceless YouTube Niche",
     tags: ["Scripting", "ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
     id: "v4",
-    thumbnail: "https://www.youtube.com/embed/lpKpHIhXdy0?si=d6nKjM0JKx52zfgE",
-    title: "Exposing the reality of the Day Trading Industry",
+    thumbnail: "https://www.youtube.com/embed/lpKpHIhXdy0?si=wbj2UPPvJquXzdTQ",
+    title: "Talking Head Video Edit | Iman Gadzhi & Ali Abdaal Style (Client Work)",
     tags: ["Scripting", "ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
