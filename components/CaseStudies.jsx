@@ -56,7 +56,7 @@ Case Studies
               <iframe
               loading="lazy"
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/x4gjRFvwoxc?si=UFz7NZimm00rYtgN"
+                src="https://www.youtube.com/embed/smBE-xrtQKg?si=PuoVGf0O8IOb1Yh6"
                 title="YouTube video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -108,7 +108,7 @@ Case Studies
               <iframe
               loading="lazy"
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/5q1njhBzdF0?si=r9jRJFX1InXKFQs4"
+                src="https://www.youtube.com/embed/hUnXKKa5gk4?si=NRO9f_M5acskovJe"
                 title="YouTube video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
