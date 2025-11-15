@@ -72,14 +72,14 @@ const Portfolio = () => {
 const videos = [
   {
     id: "v1",
-    thumbnail: "https://www.youtube.com/embed/fg0t5rMbI74?si=LeAomKEbIwOa6jKe",
-    title: "I Tried Andrew Tate's Hustlers University 4.0 With $1000 (REALISTIC Results)",
-    tags: ["Scripting", "ideation", "Editing", "SEO"],
+    thumbnail: "https://www.youtube.com/embed/x4gjRFvwoxc?si=a5CbcRSWf1fj8HhB",
+    title: "VSL Video Editing for Business Client | AfterRender Showcase",
+    tags: ["VSL", "ideation", "Editing", "SEO"],
   },
   {
     id: "v2",
-    thumbnail: "https://www.youtube.com/embed/rHfibRZisjI?si=W0h2BsNyEYZINQ-N",
-    title: "I AUTOMATED a Faceless YouTube Channel with AI in 30 mins",
+    thumbnail: "https://www.youtube.com/embed/rHfibRZisjI?si=CvW6uG9KJbTZiBwP",
+    title: "High-Impact Fitness Video Edit | AfterRender",
     tags: ["Scripting", "ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
