@@ -113,7 +113,7 @@ const HeroText = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
           >
-            <source src="/videos/mainv.mp4" type="video/mp4" />
+            <source src="/videos/mainintrovideo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
     </div>
