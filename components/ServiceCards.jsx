@@ -13,7 +13,7 @@ const SERVICES = [
       "Messaging & tone audit",
       "Creative gap identification",
     ],
-    image: "/images/services/audut.png",
+    image: "/images/services/ba.png",
   },
   {
     id: "website-dev",
@@ -24,7 +24,7 @@ const SERVICES = [
       "Conversion-focused UI",
       "CMS / e-commerce setup",
     ],
-    image: "/images/services/webdev.png",
+    image: "/images/services/wd.png",
   },
   {
     id: "creative-design",
@@ -35,7 +35,7 @@ const SERVICES = [
       "Thumbnail & static creatives",
       "Brand-aligned templates",
     ],
-    image: "/images/services/cdesign.png",
+    image: "/images/services/cd.png",
   },
   {
     id: "social-handles",
@@ -46,7 +46,7 @@ const SERVICES = [
       "Content calendar",
       "Community & engagement",
     ],
-    image: "/images/services/shandles.png",
+    image: "/images/services/sh.png",
   },
   {
     id: "youtube",
@@ -57,7 +57,7 @@ const SERVICES = [
       "Scripts & thumbnails",
       "Publishing + repurposing",
     ],
-    image: "/images/services/ytg.png",
+    image: "/images/services/yg.png",
   },
 ];
 
