@@ -110,7 +110,7 @@ const SocialHeroText = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <source src="/videos/saas.mp4" type="video/mp4" />
+          <source src="/videos/saasvcomp.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </motion.video>
 

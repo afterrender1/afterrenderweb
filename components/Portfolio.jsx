@@ -96,14 +96,14 @@ const videos = [
   },
   {
     id: "v5",
-    thumbnail: "https://www.youtube.com/embed/EaCH1Xwp9Aw?si=Q70kjgYytfgJ4o23",
-    title: "Here's Why America Will Collapse In Less Than 50 Years",
+    thumbnail: "https://www.youtube.com/embed/yAK8UcNmsgs?si=d1LIBkIPPuTtelzS",
+    title: "Business Documentary Video Editing (Jake Tran Inspired)",
     tags: ["Scripting", "ideation", "Editing"],
   },
   {
     id: "v6",
-    thumbnail: "https://www.youtube.com/embed/x4gjRFvwoxc?si=3xOoMNmF9tQICtnc",
-    title: "This Scalping Strategy is Boring, But It Made Me $28,000 in Just 30 Days!",
+    thumbnail: "https://www.youtube.com/embed/hlH5Plu6XYI?si=3VCXYhTJv0CdXcxz",
+    title: "CashCow Style YouTube Video – Professional Editing Example",
     tags: ["Scripting", "ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
