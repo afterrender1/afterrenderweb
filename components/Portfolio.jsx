@@ -120,14 +120,14 @@ const videos = [
   },
   {
     id: "v9",
-    thumbnail: "https://www.youtube.com/embed/tmOJgK6R-is?si=CnaPrGReOwYke86U",
-    title: "How to ACTUALLY Design Emails With Figma for Klaviyo Email Marketing (Live Walkthrough)",
+    thumbnail: "https://www.youtube.com/embed/Ybkqf_NjiEs?si=R0A8UjjXs3VyyZoa",
+    title: "AfterRender Shorts | High-Quality Portfolio",
     tags: ["ideation", "Editing", "SEO", "Thumbnails"],
   },
   {
     id: "v10",
-    thumbnail: "https://www.youtube.com/embed/yAK8UcNmsgs?si=-pMxJvMFQAoacAse",
-    title: "How to Start Your Affiliate Marketing Business using A.I - in 15 days",
+    thumbnail: "https://www.youtube.com/embed/5q1njhBzdF0?si=xjToL-OWPBui-ubu",
+    title: "AfterRender EXPOSED? ‪@bighot‬ Tells All",
     tags: ["Scripting", "ideation", "Editing", "Thumbnails"],
   },
 ];
