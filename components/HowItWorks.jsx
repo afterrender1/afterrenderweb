@@ -57,21 +57,21 @@ const HowItWorks = () => {
       title: "Brand Audit",
       description:
         "We get to know you—your voice, your vision, and what kind of content will actually move the needle.",
-      img: "/images/audit.png",
+      img: "/images/aud.png",
     },
     {
       number: 2,
       title: "Content Calendar",
       description:
         "We build a tailored content roadmap + fill your calendar with viral-ready ideas and scripts that sound like you.",
-      img: "/images/contentcala.png",
+      img: "/images/cont.png",
     },
     {
       number: 3,
       title: "Full Production",
       description:
         "You record—we turn it into scroll-stopping videos, publish across all platforms, and fuel it with SEO.",
-      img: "/images/prod.png",
+      img: "/images/pro.png",
     },
   ];
 
