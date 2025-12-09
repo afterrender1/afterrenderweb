@@ -44,7 +44,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="text-2xl font-semibold tracking-wide z-50">
           <Image
-            src="/logos/logo.png"
+            src="/logos/arlogo.png"
             alt="AfterRender"
             width={180}
             height={45}
