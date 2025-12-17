@@ -79,7 +79,7 @@ const Footer = () => {
         {/* Company */}
         <div>
           <Link href="/" className="text-2xl font-semibold">
-            <Image src="/logos/logo.png" alt="AfterRender Logo" width={220} height={56} />
+            <Image src="/logos/arlogo.png" alt="AfterRender Logo" width={220} height={56} />
           </Link>
           <p className="text-[#9FC8F1] leading-relaxed mb-4">
             Creative studio building digital experiences that inspire and convert.

@@ -3,6 +3,7 @@ import React from 'react'
 import Footer from '@/components/Footer'
 import { Montserrat } from 'next/font/google'
 import OurWork from '@/components/OurWork'
+import ContactForm from '@/components/Contact'
 const montserrat = Montserrat({subsets:['latin'],weight:['400','700']})
 
 const page = () => {
@@ -10,8 +11,8 @@ const page = () => {
     <>
     <Navbar/>
     <OurWork/>
-
-    {/* <Footer/> */}
+    <ContactForm/>
+<Footer/>
     </>
   )
 }

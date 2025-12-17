@@ -199,18 +199,7 @@ const OurWork = () => {
 
 
         </section>
-<div className="relative overflow-hidden">
-  {/* Background Image */}
 
-  {/* Decorative Blurs */}
-  <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 blur-[120px] rounded-full pointer-events-none" />
-  <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/20 blur-[120px] rounded-full pointer-events-none" />
-
-  {/* Footer Content */}
-  <div className="relative z-10">
-    <Footer />
-  </div>
-</div>
 
 
    </>
