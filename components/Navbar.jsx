@@ -103,6 +103,12 @@ export default function Navbar() {
             Social Media Presence
           </Link>
           <Link
+            href="/our-work"
+            className="hover:text-[#59B7FF] transition-colors"
+          >
+           Our Work
+          </Link>
+          <Link
             href="#contact"
             className="hover:text-[#59B7FF] transition-colors"
           >
@@ -204,6 +210,13 @@ export default function Navbar() {
                 className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
               >
                 Social Media Presence
+              </Link>
+              <Link
+                href="/our-work"
+                onClick={closeMobileMenu}
+                className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
+              >
+                Our Work
               </Link>
 
               <Link
