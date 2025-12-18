@@ -3,9 +3,9 @@ import HeroText from "./HeroText";
 
 const Hero = () => {
   return (
-<>
-<HeroText/>
-</>
+    <>
+      <HeroText />
+    </>
   );
 };
 

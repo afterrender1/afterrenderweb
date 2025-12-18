@@ -4,8 +4,8 @@ import SocialHeroText from './SocialHeroText'
 const SocialHero = () => {
   return (
     <>
-    <SocialHeroText/>
-    
+      <SocialHeroText />
+
     </>
   )
 }

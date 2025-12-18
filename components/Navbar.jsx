@@ -29,7 +29,6 @@ export default function Navbar() {
     }
   };
 
-  // Fixed missing closing brace and logic for work click
   const handleWorkClick = (href) => {
     closeMobileMenu();
     router.push(href);
@@ -50,7 +49,6 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 text-white">
-        {/* Logo */}
         <Link href="/" className="text-2xl font-semibold tracking-wide z-50">
           <Image
             src="/logos/arlogo.png"
@@ -61,12 +59,10 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Desktop Nav Links */}
         <div
           className="hidden lg:flex items-center space-x-8"
           style={{ fontFamily: "montserrat" }}
         >
-          {/* Videos Dropdown */}
           <div className="relative">
             <button
               onClick={() => toggleMenu("videos")}
@@ -106,7 +102,6 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          {/* Work Dropdown - Fixed Label */}
           <div className="relative">
             <button
               onClick={() => toggleMenu("work")}
@@ -146,7 +141,7 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-         
+
           <Link
             href="#contact"
             className="hover:text-[#59B7FF] transition-colors"
@@ -155,7 +150,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* CTA */}
         <div className="hidden lg:flex items-center space-x-5">
           <Link
             target="_blank"
@@ -167,7 +161,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="lg:hidden z-50 p-2 hover:text-[#59B7FF] transition-colors"
@@ -177,7 +170,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -198,7 +190,6 @@ export default function Navbar() {
               className="relative flex flex-col h-full pt-20 px-6 text-white z-10"
               style={{ fontFamily: "montserrat" }}
             >
-              {/* Videos Dropdown */}
               <div className="mb-4">
                 <button
                   onClick={() => toggleMenu("videos-mobile")}
@@ -265,7 +256,6 @@ export default function Navbar() {
                 Contact
               </Link>
 
-              {/* CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -286,7 +276,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

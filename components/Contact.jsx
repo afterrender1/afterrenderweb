@@ -68,7 +68,6 @@ const ContactForm = () => {
       id="contact"
       className="relative w-full py-20 sm:py-24 md:py-28 bg-black text-white overflow-hidden"
     >
-      {/* Background Layers */}
       <div className="absolute inset-0">
         <div
           className="absolute inset-0 opacity-25"
@@ -82,9 +81,7 @@ const ContactForm = () => {
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-30 pointer-events-none" />
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        {/* Left Info Section */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -119,7 +116,6 @@ const ContactForm = () => {
           </div>
         </motion.div>
 
-        {/* Right Form Section */}
         <motion.form
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 60 }}
@@ -129,7 +125,6 @@ const ContactForm = () => {
           className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
           style={{ fontFamily: "poppins" }}
         >
-          {/* Name + Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <label className="text-gray-300 mb-2 text-sm sm:text-base">
@@ -162,7 +157,6 @@ const ContactForm = () => {
             </div>
           </div>
 
-          {/* Service */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
               Service
@@ -184,7 +178,6 @@ const ContactForm = () => {
             </select>
           </div>
 
-          {/* Optional Fields */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
               Phone Number{" "}
@@ -215,7 +208,6 @@ const ContactForm = () => {
             />
           </div>
 
-          {/* Message */}
           <div className="flex flex-col">
             <label className="text-gray-300 mb-2 text-sm sm:text-base">
               Message
@@ -231,18 +223,16 @@ const ContactForm = () => {
             />
           </div>
 
-          {/* Button */}
           <div className="text-center">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={loading}
-              className={`w-full sm:w-auto font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg transition-all duration-300 ${
-                loading
+              className={`w-full sm:w-auto font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-xl text-base sm:text-lg shadow-lg transition-all duration-300 ${loading
                   ? "bg-gray-600 text-gray-200 cursor-not-allowed"
                   : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:shadow-xl"
-              }`}
+                }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -257,7 +247,6 @@ const ContactForm = () => {
         </motion.form>
       </div>
 
-      {/* ✅ Animated Status Message */}
       <AnimatePresence>
         {status.message && (
           <motion.div
@@ -265,9 +254,8 @@ const ContactForm = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
             transition={{ duration: 0.4 }}
-            className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 z-50 rounded-full text-white text-sm sm:text-base shadow-xl ${
-              status.type === "success" ? "bg-green-600" : "bg-red-600"
-            }`}
+            className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 z-50 rounded-full text-white text-sm sm:text-base shadow-xl ${status.type === "success" ? "bg-green-600" : "bg-red-600"
+              }`}
           >
             {status.message}
           </motion.div>

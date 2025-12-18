@@ -65,7 +65,6 @@ const Footer = () => {
       viewport={{ once: true }}
       className={`${spaceGrotesk.className} relative m-6 rounded-3xl text-gray-100 mt-10 overflow-hidden`}
     >
-      {/* 🌌 Background */}
       <div className="absolute inset-0 bg-white/5 backdrop-blur-xl z-0" />
       <Image
         src="/images/herobg.png"
@@ -76,7 +75,6 @@ const Footer = () => {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        {/* Company */}
         <div>
           <Link href="/" className="text-2xl font-semibold">
             <Image src="/logos/arlogo.png" alt="AfterRender Logo" width={220} height={56} />
@@ -104,7 +102,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Navigation */}
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Navigation</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
@@ -118,7 +115,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Newsletter */}
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Get a Quote</h4>
           <p className="text-[#9FC8F1] mb-4">
@@ -135,7 +131,7 @@ const Footer = () => {
           >
             <div className="flex-1 w-full">
               <input
-              required
+                required
                 type="email"
                 name="email"
                 value={form.email}
@@ -150,15 +146,13 @@ const Footer = () => {
               whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(72,162,255,0.6)" }}
               whileTap={{ scale: 0.96 }}
               disabled={loading}
-              className={`mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto cursor-pointer bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              className={`mt-3 sm:mt-0 sm:ml-3 font-sm w-full sm:w-auto cursor-pointer bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] font-semibold px-3 py-3 rounded-xl sm:rounded-full transition-all duration-300 ${loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
             >
               {loading ? "Sending..." : "Get Quote"}
             </motion.button>
           </motion.form>
 
-          {/* ✅ Feedback messages */}
           {messageSent && (
             <p className="text-green-400 text-sm mt-3 transition-opacity duration-500">
               ✅ Message sent successfully!
@@ -175,7 +169,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Contact */}
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Contact</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
@@ -184,7 +177,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-[#48A2FF]/20 text-center py-6 text-[#9FC8F1] text-sm relative z-10">
         © {currentYear || ""} AfterRender. All rights reserved.
       </div>

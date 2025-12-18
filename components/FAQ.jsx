@@ -17,9 +17,8 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         </span>
         <div className="shrink-0">
           <div
-            className={`transform transition-transform duration-300 ${
-              isOpen ? "rotate-45" : ""
-            }`}
+            className={`transform transition-transform duration-300 ${isOpen ? "rotate-45" : ""
+              }`}
           >
             <svg
               className="w-6 h-6 text-white"
@@ -39,9 +38,8 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div className="p-6 md:p-5 pt-0 bg-transparent ">
           <p className="text-gray-300 text-base leading-relaxed">
@@ -84,15 +82,15 @@ const FAQ = () => {
         "Simple—we deliver results consistently. Our clients stick with us because they see real ROI month after month. We focus on building long-term growth systems, not quick wins. Plus, our team becomes an extension of your business, deeply understanding your brand and audience over time.",
     },
     {
-        question: "What is your pricing structure?",
-       answer:
+      question: "What is your pricing structure?",
+      answer:
         "Our pricing is customized based on your specific needs and goals. We offer flexible packages for both one-time projects and ongoing retainers. Schedule a call with us to discuss a plan that works for your business.",
     },
     {
-         question: "What differentiates you from other agencies?",
-       answer: "We don't just create content—we build growth systems. With AI-powered workflows, proven frameworks, and a team that understands what actually drives results, we're operating 1-2 years ahead of traditional agencies. Plus, we only work with clients we know we can deliver massive value for.",
+      question: "What differentiates you from other agencies?",
+      answer: "We don't just create content—we build growth systems. With AI-powered workflows, proven frameworks, and a team that understands what actually drives results, we're operating 1-2 years ahead of traditional agencies. Plus, we only work with clients we know we can deliver massive value for.",
     },
-   
+
   ];
 
   const handleToggle = (index) => {
@@ -101,35 +99,32 @@ const FAQ = () => {
 
   return (
     <div className="relative min-h-screen bg-black py-20 px-4 overflow-hidden">
-      {/* Background Gradient Glow */}
-<Image
-  src="/images/herobg.png"
-  alt="background glow"
-  width={700}
-  height={700}
-  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-100 pointer-events-none object-cover"
-/>
+      <Image
+        src="/images/herobg.png"
+        alt="background glow"
+        width={700}
+        height={700}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-100 pointer-events-none object-cover"
+      />
 
       <div className="max-w-4xl mx-auto relative z-10">
-        {/* Header */}
-     <div className="text-center mb-20">
+        <div className="text-center mb-20">
           <p className="text-white text-sm tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
-Frequently Asked Questions
+            Frequently Asked Questions
 
           </p>
           <h2
             className="text-2xl md:text-[2.8rem] font-bold text-white mb-4"
             style={{ fontFamily: "poppins" }}
           >
-          Everything you <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]" style={{fontFamily : "michroma"}}>
-            need
-          </span> to know.
+            Everything you <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]" style={{ fontFamily: "michroma" }}>
+              need
+            </span> to know.
 
           </h2>
-        
+
         </div>
 
-        {/* FAQ Items */}
         <div className="space-y-4 ">
           {faqs.map((faq, index) => (
             <FAQItem

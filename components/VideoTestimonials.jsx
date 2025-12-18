@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Image from "next/image";
 
 const videos = [
   {
@@ -13,19 +12,14 @@ const videos = [
 const VideoCard = ({ src, title, number }) => {
   return (
     <div className="relative group flex flex-col items-center max-w-xl w-full">
-      {/* Number Badge */}
-     
-      {/* Card */}
+
       <div className="relative bg-white/5 rounded-3xl p-6 sm:p-4 border border-gray-800/50 overflow-hidden flex flex-col justify-between transition-all duration-500 transform hover:scale-[1.03] mt-8 w-full">
-        {/* Background */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-30 transition-all duration-300"
           style={{ backgroundImage: "url('/images/herobg.png')" }}
         />
-        {/* Overlay */}
         <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/50 to-transparent z-0 rounded-3xl"></div>
 
-        {/* Video */}
         <div className="relative z-10 rounded-2xl overflow-hidden shadow-lg">
           <div className="relative pb-[60%]">
             <iframe
@@ -40,7 +34,6 @@ const VideoCard = ({ src, title, number }) => {
           </div>
         </div>
 
-        {/* Title */}
         <h3
           className="relative z-10 text-white text-xl sm:text-2xl font-semibold text-center mt-6 sm:mt-8"
           style={{ fontFamily: "poppins" }}
@@ -55,16 +48,13 @@ const VideoCard = ({ src, title, number }) => {
 const VideoTestimonials = () => {
   return (
     <section className="relative bg-black py-20 sm:py-28 overflow-hidden">
-      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"
         style={{ backgroundImage: "url('/images/herobg.png')" }}
       />
       <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black z-0"></div>
 
-      {/* Content Container */}
       <div className="relative z-10 max-w-9xl mx-auto px-4 sm:px-8 md:px-12 lg:px-20">
-        {/* Header */}
         <div className="text-center mb-16 sm:mb-24">
           <p className="text-white text-sm tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
             Video Testimonials
@@ -86,7 +76,6 @@ const VideoTestimonials = () => {
           </p>
         </div>
 
-        {/* Cards Centered */}
         <div className="flex justify-center">
           {videos.map((video, i) => (
             <VideoCard

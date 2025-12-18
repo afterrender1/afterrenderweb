@@ -2,77 +2,77 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Montserrat , Poppins } from "next/font/google";
+import { Montserrat, Poppins } from "next/font/google";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
 const projects = [
- 
-        {
-        id: 1,
-        title: "TMG Van – Trade Motor Group",
-        category: "Business",
-        thumbnail: "/images/our-work/tmgvan.png",
-        liveUrl: "https://tmgvan.vercel.app",
-        tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
-    },
-    {
-        id: 2,
-        title: "Daily World – Blogging Platform",
-        category: "Business",
-        thumbnail: "/images/our-work/daily-world.png",
-        liveUrl: "https://dailyworldxar.vercel.app",
-        tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
-    },
-    {
-        id: 3,
-        title: "Mobee Medical – Healthcare Website",
-        category: "Healthcare",
-        thumbnail: "/images/our-work/mobeemedical.png",
-        liveUrl: "https://mobeemedical.vercel.app",
-        tags: ["Healthcare", "Next.js", "UI/UX"],
-    },
-       {
-        id: 4,
-        title: "Jave – E-Commerce Platform",
-        category: "E-Commerce",
-        thumbnail: "/images/our-work/jave.png",
-        liveUrl: "https://javexafterrender.vercel.app",
-        tags: ["E-Commerce", "Next.js", "Stripe"],
-    },
 
-    {
-        id: 6,
-        title: "Deigo Hair Studio",
-        category: "Business",
-        thumbnail: "/images/our-work/deigo.png",
-        liveUrl: "https://deigo.vercel.app",
-        tags: ["Next.js", "Salon", "UI/UX"],
-    },
+  {
+    id: 1,
+    title: "TMG Van – Trade Motor Group",
+    category: "Business",
+    thumbnail: "/images/our-work/tmgvan.png",
+    liveUrl: "https://tmgvan.vercel.app",
+    tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
+  },
+  {
+    id: 2,
+    title: "Daily World – Blogging Platform",
+    category: "Business",
+    thumbnail: "/images/our-work/daily-world.png",
+    liveUrl: "https://dailyworldxar.vercel.app",
+    tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
+  },
+  {
+    id: 3,
+    title: "Mobee Medical – Healthcare Website",
+    category: "Healthcare",
+    thumbnail: "/images/our-work/mobeemedical.png",
+    liveUrl: "https://mobeemedical.vercel.app",
+    tags: ["Healthcare", "Next.js", "UI/UX"],
+  },
+  {
+    id: 4,
+    title: "Jave – E-Commerce Platform",
+    category: "E-Commerce",
+    thumbnail: "/images/our-work/jave.png",
+    liveUrl: "https://javexafterrender.vercel.app",
+    tags: ["E-Commerce", "Next.js", "Stripe"],
+  },
 
-    {
-        id: 7,
-        title: "Render Store – Online Shop",
-        category: "E-Commerce",
-        thumbnail: "/images/our-work/renderstore.png",
-        liveUrl: "https://renderstore.vercel.app",
-        tags: ["Next.js", "Stripe", "Firebase"],
-    },
+  {
+    id: 6,
+    title: "Deigo Hair Studio",
+    category: "Business",
+    thumbnail: "/images/our-work/deigo.png",
+    liveUrl: "https://deigo.vercel.app",
+    tags: ["Next.js", "Salon", "UI/UX"],
+  },
+
+  {
+    id: 7,
+    title: "Render Store – Online Shop",
+    category: "E-Commerce",
+    thumbnail: "/images/our-work/renderstore.png",
+    liveUrl: "https://renderstore.vercel.app",
+    tags: ["Next.js", "Stripe", "Firebase"],
+  },
 ];
 
 const categories = ["All", "E-Commerce", "Healthcare", "Business"];
 
 const tagColors = {
-    "E-Commerce": "bg-purple-500/20 text-purple-300",
-    Healthcare: "bg-emerald-500/20 text-emerald-300",
-    Business: "bg-yellow-500/20 text-yellow-300",
-    "Next.js": "bg-sky-500/20 text-sky-300",
-    Stripe: "bg-indigo-500/20 text-indigo-300",
-    MongoDB: "bg-green-500/20 text-green-300",
-    "Node.js": "bg-lime-500/20 text-lime-300",
-    Firebase: "bg-orange-500/20 text-orange-300",
-    "UI/UX": "bg-pink-500/20 text-pink-300",
+  "E-Commerce": "bg-purple-500/20 text-purple-300",
+  Healthcare: "bg-emerald-500/20 text-emerald-300",
+  Business: "bg-yellow-500/20 text-yellow-300",
+  "Next.js": "bg-sky-500/20 text-sky-300",
+  Stripe: "bg-indigo-500/20 text-indigo-300",
+  MongoDB: "bg-green-500/20 text-green-300",
+  "Node.js": "bg-lime-500/20 text-lime-300",
+  Firebase: "bg-orange-500/20 text-orange-300",
+  "UI/UX": "bg-pink-500/20 text-pink-300",
 };
 
 
@@ -86,7 +86,7 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
     className={`group h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-5 hover:border-blue-500/40 transition ${montserrat.className}`}
   >
     <div className="flex flex-col h-full">
-      
+
       <div className="relative rounded-2xl overflow-hidden mb-6 aspect-video bg-gray-900">
         <span className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-lg border border-white/10 text-white">
           {category}
@@ -134,71 +134,70 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
 
 
 const OurWork = () => {
-    const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("All");
 
-    const filteredProjects =
-        activeTab === "All"
-            ? projects
-            : projects.filter((p) => p.category === activeTab);
+  const filteredProjects =
+    activeTab === "All"
+      ? projects
+      : projects.filter((p) => p.category === activeTab);
 
-    return (
-   <>
-        <section className="relative min-h-screen bg-[#050505] py-28 px-6 overflow-hidden">
-            <div className="absolute inset-0 bg-[url('/images/herobg.png')] bg-cover opacity-20" />
-            <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 blur-[120px] rounded-full" />
-            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/20 blur-[120px] rounded-full" />
+  return (
+    <>
+      <section className="relative min-h-screen bg-[#050505] py-28 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/herobg.png')] bg-cover opacity-20" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/20 blur-[120px] rounded-full" />
 
-            <div className="relative z-10 max-w-7xl mx-auto">
-                <div className={`max-w-3xl mb-16 ${poppins.className }`}>
-                    <span className="text-blue-400 text-sm font-bold tracking-[0.3em] uppercase block mb-4">
-                        Our Work
-                    </span>
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                        Real projects.
-                        <br />
-                        <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-                            Real results.
-                        </span>
-                    </h2>
-                    <p className="text-gray-400 text-lg">
-                        A selection of production-ready websites built with modern
-                        technologies like Next.js, Node.js, MongoDB, Stripe, and Firebase.
-                    </p>
-                </div>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className={`max-w-3xl mb-16 ${poppins.className}`}>
+            <span className="text-blue-400 text-sm font-bold tracking-[0.3em] uppercase block mb-4">
+              Our Work
+            </span>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Real projects.
+              <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
+                Real results.
+              </span>
+            </h2>
+            <p className="text-gray-400 text-lg">
+              A selection of production-ready websites built with modern
+              technologies like Next.js, Node.js, MongoDB, Stripe, and Firebase.
+            </p>
+          </div>
 
-                {/* Filters */}
-                <div className={`flex flex-wrap gap-3 mb-12 ${poppins.className}`}>
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveTab(cat)}
-                            className={`px-6 py-2 rounded-full cursor-pointer text-sm font-medium border transition ${activeTab === cat
-                                    ? "bg-white text-black border-white"
-                                    : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30"
-                                }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
+          <div className={`flex flex-wrap gap-3 mb-12 ${poppins.className}`}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-6 py-2 rounded-full cursor-pointer text-sm font-medium border transition ${activeTab === cat
+                  ? "bg-white text-black border-white"
+                  : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30"
+                  }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <AnimatePresence mode="popLayout">
-                        {filteredProjects.map((project) => (
-                            <WorkCard key={project.id} {...project} />
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
-            </div>
-
-
-        </section>
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <WorkCard key={project.id} {...project} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
 
 
+      </section>
 
-   </>
-        
-    );
+
+
+    </>
+
+  );
 };
 
 export default OurWork;

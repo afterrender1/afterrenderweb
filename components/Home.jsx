@@ -13,19 +13,19 @@ import VideoTestimonials from './VideoTestimonials'
 
 const Home = () => {
   return (
-<>
-<Navbar/>
-<Hero/>
-<Testimonials/>
-<CaseStudies/>
-<Portfolio/>
-<HowItWorks/>
-<OurOffers/>
-<FAQ/>
-<VideoTestimonials/>
-<ContactForm/>
-<Footer/>
-</>
+    <>
+      <Navbar />
+      <Hero />
+      <Testimonials />
+      <CaseStudies />
+      <Portfolio />
+      <HowItWorks />
+      <OurOffers />
+      <FAQ />
+      <VideoTestimonials />
+      <ContactForm />
+      <Footer />
+    </>
   )
 }
 

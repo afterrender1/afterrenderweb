@@ -68,7 +68,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
       transition={{ duration: 0.3 }}
       className="bg-white/5 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col shadow-lg hover:shadow-[#48A2FF]/10 transition-all duration-300"
     >
-      {/* Image */}
       <div className="w-full h-64 sm:h-90 mb-6 rounded-xl overflow-hidden flex items-center justify-center ">
         <Image
           src={image}
@@ -79,7 +78,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
         />
       </div>
 
-      {/* Header */}
       <div className="mb-4 flex flex-col items-start">
         <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
           {title}
@@ -87,7 +85,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
         <p className="text-gray-400 text-sm sm:text-base">{subtitle}</p>
       </div>
 
-      {/* Includes */}
       <div className="grow">
         <p className="text-gray-200 font-medium mb-3 text-sm sm:text-base">
           Includes:
@@ -114,7 +111,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
         </ul>
       </div>
 
-      {/* CTA */}
       <button
         onClick={() => {
           const el = document.getElementById("contact");
@@ -131,7 +127,6 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
 const ServicesCards = () => {
   return (
     <div className="relative min-h-screen bg-black py-16 sm:py-20 px-4 sm:px-6 md:px-12 overflow-hidden">
-      {/* Background Overlay */}
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-100"
@@ -144,10 +139,8 @@ const ServicesCards = () => {
         <div className="absolute inset-0 bg-linear-to-b from-black via-black/80 to-black" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 sm:mb-16" style={{fontFamily : "poppins"}}>
+        <div className="text-center mb-12 sm:mb-16" style={{ fontFamily: "poppins" }}>
           <h2 className="text-2xl sm:text-4xl md:text-[2.8rem] font-semibold text-white mb-3">
             Our{" "}
             <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
@@ -159,8 +152,7 @@ const ServicesCards = () => {
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8" style={{fontFamily : "poppins"}}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8" style={{ fontFamily: "poppins" }}>
           {SERVICES.map((s) => (
             <ServiceCard
               key={s.id}
@@ -173,7 +165,6 @@ const ServicesCards = () => {
         </div>
       </div>
 
-      {/* Decorative Glow */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
              w-72 h-72 sm:w-96 sm:h-96 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] 
              rounded-full blur-3xl opacity-40 pointer-events-none"

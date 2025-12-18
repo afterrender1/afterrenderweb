@@ -5,9 +5,8 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
   return (
     <div
       className={`bg-white/4 backdrop-blur-md rounded-3xl p-8 border border-gray-900 transition-all duration-300 flex flex-col 
-      ${small ? 'scale-[0.95] lg:translate-y-6' : ''}`} // 👈 slightly smaller and shifted
+      ${small ? 'scale-[0.95] lg:translate-y-6' : ''}`}
     >
-      {/* Header */}
       <div className="mb-8" style={{ fontFamily: 'poppins' }}>
         <p className="text-gray-400 font-semibold text-base mb-4">{label}</p>
         <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -16,25 +15,23 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
         {subtitle && <p className="text-gray-400 text-base">{subtitle}</p>}
       </div>
 
-      {/* CTA Button */}
 
-      <Link  href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
-      <button
-        style={{ fontFamily: 'poppins' }}
-        className="cursor-pointer w-full font-bold 
+      <Link href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
+        <button
+          style={{ fontFamily: 'poppins' }}
+          className="cursor-pointer w-full font-bold 
              bg-black/25 backdrop-blur-md text-white text-xl 
              py-4 px-6 rounded-2xl 
              border border-gray-700 
              hover:border-gray-500 
              transition-all duration-300 ease-in-out 
              mb-8 hover:scale-[1.02] hover:shadow-lg"
-      >
-        {buttonText}
-      </button>
+        >
+          {buttonText}
+        </button>
       </Link>
 
 
-      {/* Includes Section */}
       <div className="grow">
         <p className="text-gray-200 text-sm mb-4 font-medium">Includes:</p>
         <ul className="space-y-3">
@@ -96,7 +93,6 @@ const OurOffers = () => {
 
   return (
     <div className="relative min-h-screen bg-black py-20 px-4 overflow-hidden">
-      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-30"
@@ -109,9 +105,7 @@ const OurOffers = () => {
         <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-16" style={{ fontFamily: 'poppins' }}>
           <h2
             className="text-4xl md:text-5xl lg:text-[2.8rem] font-bold text-white mb-4"
@@ -129,7 +123,6 @@ const OurOffers = () => {
           </p>
         </div>
 
-        {/* Offers Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[960px] mx-auto items-start">
           {offers.map((offer, index) => (
             <OfferCard
@@ -139,13 +132,12 @@ const OurOffers = () => {
               subtitle={offer.subtitle}
               buttonText={offer.buttonText}
               includes={offer.includes}
-              small={index === 1} // 👈 make 2nd card slightly smaller
+              small={index === 1}
             />
           ))}
         </div>
       </div>
 
-      {/* Decorative Blur Element */}
       <div
         className="absolute 
              md:left-[400px] lg:left-[600px] xl:left-[800px] 2xl:left-[900px]  

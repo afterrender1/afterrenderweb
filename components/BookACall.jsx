@@ -5,12 +5,12 @@ const BookACall = () => {
   return (
     <div className="flex justify-center">
       <Link href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
-      
-      
-      <button
-    
-        style={{ fontFamily: "montserrat" }}
-        className="cursor-pointer 
+
+
+        <button
+
+          style={{ fontFamily: "montserrat" }}
+          className="cursor-pointer 
                    bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] 
                    text-[#0A2540] font-semibold 
                    px-8 py-3 sm:px-10 sm:py-4 md:px-14 md:py-5 
@@ -19,9 +19,9 @@ const BookACall = () => {
                    shadow-lg 
                    hover:scale-105 hover:shadow-xl hover:brightness-110 
                    transition-all duration-300"
-      >
-        Book a Call
-      </button>
+        >
+          Book a Call
+        </button>
       </Link>
 
     </div>

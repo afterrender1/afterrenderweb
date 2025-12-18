@@ -57,7 +57,6 @@ const VideoCard = ({ thumbnail, title, tags }) => {
 
 const Portfolio = () => {
   useEffect(() => {
-    // Handle hash scroll on load
     if (window.location.hash) {
       const id = window.location.hash.replace("#", "");
       const el = document.getElementById(id);
