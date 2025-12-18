@@ -23,7 +23,7 @@ export const metadata = {
     siteName: "AfterRender",
     images: [
       {
-        url: "/logos/logoxar.png", // ✅ ab ye auto-resolve ho jayega
+        url: "/logos/logoxar.png", 
         width: 1200,
         height: 630,
         alt: "AfterRender – YouTube Growth Agency",

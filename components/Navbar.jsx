@@ -22,13 +22,17 @@ export default function Navbar() {
   const handleVideoClick = (id) => {
     closeMobileMenu();
     if (pathname === "/") {
-      // Already on Home page
       const section = document.getElementById(id);
       section?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // Go to home page with hash
       router.push(`/#${id}`);
     }
+  };
+
+  // Fixed missing closing brace and logic for work click
+  const handleWorkClick = (href) => {
+    closeMobileMenu();
+    router.push(href);
   };
 
   const videoLinks = [
@@ -36,6 +40,11 @@ export default function Navbar() {
     { name: "SaaS Videos", id: "v3" },
     { name: "Talking Head Videos", id: "v6" },
     { name: "Documentaries", id: "v9" },
+  ];
+
+  const workLinks = [
+    { name: "Social Media Presence", href: "/social-media" },
+    { name: "Live Web Projects", href: "/our-work" },
   ];
 
   return (
@@ -57,6 +66,7 @@ export default function Navbar() {
           className="hidden lg:flex items-center space-x-8"
           style={{ fontFamily: "montserrat" }}
         >
+          {/* Videos Dropdown */}
           <div className="relative">
             <button
               onClick={() => toggleMenu("videos")}
@@ -96,18 +106,47 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link
-            href="/social-media"
-            className="hover:text-[#59B7FF] transition-colors"
-          >
-            Social Media Presence
-          </Link>
-          <Link
-            href="/our-work"
-            className="hover:text-[#59B7FF] transition-colors"
-          >
-           Our Work
-          </Link>
+          {/* Work Dropdown - Fixed Label */}
+          <div className="relative">
+            <button
+              onClick={() => toggleMenu("work")}
+              className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
+            >
+              Solutions <ChevronDown size={18} />
+            </button>
+
+            <AnimatePresence>
+              {openMenu === "work" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
+                >
+                  {workLinks.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 4 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <button
+                        onClick={() => handleWorkClick(item.href)}
+                        className="block w-full text-left px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
+                      >
+                        <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
+                        <span className="relative z-10 group-hover:text-[#48A2FF] transition-colors duration-300">
+                          {item.name}
+                        </span>
+                      </button>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+         
           <Link
             href="#contact"
             className="hover:text-[#59B7FF] transition-colors"
@@ -119,7 +158,7 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden lg:flex items-center space-x-5">
           <Link
-          target="_blank"
+            target="_blank"
             href="https://calendly.com/afterrenderagency/30min"
             style={{ fontFamily: "montserrat" }}
             className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
@@ -168,9 +207,8 @@ export default function Navbar() {
                   VIDEOS
                   <ChevronDown
                     size={20}
-                    className={`transform transition-transform ${
-                      openMenu === "videos-mobile" ? "rotate-180" : ""
-                    }`}
+                    className={`transform transition-transform ${openMenu === "videos-mobile" ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -216,7 +254,7 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
                 className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
               >
-                Our Work
+                Live Web Projects <span></span>
               </Link>
 
               <Link
@@ -234,8 +272,9 @@ export default function Navbar() {
                 transition={{ delay: 0.2 }}
               >
                 <Link
-                             href="https://calendly.com/afterrenderagency/30min"
-                             target="_blank" rel="noopener noreferrer"
+                  href="https://calendly.com/afterrenderagency/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={closeMobileMenu}
                   className="mt-4 block text-center bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-semibold px-6 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
                 >

@@ -3,19 +3,19 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat , Poppins } from "next/font/google";
-import Footer from "./Footer";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
 const projects = [
-    {
+ 
+        {
         id: 1,
-        title: "Jave – E-Commerce Platform",
-        category: "E-Commerce",
-        thumbnail: "/images/our-work/jave.png",
-        liveUrl: "https://javexafterrender.vercel.app",
-        tags: ["E-Commerce", "Next.js", "Stripe"],
+        title: "TMG Van – Trade Motor Group",
+        category: "Business",
+        thumbnail: "/images/our-work/tmgvan.png",
+        liveUrl: "https://tmgvan.vercel.app",
+        tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
     },
     {
         id: 2,
@@ -33,37 +33,31 @@ const projects = [
         liveUrl: "https://mobeemedical.vercel.app",
         tags: ["Healthcare", "Next.js", "UI/UX"],
     },
-    {
+       {
         id: 4,
-        title: "TMG Van – Trade Motor Group",
-        category: "Business",
-        thumbnail: "/images/our-work/tmgvan.png",
-        liveUrl: "https://tmgvan.vercel.app",
-        tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
+        title: "Jave – E-Commerce Platform",
+        category: "E-Commerce",
+        thumbnail: "/images/our-work/jave.png",
+        liveUrl: "https://javexafterrender.vercel.app",
+        tags: ["E-Commerce", "Next.js", "Stripe"],
     },
-    {
-        id: 5,
-        title: "Ajwa Tour & Travel",
-        category: "Business",
-        thumbnail: "/images/our-work/att.png",
-        liveUrl: "https://attxar.vercel.app",
-        tags: ["Next.js", "Travel", "Landing Page"],
-    },
+
     {
         id: 6,
-        title: "Render Store – Online Shop",
-        category: "E-Commerce",
-        thumbnail: "/images/our-work/renderstore.png",
-        liveUrl: "https://renderstore.vercel.app",
-        tags: ["Next.js", "Stripe", "Firebase"],
-    },
-    {
-        id: 7,
         title: "Deigo Hair Studio",
         category: "Business",
         thumbnail: "/images/our-work/deigo.png",
         liveUrl: "https://deigo.vercel.app",
         tags: ["Next.js", "Salon", "UI/UX"],
+    },
+
+    {
+        id: 7,
+        title: "Render Store – Online Shop",
+        category: "E-Commerce",
+        thumbnail: "/images/our-work/renderstore.png",
+        liveUrl: "https://renderstore.vercel.app",
+        tags: ["Next.js", "Stripe", "Firebase"],
     },
 ];
 
