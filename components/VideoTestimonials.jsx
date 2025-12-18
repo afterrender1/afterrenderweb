@@ -5,7 +5,7 @@ import Image from "next/image";
 const videos = [
   {
     number: "1",
-    title: "Client Testimonial 1",
+    title: "Clients Testimonials",
     src: "https://www.youtube.com/embed/HBa1FugVjfU?si=rtyxydfZDymImvNE",
   },
 ];
@@ -16,7 +16,7 @@ const VideoCard = ({ src, title, number }) => {
       {/* Number Badge */}
      
       {/* Card */}
-      <div className="relative bg-white/5 rounded-3xl p-6 sm:p-8 border border-gray-800/50 overflow-hidden flex flex-col justify-between transition-all duration-500 transform hover:scale-[1.03] mt-8 w-full">
+      <div className="relative bg-white/5 rounded-3xl p-6 sm:p-4 border border-gray-800/50 overflow-hidden flex flex-col justify-between transition-all duration-500 transform hover:scale-[1.03] mt-8 w-full">
         {/* Background */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-30 transition-all duration-300"
