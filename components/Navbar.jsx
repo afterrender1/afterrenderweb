@@ -107,7 +107,7 @@ export default function Navbar() {
               onClick={() => toggleMenu("work")}
               className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
             >
-              Solutions <ChevronDown size={18} />
+              Social Media <ChevronDown size={18} />
             </button>
 
             <AnimatePresence>
