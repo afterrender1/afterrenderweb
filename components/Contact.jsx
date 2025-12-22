@@ -109,7 +109,7 @@ const ContactForm = () => {
               <div className="text-left">
                 <p className="font-medium text-sm sm:text-base">Email</p>
                 <p className="text-gray-400 text-sm sm:text-base">
-                  video@afterrender.com
+                afterrenderagency@gmail.com
                 </p>
               </div>
             </div>

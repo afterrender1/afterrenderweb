@@ -172,7 +172,7 @@ const Footer = () => {
         <div>
           <h4 className="text-lg font-semibold text-[#C9E4FF] mb-4">Contact</h4>
           <ul className="space-y-2 text-[#9FC8F1]">
-            <li>video@afterrender.com</li>
+            <li>afterrenderagency@gmail.com</li>
           </ul>
         </div>
       </div>
