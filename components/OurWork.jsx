@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat, Poppins } from "next/font/google";
+import Image from "next/image";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
@@ -19,6 +20,14 @@ const projects = [
   },
   {
     id: 2,
+    title: "NextTrip - Tour & Travel ",
+    category: "Business",
+    thumbnail: "/images/our-work/nextrip.png",
+    liveUrl: "https://nextripxar.vercel.app/",
+    tags: ["Next.js", "UX", "UI", "Tailwind"],
+  },
+  {
+    id: 3,
     title: "Daily World – Blogging Platform",
     category: "Business",
     thumbnail: "/images/our-work/daily-world.png",
@@ -26,7 +35,7 @@ const projects = [
     tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
   },
   {
-    id: 3,
+    id: 4,
     title: "Mobee Medical – Healthcare Website",
     category: "Healthcare",
     thumbnail: "/images/our-work/mobeemedical.png",
@@ -34,7 +43,7 @@ const projects = [
     tags: ["Healthcare", "Next.js", "UI/UX"],
   },
   {
-    id: 4,
+    id: 5,
     title: "Jave – E-Commerce Platform",
     category: "E-Commerce",
     thumbnail: "/images/our-work/jave.png",
@@ -92,10 +101,12 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
           {category}
         </span>
 
-        <img
+        <Image
           src={thumbnail}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-700"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
