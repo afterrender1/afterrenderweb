@@ -11,6 +11,14 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 const projects = [
 
   {
+    id: 0,
+    title: "Freelancer30 – Freelancing Education Platform",
+    category: "Business",
+    thumbnail: "/images/our-work/freelancer30.png",
+    liveUrl: "https://freelancer30xar.vercel.app/",
+    tags: ["Next.js",   "MongoDB" , "UI" , "UX"],
+  },
+  {
     id: 1,
     title: "TMG Van – Trade Motor Group",
     category: "Business",
