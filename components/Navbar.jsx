@@ -44,6 +44,7 @@ export default function Navbar() {
   const workLinks = [
     { name: "Social Media Presence", href: "/social-media" },
     { name: "Live Web Projects", href: "/our-work" },
+    { name: "Blogs", href: "/blogs" },
   ];
 
   return (
