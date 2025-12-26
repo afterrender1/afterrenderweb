@@ -44,7 +44,6 @@ export default function Navbar() {
   const workLinks = [
     { name: "Social Media Presence", href: "/social-media" },
     { name: "Live Web Projects", href: "/our-work" },
-    { name: "Blogs", href: "/blogs" },
   ];
 
   return (
@@ -143,6 +142,12 @@ export default function Navbar() {
           </div>
 
 
+          <Link
+            href="/blogs"
+            className="hover:text-[#59B7FF] transition-colors"
+          >
+            Blogs
+          </Link>
           <Link
             href="#contact"
             className="hover:text-[#59B7FF] transition-colors"
