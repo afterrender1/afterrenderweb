@@ -8,7 +8,6 @@ const page = () => {
         <>
             <Navbar />
             <Blogs />
-            {/* <Footer /> */}
 
         </>
     )
