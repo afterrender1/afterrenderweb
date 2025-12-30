@@ -37,7 +37,7 @@ export default async function BlogDetail({ params }) {
                     </h1>
 
                     <div className="flex items-center justify-center gap-3 text-xs text-zinc-500 font-medium">
-                        <span className="text-zinc-300">By {blog.author}</span>
+                        <span className="text-zinc-300">By Afterrender</span>
                         <span className="text-zinc-800">—</span>
                         <span>{new Date(blog.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
                     </div>
@@ -70,7 +70,7 @@ export default async function BlogDetail({ params }) {
                         {blog.tags?.map((tag, i) => (
                             <span
                                 key={i}
-                                className="px-3 py-1 text-[11px] font-medium rounded-md bg-zinc-900 text-zinc-500 hover:text-indigo-400 transition-colors cursor-default"
+                                className="px-3 py-1 text-[11px] font-medium rounded-md bg-zinc-900 text-zinc-500  transition-colors "
                             >
                                 {tag}
                             </span>
@@ -78,14 +78,28 @@ export default async function BlogDetail({ params }) {
                     </div>
 
                     {/* Simple Author Credit */}
-                    <div className="mt-16 flex items-center gap-4 p-8 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-400">
+                    <div className="mt-16 flex items-center gap-4 p-4 md:p-8 rounded-2xl bg-zinc-900/40 border border-zinc-900">
+                        {/* Author Logo/Image */}
+                        <div className="relative w-10 h-8 rounded-full overflow-hidden  flex items-center justify-center">
+                            <Image
+                                src="/logos/logoxar.png" // replace with dynamic author image if needed
+                                alt={blog.author}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+
+                        {/* Author Initial fallback */}
+                        <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-400 md:hidden">
                             {blog.author?.charAt(0)}
                         </div>
+
+                        {/* Text */}
                         <p className="text-sm text-zinc-400">
-                            Published by <span className="text-white font-medium">{blog.author}</span>. Focused on minimal design and digital strategy.
+                            Published by <span className="text-white font-medium">Afterrender</span>. Focused on minimal design and digital strategy.
                         </p>
                     </div>
+
                 </footer>
             </article>
 

@@ -40,8 +40,8 @@ const HeroText = () => {
     <>
       to help you reach your maximum potential
       <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        {" "}
-        . if we don’t deliver,{" "} you don’t pay us.
+      
+        . {" "}If we don’t deliver,{" "} you don’t pay us.
       </span>
     </>,
     <>
