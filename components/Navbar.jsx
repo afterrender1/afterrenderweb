@@ -253,6 +253,13 @@ export default function Navbar() {
               >
                 Live Web Projects <span></span>
               </Link>
+              <Link
+                href="/blogs"
+                onClick={closeMobileMenu}
+                className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
+              >
+                Blogs <span></span>
+              </Link>
 
               <Link
                 href="#contact"
