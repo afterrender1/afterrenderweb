@@ -1,6 +1,6 @@
 // app/sitemap.js
 import dbConnect from "@/app/lib/db";
-import Blog from "@/app/models/Post";
+import Blog from "@/app/models/Post"; 
 
 export default async function sitemap() {
     await dbConnect();
@@ -19,7 +19,7 @@ export default async function sitemap() {
         // Static pages
         ...staticPages.map((path) => ({
             url: `${baseUrl}${path}`,
-            lastModified: new Date(),
+            lastModified: new Date().toISOString(),
             changeFrequency: path === "" ? "daily" : "weekly",
             priority: path === "" ? 1.0 : 0.8,
         })),
@@ -27,7 +27,9 @@ export default async function sitemap() {
         // Blog pages
         ...blogs.map((blog) => ({
             url: `${baseUrl}/blog/${encodeURIComponent(blog.slug)}`,
-            lastModified: blog.createdAt,
+            lastModified: blog.createdAt
+                ? new Date(blog.createdAt).toISOString()
+                : new Date().toISOString(),
             changeFrequency: "monthly",
             priority: 0.7,
         })),
