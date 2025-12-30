@@ -5,6 +5,48 @@ import Navbar from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
 
+// --- SEO METADATA ---
+export async function generateMetadata({ params }) {
+    const { slug } = await params;
+    const res = await fetch(`http://afterrender.com/api/blog?slug=${slug}`, {
+        next: { revalidate: 3600 },
+    });
+    const data = await res.json();
+
+    if (!data?.success) return { title: "Blog Not Found" };
+
+    const blog = data.blog;
+    const description = blog.content.substring(0, 160); // Short summary
+
+    return {
+        title: `${blog.title} | Afterrender`,
+        description,
+        keywords: blog.tags?.join(", "),
+        authors: [{ name: blog.author || "Afterrender" }],
+        openGraph: {
+            title: blog.title,
+            description,
+            type: "article",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://afterrender.com"}/blog/${blog.slug}`,
+            images: [
+                {
+                    url: blog.image,
+                    alt: blog.title,
+                },
+            ],
+            publishedTime: blog.createdAt,
+            authors: [blog.author || "Afterrender"],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: blog.title,
+            description,
+            images: [blog.image],
+        },
+    };
+}
+
+// --- COMPONENT ---
 export default async function BlogDetail({ params }) {
     const { slug } = await params;
     const res = await fetch(`http://afterrender.com/api/blog?slug=${slug}`, {
@@ -12,7 +54,8 @@ export default async function BlogDetail({ params }) {
     });
 
     const data = await res.json();
-    if (!data?.success) return <p className="pt-40 text-center text-white/50 font-light">Post not found</p>;
+    if (!data?.success)
+        return <p className="pt-40 text-center text-white/50 font-light">Post not found</p>;
     const blog = data.blog;
 
     return (
@@ -24,7 +67,7 @@ export default async function BlogDetail({ params }) {
 
             <article className="relative z-10 max-w-[720px] mx-auto px-6 pt-40 pb-32">
 
-                {/* 1. Header: Minimal & Balanced */}
+                {/* Header */}
                 <header className="text-center mb-16">
                     <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.4em] text-indigo-400 mb-6">
                         <span>{blog.category}</span>
@@ -32,18 +75,24 @@ export default async function BlogDetail({ params }) {
                         <span className="text-zinc-500">5 min read</span>
                     </div>
 
-                    <h1 className={` text-4xl md:text-6xl text-white leading-[1.15] mb-8 tracking-tight`}>
+                    <h1 className={`text-4xl md:text-6xl text-white leading-[1.15] mb-8 tracking-tight`}>
                         {blog.title}
                     </h1>
 
                     <div className="flex items-center justify-center gap-3 text-xs text-zinc-500 font-medium">
-                        <span className="text-zinc-300">By Afterrender</span>
+                        <span className="text-zinc-300">By {blog.author || "Afterrender"}</span>
                         <span className="text-zinc-800">—</span>
-                        <span>{new Date(blog.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+                        <span>
+                            {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                            })}
+                        </span>
                     </div>
                 </header>
 
-                {/* 2. Hero Image: Clean Corners */}
+                {/* Hero Image */}
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl">
                     <Image
                         src={blog.image}
@@ -54,56 +103,45 @@ export default async function BlogDetail({ params }) {
                     />
                 </div>
 
-                {/* 3. Body: High Readability */}
+                {/* Body */}
                 <div className="prose prose-invert prose-zinc max-w-none">
                     <div className="whitespace-pre-line space-y-10 text-[18px] leading-[1.85] text-zinc-300 font-light tracking-wide">
-                        {/* Dropcap simplified for "Clean" look */}
-                        <div className=" ">
-                            {blog.content}
-                        </div>
+                        {blog.content}
                     </div>
                 </div>
 
-                {/* 4. Footer: Minimalist Tags */}
+                {/* Footer */}
                 <footer className="mt-24 pt-12 border-t border-zinc-900">
                     <div className="flex flex-wrap gap-2">
                         {blog.tags?.map((tag, i) => (
                             <span
                                 key={i}
-                                className="px-3 py-1 text-[11px] font-medium rounded-md bg-zinc-900 text-zinc-500  transition-colors "
+                                className="px-3 py-1 text-[11px] font-medium rounded-md bg-zinc-900 text-zinc-500 transition-colors"
                             >
                                 {tag}
                             </span>
                         ))}
                     </div>
 
-                    {/* Simple Author Credit */}
+                    {/* Author Credit */}
                     <div className="mt-16 flex items-center gap-4 p-4 md:p-8 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        {/* Author Logo/Image */}
-                        <div className="relative w-10 h-8 rounded-full overflow-hidden  flex items-center justify-center">
+                        <div className="relative w-10 h-8 rounded-full overflow-hidden flex items-center justify-center">
                             <Image
-                                src="/logos/logoxar.png" // replace with dynamic author image if needed
+                                src="/logos/logoxar.png"
                                 alt={blog.author}
                                 fill
                                 className="object-cover"
                             />
                         </div>
 
-                        {/* Author Initial fallback */}
-                        <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-400 md:hidden">
-                            {blog.author?.charAt(0)}
-                        </div>
-
-                        {/* Text */}
                         <p className="text-sm text-zinc-400">
-                            Published by <span className="text-white font-medium">Afterrender</span>. Focused on minimal design and digital strategy.
+                            Published by <span className="text-white font-medium">{blog.author || "Afterrender"}</span>. Focused on minimal design and digital strategy.
                         </p>
                     </div>
-
                 </footer>
             </article>
 
-            {/* Reading Progress bar - Ultra Slim */}
+            {/* Reading Progress bar */}
             <div className="fixed top-0 left-0 w-full h-px z-100">
                 <div className="h-full bg-indigo-500/50 w-0 transition-all duration-200" id="progress-bar" />
             </div>
