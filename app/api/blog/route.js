@@ -50,12 +50,30 @@ export async function POST(req) {
     }
 }
 
-export async function GET() {
+export async function GET(req) {
     try {
         await dbConnect();
+
+        const { searchParams } = new URL(req.url);
+        const slug = searchParams.get("slug");
+
+        // ✅ Single blog
+        if (slug) {
+            const blog = await Blog.findOne({ slug });
+            if (!blog) {
+                return NextResponse.json({ success: false }, { status: 404 });
+            }
+            return NextResponse.json({ success: true, blog });
+        }
+
+        // ✅ All blogs
         const blogs = await Blog.find().sort({ createdAt: -1 });
         return NextResponse.json({ success: true, blogs });
+
     } catch (err) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        );
     }
 }
