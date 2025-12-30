@@ -7,7 +7,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 export default async function BlogDetail({ params }) {
     const { slug } = await params;
-    const res = await fetch(`http://localhost:3000/api/blog?slug=${slug}`, {
+    const res = await fetch(`http://afterrender.com/api/blog?slug=${slug}`, {
         next: { revalidate: 3600 },
     });
 
