@@ -9,17 +9,32 @@ const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
 const projects = [
-
   {
     id: 0,
+    title: "Magnetik – TikTok Shop Marketing",
+    category: "Business",
+    thumbnail: "/images/our-work/magnetik.png",
+    liveUrl: "https://magnetik.vercel.app/",
+    tags: ["TikTok Shop", "Marketing", "E-Commerce", "Strategy"],
+  },
+  {
+    id: 1,
+    title: "Darkdrop Coffee – Artisanal Roastery",
+    category: "E-Commerce",
+    thumbnail: "/images/our-work/coffee.png",
+    liveUrl: "https://darkdrop-coffee.vercel.app/",
+    tags: ["Artisanal", "Next.js", "Small Batch", "live-location"],
+  },
+  {
+    id: 2,
     title: "Freelancer30 – Freelancing Education Platform",
     category: "Business",
     thumbnail: "/images/our-work/freelancer30.png",
     liveUrl: "https://freelancer30xar.vercel.app/",
-    tags: ["Next.js",   "MongoDB" , "UI" , "UX"],
+    tags: ["Next.js", "MongoDB", "UI", "UX"],
   },
   {
-    id: 1,
+    id: 3,
     title: "TMG Van – Trade Motor Group",
     category: "Business",
     thumbnail: "/images/our-work/tmgvan.png",
@@ -27,15 +42,15 @@ const projects = [
     tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
   },
   {
-    id: 2,
-    title: "NextTrip - Tour & Travel ",
+    id: 4,
+    title: "NextTrip - Tour & Travel",
     category: "Business",
     thumbnail: "/images/our-work/nextrip.png",
     liveUrl: "https://nextripxar.vercel.app/",
     tags: ["Next.js", "UX", "UI", "Tailwind"],
   },
   {
-    id: 3,
+    id: 5,
     title: "Daily World – Blogging Platform",
     category: "Business",
     thumbnail: "/images/our-work/daily-world.png",
@@ -43,7 +58,7 @@ const projects = [
     tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
   },
   {
-    id: 4,
+    id: 6,
     title: "Mobee Medical – Healthcare Website",
     category: "Healthcare",
     thumbnail: "/images/our-work/mobeemedical.png",
@@ -51,25 +66,23 @@ const projects = [
     tags: ["Healthcare", "Next.js", "UI/UX"],
   },
   {
-    id: 5,
+    id: 7,
     title: "Jave – E-Commerce Platform",
     category: "E-Commerce",
     thumbnail: "/images/our-work/jave.png",
     liveUrl: "https://javexafterrender.vercel.app",
     tags: ["E-Commerce", "Next.js", "Stripe"],
   },
-
   {
-    id: 6,
+    id: 8,
     title: "Deigo Hair Studio",
     category: "Business",
     thumbnail: "/images/our-work/deigo.png",
     liveUrl: "https://deigo.vercel.app",
     tags: ["Next.js", "Salon", "UI/UX"],
   },
-
   {
-    id: 7,
+    id: 9,
     title: "Render Store – Online Shop",
     category: "E-Commerce",
     thumbnail: "/images/our-work/renderstore.png",
