@@ -8,7 +8,9 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <OurWork />
+      <div className='py-6'>
+        <OurWork />
+      </div>
       <ContactForm />
       <Footer />
     </>
