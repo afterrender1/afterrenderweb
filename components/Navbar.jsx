@@ -197,6 +197,35 @@ export default function Navbar() {
               style={{ fontFamily: "montserrat" }}
             >
               <div className="mb-4">
+                <div className="max-w-sm mx-auto p-4 text-center">
+                  {/* Wrapper for relative positioning */}
+                  <div className="relative inline-block w-full group animate-shake">
+
+                    {/* The Notification Dot */}
+                    <span className="absolute -top-1 -right-1 z-10 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white shadow-sm"></span>
+                    </span>
+
+                    {/* Apply Now button */}
+                    <Link
+                      href="#"
+                      onClick={closeMobileMenu}
+                      className="relative flex flex-col items-center justify-center gap-0.5 py-3 px-8 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] rounded-xl text-center shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] "
+                    >
+                      {/* Small Badge-style text */}
+                      <span className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-none">
+                        Hiring Talent
+                      </span>
+
+                      {/* Primary text */}
+                      <span className="text-base font-bold tracking-tight">
+                        Apply Now
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+
                 <button
                   onClick={() => toggleMenu("videos-mobile")}
                   className="flex items-center justify-between w-full py-3 text-white hover:text-[#59B7FF] transition-colors text-xl font-semibold"
