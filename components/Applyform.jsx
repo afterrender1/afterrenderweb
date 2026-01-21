@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader, Video, Code2, Link as LinkIcon, Briefcase } from "lucide-react";
+import { Loader, Video, Code2, Link as LinkIcon, Briefcase, AlertCircle } from "lucide-react";
 
 const roleOptions = [
     "Video Editor",
@@ -28,7 +28,20 @@ const ApplyForm = () => {
     });
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        // --- STRICT 50-WORD LIMIT LOGIC ---
+        if (name === "about") {
+            const words = value.trim().split(/\s+/);
+            const wordCount = value.trim() === "" ? 0 : words.length;
+
+            // If word count is 50, only allow change if new value is shorter (deleting)
+            if (wordCount > 50 && value.length > form.about.length) {
+                return;
+            }
+        }
+
+        setForm({ ...form, [name]: value });
     };
 
     const handleRoleChange = (role) => {
@@ -59,18 +72,42 @@ const ApplyForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // Simulate API Call
-        setTimeout(() => {
+        setStatus({ type: "", message: "" });
+
+        try {
+            const res = await fetch("/api/apply", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setStatus({ type: "success", message: "✅ Application submitted successfully!" });
+                setForm({
+                    name: "", email: "", phone: "", portfolio: "", about: "",
+                    roles: [], frontendTech: [], backendTech: [], software: [],
+                });
+            } else {
+                setStatus({ type: "error", message: "❌ Submission failed. Try again." });
+            }
+        } catch (error) {
+            setStatus({ type: "error", message: "⚠️ Something went wrong." });
+        } finally {
             setLoading(false);
-            setStatus({ type: "success", message: "✅ Application submitted successfully!" });
-        }, 2000);
+            setTimeout(() => setStatus({ type: "", message: "" }), 4000);
+        }
     };
 
     const isDev = form.roles.some((r) => r.includes("Developer") || r.includes("MERN"));
     const isVideo = form.roles.includes("Video Editor");
 
+    // Helper to calculate word count for the UI
+    const currentWordCount = form.about.trim() === "" ? 0 : form.about.trim().split(/\s+/).length;
+
     return (
-        <section className="relative w-full py-20 sm:py-24 md:py-28 bg-black text-white overflow-hidden">
+        <section className="relative w-full py-30 sm:py-24 md:py-28 bg-black text-white overflow-hidden">
             {/* Background Decor */}
             <div className="absolute inset-0">
                 <div
@@ -115,7 +152,7 @@ const ApplyForm = () => {
                     </div>
 
                     <div className="space-y-5 w-full max-w-md mx-auto lg:mx-0">
-                        <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg">
+                        <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
                             <Briefcase className="text-[#48A2FF] w-6 h-6 shrink-0" />
                             <div className="text-left">
                                 <p className="font-medium text-sm sm:text-base">Open Positions</p>
@@ -134,31 +171,32 @@ const ApplyForm = () => {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
                 >
+                    {/* Basic Grid Inputs */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="flex flex-col">
-                            <label className="text-gray-300 mb-2 text-sm">Full Name</label>
+                            <label className="text-gray-300 mb-2 text-sm font-medium">Full Name</label>
                             <input type="text" name="name" required value={form.name} onChange={handleChange} placeholder="Your Name" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-gray-300 mb-2 text-sm">Email</label>
+                            <label className="text-gray-300 mb-2 text-sm font-medium">Email</label>
                             <input type="email" name="email" required value={form.email} onChange={handleChange} placeholder="your@email.com" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="flex flex-col">
-                            <label className="text-gray-300 mb-2 text-sm">Phone Number</label>
-                            <input type="tel" name="phone" required value={form.phone} onChange={handleChange} placeholder="+1 234..." className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
+                            <label className="text-gray-300 mb-2 text-sm font-medium">Phone Number</label>
+                            <input type="tel" name="phone" required value={form.phone} onChange={handleChange} placeholder="+93 0000000000" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-gray-300 mb-2 text-sm">Portfolio Link</label>
+                            <label className="text-gray-300 mb-2 text-sm font-medium">Portfolio Link</label>
                             <input type="url" name="portfolio" required value={form.portfolio} onChange={handleChange} placeholder="https://..." className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                     </div>
 
-                    {/* Role Selection */}
+                    {/* Roles Selector */}
                     <div className="flex flex-col space-y-3">
-                        <label className="text-gray-300 text-sm">Select Your Expertise (Max 3)</label>
+                        <label className="text-gray-300 text-sm font-medium">Select Your Expertise (Max 3)</label>
                         <div className="flex flex-wrap gap-2">
                             {roleOptions.map((role) => (
                                 <button
@@ -167,7 +205,7 @@ const ApplyForm = () => {
                                     onClick={() => handleRoleChange(role)}
                                     className={`px-4 py-2 rounded-lg border text-xs transition-all ${form.roles.includes(role)
                                         ? "bg-[#48A2FF] border-[#48A2FF] text-black font-bold shadow-[0_0_15px_rgba(72,162,255,0.4)]"
-                                        : "bg-white/5 border-white/10 text-gray-300 hover:border-white/30"
+                                        : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
                                         }`}
                                 >
                                     {role}
@@ -176,7 +214,7 @@ const ApplyForm = () => {
                         </div>
                     </div>
 
-                    {/* Dynamic Sections */}
+                    {/* Dynamic Tech Stacks */}
                     <AnimatePresence>
                         {isVideo && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="p-4 bg-red-500/5 border border-red-500/20 rounded-2xl space-y-3 overflow-hidden">
@@ -202,21 +240,47 @@ const ApplyForm = () => {
                         )}
                     </AnimatePresence>
 
+                    {/* About Section - Restricted to 50 Words */}
                     <div className="flex flex-col">
-                        <label className="text-gray-300 mb-2 text-sm">About Yourself</label>
-                        <textarea name="about" required value={form.about} onChange={handleChange} rows="4" placeholder="Tell us about your experience..." className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all resize-none" />
+                        <div className="flex justify-between items-center mb-2">
+                            <label className="text-gray-300 text-sm font-medium">About Yourself</label>
+                            <span className={`text-[10px] px-2 py-0.5 rounded border transition-colors ${currentWordCount >= 50 ? 'text-red-400 border-red-400/30 bg-red-400/5' : 'text-gray-500 border-white/10 bg-white/5'}`}>
+                                {currentWordCount} / 50 Words
+                            </span>
+                        </div>
+                        <textarea
+                            name="about"
+                            required
+                            value={form.about}
+                            onChange={handleChange}
+                            rows="4"
+                            placeholder="Tell us about your experience..."
+                            className={`bg-black/20 border rounded-xl px-4 py-3 text-white focus:outline-none transition-all resize-none text-sm leading-relaxed ${currentWordCount >= 50 ? 'border-red-500/50' : 'border-white/10 focus:border-[#48A2FF]'}`}
+                        />
+                        {currentWordCount >= 50 && (
+                            <p className="mt-2 text-[10px] text-red-400 flex items-center gap-1 font-medium animate-pulse">
+                                <AlertCircle size={12} /> Word limit reached. Please be concise.
+                            </p>
+                        )}
                     </div>
 
-                    <div className="text-center">
+                    <div className="text-center pt-2">
                         <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={!loading ? { scale: 1.02 } : {}}
+                            whileTap={!loading ? { scale: 0.98 } : {}}
                             type="submit"
                             disabled={loading}
                             className={`w-full font-bold py-4 rounded-xl text-lg shadow-lg transition-all duration-300 ${loading ? "bg-gray-600 text-gray-200 cursor-not-allowed" : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:shadow-[0_0_25px_rgba(72,162,255,0.4)]"
                                 }`}
                         >
-                            {loading ? <div className="flex items-center justify-center gap-2"><Loader className="w-5 h-5 animate-spin" /> Submitting...</div> : "Submit Application"}
+                            {loading ? (
+                                <div className="flex items-center justify-center gap-2">
+                                    <Loader className="w-5 h-5 animate-spin" />
+                                    Submitting...
+                                </div>
+                            ) : (
+                                "Submit Application"
+                            )}
                         </motion.button>
                     </div>
                 </motion.form>
@@ -225,11 +289,19 @@ const ApplyForm = () => {
             {/* Success Toast */}
             <AnimatePresence>
                 {status.message && (
-                    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }} className="fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 z-50 rounded-full text-white text-sm bg-green-600 shadow-xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 40 }}
+                        transition={{ duration: 0.3 }}
+                        className={`fixed bottom-4 sm:bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 px-2 sm:px-6 md:px-8 py-2 sm:py-3 md:py-3 z-50 rounded-full text-white font-semibold text-xs sm:text-sm md:text-base shadow-lg sm:shadow-xl max-w-xs sm:max-w-sm md:max-w-md text-center ${status.type === "success" ? "bg-green-600" : "bg-red-600"
+                            }`}
+                    >
                         {status.message}
                     </motion.div>
                 )}
             </AnimatePresence>
+
         </section>
     );
 };
