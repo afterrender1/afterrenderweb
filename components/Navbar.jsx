@@ -199,7 +199,7 @@ export default function Navbar() {
                 className="relative flex flex-col h-full pt-20 px-6 text-white z-10"
                 style={{ fontFamily: "montserrat" }}
               >
-                <div className="mb-4">
+                <div className="my-4">
                   <div className="max-w-sm mx-auto p-4 text-center">
                     {/* Wrapper for relative positioning */}
                     <div className="relative inline-block w-full group animate-shake">
