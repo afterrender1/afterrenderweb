@@ -40,6 +40,7 @@ export default function Navbar() {
     { name: "SaaS Videos", id: "v3" },
     { name: "Talking Head Videos", id: "v6" },
     { name: "Documentaries", id: "v9" },
+    { name: "Graphic Design", id: "v10" },
   ];
 
   const workLinks = [
