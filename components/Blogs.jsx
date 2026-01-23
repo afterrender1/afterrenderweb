@@ -113,7 +113,7 @@ const AllBlogs = () => {
                                     >
                                         <div className="relative h-[450px] w-full rounded-4xl overflow-hidden border border-white/10 bg-white/5 transition-all duration-500 group-hover:border-white/20 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                                             <Image
-                                                src={blog.image || "/placeholder.jpg"}
+                                                src={blog.image || "https://res.cloudinary.com/dlurrugno/image/upload/v1769173119/With_Black_bG_1_qfget3.png"}
                                                 alt={blog.title}
                                                 fill
                                                 className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"

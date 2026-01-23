@@ -95,7 +95,7 @@ export default async function BlogDetail({ params }) {
                 {/* Hero Image */}
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl">
                     <Image
-                        src={blog.image}
+                        src={blog.image || "https://res.cloudinary.com/dlurrugno/image/upload/v1769173119/With_Black_bG_1_qfget3.png"}
                         alt={blog.title}
                         fill
                         className="object-cover"
