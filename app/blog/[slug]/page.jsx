@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Inter, Montserrat } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -93,23 +95,45 @@ export default async function BlogDetail({ params }) {
                 </header>
 
                 {/* Hero Image */}
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl">
-                    <Image
-                        src={blog.image || "https://res.cloudinary.com/dlurrugno/image/upload/v1769173119/With_Black_bG_1_qfget3.png"}
-                        alt={blog.title}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                </div>
+                {blog.image && (
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl">
+                        <Image
+                            src={blog.image}
+                            alt={blog.title}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
+                )}
 
                 {/* Body */}
-                <div className="prose prose-invert prose-zinc max-w-none">
-                    <div className="whitespace-pre-line space-y-10 text-[18px] leading-[1.85] text-zinc-300 font-light tracking-wide">
-                        {blog.content}
-                    </div>
-                </div>
 
+                <div className="prose prose-invert prose-zinc max-w-none 
+    text-[18px] leading-[1.85] text-zinc-400 font-light tracking-wide
+    /* Headings: Extra Bold, White, and Tight tracking */
+    prose-headings:font-extrabold prose-headings:text-white prose-headings:tracking-tight
+    /* Strong: Force pure white and extra bold */
+    prose-strong:font-extrabold prose-strong:text-white
+    /* Links & Lists styling */
+    prose-li:marker:text-blue-400">
+
+                    <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        components={{
+                            // Remove horizontal rule gaps
+                            hr: () => <div className="my-10 border-t border-zinc-800" />,
+                            // Blue highlights - keep font-bold for legibility
+                            span: ({ node, ...props }) => (
+                                <span {...props} className="font-bold text-blue-400" />
+                            ),
+                            // Style the list items for a cleaner look
+                            li: ({ children }) => <li className="mb-2">{children}</li>
+                        }}
+                    >
+                        {blog.content}
+                    </ReactMarkdown>
+                </div>
                 {/* Footer */}
                 <footer className="mt-24 pt-12 border-t border-zinc-900">
                     <div className="flex flex-wrap gap-2">

@@ -112,12 +112,17 @@ const AllBlogs = () => {
                                         className="group cursor-pointer"
                                     >
                                         <div className="relative h-[450px] w-full rounded-4xl overflow-hidden border border-white/10 bg-white/5 transition-all duration-500 group-hover:border-white/20 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                                            <Image
-                                                src={blog.image || "https://res.cloudinary.com/dlurrugno/image/upload/v1769173119/With_Black_bG_1_qfget3.png"}
-                                                alt={blog.title}
-                                                fill
-                                                className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                            />
+                                            {blog.image && (
+                                                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl group">
+                                                    <Image
+                                                        src={blog.image}
+                                                        alt={blog.title}
+                                                        fill
+                                                        className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                                        priority
+                                                    />
+                                                </div>
+                                            )}
                                             <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
                                             <div className="absolute inset-0 p-8 flex flex-col justify-end">
                                                 <div className="mb-4">
