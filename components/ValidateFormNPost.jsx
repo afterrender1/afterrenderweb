@@ -70,7 +70,7 @@ const AdminStudio = () => {
         e.preventDefault();
 
         // Final verification of required fields
-        if (!title || !content || !image || !category) {
+        if (!title || !content ||  !category) {
             alert("Please fill Title, Content, Category and Image.");
             return;
         }
