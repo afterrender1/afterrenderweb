@@ -10,6 +10,7 @@ import FAQ from './FAQ'
 import Footer from './Footer'
 import ContactForm from './Contact'
 import VideoTestimonials from './VideoTestimonials'
+import ThumbnailsComponents from './ThumbnailsComponents'
 
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
       <Testimonials />
       <CaseStudies />
       <Portfolio />
+      <ThumbnailsComponents />
       <HowItWorks />
       <OurOffers />
       <FAQ />
