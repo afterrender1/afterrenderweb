@@ -97,7 +97,7 @@ const HeroText = () => {
 
         <div className="flex justify-center items-center ">
           <motion.video
-            poster="/images/mainvposter.png"
+            poster="https://res.cloudinary.com/dlurrugno/image/upload/v1770043205/mainvposter_mw1d20.png"
             controls
             autoPlay={false}
             muted={false}
@@ -108,7 +108,7 @@ const HeroText = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
           >
-            <source src="/videos/mainintrovideo.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1770041503/mainintrovideo_m2pujs.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
         </div>

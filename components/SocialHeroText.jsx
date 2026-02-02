@@ -94,7 +94,7 @@ const SocialHeroText = () => {
         </motion.div>
 
         <motion.video
-          poster="/images/arposter.png"
+          poster="https://res.cloudinary.com/dlurrugno/image/upload/v1770043290/arposter_jcbksy.png"
           controls
           autoPlay={false}
           muted={false}
@@ -105,7 +105,7 @@ const SocialHeroText = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <source src="/videos/saasvcomp.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1770042949/saasvcomp_epokyd.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </motion.video>
 
