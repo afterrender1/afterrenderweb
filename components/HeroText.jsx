@@ -52,7 +52,7 @@ const HeroText = () => {
 
   return (
     <section
-      className="relative  flex flex-col justify-center-safe items-center h-screen text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
+      className="relative  flex flex-col justify-center-safe items-center h-170 sm:h-232 text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
         backgroundSize: "contain",
@@ -79,7 +79,7 @@ const HeroText = () => {
           {lines.map((line, i) => (
             <motion.p
               key={i}
-              className="text-[1.6rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[2.5rem]"
+              className="text-[1.2rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2rem] xl:text-[2.1rem]"
               variants={{
                 hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
                 visible: {
