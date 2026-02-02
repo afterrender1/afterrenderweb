@@ -64,63 +64,93 @@ const SERVICES = [
 const ServiceCard = ({ title, subtitle, includes, image }) => {
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white/5 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col shadow-lg hover:shadow-[#48A2FF]/10 transition-all duration-300"
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="
+    group
+    bg-white/5 backdrop-blur-md
+    rounded-xl sm:rounded-2xl
+    p-4 sm:p-6
+    border border-white/10
+    flex flex-col
+    shadow-md hover:shadow-[#48A2FF]/10
+    transition-all
+  "
     >
-      <div className="w-full h-64 sm:h-90 mb-6 rounded-xl overflow-hidden flex items-center justify-center ">
+      {/* Image */}
+      <div className="
+    relative w-full
+    aspect-[4/3]
+    mb-4
+    rounded-lg overflow-hidden
+    bg-white/5
+  ">
         <Image
           src={image}
           alt={title}
-          width={400}
-          height={400}
-          className="object-cover rounded-md"
+          fill
+          sizes="100vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
-      <div className="mb-4 flex flex-col items-start">
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">
+      {/* Title */}
+      <div className="mb-3">
+        <h3 className="text-base sm:text-xl font-bold text-white leading-tight">
           {title}
         </h3>
-        <p className="text-gray-400 text-sm sm:text-base">{subtitle}</p>
-      </div>
-
-      <div className="grow">
-        <p className="text-gray-200 font-medium mb-3 text-sm sm:text-base">
-          Includes:
+        <p className="text-gray-400 text-xs sm:text-sm mt-1">
+          {subtitle}
         </p>
-        <ul className="space-y-2 sm:space-y-3">
-          {includes.map((item, index) => (
-            <li key={index} className="flex items-start gap-3">
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 text-[#48A2FF] mt-1 shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              <span className="text-white text-sm sm:text-base">{item}</span>
-            </li>
-          ))}
-        </ul>
       </div>
 
+      {/* Includes */}
+      <ul className="space-y-2 mb-4">
+        {includes.slice(0, 4).map((item, index) => (
+          <li key={index} className="flex items-start gap-2">
+            <svg
+              className="w-3.5 h-3.5 text-[#48A2FF] mt-0.5 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            <span className="text-white text-xs leading-relaxed">
+              {item}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
       <button
         onClick={() => {
           const el = document.getElementById("contact");
           if (el) el.scrollIntoView({ behavior: "smooth" });
         }}
-        className="cursor-pointer mt-6 w-full py-3 px-6 sm:py-4 sm:px-8 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A1A2F] font-semibold rounded-2xl hover:scale-[1.03] hover:shadow-md transition-all duration-300"
+        className="
+      mt-auto
+      w-full
+      py-2.5 sm:py-3.5
+      bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]
+      text-[#0A1A2F]
+      text-sm sm:text-base
+      font-semibold
+      rounded-lg sm:rounded-xl
+      transition-all
+      hover:scale-[1.02]
+    "
       >
-        Get a Quote
+        Get Quote
       </button>
     </motion.div>
+
   );
 };
 
