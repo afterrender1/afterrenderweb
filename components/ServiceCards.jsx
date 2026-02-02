@@ -80,7 +80,7 @@ const ServiceCard = ({ title, subtitle, includes, image }) => {
       {/* Image */}
       <div className="
     relative w-full
-    aspect-[4/3]
+    aspect-4/3
     mb-4
     rounded-lg overflow-hidden
     bg-white/5
