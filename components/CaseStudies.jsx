@@ -24,7 +24,7 @@ const CaseStudies = () => {
         <div
           className="
     sticky top-0
-    min-h-[100svh] md:h-screen
+    min-h-svh md:h-screen
     flex items-center justify-center
     bg-cover bg-center
     px-4
