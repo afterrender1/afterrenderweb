@@ -113,11 +113,11 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 30 }}
     transition={{ duration: 0.4 }}
-    className={`group h-full rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-5 hover:border-blue-500/40 transition ${montserrat.className}`}
+    className={`group h-full rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 p-2.5 hover:border-blue-500/40 transition ${montserrat.className}`}
   >
     <div className="flex flex-col h-full">
 
-      <div className="relative rounded-2xl overflow-hidden mb-6 aspect-video bg-gray-900">
+      <div className="relative rounded-xl overflow-hidden mb-6 aspect-video bg-gray-900">
         <span className="absolute top-3 left-3 z-10 bg-black/50 backdrop-blur px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-lg border border-white/10 text-white">
           {category}
         </span>
@@ -137,7 +137,7 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
         </div>
       </div>
 
-      <h3 className="text-white text-xl font-semibold mb-4  transition">
+      <h3 className="text-white text-[0.9rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1.1rem] font-semibold mb-4  transition">
         {title}
       </h3>
 
@@ -145,7 +145,7 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
         {tags.map((tag) => (
           <span
             key={tag}
-            className={`${tagColors[tag] || "bg-white/10 text-white/70"} px-3 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider`}
+            className={`${tagColors[tag] || "bg-white/10 text-white/70"} px-3 py-1 rounded-md text-[0.6rem] sm:text-[0.7rem] md:text-[0.6rem] lg:text-[0.6rem] xl:text-[0.7rem] font-semibold uppercase tracking-wider`}
           >
             {tag}
           </span>
@@ -156,7 +156,7 @@ const WorkCard = ({ title, category, thumbnail, tags, liveUrl }) => (
         href={liveUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto block text-center rounded-xl bg-white/10 py-3 text-sm font-semibold text-white hover:bg-white hover:text-black transition"
+        className="mt-auto block text-center rounded-lg bg-white/10 py-2.5 text-sm font-semibold text-white hover:bg-white hover:text-black transition"
       >
         View Live Project
       </a>
@@ -182,17 +182,17 @@ const OurWork = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className={`max-w-3xl mb-16 ${poppins.className}`}>
-            <span className="text-blue-400 text-sm font-bold tracking-[0.3em] uppercase block mb-4">
+            <span className="text-blue-400 text-[0.7rem] md:text-[1rem] font-semibold tracking-[0.3em] uppercase block mb-4">
               Our Work
             </span>
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-[1.5rem] sm:text-[1.6rem] md:text-[1.8rem] lg:text-[1.9rem] xl:text-[2rem] font-semibold text-white mb-6 leading-tight">
               Real projects.
               <br />
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
                 Real results.
               </span>
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-400 text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] lg:text-[1.3rem] xl:text-[1.5rem]">
               A selection of production-ready websites built with modern
               technologies like Next.js, Node.js, MongoDB, Stripe, and Firebase.
             </p>
@@ -203,7 +203,7 @@ const OurWork = () => {
               <button
                 key={cat}
                 onClick={() => setActiveTab(cat)}
-                className={`px-6 py-2 rounded-full cursor-pointer text-sm font-medium border transition ${activeTab === cat
+                className={`px-3 lg:px-4 py-2 text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[1rem] rounded-lg lg:rounded-full cursor-pointer  border transition ${activeTab === cat
                   ? "bg-white text-black border-white"
                   : "bg-white/5 text-gray-400 border-white/10 hover:border-white/30"
                   }`}
