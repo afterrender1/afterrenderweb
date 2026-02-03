@@ -107,7 +107,7 @@ const ApplyForm = () => {
     const currentWordCount = form.about.trim() === "" ? 0 : form.about.trim().split(/\s+/).length;
 
     return (
-        <section className="relative w-full py-30 sm:py-24 md:py-28 bg-black text-white overflow-hidden">
+        <section className="relative w-full py-30 sm:py-24 md:py-52 bg-black text-white overflow-hidden">
             {/* Background Decor */}
             <div className="absolute inset-0">
                 <div
@@ -122,7 +122,7 @@ const ApplyForm = () => {
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[400px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px] bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-30 pointer-events-none" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-start">
 
                 {/* Left Side Content */}
                 <motion.div
@@ -130,33 +130,33 @@ const ApplyForm = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     viewport={{ once: true }}
-                    className="space-y-10 text-center lg:text-left lg:sticky lg:top-24 self-start"
+                    className="space-y-5 text-center lg:text-left lg:sticky lg:top-24 self-start"
                 >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-4">
                         <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-800"></span>
                         </span>
-                        <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Hiring Talent</span>
+                        <span className="text-[10px] uppercase tracking-widest font-semibold text-gray-400">Hiring Talent</span>
                     </div>
                     <div>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold mb-6 leading-tight">
                             Build Your{" "}
                             <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
                                 Career
                             </span> With Us
                         </h2>
-                        <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        <p className="text-gray-400 text-sm sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
                             We're looking for passionate developers and editors to join our creative team. Show us what you've got!
                         </p>
                     </div>
 
                     <div className="space-y-5 w-full max-w-md mx-auto lg:mx-0">
-                        <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
+                        <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
                             <Briefcase className="text-[#48A2FF] w-6 h-6 shrink-0" />
                             <div className="text-left">
                                 <p className="font-medium text-sm sm:text-base">Open Positions</p>
-                                <p className="text-gray-400 text-sm sm:text-base">Video, Fullstack, MERN, WordPress</p>
+                                <p className="text-gray-400 text-sm sm:text-base">Video Editor, Web / Wordpress Developer</p>
                             </div>
                         </div>
                     </div>
@@ -169,28 +169,28 @@ const ApplyForm = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
+                    className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-4 sm:p-8 md:p-10 shadow-2xl space-y-6"
                 >
                     {/* Basic Grid Inputs */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="flex flex-col">
                             <label className="text-gray-300 mb-2 text-sm font-medium">Full Name</label>
-                            <input type="text" name="name" required value={form.name} onChange={handleChange} placeholder="Your Name" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
+                            <input type="text" name="name" required value={form.name} onChange={handleChange} placeholder="Your Name" className="bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                         <div className="flex flex-col">
                             <label className="text-gray-300 mb-2 text-sm font-medium">Email</label>
-                            <input type="email" name="email" required value={form.email} onChange={handleChange} placeholder="your@email.com" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
+                            <input type="email" name="email" required value={form.email} onChange={handleChange} placeholder="Your@gmail.com" className="bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="flex flex-col">
                             <label className="text-gray-300 mb-2 text-sm font-medium">Phone Number</label>
-                            <input type="tel" name="phone" required value={form.phone} onChange={handleChange} placeholder="+93 0000000000" className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
+                            <input type="tel" name="phone" required value={form.phone} onChange={handleChange} placeholder="+92 000 000000" className="bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                         <div className="flex flex-col">
                             <label className="text-gray-300 mb-2 text-sm font-medium">Portfolio Link</label>
-                            <input type="url" name="portfolio" required value={form.portfolio} onChange={handleChange} placeholder="https://..." className="bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
+                            <input type="url" name="portfolio" required value={form.portfolio} onChange={handleChange} placeholder="https://.." className="bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#48A2FF] transition-all" />
                         </div>
                     </div>
 
@@ -203,7 +203,7 @@ const ApplyForm = () => {
                                     key={role}
                                     type="button"
                                     onClick={() => handleRoleChange(role)}
-                                    className={`px-4 py-2 rounded-lg border text-xs transition-all ${form.roles.includes(role)
+                                    className={`px-4 py-2 rounded-md border text-xs transition-all ${form.roles.includes(role)
                                         ? "bg-[#48A2FF] border-[#48A2FF] text-black font-bold shadow-[0_0_15px_rgba(72,162,255,0.4)]"
                                         : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
                                         }`}
@@ -217,7 +217,7 @@ const ApplyForm = () => {
                     {/* Dynamic Tech Stacks */}
                     <AnimatePresence>
                         {isVideo && (
-                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="p-4 bg-red-500/5 border border-red-500/20 rounded-2xl space-y-3 overflow-hidden">
+                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="p-4 bg-red-500/5 border border-red-500/20 rounded-lg space-y-3 overflow-hidden">
                                 <div className="flex items-center gap-2 text-red-400 text-xs font-bold uppercase"><Video size={14} /> Video Software</div>
                                 <div className="flex flex-wrap gap-2">
                                     {["Premiere Pro", "After Effects", "Davinci", "CapCut"].map(s => (
@@ -228,7 +228,7 @@ const ApplyForm = () => {
                         )}
                         {isDev && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="space-y-4 overflow-hidden">
-                                <div className="p-4 bg-[#48A2FF]/5 border border-[#48A2FF]/20 rounded-2xl space-y-3">
+                                <div className="p-4 bg-[#48A2FF]/5 border border-[#48A2FF]/20 rounded-lg space-y-3">
                                     <div className="flex items-center gap-2 text-[#48A2FF] text-xs font-bold uppercase"><Code2 size={14} /> Tech Stack</div>
                                     <div className="flex flex-wrap gap-2">
                                         {[...new Set(["Next.js", "React.js", "Node.js", "Tailwind", "Laravel", "MongoDB"])].map(t => (
@@ -270,7 +270,7 @@ const ApplyForm = () => {
                             whileTap={!loading ? { scale: 0.98 } : {}}
                             type="submit"
                             disabled={loading}
-                            className={`w-full font-bold py-4 rounded-xl text-lg shadow-lg transition-all duration-300 ${loading ? "bg-gray-600 text-gray-200 cursor-not-allowed" : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:shadow-[0_0_25px_rgba(72,162,255,0.4)]"
+                            className={`w-full font-semibold py-3 rounded-xl text-lg shadow-lg transition-all duration-300 ${loading ? "bg-gray-600 text-gray-200 cursor-not-allowed" : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:shadow-[0_0_25px_rgba(72,162,255,0.4)]"
                                 }`}
                         >
                             {loading ? (
