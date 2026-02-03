@@ -5,20 +5,20 @@ import Image from "next/image";
 const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
   return (
     <div
-      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/30 cursor-default transition-all duration-500 rounded-3xl p-6 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
+      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/30 cursor-default transition-all duration-500 rounded-2xl p-4 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
     >
-      <div className="flex gap-1 mb-6">
+      <div className="flex gap-1 mb-3">
         {[...Array(rating)].map((_, i) => (
           <span key={i} className="text-white text-xl">★</span>
         ))}
       </div>
 
-      <p className="text-gray-200 text-base leading-relaxed mb-8 grow" style={{ fontFamily: "poppins" }}>
+      <p className="text-gray-200 text-[0.8rem] sm:text-[0.8rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[1rem] leading-relaxed mb-8 grow" style={{ fontFamily: "poppins" }}>
         "{quote}"
       </p>
 
       <div className="flex items-center gap-5 mt-auto">
-        <div className="relative w-20 h-20 rounded-full overflow-hidden flex items-center justify-center">
+        <div className="relative w-14 h-14 rounded-full overflow-hidden flex items-center justify-center">
           <Image
             loading="lazy"
             src={img}
@@ -28,8 +28,8 @@ const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
           />
         </div>
         <div>
-          <h4 className="text-white font-semibold text-lg">{name}</h4>
-          <p className="text-gray-400 text-sm">{title}</p>
+          <h4 className="text-white font-semibold text-[1rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{name}</h4>
+          <p className="text-gray-400 text-[0.6rem] sm:text-[0.8rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[0.9rem]">{title}</p>
         </div>
       </div>
 
@@ -100,17 +100,17 @@ const Testimonials = () => {
       <div className="relative max-w-6xl mx-auto z-10 bg-no-repeat bg-contain bg-center " style={{
         backgroundImage: "url('/images/casebg.png')",
       }}>
-        <div className="text-center mb-20">
-          <p className="text-white text-sm  tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
+        <div className="text-center mb-8">
+          <p className="text-white text-[0.6rem] sm:text-[0.7rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.9rem]  tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
             Client Testimonials
           </p>
-          <h2 className="text-2xl xs:text-2xl sm:text-3xl md:text-[2.8rem] font-bold text-white mb-4" style={{ fontFamily: "poppins" }}>
+          <h2 className="text-[1.2rem] sm:text-[1rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.8rem] font-semibold text-white mb-1" style={{ fontFamily: "poppins" }}>
             Trusted by{" "}
             <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-              creators & <br /> brands
+              creators & <br className="hidden md:block"/> brands
             </span>
           </h2>
-          <p className="text-gray-400 text-lg">and there's a good reason why</p>
+          <p className="text-gray-400  text-[0.8rem] sm:text-[0.9rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[1rem]">and there's a good reason why</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 w-full">
