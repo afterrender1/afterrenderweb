@@ -7,12 +7,12 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
       className={`bg-white/4 backdrop-blur-md rounded-3xl p-5 md:p-6 border border-gray-900 transition-all duration-300 flex flex-col 
       ${small ? 'scale-[0.95] lg:translate-y-6' : ''}`}
     >
-      <div className="mb-8" style={{ fontFamily: 'poppins' }}>
-        <p className="text-gray-400 font-semibold text-base mb-4">{label}</p>
-        <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+      <div className="md:mb-8 mb-4" style={{ fontFamily: 'poppins' }}>
+        <p className="text-gray-400 font-semibold text-[0.7rem] sm:text-[0.7rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[0.9rem] mb-2">{label}</p>
+        <h3 className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] lg:text-[1.6rem] xl:text-[1.7rem] font-bold text-white mb-4">
           {title}
         </h3>
-        {subtitle && <p className="text-gray-400 text-base">{subtitle}</p>}
+        {subtitle && <p className="text-gray-400 text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{subtitle}</p>}
       </div>
 
 
@@ -20,12 +20,12 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
         <button
           style={{ fontFamily: 'poppins' }}
           className="cursor-pointer w-full font-bold 
-             bg-black/25 backdrop-blur-md text-white text-[1.2rem] sm:text-[1.2rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.3rem]
+             bg-black/25 backdrop-blur-md text-white text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] lg:text-[1.1rem] xl:text-[1.3rem]
              py-3 md:py-4 px-6 rounded-2xl 
              border border-gray-700 
              hover:border-gray-500 
              transition-all duration-300 ease-in-out 
-             mb-8 hover:scale-[1.02] hover:shadow-lg"
+             md:mb-8 mb-3 hover:scale-[1.02] hover:shadow-lg"
         >
           {buttonText}
         </button>
@@ -33,7 +33,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
 
 
       <div className="grow">
-        <p className="text-gray-200 text-sm mb-4 font-medium">Includes:</p>
+        <p className="text-gray-200 text-sm mb-2 font-medium">Includes:</p>
         <ul className="space-y-3">
           {includes.map((item, index) => (
             <li key={index} className="flex items-start gap-3">
