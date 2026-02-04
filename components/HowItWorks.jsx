@@ -12,7 +12,7 @@ const ProcessCard = ({ number, img, title, description }) => {
       </div>
 
       {/* Card */}
-      <div className="relative bg-white/5 rounded-3xl p-8 pt-12 border border-gray-800/50 h-full overflow-hidden flex flex-col justify-between">
+      <div className="relative bg-white/5 rounded-3xl p-5 pt-12 border border-gray-800/50 h-full overflow-hidden flex flex-col justify-between">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-40 transition-all duration-300"
           style={{ backgroundImage: "url('/images/herobg.png')" }}
@@ -30,13 +30,15 @@ const ProcessCard = ({ number, img, title, description }) => {
             />
           </div>
 
-          <h3 className="text-white text-2xl font-bold mb-3">
+         <div>
+           <h3 className="text-white text-[1.2rem] sm:text-[1rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.3rem] font-semibold mb-3">
             {title}
           </h3>
 
-          <p className="text-gray-400  leading-relaxed">
+          <p className="text-gray-400 text-[0.9rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1.1rem] leading-relaxed">
             {description}
           </p>
+         </div>
         </div>
       </div>
     </div>
