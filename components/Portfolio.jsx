@@ -16,7 +16,7 @@ const VideoCard = ({ thumbnail, title, tags }) => {
 
   return (
     <div
-      className="rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 p-6 group"
+      className="rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 px-3.5 py-5 group"
       style={{ fontFamily: "poppins" }}
     >
       <div className="relative rounded overflow-hidden mb-6 bg-gray-800 aspect-video">
@@ -35,7 +35,7 @@ const VideoCard = ({ thumbnail, title, tags }) => {
         )}
       </div>
 
-      <h3 className="text-white text-lg font-normal mb-4 leading-relaxed min-h-24">
+      <h3 className="text-white text-[1rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1.1rem] font-normal mb-4 leading-relaxed min-h-16">
         {title}
       </h3>
 
@@ -45,7 +45,7 @@ const VideoCard = ({ thumbnail, title, tags }) => {
             key={index}
             className={`${
               tagColors[tag] || "bg-gray-600 text-white"
-            } px-4 py-1.5 rounded-full text-sm font-medium`}
+            } px-4 py-1 rounded-full text-[0.6rem] sm:text-[0.7rem] md:text-[0.7rem] lg:text-[0.7rem] xl:text-[0.7rem] font-medium`}
           >
             {tag}
           </span>
