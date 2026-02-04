@@ -4,7 +4,7 @@ import React from 'react';
 const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
   return (
     <div
-      className={`bg-white/4 backdrop-blur-md rounded-3xl p-8 border border-gray-900 transition-all duration-300 flex flex-col 
+      className={`bg-white/4 backdrop-blur-md rounded-3xl p-5 md:p-6 border border-gray-900 transition-all duration-300 flex flex-col 
       ${small ? 'scale-[0.95] lg:translate-y-6' : ''}`}
     >
       <div className="mb-8" style={{ fontFamily: 'poppins' }}>
@@ -20,8 +20,8 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
         <button
           style={{ fontFamily: 'poppins' }}
           className="cursor-pointer w-full font-bold 
-             bg-black/25 backdrop-blur-md text-white text-xl 
-             py-4 px-6 rounded-2xl 
+             bg-black/25 backdrop-blur-md text-white text-[1.2rem] sm:text-[1.2rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.3rem]
+             py-3 md:py-4 px-6 rounded-2xl 
              border border-gray-700 
              hover:border-gray-500 
              transition-all duration-300 ease-in-out 
@@ -38,7 +38,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
           {includes.map((item, index) => (
             <li key={index} className="flex items-start gap-3">
               <svg
-                className="w-5 h-5 text-white mt-0.5 shrink-0"
+                className="w-4 h-4 text-green-500 mt-0.5 shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -50,7 +50,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-white text-base">{item}</span>
+              <span className="text-white  text-[0.8rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{item}</span>
             </li>
           ))}
         </ul>
