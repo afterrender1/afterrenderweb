@@ -11,6 +11,14 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 const projects = [
   {
     id: 0,
+    title: "Prime Supps – Premium Supplements & Gym",
+    category: "E-Commerce",
+    thumbnail: "https://res.cloudinary.com/dlurrugno/image/upload/v1770205987/supps_vm41cl.png",
+    liveUrl: "https://prime-supps.vercel.app", // Placeholder based on your pattern
+    tags: ["Supplements", "Fitness", "E-Commerce", "Next.js"],
+  },
+  {
+    id: 1,
     title: "Magnetik – TikTok Shop Marketing",
     category: "Business",
     thumbnail: "/images/our-work/magnetik.png",
@@ -18,7 +26,7 @@ const projects = [
     tags: ["TikTok Shop", "Marketing", "E-Commerce", "Strategy"],
   },
   {
-    id: 1,
+    id: 2,
     title: "Darkdrop Coffee – Artisanal Roastery",
     category: "E-Commerce",
     thumbnail: "/images/our-work/coffee.png",
@@ -26,7 +34,7 @@ const projects = [
     tags: ["Artisanal", "Next.js", "Small Batch", "live-location"],
   },
   {
-    id: 2,
+    id: 3,
     title: "Freelancer30 – Freelancing Education Platform",
     category: "Business",
     thumbnail: "/images/our-work/freelancer30.png",
@@ -34,7 +42,7 @@ const projects = [
     tags: ["Next.js", "MongoDB", "UI", "UX"],
   },
   {
-    id: 3,
+    id: 4,
     title: "TMG Van – Trade Motor Group",
     category: "Business",
     thumbnail: "/images/our-work/tmgvan.png",
@@ -42,23 +50,23 @@ const projects = [
     tags: ["Next.js", "Node.js", "Stripe", "MongoDB"],
   },
   {
-    id: 4,
+    id: 5,
     title: "NextTrip - Tour & Travel",
     category: "Business",
     thumbnail: "/images/our-work/nextrip.png",
     liveUrl: "https://nextripxar.vercel.app/",
     tags: ["Next.js", "UX", "UI", "Tailwind"],
   },
+  // {
+  //   id: 6,
+  //   title: "Daily World – Blogging Platform",
+  //   category: "Business",
+  //   thumbnail: "/images/our-work/daily-world.png",
+  //   liveUrl: "https://dailyworldxar.vercel.app",
+  //   tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
+  // },
   {
-    id: 5,
-    title: "Daily World – Blogging Platform",
-    category: "Business",
-    thumbnail: "/images/our-work/daily-world.png",
-    liveUrl: "https://dailyworldxar.vercel.app",
-    tags: ["Blog", "Node.js", "MongoDB", "Admin Panel"],
-  },
-  {
-    id: 6,
+    id: 7,
     title: "Mobee Medical – Healthcare Website",
     category: "Healthcare",
     thumbnail: "/images/our-work/mobeemedical.png",
@@ -66,7 +74,7 @@ const projects = [
     tags: ["Healthcare", "Next.js", "UI/UX"],
   },
   {
-    id: 7,
+    id: 8,
     title: "Jave – E-Commerce Platform",
     category: "E-Commerce",
     thumbnail: "/images/our-work/jave.png",
@@ -74,7 +82,7 @@ const projects = [
     tags: ["E-Commerce", "Next.js", "Stripe"],
   },
   {
-    id: 8,
+    id: 9,
     title: "Deigo Hair Studio",
     category: "Business",
     thumbnail: "/images/our-work/deigo.png",
@@ -82,7 +90,7 @@ const projects = [
     tags: ["Next.js", "Salon", "UI/UX"],
   },
   {
-    id: 9,
+    id: 10,
     title: "Render Store – Online Shop",
     category: "E-Commerce",
     thumbnail: "/images/our-work/renderstore.png",
