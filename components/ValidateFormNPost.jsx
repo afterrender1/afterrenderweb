@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
 import Navbar from "./Navbar";
+import StudioHeader from "./StudioHeader";
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -39,10 +40,7 @@ const AdminStudio = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem("is_admin");
-        setIsAdmin(false);
-    };
+ 
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -123,13 +121,10 @@ const AdminStudio = () => {
     return (
         <>
             <Navbar />
-            <div className={`min-h-screen bg-linear-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] py-12 sm:py-32 px-4 sm:px-6 lg:px-8 ${poppins.className}`}>
+            <div className={`min-h-screen bg-linear-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] py-32 sm:py-32 px-4 sm:px-6 lg:px-8 ${poppins.className}`}>
                 <div className="max-w-3xl mx-auto">
                     <div className="flex justify-between items-center mb-12">
-                        <div className="space-y-1">
-                            <h1 className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-300">Publishing Deck</h1>
-                            <button onClick={handleLogout} className="text-[9px] text-white/30 uppercase hover:text-red-400 transition-colors">Lock Studio</button>
-                        </div>
+                      <StudioHeader/>
                         <button
                             onClick={submitBlog}
                             disabled={loading}
