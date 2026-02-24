@@ -40,7 +40,7 @@ const AdminStudio = () => {
         }
     };
 
- 
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -68,7 +68,7 @@ const AdminStudio = () => {
         e.preventDefault();
 
         // Final verification of required fields
-        if (!title || !content ||  !category) {
+        if (!title || !content || !category) {
             alert("Please fill Title, Content, Category and Image.");
             return;
         }
@@ -123,15 +123,46 @@ const AdminStudio = () => {
             <Navbar />
             <div className={`min-h-screen bg-linear-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] py-32 sm:py-32 px-4 sm:px-6 lg:px-8 ${poppins.className}`}>
                 <div className="max-w-3xl mx-auto">
-                    <div className="flex justify-between items-center mb-12">
-                      <StudioHeader/>
+                    <div className="flex justify-between items-center gap-4 mb-12">
+                        {/* flex-1 ensures the header takes available space, pushing the button to the right */}
+                        <div className="flex-1 min-w-0">
+                            <StudioHeader />
+                        </div>
+
                         <button
                             onClick={submitBlog}
                             disabled={loading}
-                            className={`px-10 py-3 rounded-full font-bold transition-all shadow-lg text-sm flex items-center gap-2
-                                ${loading ? "bg-white/10 text-white/30 cursor-not-allowed" : "bg-white text-indigo-900 hover:bg-indigo-50 active:scale-95"}`}
+                            className={`
+            relative px-6 py-2.5 rounded-full font-semibold text-[0.7rem] md:text-[0.9rem] cursor-pointer
+            transition-all duration-200 flex items-center gap-2 overflow-hidden
+            whitespace-nowrap shrink-0
+            ${loading
+                                    ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed border border-neutral-200 dark:border-neutral-700"
+                                    : "bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 hover:border-[#80C1FC] hover:bg-[#80C1FC]/5 active:scale-95 shadow-sm"
+                                }
+        `}
                         >
-                            {loading ? "Publishing..." : "Publish Insight"}
+                            {loading && (
+                                <svg className="animate-spin h-4 w-4 shrink-0" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            )}
+
+                            <span className={`${loading ? "opacity-70" : "opacity-100"} whitespace-nowrap`}>
+                                {loading ? "Publishing" : "Publish Insight"}
+                            </span>
+
+                            {!loading && (
+                                <svg
+                                    width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                    stroke="#80C1FC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                                    className="shrink-0"
+                                >
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            )}
                         </button>
                     </div>
 

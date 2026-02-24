@@ -16,7 +16,7 @@ const StudioHeader = () => {
 
             >
                 <h1 className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-300">
-                    Manage Blogs
+                    Settings
                 </h1>
             </div>
 
@@ -39,7 +39,7 @@ const StudioHeader = () => {
                         {/* Transparent overlay to close menu when clicking outside */}
                         <div className="fixed inset-0 z-10" onClick={() => setIsMenuOpen(false)}></div>
 
-                        <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl z-20 overflow-hidden py-1">
+                        <div className="absolute -right-17 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl z-20 overflow-hidden py-1">
 
                             {/* Manage Blogs Option (The Modal trigger) */}
                             <div className=" transition-colors">
