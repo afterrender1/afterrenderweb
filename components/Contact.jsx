@@ -104,7 +104,7 @@ const ContactForm = () => {
           </div>
 
           <div className="space-y-5 w-full max-w-md mx-auto lg:mx-0">
-            <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-lg hover:bg-white/10 transition-all">
+            <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-3.5 backdrop-blur-lg hover:bg-white/10 transition-all">
               <Mail className="text-[#48A2FF] w-6 h-6 shrink-0" />
               <div className="text-left">
                 <p className="font-medium text-sm sm:text-base">Email</p>
