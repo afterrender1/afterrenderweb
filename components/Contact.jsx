@@ -122,7 +122,7 @@ const ContactForm = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl space-y-6"
+          className="w-full backdrop-blur-xl bg-white/1 border border-white/10 rounded-3xl p-3 sm:p-4 md:p-4 shadow-2xl space-y-6"
           style={{ fontFamily: "poppins" }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
