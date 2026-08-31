@@ -1,8 +1,6 @@
 import Navbar from "@/components/Navbar";
 import PricingHero from "@/components/PricingHero";
-import FAQ from "@/components/FAQ";
-import Testimonials from "@/components/Testimonials";
-import ContactForm from "@/components/Contact";
+import PricingListOfServices from "@/components/PricingListOfServices";
 import Footer from "@/components/Footer";
 import React from "react";
 
@@ -17,7 +15,8 @@ const PricingPage = () => {
     <main className="min-h-screen bg-black text-white">
       <Navbar />
       <PricingHero />
- 
+      <PricingListOfServices />
+      <Footer />
     </main>
   );
 };
