@@ -106,11 +106,13 @@ export default function PricingHero() {
 
   const currentPlan = plans[activeTab];
 
-  // Calculate dynamic price based on active requests
-  const calculatedPrice = (
+  // Calculate dynamic price based on active requests + lightning fast delivery ($600)
+  const baseOrTierPrice =
     currentPlan.prices?.[activeRequests] ||
-    currentPlan.basePrice * activeRequests
-  ).toLocaleString();
+    currentPlan.basePrice * activeRequests;
+
+  const lightningFee = lightningFast ? 600 : 0;
+  const calculatedPrice = (baseOrTierPrice + lightningFee).toLocaleString();
 
   return (
     <section
@@ -371,7 +373,9 @@ export default function PricingHero() {
                     <button
                       type="button"
                       onClick={() => setLightningFast(!lightningFast)}
-                      className="relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-black transition-colors duration-200 ease-in-out focus:outline-none"
+                      className={`relative inline-flex h-4.5 w-8 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                        lightningFast ? "bg-black" : "bg-black/25"
+                      }`}
                     >
                       <span
                         className={`pointer-events-none inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
