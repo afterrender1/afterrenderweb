@@ -66,8 +66,7 @@ export default function Navbar({ hideHiring = false }) {
 
           <div
             className="hidden lg:flex items-center space-x-8"
-            style={{ fontFamily: "montserrat" }}
-          >
+           >
             <div className="relative">
               <button
                 onClick={() => toggleMenu("videos")}

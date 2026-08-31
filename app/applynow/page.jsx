@@ -50,15 +50,13 @@ const ApplyNowPage = () => {
                     className="text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF]"
                     style={{ fontFamily: "michroma" }}
                   >
-                  Post Production Strategy
+                  Video Editing Strategy
                   </span>
                 </h1>
 
                 {/* Subtitle Description */}
-                <p className="text-gray-400 text-sm sm:text-[15px] leading-relaxed mb-8">
-                  Speak with our publishing team and get personalised guidance on
-                  editing, cover design, printing, distribution and marketing
-                  options for your book.
+                <p className="text-gray-400 text-sm sm:text-[13px] leading-relaxed mb-8">
+                 Transform your raw footage into polished, engaging videos that capture attention and keep your audience watching. We handle everything from editing and storytelling to motion graphics, colour grading, and sound design.
                 </p>
 
                 {/* Feature Highlights Grid */}

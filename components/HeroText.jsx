@@ -1,98 +1,103 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Poppins, Montserrat } from "next/font/google";
+import { Urbanist, Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import BookACall from "./BookACall";
 
-const poppins = Poppins({
+export const urbanist = Urbanist({
   subsets: ["latin"],
-  weight: ["300"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-urbanist",
+  display: "swap",
 });
 
-const montserrat = Montserrat({
+export const editorialSerif = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400"],
+  style: ["italic", "normal"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
+
+const words = ["Video Edits", "Graphic Design"];
 
 const HeroText = () => {
   const [showBackground, setShowBackground] = useState(false);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowBackground(true), 1300);
     return () => clearTimeout(timer);
   }, []);
 
+  // Typewriter effect logic
+  useEffect(() => {
+    const targetWord = words[currentWordIndex];
+    const typingSpeed = isDeleting ? 40 : 80;
 
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        // Typing forward
+        setCurrentText(targetWord.substring(0, currentText.length + 1));
 
+        // When full word is typed, pause before deleting
+        if (currentText === targetWord) {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        // Deleting
+        setCurrentText(targetWord.substring(0, currentText.length - 1));
 
+        // When word is fully deleted, move to next word
+        if (currentText === "") {
+          setIsDeleting(false);
+          setCurrentWordIndex((prev) => (prev + 1) % words.length);
+        }
+      }
+    }, typingSpeed);
 
-  const lines = [
-    <>
-      We’ll build your {" "}
-      <span className="text-transparent  bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        YouTube growth funnel—organic
-      </span>{" "}
-      +{" "}
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-        social media presence
-      </span>
-    </>,
-    <>
-      to help you reach your maximum potential
-      <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-      
-        . {" "}If we don’t deliver,{" "} you don’t pay us
-      </span>
-    </>,
-    <>
-
-
-    </>,
-  ];
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, currentWordIndex]);
 
   return (
     <section
-      className="relative  flex flex-col justify-center-safe items-center h-170 sm:h-232 text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-22"
+      className="relative flex flex-col justify-center items-center min-h-[650px] sm:min-h-[750px] text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-28 pb-16"
       style={{
         backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
         backgroundSize: "contain",
-        backgroundPosition: "",
+        backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         opacity: showBackground ? 1 : 0.5,
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
 
-      <div
-        className="relative z-10 text-center px-4 sm:px-8 max-w-6xl"
-        style={{ fontFamily: poppins.style.fontFamily }}
-      >
+      <div className="relative z-10 text-center px-4 sm:px-8 max-w-5xl">
         <motion.div
-          className="font-bold mb-6 leading-tight text-[1.8rem] sm:text-[2rem] md:text-[2.3rem] lg:text-[2.7rem] xl:text-[3rem]"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.4 } },
-          }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="mb-8"
         >
-          {lines.map((line, i) => (
-            <motion.p
-              key={i}
-              className="text-[1.2rem] sm:text-[1.6rem] md:text-[2rem] lg:text-[2rem] xl:text-[2.1rem]"
-              variants={{
-                hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
-                visible: {
-                  opacity: 1,
-                  filter: "blur(0px)",
-                  y: 0,
-                  transition: { duration: 0.6, ease: "easeOut" },
-                },
-              }}
+          {/* Main Animated Headline */}
+          <h1
+            className={`${urbanist.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.2] mb-3 text-white flex flex-wrap items-center justify-center gap-x-3`}
+          >
+            <span>Unlimited</span>
+            <span
+              className={`${editorialSerif.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF] tracking-normal inline-flex items-center min-h-[1.2em]`}
             >
-              {line}
-            </motion.p>
-          ))}
+              {currentText}
+              <span className="inline-block w-[1.5px] sm:w-[2px] h-[0.9em] bg-white/70 ml-1.5 align-middle animate-pulse" />
+            </span>
+          </h1>
+
+          <h2
+            className={`${urbanist.className} text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-200 mt-2`}
+          >
+            One Scalable Subscription.
+          </h2>
         </motion.div>
 
         <div className="flex justify-center items-center ">
