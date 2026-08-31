@@ -2,7 +2,7 @@ import React from "react";
 import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Clock3, PhoneCall, Globe, ShieldCheck, ArrowRight } from "lucide-react";
+import { Clock3, PhoneCall ,ClockFading} from "lucide-react";
 
 export const metadata = {
   title: "Book a Consultation | AfterRender",
@@ -49,7 +49,7 @@ const ApplyNowPage = () => {
                     className="text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF]"
                     style={{ fontFamily: "michroma" }}
                   >
-                    Book Publishing
+                  Post Production Strategy
                   </span>{" "}
                   Journey
                 </h1>
@@ -89,6 +89,19 @@ const ApplyNowPage = () => {
                       </h3>
                       <p className="text-xs text-gray-400 mt-0.5 leading-normal">
                         Direct conversation over phone or Zoom
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-[#48A2FF]/30 transition-colors">
+                    <div className="w-10 h-10 rounded-xl bg-[#48A2FF]/10 border border-[#48A2FF]/20 flex items-center justify-center shrink-0 text-[#48A2FF] mt-0.5">
+                      <ClockFading className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-white">
+                        24/7 WhatsApp Support
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-0.5 leading-normal">
+                        Get instant answers around the clock.
                       </p>
                     </div>
                   </div>
