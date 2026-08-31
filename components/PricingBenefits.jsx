@@ -18,7 +18,7 @@ const playfair = Playfair_Display({
 
 const benefitsData = [
   {
-    title: "11,000+ Videos Delivered",
+    title: "7,000+ Videos Delivered",
     description:
       "We’ve created high-performing content for clients across industries consistently, creatively, and at scale.",
     highlight: false,
@@ -36,7 +36,7 @@ const benefitsData = [
     highlight: false,
   },
   {
-    title: "AI + Human Power",
+    title: "Professional Editing Team",
     description:
       "Leverage the speed of AI with the touch of experienced editors and designers.",
     highlight: false,
@@ -46,9 +46,10 @@ const benefitsData = [
     description:
       "From New Year to Christmas, we get it done. Every season, every challenge - handled. All year long, we can do it!",
     highlight: true,
+    img: "/images/cardbg.webp"
   },
   {
-    title: "Trusted by 300+ Brands",
+    title: "Trusted by 700+ Brands",
     description:
       "From startups to influencers to global teams they rely on AfterRender to scale their content production.",
     highlight: false,
@@ -98,19 +99,11 @@ const PricingBenefits = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.08 }}
                   whileHover={{ y: -5 }}
-                  className="relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center bg-gradient-to-b from-[#6bb8ff] via-[#aadeff] to-[#edf6ff] border border-blue-200/70 shadow-[0_15px_40px_rgba(72,162,255,0.2)] flex flex-col justify-center items-center min-h-[220px] overflow-hidden group"
+                  className="relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-center bg-cover bg-center border border-blue-200/70 shadow-[0_15px_40px_rgba(72,162,255,0.25)] flex flex-col justify-center items-center min-h-[220px] overflow-hidden group"
+                  style={{
+                    backgroundImage: "url('/images/cardbg.webp')",
+                  }}
                 >
-                  {/* Decorative Subtle Clouds & Paper Planes */}
-                  <div className="absolute top-2 left-4 text-white/80 rotate-[-15deg]">
-                    <Send className="w-5 h-5 drop-shadow-sm" />
-                  </div>
-                  <div className="absolute top-3 right-4 text-white/80 rotate-[35deg]">
-                    <Send className="w-4 h-4 drop-shadow-sm" />
-                  </div>
-
-                  {/* Soft Cloud Ambient Lights */}
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-20 bg-white/40 blur-xl rounded-full pointer-events-none" />
-
                   <div className="relative z-10">
                     <h3 className="text-lg sm:text-xl font-extrabold text-gray-950 mb-2.5 tracking-tight">
                       {benefit.title}

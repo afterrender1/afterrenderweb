@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${poppins.variable} ${montserrat.variable} ${michroma.variable} ${spaceGrotesk.variable} ${jakarta.variable}`}
     >
-      <head>
+      <body suppressHydrationWarning className={poppins.className}>
         {/* Meta Pixel Code */}
         <Script
           id="meta-pixel"
@@ -114,8 +114,7 @@ export default function RootLayout({ children }) {
           />
         </noscript>
         {/* End Meta Pixel Code */}
-      </head>
-      <body className={poppins.className}>
+
         <Analytics />
         {children}
       </body>
