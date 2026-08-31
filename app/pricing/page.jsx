@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import PricingHero from "@/components/PricingHero";
 import PricingListOfServices from "@/components/PricingListOfServices";
 import PricingBenefits from "@/components/PricingBenefits";
+import PricingTestimonials from "@/components/PricingTestimonials";
 import Footer from "@/components/Footer";
 import React from "react";
 
@@ -18,6 +19,7 @@ const PricingPage = () => {
       <PricingHero />
       <PricingListOfServices />
       <PricingBenefits />
+      <PricingTestimonials />
       <Footer />
     </main>
   );

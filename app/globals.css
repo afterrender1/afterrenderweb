@@ -86,4 +86,18 @@ html {
   scrollbar-color: #48a2ff #0a1a2f;
 }
 
+/* Testimonial Infinite Scroll */
+@keyframes testimonialScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-testimonial-scroll {
+  animation: testimonialScroll 35s linear infinite;
+}
+
 
