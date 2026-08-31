@@ -50,8 +50,7 @@ const ApplyNowPage = () => {
                     style={{ fontFamily: "michroma" }}
                   >
                   Post Production Strategy
-                  </span>{" "}
-                  Journey
+                  </span>
                 </h1>
 
                 {/* Subtitle Description */}
