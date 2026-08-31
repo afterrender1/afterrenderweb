@@ -26,7 +26,12 @@ const plans = {
     title: "Video Editing",
     description:
       "Tailored for agencies, creators & brands who outsource video editing, from reels and long-form edits to ads, promos & more.",
-    basePrice: 773,
+    basePrice: 699,
+    prices: {
+      1: 699,
+      2: 1199,
+      3: 1999,
+    },
     calendlyUrl: CALENDLY_URL,
     features: [
       "Unlimited Video Requests",
@@ -47,6 +52,11 @@ const plans = {
     description:
       "All-in-One for agencies, creators & brands unlimited videos and graphics, from ads and posts to long-form edits & more.",
     basePrice: 1037,
+    prices: {
+      1: 1037,
+      2: 1899,
+      3: 2899,
+    },
     calendlyUrl: CALENDLY_URL,
     features: [
       "Unlimited Graphic + Video Requests",
@@ -67,6 +77,11 @@ const plans = {
     description:
       "Perfect for agencies, marketers & startups with ongoing design needs, from ads and carousels to social posts & more.",
     basePrice: 473,
+    prices: {
+      1: 473,
+      2: 899,
+      3: 1299,
+    },
     calendlyUrl: CALENDLY_URL,
     features: [
       "Unlimited Graphic Requests",
@@ -91,9 +106,11 @@ export default function PricingHero() {
 
   const currentPlan = plans[activeTab];
 
-  // Calculate dynamic price based on active requests and lightning fast option
-  const multiplier = activeRequests;
-  const calculatedPrice = (currentPlan.basePrice * multiplier).toLocaleString();
+  // Calculate dynamic price based on active requests
+  const calculatedPrice = (
+    currentPlan.prices?.[activeRequests] ||
+    currentPlan.basePrice * activeRequests
+  ).toLocaleString();
 
   return (
     <section
