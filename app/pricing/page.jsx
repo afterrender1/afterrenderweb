@@ -4,6 +4,7 @@ import PricingListOfServices from "@/components/PricingListOfServices";
 import PricingBenefits from "@/components/PricingBenefits";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import PricingFAQ from "@/components/PricingFAQ";
+import WhatWeCreateCarosel from "@/components/WhatWeCreateCarosel";
 import Footer from "@/components/Footer";
 import React from "react";
 
@@ -22,6 +23,7 @@ const PricingPage = () => {
       <PricingBenefits />
       <PricingTestimonials />
       <PricingFAQ />
+      <WhatWeCreateCarosel />
       <Footer />
     </main>
   );
