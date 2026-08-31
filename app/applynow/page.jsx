@@ -25,7 +25,7 @@ const ApplyNowPage = () => {
           <div className="lg:col-span-7 order-2 lg:order-1 bg-[#0D111A]/90 border border-white/[0.08] rounded-3xl p-3 sm:p-5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-md overflow-hidden">
             <div
               className="calendly-inline-widget w-full rounded-2xl overflow-hidden"
-              data-url="https://calendly.com/afterrenderagency/30min?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0d111a&text_color=ffffff&primary_color=48a2ff"
+              data-url="https://calendly.com/afterrenderagency/new-meeting?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0d111a&text_color=ffffff&primary_color=48a2ff"
               style={{ minWidth: "320px", height: "700px" }}
             />
           </div>

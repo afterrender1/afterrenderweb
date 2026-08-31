@@ -16,7 +16,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
       </div>
 
 
-      <Link href="https://calendly.com/afterrenderagency/30min" target="_blank" rel="noopener noreferrer">
+      <Link href="https://calendly.com/afterrenderagency/new-meeting" target="_blank" rel="noopener noreferrer">
         <button
           style={{ fontFamily: 'poppins' }}
           className="cursor-pointer w-full font-bold 

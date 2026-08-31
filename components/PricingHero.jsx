@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-const CALENDLY_URL = "https://calendly.com/afterrenderagency/30min";
+const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
 
 const plans = {
   video: {

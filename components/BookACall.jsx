@@ -7,7 +7,7 @@ const BookACall = () => {
     <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 w-full max-w-md mx-auto px-4">
       {/* Book a Call Button */}
       <Link
-        href="https://calendly.com/afterrenderagency/30min"
+        href="https://calendly.com/afterrenderagency/new-meeting"
         target="_blank"
         rel="noopener noreferrer"
         style={{ fontFamily: "montserrat" }}
