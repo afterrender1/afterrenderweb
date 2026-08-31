@@ -93,20 +93,7 @@ const ApplyNowPage = () => {
                     </div>
                   </div>
 
-                  {/* Item 3 */}
-                  <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-[#48A2FF]/30 transition-colors">
-                    <div className="w-10 h-10 rounded-xl bg-[#48A2FF]/10 border border-[#48A2FF]/20 flex items-center justify-center shrink-0 text-[#48A2FF] mt-0.5">
-                      <Globe className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-white">
-                        Australian Publishing Support
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-0.5 leading-normal">
-                        Specialized domestic distribution & global reach
-                      </p>
-                    </div>
-                  </div>
+             
                 </div>
               </div>
 
