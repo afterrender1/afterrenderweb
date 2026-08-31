@@ -3,6 +3,7 @@ import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Clock3, PhoneCall ,ClockFading} from "lucide-react";
+import FloatWhatsappButton from "@/components/FloatWhatsappButton";
 
 export const metadata = {
   title: "Book a Consultation | AfterRender",
@@ -112,6 +113,7 @@ const ApplyNowPage = () => {
             </div>
           </div>
         </div>
+        <FloatWhatsappButton />
       </main>
 
       <Script
