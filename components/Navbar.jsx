@@ -8,7 +8,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import HiringMarquee from "@/components/HiringMarquee";
 
-export default function Navbar() {
+export default function Navbar({ hideHiring = false }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -146,6 +146,12 @@ export default function Navbar() {
             </div>
 
 
+            <Link
+              href="/pricing"
+              className="hover:text-[#59B7FF] transition-colors"
+            >
+              Pricing
+            </Link>
             <Link
               href="/blogs"
               className="hover:text-[#59B7FF] transition-colors"
@@ -334,7 +340,7 @@ export default function Navbar() {
             />
           )}
         </AnimatePresence>
-        <HiringMarquee/>
+        {!hideHiring && pathname !== "/pricing" && <HiringMarquee />}
       </nav>
 
     </>

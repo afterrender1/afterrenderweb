@@ -1,4 +1,42 @@
 @import "tailwindcss";
+
+:root {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-michroma: 'Michroma', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-jakarta: 'Plus Jakarta Sans', sans-serif;
+}
+
+@layer utilities {
+  [style*="font-family: poppins"],
+  [style*="font-family: 'poppins'"],
+  [style*='font-family: "poppins"'],
+  [style*="font-family: Poppins"],
+  [style*="font-family: 'Poppins'"],
+  [style*='font-family: "Poppins"'] {
+    font-family: var(--font-poppins), 'Poppins', sans-serif !important;
+  }
+
+  [style*="font-family: montserrat"],
+  [style*="font-family: 'montserrat'"],
+  [style*='font-family: "montserrat"'],
+  [style*="font-family: Montserrat"],
+  [style*="font-family: 'Montserrat'"],
+  [style*='font-family: "Montserrat"'] {
+    font-family: var(--font-montserrat), 'Montserrat', sans-serif !important;
+  }
+
+  [style*="font-family: michroma"],
+  [style*="font-family: 'michroma'"],
+  [style*='font-family: "michroma"'],
+  [style*="font-family: Michroma"],
+  [style*="font-family: 'Michroma'"],
+  [style*='font-family: "Michroma"'] {
+    font-family: var(--font-michroma), 'Michroma', sans-serif !important;
+  }
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-5px); }
@@ -9,13 +47,13 @@
   animation: shake 0.8s infinite;
 }
 
-
 :root {
   --background: #000000;
 }
 
-body  {
+body {
   background: var(--background);
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;

@@ -47,7 +47,6 @@ export default function CreativeHiringTicker() {
                             transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
                             className="flex items-center gap-2"
                         >
-                            <span className="text-xs">{messages[index].icon}</span>
                             <p className="text-[10px] font-bold tracking-[0.2em] text-white/90 uppercase whitespace-nowrap">
                                 {messages[index].role}
                             </p>
