@@ -16,7 +16,7 @@ export const metadata = {
 
 const PricingPage = () => {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
       <PricingHero />
       <PricingListOfServices />
