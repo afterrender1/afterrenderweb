@@ -100,4 +100,18 @@ html {
   animation: testimonialScroll 35s linear infinite;
 }
 
+/* Seamless Multi-Track Infinite Marquee */
+@keyframes marqueeTrack {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee-track {
+  animation: marqueeTrack 35s linear infinite;
+}
+
 

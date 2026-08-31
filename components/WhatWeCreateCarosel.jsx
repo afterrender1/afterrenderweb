@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-// 9:16 Short Form Videos Array
+// 9:16 Short Form Videos Array (7 Videos)
 const videosData = [
   {
     id: 1,
@@ -23,8 +23,7 @@ const videosData = [
     category: "Shorts & Reels",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788183664/Adam_reel-1_phvxsx.mp4",
-    poster:
-      "/images/video-tn/one.png",
+    poster: "/images/video-tn/one.png",
   },
   {
     id: 2,
@@ -32,8 +31,7 @@ const videosData = [
     category: "Paid Social Ad",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788183792/Matt_Short_03_jjo3qx.mp4",
-    poster:
-      "/images/video-tn/two.png",
+    poster: "/images/video-tn/two.png",
   },
   {
     id: 3,
@@ -41,8 +39,7 @@ const videosData = [
     category: "YouTube Shorts",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184449/Reel-1_pxvgud.mp4",
-    poster:
-      "/images/video-tn/three.png",
+    poster: "/images/video-tn/three.png",
   },
   {
     id: 4,
@@ -50,8 +47,7 @@ const videosData = [
     category: "TikTok Campaign",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184603/reel-1_kuxlzp.mp4",
-    poster:
-      "/images/video-tn/four.png",
+    poster: "/images/video-tn/four.png",
   },
   {
     id: 5,
@@ -59,8 +55,7 @@ const videosData = [
     category: "Viral Edit",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
-    poster:
-      "/images/video-tn/five.png",
+    poster: "/images/video-tn/five.png",
   },
   {
     id: 6,
@@ -68,8 +63,7 @@ const videosData = [
     category: "Viral Edit",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
-    poster:
-      "/images/video-tn/six.png",
+    poster: "/images/video-tn/six.png",
   },
   {
     id: 7,
@@ -77,8 +71,7 @@ const videosData = [
     category: "Viral Edit",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184812/Anthropic_reel_n76nlc.mp4",
-    poster:
-      "/images/video-tn/seven.png",
+    poster: "/images/video-tn/seven.png",
   },
 ];
 
@@ -162,16 +155,13 @@ const WhatWeCreateCarosel = () => {
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === "left" ? -340 : 340;
+      const scrollAmount = direction === "left" ? -280 : 280;
       scrollContainerRef.current.scrollBy({
         left: scrollAmount,
         behavior: "smooth",
       });
     }
   };
-
-  // Duplicate array for infinite seamless looping
-  const duplicatedVideos = [...videosData, ...videosData];
 
   return (
     <section
@@ -225,34 +215,86 @@ const WhatWeCreateCarosel = () => {
         </div>
       </div>
 
-      {/* Horizontal Running Carousel */}
-      <div
-        ref={scrollContainerRef}
-        className="relative w-full overflow-x-auto no-scrollbar"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+      {/* Seamless Infinite Running Carousel Track */}
+      <div className="relative w-full overflow-hidden">
         {/* Soft edge blur gradient masks */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-r from-[#FAFAFA] to-transparent z-20" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-l from-[#FAFAFA] to-transparent z-20" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent z-20" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent z-20" />
 
+        {/* Scrollable / Animated Marquee Track */}
         <div
-          style={{
-            animationPlayState: currentPlayingKey ? "paused" : "running",
-          }}
-          className="flex gap-5 sm:gap-7 w-max animate-testimonial-scroll hover:[animation-play-state:paused] px-4 sm:px-8 will-change-transform"
+          ref={scrollContainerRef}
+          className="w-full overflow-x-hidden no-scrollbar"
         >
-          {duplicatedVideos.map((videoItem, index) => {
-            const uniqueKey = `${videoItem.id}-${index}`;
-            return (
-              <VideoCard
-                key={uniqueKey}
-                uniqueKey={uniqueKey}
-                item={videoItem}
-                currentPlayingKey={currentPlayingKey}
-                onTogglePlay={handleTogglePlay}
-              />
-            );
-          })}
+          <div
+            className="flex w-max hover:[&>*]:[animation-play-state:paused]"
+            style={{
+              animationPlayState: currentPlayingKey ? "paused" : "running",
+            }}
+          >
+            {/* Track 1 (1 to 7) */}
+            <div
+              style={{
+                animationPlayState: currentPlayingKey ? "paused" : "running",
+              }}
+              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
+            >
+              {videosData.map((videoItem) => {
+                const uniqueKey = `t1-${videoItem.id}`;
+                return (
+                  <VideoCard
+                    key={uniqueKey}
+                    uniqueKey={uniqueKey}
+                    item={videoItem}
+                    currentPlayingKey={currentPlayingKey}
+                    onTogglePlay={handleTogglePlay}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Track 2 (1 to 7 - immediately attaches to the right of Track 1's 7th video) */}
+            <div
+              style={{
+                animationPlayState: currentPlayingKey ? "paused" : "running",
+              }}
+              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
+            >
+              {videosData.map((videoItem) => {
+                const uniqueKey = `t2-${videoItem.id}`;
+                return (
+                  <VideoCard
+                    key={uniqueKey}
+                    uniqueKey={uniqueKey}
+                    item={videoItem}
+                    currentPlayingKey={currentPlayingKey}
+                    onTogglePlay={handleTogglePlay}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Track 3 (1 to 7 - guarantees zero empty space on wide screens) */}
+            <div
+              style={{
+                animationPlayState: currentPlayingKey ? "paused" : "running",
+              }}
+              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
+            >
+              {videosData.map((videoItem) => {
+                const uniqueKey = `t3-${videoItem.id}`;
+                return (
+                  <VideoCard
+                    key={uniqueKey}
+                    uniqueKey={uniqueKey}
+                    item={videoItem}
+                    currentPlayingKey={currentPlayingKey}
+                    onTogglePlay={handleTogglePlay}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>
