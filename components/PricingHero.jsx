@@ -111,7 +111,7 @@ export default function PricingHero() {
     currentPlan.prices?.[activeRequests] ||
     currentPlan.basePrice * activeRequests;
 
-  const lightningFee = lightningFast ? 600 : 0;
+  const lightningFee = lightningFast ? 100 : 0;
   const calculatedPrice = (baseOrTierPrice + lightningFee).toLocaleString();
 
   return (
