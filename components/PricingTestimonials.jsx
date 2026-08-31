@@ -18,13 +18,13 @@ const playfair = Playfair_Display({
 const testimonials = [
   {
     id: 1,
-    name: "CHRISTIAN",
-    company: "Finsult",
-    image: "/images/clients/finep.png",
+    name: "DEBORAH",
+    company: "Medical Creator",
+    image: "/images/clients/deborah.png",
     quotePrefix: "AfterRender really are the ",
     highlight: "ultimate content team",
     quoteSuffix:
-      ". They assist me in designing, editing and creating videos for my personal brand.",
+      ". The videos came out clean, educational, and engaging — not easy to pull off.",
     metrics: [
       { value: "700+hrs", label: "Editing time saved" },
       { value: "$14k+", label: "Cost Saving" },
@@ -33,12 +33,12 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "SAMIN",
-    company: "Bookedin AI",
-    image: "/images/clients/deborah.png",
-    quotePrefix: "Been great working with these guys, ",
+    name: "TRACTION",
+    company: "Digital Entrepreneur",
+    image: "/images/clients/traction.png",
+    quotePrefix: "Been great working with them, ",
     highlight: "always super fast",
-    quoteSuffix: " and does what I want quickly with exceptional attention to detail.",
+    quoteSuffix: " and smooth. My content finally looks and feels like my brand.",
     metrics: [
       { value: "1.9k+hrs", label: "Editing time saved" },
       { value: "$35k+", label: "Cost Saving" },
@@ -47,12 +47,12 @@ const testimonials = [
   },
   {
     id: 3,
-    name: "STEPHEN GUY",
-    company: "Lead Agent Unlimited",
-    image: "/images/clients/bighot.png",
-    quotePrefix: "AfterRender exceeded what they promised to offer. ",
+    name: "FINEPOINT",
+    company: "SaaS Company",
+    image: "/images/clients/finep.png",
+    quotePrefix: "AfterRender built a full creative system for us. ",
     highlight: "The quality & communication",
-    quoteSuffix: " is top tier and turnaround is unmatched.",
+    quoteSuffix: " is top tier, with better engagement and lower ad costs.",
     metrics: [
       { value: "3k+hrs", label: "Editing time saved" },
       { value: "$50k+", label: "Cost Saving" },
@@ -61,12 +61,12 @@ const testimonials = [
   },
   {
     id: 4,
-    name: "ALEXANDER VANCE",
-    company: "ScaleUp Media",
+    name: "CRYPTO SIMBA",
+    company: "Crypto Trader",
     image: "/images/clients/crypto.png",
-    quotePrefix: "The turnaround time is unbelievable. They turned our raw content into ",
-    highlight: "viral high-converting assets",
-    quoteSuffix: " in just a few business days.",
+    quotePrefix: "The turnaround time is unbelievable. Every video hits the right tone with ",
+    highlight: "clean edits and high watch time",
+    quoteSuffix: " across our channels.",
     metrics: [
       { value: "1.2k+hrs", label: "Editing time saved" },
       { value: "$22k+", label: "Cost Saving" },
@@ -75,12 +75,12 @@ const testimonials = [
   },
   {
     id: 5,
-    name: "MARCUS LEE",
-    company: "Fintech Growth Labs",
+    name: "AUDREY",
+    company: "Fitness Coach",
     image: "/images/clients/metabolic.png",
-    quotePrefix: "Outstanding creative direction and flawless execution. ",
+    quotePrefix: "Loved how simple the process was. ",
     highlight: "The best subscription decision",
-    quoteSuffix: " we made this year for our team.",
+    quoteSuffix: " — I just sent my clips and the final videos came back polished.",
     metrics: [
       { value: "2.4k+hrs", label: "Editing time saved" },
       { value: "$40k+", label: "Cost Saving" },
