@@ -13,6 +13,7 @@ export default function Navbar({ hideHiring = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const isPricing = pathname === "/pricing";
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
   const closeMobileMenu = () => {
@@ -70,7 +71,11 @@ export default function Navbar({ hideHiring = false }) {
             <div className="relative">
               <button
                 onClick={() => toggleMenu("videos")}
-                className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
+                className={`flex items-center gap-1 transition-colors ${
+                  isPricing
+                    ? "text-black hover:text-[#59B7FF]"
+                    : "text-white hover:text-[#59B7FF]"
+                }`}
               >
                 Videos <ChevronDown size={18} />
               </button>
@@ -109,7 +114,11 @@ export default function Navbar({ hideHiring = false }) {
             <div className="relative">
               <button
                 onClick={() => toggleMenu("work")}
-                className="flex items-center gap-1 hover:text-[#59B7FF] transition-colors"
+                className={`flex items-center gap-1 transition-colors ${
+                  isPricing
+                    ? "text-black hover:text-[#59B7FF]"
+                    : "text-white hover:text-[#59B7FF]"
+                }`}
               >
                 Social Media <ChevronDown size={18} />
               </button>
@@ -148,19 +157,31 @@ export default function Navbar({ hideHiring = false }) {
 
             <Link
               href="/pricing"
-              className="hover:text-[#59B7FF] transition-colors"
+              className={`transition-colors ${
+                isPricing
+                  ? "text-black hover:text-[#59B7FF]"
+                  : "hover:text-[#59B7FF]"
+              }`}
             >
               Pricing
             </Link>
             <Link
               href="/blogs"
-              className="hover:text-[#59B7FF] transition-colors"
+              className={`transition-colors ${
+                isPricing
+                  ? "text-black hover:text-[#59B7FF]"
+                  : "hover:text-[#59B7FF]"
+              }`}
             >
               Blogs
             </Link>
             <Link
               href="#contact"
-              className="hover:text-[#59B7FF] transition-colors"
+              className={`transition-colors ${
+                isPricing
+                  ? "text-black hover:text-[#59B7FF]"
+                  : "hover:text-[#59B7FF]"
+              }`}
             >
               Contact
             </Link>
@@ -179,7 +200,11 @@ export default function Navbar({ hideHiring = false }) {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden z-50 p-2 hover:text-[#59B7FF] transition-colors"
+            className={`lg:hidden z-50 p-2 transition-colors ${
+              isPricing
+                ? "text-black hover:text-[#59B7FF]"
+                : "hover:text-[#59B7FF]"
+            }`}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}

@@ -171,7 +171,7 @@ export default function PricingHero() {
                 onClick={() => setActiveTab(tabKey)}
                 className={`relative px-4 sm:px-6 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? "text-black font-bold"
+                    ? "text-[#0A2540] font-bold"
                     : "text-gray-500 hover:text-gray-800"
                 }`}
               >
@@ -179,7 +179,7 @@ export default function PricingHero() {
                   <motion.div
                     layoutId="activeTabBadge"
                     transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 bg-[#CEFF00] rounded-full shadow-[0_2px_8px_rgba(206,255,0,0.35)]"
+                    className="absolute inset-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full shadow-[0_2px_12px_rgba(72,162,255,0.4)]"
                   />
                 )}
                 <span className="relative z-10">{plan.tabLabel}</span>
@@ -216,11 +216,11 @@ export default function PricingHero() {
                       {backPlan.features[0]}
                     </span>
                   </div>
-                  <div className="md:col-span-6 bg-[#CEFF00] rounded-t-[16px] px-4 py-1.5 h-full flex items-center justify-between border-t border-x border-black/10 shadow-xs">
-                    <span className="text-xs font-extrabold text-black truncate">
+                  <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[16px] px-4 py-1.5 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
+                    <span className="text-xs font-extrabold truncate">
                       {backPlan.title}
                     </span>
-                    <span className="text-[10px] font-bold text-black/70">
+                    <span className="text-[10px] font-bold opacity-80">
                       USD {backPlan.basePrice}
                     </span>
                   </div>
@@ -241,11 +241,11 @@ export default function PricingHero() {
                       {middlePlan.features[0]}
                     </span>
                   </div>
-                  <div className="md:col-span-6 bg-[#CEFF00] rounded-t-[18px] px-4 py-2 h-full flex items-center justify-between border-t border-x border-black/10 shadow-xs">
-                    <span className="text-xs font-extrabold text-black truncate">
+                  <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[18px] px-4 py-2 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
+                    <span className="text-xs font-extrabold truncate">
                       {middlePlan.title}
                     </span>
-                    <span className="text-[11px] font-bold text-black/80">
+                    <span className="text-[11px] font-bold opacity-90">
                       USD {middlePlan.basePrice}
                     </span>
                   </div>
@@ -295,8 +295,8 @@ export default function PricingHero() {
               </div>
             </div>
 
-            {/* Right Side: Neon Lime Action Card */}
-            <div className="md:col-span-6 bg-[#CEFF00] rounded-[20px] p-5 sm:p-6 text-black flex flex-col justify-between shadow-[0_8px_25px_rgba(206,255,0,0.25)]">
+            {/* Right Side: Gradient Action Card */}
+            <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] via-[#75B8FF] to-[#C9E4FF] rounded-[20px] p-5 sm:p-6 text-[#0A2540] flex flex-col justify-between shadow-[0_12px_30px_rgba(72,162,255,0.35)]">
               <div>
                 <h3 className="text-xl sm:text-[22px] font-extrabold text-black tracking-tight mb-1.5">
                   {currentPlan.title}
