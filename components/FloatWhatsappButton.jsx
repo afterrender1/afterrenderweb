@@ -3,7 +3,7 @@ import React from 'react'
 const FloatWhatsappButton = () => {
   return (
     <div
-      className="fixed bottom-10 right-5 z-50"
+      className="fixed bottom-20 right-6 z-50"
     >
       <a
         href="https://wa.me/923235100033"
