@@ -99,7 +99,7 @@ const CaseStudies = () => {
           >
             {/* Text */}
             <div className="flex flex-col justify-center space-y-2.5 sm:space-y-3">
-              <h3 className="text-base sm:text-lg lg:text-xl font-bold leading-snug">
+              <h3 className={`text-base sm:text-lg lg:text-xl font-bold leading-snug ${urbanist.className}`}>
                 Growing{" "}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
                   TMG
@@ -157,7 +157,7 @@ const CaseStudies = () => {
           >
             {/* Text */}
             <div className="flex flex-col justify-center space-y-2.5 sm:space-y-3">
-              <h3 className="text-base sm:text-lg lg:text-xl font-bold leading-snug">
+              <h3 className= {`text-base sm:text-lg lg:text-xl font-bold leading-snug ${urbanist.className}`}>
                 Scaling{" "}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
                   Farming Creator
