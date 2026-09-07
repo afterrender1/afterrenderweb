@@ -64,49 +64,6 @@ export default function Navbar({ hideHiring = false } = {}) {
           <div
             className="hidden lg:flex items-center space-x-7 text-sm font-medium"
            >
-            <div className="relative">
-              <button
-                onClick={() => toggleMenu("videos")}
-                className={`flex items-center gap-1 transition-colors ${
-                  isPricing
-                    ? "text-black hover:text-[#59B7FF]"
-                    : "text-white hover:text-[#59B7FF]"
-                }`}
-              >
-                Videos <ChevronDown size={18} />
-              </button>
-
-              <AnimatePresence>
-                {openMenu === "videos" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute z-30 top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
-                  >
-                    {videoLinks.map((item, i) => (
-                      <motion.div
-                        key={i}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.15 }}
-                      >
-                        <button
-                          onClick={() => handleVideoClick(item.id)}
-                          className="block w-full text-left px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
-                        >
-                          <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
-                          <span className="relative z-10 group-hover:text-[#48A2FF] transition-colors duration-300">
-                            {item.name}
-                          </span>
-                        </button>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
             <Link
               href="/our-work"
               className={`transition-colors ${
@@ -255,42 +212,7 @@ export default function Navbar({ hideHiring = false } = {}) {
                       </div>
                     </div>
 
-                    {/* Videos Accordion (Old Theme) */}
-                    <button
-                      onClick={() => toggleMenu("videos-mobile")}
-                      className="flex items-center justify-between w-full py-2.5 text-white hover:text-[#59B7FF] transition-colors text-lg sm:text-xl font-semibold"
-                    >
-                      <span>VIDEOS</span>
-                      <ChevronDown
-                        size={20}
-                        className={`transform transition-transform duration-200 ${
-                          openMenu === "videos-mobile" ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
 
-                    <AnimatePresence>
-                      {openMenu === "videos-mobile" && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2, ease: "easeInOut" }}
-                          className="overflow-hidden pl-4 mt-1 mb-2 space-y-1"
-                        >
-                          {videoLinks.map((item, i) => (
-                            <button
-                              key={i}
-                              onClick={() => handleVideoClick(item.id)}
-                              className="py-2 text-base text-gray-200 hover:text-[#59B7FF] transition-colors flex items-center gap-2 w-full text-left"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#48A2FF]" />
-                              {item.name}
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
 
                     {/* Navigation Links (Old Theme) */}
                     <div className="flex flex-col space-y-1 mt-1">
