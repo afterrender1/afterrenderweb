@@ -20,7 +20,7 @@ const OurWorkPage = () => {
       <Navbar />
       <OurWorkHero />
       <WhatWeCreateCarosel />
-      <CollectionPortfolio />
+      {/* <CollectionPortfolio /> */}
       <PricingBenefits />
       <PricingTestimonials />
       <PricingFAQ />
