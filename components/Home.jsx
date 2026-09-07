@@ -1,17 +1,9 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Hero from './Hero'
-import Testimonials from './Testimonials'
-import CaseStudies from './CaseStudies'
-import Portfolio from './Portfolio'
-import HowItWorks from './HowItWorks'
-import OurOffers from './OurOffres'
 import FAQ from './FAQ'
-import Footer from './Footer'
 import ContactForm from './Contact'
-import VideoTestimonials from './VideoTestimonials'
-import ThumbnailsComponents from './ThumbnailsComponents'
-
+import Footer from './Footer'
 
 const Home = () => {
   return (
@@ -19,14 +11,7 @@ const Home = () => {
       <Navbar />
       <main id="main-content">
         <Hero />
-        <Testimonials />
-        <CaseStudies />
-        <Portfolio />
-        <ThumbnailsComponents />
-        <HowItWorks />
-        <OurOffers />
         <FAQ />
-        <VideoTestimonials />
         <ContactForm />
       </main>
       <Footer />
