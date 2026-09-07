@@ -1,9 +1,7 @@
 import Navbar from "@/components/Navbar";
 import OurWorkHero from "@/components/OurWorkHero";
 import WhatWeCreateCarosel from "@/components/WhatWeCreateCarosel";
-import PricingHero from "@/components/PricingHero";
 import CollectionPortfolio from "@/components/CollectionPortfolio";
-import PricingListOfServices from "@/components/PricingListOfServices";
 import PricingBenefits from "@/components/PricingBenefits";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import PricingFAQ from "@/components/PricingFAQ";
@@ -22,9 +20,7 @@ const OurWorkPage = () => {
       <Navbar />
       <OurWorkHero />
       <WhatWeCreateCarosel />
-      <PricingHero hideHeader={true} id="plans" />
       <CollectionPortfolio />
-      <PricingListOfServices />
       <PricingBenefits />
       <PricingTestimonials />
       <PricingFAQ />
