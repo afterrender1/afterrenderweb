@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -177,155 +177,173 @@ export default function Navbar({ hideHiring = false }) {
 
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div
-              key="mobile-menu"
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ duration: 0.45, ease: "easeInOut" }}
-              className="lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto rounded-l-2xl shadow-2xl z-50"
-            >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('/images/herobg.png')" }}
+            <>
+              {/* Dim Backdrop - Clean & lag-free (no heavy dynamic blur) */}
+              <motion.div
+                key="mobile-backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="lg:hidden fixed inset-0 bg-black/70 z-40"
+                onClick={closeMobileMenu}
+                aria-hidden="true"
               />
-              <div className="absolute inset-0 bg-black/60" />
 
-              <div
-                className="relative flex flex-col h-full pt-20 px-6 text-white z-10"
+              {/* Mobile Drawer (Old Theme + 60FPS Lag-Free Hardware Acceleration) */}
+              <motion.div
+                key="mobile-menu"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                style={{ willChange: "transform", transform: "translateZ(0)" }}
+                className="lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto z-50 flex flex-col justify-between text-white shadow-2xl bg-[#080B10]"
               >
-                <div className="my-4">
-                  <div className="max-w-sm mx-auto p-4 text-center">
-                    {/* Wrapper for relative positioning */}
-                    <div className="relative inline-block w-full group animate-shake">
+                {/* Background Layer with old theme */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40"
+                  style={{ backgroundImage: "url('/images/herobg.png')" }}
+                />
+                <div className="absolute inset-0 bg-black/65 pointer-events-none" />
 
-                      {/* The Notification Dot */}
-                      <span className="absolute -top-1 -right-1 z-10 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white shadow-sm"></span>
-                      </span>
-
-                      {/* Apply Now button */}
-                      <Link
-                        href="apply"
+                {/* Drawer Content */}
+                <div className="relative z-10 flex flex-col h-full pt-6 pb-8 px-6 justify-between">
+                  <div>
+                    {/* Top Bar: Back & Cancel Header */}
+                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/15">
+                      <button
+                        type="button"
                         onClick={closeMobileMenu}
-                        className="relative flex flex-col items-center justify-center gap-0.5 py-3 px-8 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] rounded-xl text-center shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] "
+                        className="flex items-center gap-1.5 text-xs font-semibold text-gray-200 hover:text-white bg-white/10 hover:bg-white/20 active:scale-95 px-3 py-1.5 rounded-full transition-all cursor-pointer"
+                        aria-label="Back / Cancel"
                       >
-                        {/* Small Badge-style text */}
-                        <span className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-none">
-                          Hiring Talent
-                        </span>
+                        <ArrowLeft size={14} />
+                        <span>Back</span>
+                      </button>
 
-                        {/* Primary text */}
-                        <span className="text-base font-bold tracking-tight">
-                          Apply Now
-                        </span>
-                      </Link>
+                      <button
+                        type="button"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-1 text-xs font-medium text-gray-300 hover:text-white px-2.5 py-1 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
+                        aria-label="Cancel / Close"
+                      >
+                        <X size={18} />
+                        <span>Cancel</span>
+                      </button>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={() => toggleMenu("videos-mobile")}
-                    className="flex items-center justify-between w-full py-3 text-white hover:text-[#59B7FF] transition-colors text-xl font-semibold"
-                  >
-                    VIDEOS
-                    <ChevronDown
-                      size={20}
-                      className={`transform transition-transform ${openMenu === "videos-mobile" ? "rotate-180" : ""
+                    {/* Apply Now Banner (Old Theme) */}
+                    <div className="mb-5 text-center">
+                      <div className="relative inline-block w-full">
+                        <span className="absolute -top-1 -right-1 z-10 flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white shadow-xs"></span>
+                        </span>
+
+                        <Link
+                          href="/apply"
+                          onClick={closeMobileMenu}
+                          className="relative flex flex-col items-center justify-center gap-0.5 py-3 px-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] rounded-xl text-center shadow-lg transition-all duration-200 hover:brightness-105 active:scale-[0.98]"
+                        >
+                          <span className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-none">
+                            Hiring Talent
+                          </span>
+                          <span className="text-base font-bold tracking-tight">
+                            Apply Now
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Videos Accordion (Old Theme) */}
+                    <button
+                      onClick={() => toggleMenu("videos-mobile")}
+                      className="flex items-center justify-between w-full py-2.5 text-white hover:text-[#59B7FF] transition-colors text-lg sm:text-xl font-semibold"
+                    >
+                      <span>VIDEOS</span>
+                      <ChevronDown
+                        size={20}
+                        className={`transform transition-transform duration-200 ${
+                          openMenu === "videos-mobile" ? "rotate-180" : ""
                         }`}
-                    />
-                  </button>
+                      />
+                    </button>
 
-                  <AnimatePresence>
-                    {openMenu === "videos-mobile" && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden pl-4 mt-2"
-                      >
-                        {videoLinks.map((item, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: 15 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                          >
+                    <AnimatePresence>
+                      {openMenu === "videos-mobile" && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                          className="overflow-hidden pl-4 mt-1 mb-2 space-y-1"
+                        >
+                          {videoLinks.map((item, i) => (
                             <button
+                              key={i}
                               onClick={() => handleVideoClick(item.id)}
-                              className="py-2.5 text-lg text-gray-200 hover:text-[#59B7FF] transition-all flex items-center gap-2 w-full text-left"
+                              className="py-2 text-base text-gray-200 hover:text-[#59B7FF] transition-colors flex items-center gap-2 w-full text-left"
                             >
                               <span className="w-1.5 h-1.5 rounded-full bg-[#48A2FF]" />
                               {item.name}
                             </button>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Navigation Links (Old Theme) */}
+                    <div className="flex flex-col space-y-1 mt-1">
+                      <Link
+                        href="/our-work"
+                        onClick={closeMobileMenu}
+                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                      >
+                        Our Work
+                      </Link>
+
+                      <Link
+                        href="/pricing"
+                        onClick={closeMobileMenu}
+                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                      >
+                        Pricing
+                      </Link>
+
+                      <Link
+                        href="/blogs"
+                        onClick={closeMobileMenu}
+                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                      >
+                        Blogs
+                      </Link>
+
+                      <Link
+                        href="#contact"
+                        onClick={closeMobileMenu}
+                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                      >
+                        Contact
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Book a Call Button (Old Theme) */}
+                  <div className="pt-4 mt-6">
+                    <Link
+                      href="https://calendly.com/afterrenderagency/new-meeting"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMobileMenu}
+                      className="block text-center bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-semibold text-sm sm:text-base px-6 py-3 rounded-lg shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200"
+                    >
+                      Book a Call
+                    </Link>
+                  </div>
                 </div>
-
-                <Link
-                  href="/our-work"
-                  onClick={closeMobileMenu}
-                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
-                >
-                  Our Work
-                </Link>
-                <Link
-                  href="/pricing"
-                  onClick={closeMobileMenu}
-                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/blogs"
-                  onClick={closeMobileMenu}
-                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
-                >
-                  Blogs <span></span>
-                </Link>
-
-                <Link
-                  href="#contact"
-                  onClick={closeMobileMenu}
-                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
-                >
-                  Contact
-                </Link>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Link
-                    href="https://calendly.com/afterrenderagency/new-meeting"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={closeMobileMenu}
-                    className="mt-4 block text-center bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-semibold px-6 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
-                  >
-                    Book a Call
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden fixed inset-0 bg-black/10 backdrop-blur-sm -z-10"
-              onClick={closeMobileMenu}
-            />
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
         {!hideHiring && pathname !== "/pricing" && pathname !== "/our-work" && <HiringMarquee />}
