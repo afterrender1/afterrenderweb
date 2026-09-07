@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import CrispChat from "@/components/CrispChat";
 import { Poppins, Montserrat, Michroma, Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 
 const poppins = Poppins({
@@ -117,6 +118,7 @@ export default function RootLayout({ children }) {
 
         <Analytics />
         {children}
+        <CrispChat />
       </body>
     </html>
   );

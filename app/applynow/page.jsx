@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Clock3, PhoneCall ,ClockFading} from "lucide-react";
 import FloatWhatsappButton from "@/components/FloatWhatsappButton";
-import CrispChat from "@/components/CrispChat";
 
 export const metadata = {
   title: "Book a Consultation | AfterRender",
@@ -120,8 +119,6 @@ const ApplyNowPage = () => {
         src="https://assets.calendly.com/assets/external/widget.js"
         strategy="lazyOnload"
       />
-
-      <CrispChat />
 
       <Footer />
     </div>
