@@ -5,7 +5,7 @@ import Testimonials from './Testimonials'
 import Services from './Services'
 import ShortVideoClientTestimonials from './ShortVideoClientTestimonials'
 import FAQ from './FAQ'
-import ContactForm from './Contact'
+import WorkWithUs from './WorkWithUs'
 import Footer from './Footer'
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
         <Services />
         <ShortVideoClientTestimonials />
         <FAQ />
-        <ContactForm />
+        <WorkWithUs />
       </main>
       <Footer />
     </>
