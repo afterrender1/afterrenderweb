@@ -119,7 +119,7 @@ const OurOffers = () => {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto">
-        <div className="text-center mb-6 sm:mb-10" style={{ fontFamily: 'poppins' }}>
+        <div className="text-center mb-6 sm:mb-10">
           <h2
             className={`${urbanist.className} text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1.5 sm:mb-2 tracking-tight`}
           >

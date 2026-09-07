@@ -97,7 +97,7 @@ const HowItWorks = () => {
             How it works
           </p>
           <h2
-            className={`${urbanist.className} text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] font-bold text-white mb-3 sm:mb-4 tracking-tight`}
+            className={`${urbanist.className} text-2xl md:text-[2.8rem] font-bold text-white mb-4 tracking-tight`}
           >
             Getting started is{" "}
             <span
