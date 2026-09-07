@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Urbanist } from "next/font/google";
-import HiringMarquee from "@/components/HiringMarquee";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -15,7 +14,7 @@ const urbanist = Urbanist({
   display: "swap",
 });
 
-export default function Navbar({ hideHiring = false }) {
+export default function Navbar({ hideHiring = false } = {}) {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -346,7 +345,6 @@ export default function Navbar({ hideHiring = false }) {
             </>
           )}
         </AnimatePresence>
-        {!hideHiring && pathname !== "/pricing" && pathname !== "/our-work" && <HiringMarquee />}
       </nav>
 
     </>
