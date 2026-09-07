@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, ArrowLeft } from "lucide-react";
+import { Menu, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -26,24 +26,6 @@ export default function Navbar({ hideHiring = false } = {}) {
     setMobileMenuOpen(false);
     setOpenMenu(null);
   };
-
-  const handleVideoClick = (id) => {
-    closeMobileMenu();
-    if (pathname === "/") {
-      const section = document.getElementById(id);
-      section?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      router.push(`/#${id}`);
-    }
-  };
-
-  const videoLinks = [
-    { name: "VSL Videos", id: "v1" },
-    { name: "SaaS Videos", id: "v3" },
-    { name: "Talking Head Videos", id: "v6" },
-    { name: "Documentaries", id: "v9" },
-    { name: "Graphic Design", id: "v10" },
-  ];
 
   return (
     <>
