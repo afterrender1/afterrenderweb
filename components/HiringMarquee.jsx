@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Inter } from "next/font/google";
+import { Urbanist } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const urbanist = Urbanist({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], display: "swap" });
 
 const messages = [
     { icon: "🚀", role: "Top Talent" },
@@ -26,7 +26,7 @@ export default function CreativeHiringTicker() {
     }, []);
 
     return (
-        <div className={`${inter.className} w-full bg-[#0A2540] border-y border-white/5 py-0.5 overflow-hidden relative group`}>
+        <div className={`${urbanist.className} w-full bg-[#0A2540] border-y border-white/5 py-0.5 overflow-hidden relative group`}>
             {/* Background Glow Effect */}
             <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -58,7 +58,7 @@ export default function CreativeHiringTicker() {
                 <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ repeat: Infinity, duration: 2 }}
-                    className="text-[9px] font-bold tracking-widest text-white/40 uppercase group-hover:text-white transition-colors"
+                    className="text-[9px] font-bold tracking-widest text-blue-200 uppercase group-hover:text-white transition-colors"
                 >
                     Apply Now →
                 </motion.span>

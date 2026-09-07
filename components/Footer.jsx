@@ -89,19 +89,20 @@ const Footer = ({ theme }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAFA] to-[#F0F2F5] z-0" />
       )}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 sm:py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Col 1: Brand */}
         <div>
           <Link href="/" className="text-2xl font-semibold inline-block mb-3">
             <Image
               src="/logos/arlogo.png"
               alt="AfterRender Logo"
-              width={220}
-              height={56}
+              width={180}
+              height={46}
+              className="w-[160px] sm:w-[180px] h-auto"
             />
           </Link>
           <p
-            className={`leading-relaxed mb-4 text-sm ${
+            className={`leading-relaxed mb-4 text-xs sm:text-sm ${
               isLight ? "text-gray-600" : "text-[#9FC8F1]"
             }`}
           >
@@ -111,22 +112,26 @@ const Footer = ({ theme }) => {
             {[
               {
                 Icon: Instagram,
+                name: "Follow AfterRender on Instagram",
                 url: "https://www.instagram.com/afterrender/?hl=en",
               },
               {
                 Icon: Youtube,
+                name: "Subscribe to AfterRender on YouTube",
                 url: "https://www.youtube.com/@AfterRender",
               },
               {
                 Icon: Facebook,
+                name: "Follow AfterRender on Facebook",
                 url: "https://www.facebook.com/p/AfterRender-61563053082911/",
               },
-            ].map(({ Icon, url }, i) => (
+            ].map(({ Icon, name, url }, i) => (
               <motion.a
                 key={i}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={name}
                 whileHover={{ scale: 1.15, y: -2 }}
                 className={`p-2.5 rounded-full transition ${
                   isLight
@@ -142,13 +147,13 @@ const Footer = ({ theme }) => {
 
         {/* Col 2: Navigation */}
         <div>
-          <h4
+          <h3
             className={`text-base font-bold mb-4 ${
               isLight ? "text-gray-950" : "text-[#C9E4FF]"
             }`}
           >
             Navigation
-          </h4>
+          </h3>
           <ul
             className={`space-y-2.5 text-sm font-medium ${
               isLight ? "text-gray-600" : "text-[#9FC8F1]"
@@ -175,13 +180,13 @@ const Footer = ({ theme }) => {
 
         {/* Col 3: Get a Quote */}
         <div>
-          <h4
+          <h3
             className={`text-base font-bold mb-3 ${
               isLight ? "text-gray-950" : "text-[#C9E4FF]"
             }`}
           >
             Get a Quote
-          </h4>
+          </h3>
           <p
             className={`mb-4 text-xs sm:text-[13px] leading-relaxed ${
               isLight ? "text-gray-600" : "text-[#9FC8F1]"
@@ -254,13 +259,13 @@ const Footer = ({ theme }) => {
 
         {/* Col 4: Contact */}
         <div>
-          <h4
+          <h3
             className={`text-base font-bold mb-4 ${
               isLight ? "text-gray-950" : "text-[#C9E4FF]"
             }`}
           >
             Contact
-          </h4>
+          </h3>
           <ul
             className={`space-y-2 text-sm font-medium ${
               isLight ? "text-gray-600" : "text-[#9FC8F1]"

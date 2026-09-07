@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus_Jakarta_Sans, Playfair_Display, Inter } from "next/font/google";
-import { Info, Check, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Check, ChevronDown , Info } from "lucide-react";
 import Link from "next/link";
 
 const jakarta = Plus_Jakarta_Sans({

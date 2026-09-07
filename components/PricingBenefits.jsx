@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
-import { Send } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],

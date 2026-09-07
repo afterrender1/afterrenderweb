@@ -1,35 +1,52 @@
 
 import React from "react";
 import Image from "next/image";
+import { Urbanist, Playfair_Display } from "next/font/google";
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic", "normal"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 const TestimonialCard = ({ rating, quote, name, title, img, className }) => {
   return (
     <div
-      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/30 cursor-default transition-all duration-500 rounded-2xl p-4 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/20 ${className}`}
+      className={`backdrop-blur-md bg-white/5 border border-white/10 hover:border-[#48A2FF]/30 cursor-default transition-all duration-300 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-lg hover:shadow-[#48A2FF]/15 ${className}`}
     >
-      <div className="flex gap-1 mb-3">
+      <div className="flex gap-1 mb-2.5">
         {[...Array(rating)].map((_, i) => (
-          <span key={i} className="text-white text-xl">★</span>
+          <span key={i} className="text-white text-base sm:text-lg">★</span>
         ))}
       </div>
 
-      <p className="text-gray-200 text-[0.8rem] sm:text-[0.8rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[1rem] leading-relaxed mb-8 grow" style={{ fontFamily: "poppins" }}>
+      <p className="text-gray-200 text-xs sm:text-sm leading-relaxed mb-4 grow" style={{ fontFamily: "poppins" }}>
         "{quote}"
       </p>
 
-      <div className="flex items-center gap-5 mt-auto">
-        <div className="relative w-14 h-14 rounded-full overflow-hidden flex items-center justify-center">
+      <div className="flex items-center gap-3 mt-auto">
+        <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-white/10">
           <Image
             loading="lazy"
+            decoding="async"
             src={img}
             alt={name}
-            fill
-            className="object-cover rounded-full"
+            width={44}
+            height={44}
+            sizes="44px"
+            className="object-cover rounded-full w-10 h-10 sm:w-11 sm:h-11"
           />
         </div>
         <div>
-          <h4 className="text-white font-semibold text-[1rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{name}</h4>
-          <p className="text-gray-400 text-[0.6rem] sm:text-[0.8rem] md:text-[0.8rem] lg:text-[0.9rem] xl:text-[0.9rem]">{title}</p>
+          <h3 className="text-white font-semibold text-xs sm:text-sm">{name}</h3>
+          <p className="text-gray-400 text-[11px] sm:text-xs">{title}</p>
         </div>
       </div>
 
@@ -93,33 +110,32 @@ const Testimonials = () => {
 
   return (
     <section
-      className="relative bg-cover bg-center py-20 px-6"
-
+      className="relative bg-cover bg-center py-10 sm:py-14 px-4 sm:px-6"
     >
-      <div className="absolute inset-0 "></div>
-      <div className="relative max-w-6xl mx-auto z-10 bg-no-repeat bg-contain bg-center " style={{
+      <div className="absolute inset-0"></div>
+      <div className="relative max-w-5xl mx-auto z-10 bg-no-repeat bg-contain bg-center" style={{
         backgroundImage: "url('/images/casebg.png')",
       }}>
-        <div className="text-center mb-8">
-          <p className="text-white text-[0.6rem] sm:text-[0.7rem] md:text-[0.7rem] lg:text-[0.8rem] xl:text-[0.9rem]  tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
+        <div className="text-center mb-6 sm:mb-10">
+          <p className="text-white text-xs font-medium tracking-wider mb-2 sm:mb-3 rounded-full px-3 py-1 inline-block border border-gray-600">
             Client Testimonials
           </p>
-          <h2 className="text-[1.2rem] sm:text-[1rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.8rem] font-semibold text-white mb-1" style={{ fontFamily: "poppins" }}>
-            Trusted by{" "}
-            <span className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
-              creators & <br className="hidden md:block"/> brands
+          <h2 className={`${urbanist.className} text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 tracking-tight`}>
+            Trusted by creators &{" "}
+            <span className={`${playfair.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]`}>
+              brands
             </span>
           </h2>
-          <p className="text-gray-400  text-[0.8rem] sm:text-[0.9rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[1rem]">and there's a good reason why</p>
+          <p className="text-gray-400 text-xs sm:text-sm">and there's a good reason why</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 w-full">
-          <TestimonialCard {...testimonials[0]} className="mb-8 lg:col-span-2" />
-          <TestimonialCard {...testimonials[1]} className="mb-26 lg:col-span-2" />
-          <TestimonialCard {...testimonials[2]} className="lg:col-span-2" />
-          <TestimonialCard {...testimonials[3]} className="mb-10 lg:col-span-2" />
-          <TestimonialCard {...testimonials[4]} className="mb-2 lg:col-span-2" />
-          <TestimonialCard {...testimonials[5]} className="lg:col-span-2" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
+          <TestimonialCard {...testimonials[0]} className="lg:translate-y-2" />
+          <TestimonialCard {...testimonials[1]} className="lg:translate-y-4" />
+          <TestimonialCard {...testimonials[2]} className="lg:translate-y-1" />
+          <TestimonialCard {...testimonials[3]} className="lg:translate-y-3" />
+          <TestimonialCard {...testimonials[4]} className="lg:translate-y-1" />
+          <TestimonialCard {...testimonials[5]} className="lg:translate-y-4" />
         </div>
       </div>
     </section>

@@ -1,44 +1,57 @@
 import Link from 'next/link';
 import React from 'react';
+import { Urbanist, Playfair_Display } from "next/font/google";
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic", "normal"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
 
 const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
   return (
     <div
-      className={`bg-white/4 backdrop-blur-md rounded-3xl p-5 md:p-6 border border-gray-900 transition-all duration-300 flex flex-col 
-      ${small ? 'scale-[0.95] lg:translate-y-6' : ''}`}
+      className={`bg-white/4 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-gray-800/80 transition-all duration-300 flex flex-col 
+      ${small ? 'scale-100 lg:scale-[0.98] lg:translate-y-2' : ''}`}
     >
-      <div className="md:mb-8 mb-4" style={{ fontFamily: 'poppins' }}>
-        <p className="text-gray-400 font-semibold text-[0.7rem] sm:text-[0.7rem] md:text-[0.9rem] lg:text-[0.9rem] xl:text-[0.9rem] mb-2">{label}</p>
-        <h3 className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] lg:text-[1.6rem] xl:text-[1.7rem] font-bold text-white mb-4">
+      <div className="mb-3 sm:mb-5" style={{ fontFamily: 'poppins' }}>
+        <p className="text-gray-400 font-semibold text-[11px] sm:text-xs mb-1">{label}</p>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-1.5">
           {title}
         </h3>
-        {subtitle && <p className="text-gray-400 text-[0.8rem] sm:text-[0.9rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{subtitle}</p>}
+        {subtitle && <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">{subtitle}</p>}
       </div>
-
 
       <Link href="https://calendly.com/afterrenderagency/new-meeting" target="_blank" rel="noopener noreferrer">
         <button
           style={{ fontFamily: 'poppins' }}
           className="cursor-pointer w-full font-bold 
-             bg-black/25 backdrop-blur-md text-white text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] lg:text-[1.1rem] xl:text-[1.3rem]
-             py-3 md:py-4 px-6 rounded-2xl 
+             bg-black/40 backdrop-blur-md text-white text-xs sm:text-sm
+             py-2.5 sm:py-3 px-5 rounded-xl 
              border border-gray-700 
              hover:border-gray-500 
              transition-all duration-300 ease-in-out 
-             md:mb-8 mb-3 hover:scale-[1.02] hover:shadow-lg"
+             mb-4 sm:mb-6 hover:scale-[1.01] hover:shadow-md"
         >
           {buttonText}
         </button>
       </Link>
 
-
       <div className="grow">
-        <p className="text-gray-200 text-sm mb-2 font-medium">Includes:</p>
-        <ul className="space-y-3">
+        <p className="text-gray-200 text-xs mb-2.5 font-semibold">Includes:</p>
+        <ul className="space-y-2 sm:space-y-2.5">
           {includes.map((item, index) => (
-            <li key={index} className="flex items-start gap-3">
+            <li key={index} className="flex items-start gap-2.5">
               <svg
-                className="w-4 h-4 text-green-500 mt-0.5 shrink-0"
+                className="w-3.5 h-3.5 text-green-400 mt-0.5 shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -50,7 +63,7 @@ const OfferCard = ({ label, title, subtitle, buttonText, includes, small }) => {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-white  text-[0.8rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1rem]">{item}</span>
+              <span className="text-gray-300 text-xs sm:text-sm leading-snug">{item}</span>
             </li>
           ))}
         </ul>
@@ -92,7 +105,7 @@ const OurOffers = () => {
   ];
 
   return (
-    <div className="relative min-h-screen bg-black py-20 px-4 overflow-hidden">
+    <div className="relative bg-black py-10 sm:py-14 px-4 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-30"
@@ -105,25 +118,24 @@ const OurOffers = () => {
         <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="text-center mb-16" style={{ fontFamily: 'poppins' }}>
+      <div className="relative z-10 max-w-4xl mx-auto">
+        <div className="text-center mb-6 sm:mb-10" style={{ fontFamily: 'poppins' }}>
           <h2
-            className="text-4xl md:text-5xl lg:text-[2.8rem] font-bold text-white mb-4"
+            className={`${urbanist.className} text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1.5 sm:mb-2 tracking-tight`}
           >
-            Our{' '}
+            Our{" "}
             <span
-              className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"
-              style={{ fontFamily: 'michroma' }}
+              className={`${playfair.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]`}
             >
               Offers
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-xs sm:text-sm max-w-xl mx-auto">
             Choose the perfect package for your business growth
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[960px] mx-auto items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto items-start">
           {offers.map((offer, index) => (
             <OfferCard
               key={index}

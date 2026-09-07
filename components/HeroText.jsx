@@ -21,15 +21,9 @@ export const editorialSerif = Playfair_Display({
 const words = ["Video Edits", "Graphic Design"];
 
 const HeroText = () => {
-  const [showBackground, setShowBackground] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowBackground(true), 1300);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Typewriter effect logic
   useEffect(() => {
@@ -62,13 +56,9 @@ const HeroText = () => {
 
   return (
     <section
-      className="relative flex flex-col justify-center items-center min-h-[650px] sm:min-h-[750px] text-white transition-opacity duration-1000 ease-in-out overflow-hidden pt-28 pb-16"
+      className="relative flex flex-col justify-center items-center min-h-[650px] sm:min-h-[750px] text-white overflow-hidden pt-28 pb-16 bg-center bg-contain bg-no-repeat"
       style={{
-        backgroundImage: showBackground ? "url('/images/hb1.png')" : "none",
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        opacity: showBackground ? 1 : 0.5,
+        backgroundImage: "url('/images/hb1.png')",
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
@@ -102,7 +92,9 @@ const HeroText = () => {
 
         <div className="flex justify-center items-center ">
           <motion.video
-            poster="https://res.cloudinary.com/dlurrugno/image/upload/v1770043205/mainvposter_mw1d20.png"
+            poster="https://res.cloudinary.com/dlurrugno/image/upload/f_auto,q_auto,w_900/v1770043205/mainvposter_mw1d20.png"
+            preload="none"
+            aria-label="AfterRender Introduction Video"
             controls
             autoPlay={false}
             muted={false}
@@ -111,7 +103,7 @@ const HeroText = () => {
             className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
           >
             <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1770041503/mainintrovideo_m2pujs.mp4" type="video/mp4" />
             Your browser does not support the video tag.

@@ -17,16 +17,18 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <Hero />
-      <Testimonials />
-      <CaseStudies />
-      <Portfolio />
-      <ThumbnailsComponents />
-      <HowItWorks />
-      <OurOffers />
-      <FAQ />
-      <VideoTestimonials />
-      <ContactForm />
+      <main id="main-content">
+        <Hero />
+        <Testimonials />
+        <CaseStudies />
+        <Portfolio />
+        <ThumbnailsComponents />
+        <HowItWorks />
+        <OurOffers />
+        <FAQ />
+        <VideoTestimonials />
+        <ContactForm />
+      </main>
       <Footer />
     </>
   )

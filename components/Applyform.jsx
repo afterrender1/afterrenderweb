@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader, Video, Code2, Link as LinkIcon, Briefcase, AlertCircle } from "lucide-react";
+import { Loader, Video, Code2, Briefcase, AlertCircle } from "lucide-react";
 
 const roleOptions = [
     "Video Editor",

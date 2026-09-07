@@ -1,6 +1,20 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { Urbanist, Playfair_Display } from "next/font/google";
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic", "normal"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 const ProcessCard = ({ number, img, title, description }) => {
   return (
@@ -31,11 +45,11 @@ const ProcessCard = ({ number, img, title, description }) => {
           </div>
 
          <div>
-           <h3 className="text-white text-[1.2rem] sm:text-[1rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.3rem] font-semibold mb-3">
+           <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3">
             {title}
           </h3>
 
-          <p className="text-gray-400 text-[0.9rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] xl:text-[1.1rem] leading-relaxed">
+          <p className="text-gray-400 text-xs sm:text-sm md:text-base leading-relaxed">
             {description}
           </p>
          </div>
@@ -78,23 +92,21 @@ const HowItWorks = () => {
       ></div>
       <div className="absolute inset-0 bg-linear-to-b from-black via-black/90 to-black z-0"></div>
       <div className="relative z-10 max-w-5xl mx-auto">
-        <div className="text-center mb-20">
-          <p className="text-white text-sm tracking-wider mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
+        <div className="text-center mb-14 sm:mb-20">
+          <p className="text-white text-xs sm:text-sm tracking-wider mb-3 sm:mb-4 rounded-full px-3 py-1 inline-block border border-gray-600">
             How it works
           </p>
           <h2
-            className="text-2xl md:text-[2.8rem] font-bold text-white mb-4"
-            style={{ fontFamily: "poppins" }}
+            className={`${urbanist.className} text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] font-bold text-white mb-3 sm:mb-4 tracking-tight`}
           >
             Getting started is{" "}
             <span
-              className="text-transparent bg-clip-text tracking-wider bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]"
-              style={{ fontFamily: "michroma" }}
+              className={`${playfair.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]`}
             >
               simple
             </span>
           </h2>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg">
             and there's a good reason why
           </p>
         </div>

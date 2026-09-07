@@ -6,7 +6,14 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { Urbanist } from "next/font/google";
 import HiringMarquee from "@/components/HiringMarquee";
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export default function Navbar({ hideHiring = false }) {
   const [openMenu, setOpenMenu] = useState(null);
@@ -52,7 +59,7 @@ export default function Navbar({ hideHiring = false }) {
   return (
     <>
 
-      <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md">
+      <nav className={`${urbanist.className} fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md`}>
         <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 text-white">
           <Link href="/" className="text-2xl font-semibold tracking-wide z-50">
             <Image
@@ -60,12 +67,13 @@ export default function Navbar({ hideHiring = false }) {
               alt="AfterRender"
               width={180}
               height={45}
-              className="sm:w-[220px] sm:h-14"
+              priority
+              className="w-[145px] xs:w-[170px] sm:w-[190px] lg:w-[185px] h-auto object-contain"
             />
           </Link>
 
           <div
-            className="hidden lg:flex items-center space-x-8"
+            className="hidden lg:flex items-center space-x-7 text-sm font-medium"
            >
             <div className="relative">
               <button
@@ -186,12 +194,11 @@ export default function Navbar({ hideHiring = false }) {
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center space-x-5">
+          <div className="hidden lg:flex items-center space-x-4">
             <Link
               target="_blank"
               href="https://calendly.com/afterrenderagency/new-meeting"
-              style={{ fontFamily: "montserrat" }}
-              className="cursor-pointer ml-4 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-base text-[#0A2540] font-semibold px-8 py-3 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl hover:brightness-110 transition-all duration-300"
+              className="cursor-pointer ml-3 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-xs lg:text-sm text-[#0A2540] font-semibold px-5 py-2.5 rounded-lg shadow-md hover:scale-105 hover:shadow-lg hover:brightness-110 transition-all duration-300"
             >
               Book a Call
             </Link>
@@ -218,7 +225,7 @@ export default function Navbar({ hideHiring = false }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.45, ease: "easeInOut" }}
-              className="lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-hidden rounded-l-2xl shadow-2xl"
+              className="lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto rounded-l-2xl shadow-2xl z-50"
             >
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -228,7 +235,6 @@ export default function Navbar({ hideHiring = false }) {
 
               <div
                 className="relative flex flex-col h-full pt-20 px-6 text-white z-10"
-                style={{ fontFamily: "montserrat" }}
               >
                 <div className="my-4">
                   <div className="max-w-sm mx-auto p-4 text-center">
