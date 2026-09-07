@@ -97,7 +97,7 @@ const plans = {
   },
 };
 
-export default function PricingHero() {
+export default function PricingHero({ hideHeader = false, id = "plans" }) {
   const [activeTab, setActiveTab] = useState("video");
   const [activeRequests, setActiveRequests] = useState(1);
   const [lightningFast, setLightningFast] = useState(false);
@@ -116,62 +116,69 @@ export default function PricingHero() {
 
   return (
     <section
-      className={`${jakarta.className} relative min-h-screen bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
+      id={id}
+      className={`${jakarta.className} relative min-h-screen bg-[#FAFAFA] text-black ${
+        hideHeader ? "pt-8 sm:pt-12" : "pt-32 sm:pt-36"
+      } pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
     >
       {/* Background Soft Mesh Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
 
-      {/* Floating Badges */}
-      <div className="w-full max-w-3xl relative">
-        {/* Left Floating Badge: @Subscribe */}
-        <motion.div
-          initial={{ opacity: 0, x: -20, rotate: -8 }}
-          animate={{ opacity: 1, x: 0, rotate: -8 }}
-          whileHover={{ scale: 1.06, rotate: -4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute -top-7 left-1 sm:left-4 md:left-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#3b82f6] to-[#60a5fa] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(59,130,246,0.3)] cursor-pointer select-none"
-        >
-          <span>@Subscribe</span>
-        </motion.div>
+      {!hideHeader && (
+        <>
+          {/* Floating Badges */}
+          <div className="w-full max-w-3xl relative">
+            {/* Left Floating Badge: @Subscribe */}
+            <motion.div
+              initial={{ opacity: 0, x: -20, rotate: -8 }}
+              animate={{ opacity: 1, x: 0, rotate: -8 }}
+              whileHover={{ scale: 1.06, rotate: -4 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="absolute -top-7 left-1 sm:left-4 md:left-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#3b82f6] to-[#60a5fa] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(59,130,246,0.3)] cursor-pointer select-none"
+            >
+              <span>@Subscribe</span>
+            </motion.div>
 
-        {/* Right Floating Badge: @Connect */}
-        <motion.div
-          initial={{ opacity: 0, x: 20, rotate: 10 }}
-          animate={{ opacity: 1, x: 0, rotate: 10 }}
-          whileHover={{ scale: 1.06, rotate: 6 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute -top-7 right-1 sm:right-4 md:right-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#c084fc] to-[#a855f7] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(168,85,247,0.3)] cursor-pointer select-none"
-        >
-          <span>@Connect</span>
-        </motion.div>
-      </div>
+            {/* Right Floating Badge: @Connect */}
+            <motion.div
+              initial={{ opacity: 0, x: 20, rotate: 10 }}
+              animate={{ opacity: 1, x: 0, rotate: 10 }}
+              whileHover={{ scale: 1.06, rotate: 6 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="absolute -top-7 right-1 sm:right-4 md:right-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#c084fc] to-[#a855f7] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(168,85,247,0.3)] cursor-pointer select-none"
+            >
+              <span>@Connect</span>
+            </motion.div>
+          </div>
 
-      {/* Hero Title & Subtitle */}
-      <div className="text-center max-w-2xl mx-auto z-10">
-        <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="text-3xl sm:text-4xl md:text-[42px] tracking-tight text-[#111111] leading-[1.18]"
-        >
-          <span
-            className={`${playfair.className} italic font-normal block sm:inline-block`}
-          >
-            Unlimited Creatives!
-          </span>{" "}
-          <span className="font-extrabold block sm:inline-block">One Subscription.</span>
-        </motion.h1>
+          {/* Hero Title & Subtitle */}
+          <div className="text-center max-w-2xl mx-auto z-10">
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
+              className="text-3xl sm:text-4xl md:text-[42px] tracking-tight text-[#111111] leading-[1.18]"
+            >
+              <span
+                className={`${playfair.className} italic font-normal block sm:inline-block`}
+              >
+                Unlimited Creatives!
+              </span>{" "}
+              <span className="font-extrabold block sm:inline-block">One Subscription.</span>
+            </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.08 }}
-          className="mt-3.5 text-[#555555] text-xs sm:text-sm md:text-[14.5px] leading-relaxed max-w-xl mx-auto font-medium"
-        >
-          From social media posts to full-scale video campaigns, choose the plan
-          that matches your creative needs and watch your brand grow.
-        </motion.p>
-      </div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.08 }}
+              className="mt-3.5 text-[#555555] text-xs sm:text-sm md:text-[14.5px] leading-relaxed max-w-xl mx-auto font-medium"
+            >
+              From social media posts to full-scale video campaigns, choose the plan
+              that matches your creative needs and watch your brand grow.
+            </motion.p>
+          </div>
+        </>
+      )}
 
       {/* Tab Switcher */}
       <motion.div
