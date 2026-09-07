@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import Hero from './Hero'
 import Testimonials from './Testimonials'
 import Services from './Services'
+import ShortVideoClientTestimonials from './ShortVideoClientTestimonials'
 import FAQ from './FAQ'
 import ContactForm from './Contact'
 import Footer from './Footer'
@@ -15,6 +16,7 @@ const Home = () => {
         <Hero />
         <Testimonials />
         <Services />
+        <ShortVideoClientTestimonials />
         <FAQ />
         <ContactForm />
       </main>
