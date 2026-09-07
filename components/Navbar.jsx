@@ -20,7 +20,7 @@ export default function Navbar({ hideHiring = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const isPricing = pathname === "/pricing";
+  const isPricing = pathname === "/pricing" || pathname === "/our-work";
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
   const closeMobileMenu = () => {
@@ -38,22 +38,12 @@ export default function Navbar({ hideHiring = false }) {
     }
   };
 
-  const handleWorkClick = (href) => {
-    closeMobileMenu();
-    router.push(href);
-  };
-
   const videoLinks = [
     { name: "VSL Videos", id: "v1" },
     { name: "SaaS Videos", id: "v3" },
     { name: "Talking Head Videos", id: "v6" },
     { name: "Documentaries", id: "v9" },
     { name: "Graphic Design", id: "v10" },
-  ];
-
-  const workLinks = [
-    { name: "Social Media Presence", href: "/social-media" },
-    { name: "Live Web Projects", href: "/our-work" },
   ];
 
   return (
@@ -118,48 +108,16 @@ export default function Navbar({ hideHiring = false }) {
               </AnimatePresence>
             </div>
 
-            <div className="relative">
-              <button
-                onClick={() => toggleMenu("work")}
-                className={`flex items-center gap-1 transition-colors ${
-                  isPricing
-                    ? "text-black hover:text-[#59B7FF]"
-                    : "text-white hover:text-[#59B7FF]"
-                }`}
-              >
-                Social Media <ChevronDown size={18} />
-              </button>
-
-              <AnimatePresence>
-                {openMenu === "work" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute z-100 top-10 left-0 bg-white text-black shadow-xl rounded-xl w-56 py-2 overflow-hidden"
-                  >
-                    {workLinks.map((item, i) => (
-                      <motion.div
-                        key={i}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.15 }}
-                      >
-                        <button
-                          onClick={() => handleWorkClick(item.href)}
-                          className="block w-full text-left px-4 py-2.5 text-sm text-gray-800 relative overflow-hidden group transition-all duration-300"
-                        >
-                          <span className="absolute left-0 top-0 h-full w-0.5 bg-[#48A2FF] opacity-0 group-hover:opacity-100 group-hover:w-1 transition-all duration-300" />
-                          <span className="relative z-10 group-hover:text-[#48A2FF] transition-colors duration-300">
-                            {item.name}
-                          </span>
-                        </button>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <Link
+              href="/our-work"
+              className={`transition-colors ${
+                isPricing
+                  ? "text-black hover:text-[#59B7FF]"
+                  : "hover:text-[#59B7FF]"
+              }`}
+            >
+              Our Work
+            </Link>
 
 
             <Link
@@ -309,18 +267,18 @@ export default function Navbar({ hideHiring = false }) {
                 </div>
 
                 <Link
-                  href="/social-media"
-                  onClick={closeMobileMenu}
-                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
-                >
-                  Social Media Presence
-                </Link>
-                <Link
                   href="/our-work"
                   onClick={closeMobileMenu}
                   className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
                 >
-                  Live Web Projects <span></span>
+                  Our Work
+                </Link>
+                <Link
+                  href="/pricing"
+                  onClick={closeMobileMenu}
+                  className="py-3 text-white hover:text-[#59B7FF] transition-colors font-semibold text-xl"
+                >
+                  Pricing
                 </Link>
                 <Link
                   href="/blogs"
@@ -370,7 +328,7 @@ export default function Navbar({ hideHiring = false }) {
             />
           )}
         </AnimatePresence>
-        {!hideHiring && pathname !== "/pricing" && <HiringMarquee />}
+        {!hideHiring && pathname !== "/pricing" && pathname !== "/our-work" && <HiringMarquee />}
       </nav>
 
     </>

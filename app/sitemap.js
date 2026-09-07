@@ -13,7 +13,7 @@ export default async function sitemap() {
     const baseUrl =
         process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    const staticPages = ["", "/pricing", "/our-work", "/social-media", "/blogs", "/apply"];
+    const staticPages = ["", "/pricing", "/our-work", "/blogs", "/apply"];
 
     return [
         // Static pages

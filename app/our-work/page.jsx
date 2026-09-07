@@ -1,20 +1,32 @@
-import Navbar from '@/components/Navbar'
-import React from 'react'
-import Footer from '@/components/Footer'
-import OurWork from '@/components/OurWork'
-import ContactForm from '@/components/Contact'
+import Navbar from "@/components/Navbar";
+import PricingHero from "@/components/PricingHero";
+import PricingListOfServices from "@/components/PricingListOfServices";
+import PricingBenefits from "@/components/PricingBenefits";
+import PricingTestimonials from "@/components/PricingTestimonials";
+import PricingFAQ from "@/components/PricingFAQ";
+import WhatWeCreateCarosel from "@/components/WhatWeCreateCarosel";
+import Footer from "@/components/Footer";
+import React from "react";
 
-const page = () => {
+export const metadata = {
+  title: "Our Work & Plans | AfterRender",
+  description:
+    "Unlimited Creatives with One Subscription. Explore our work, video editing, and graphic design packages tailored for your business growth.",
+};
+
+const OurWorkPage = () => {
   return (
-    <>
+    <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
-      <div className='py-6'>
-        <OurWork />
-      </div>
-      <ContactForm />
+      <PricingHero />
+      <PricingListOfServices />
+      <PricingBenefits />
+      <PricingTestimonials />
+      <PricingFAQ />
+      <WhatWeCreateCarosel />
       <Footer />
-    </>
-  )
-}
+    </main>
+  );
+};
 
-export default page
+export default OurWorkPage;
