@@ -407,6 +407,37 @@ export const videosItems = [
     isVertical: true,
   },
   {
+    id: "short-16",
+    title: "Short #16",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485735/Reel_5_ejbmvc.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter9.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-17",
+    title: "Short #17",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485082/Reel-9_qm1qmz.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter10.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-18",
+    title: "Short #18",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485068/reel-7_py9rkc.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter11.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+
+  {
     id: "th-4",
     title: "Long form #4",
     category: "Talking Heads",
