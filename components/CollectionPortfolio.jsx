@@ -777,7 +777,7 @@ export default function CollectionPortfolio() {
               <span className="relative z-10">Videos</span>
             </button>
 
-            <button
+            {/* <button
               type="button"
               onClick={() => handleTabChange("graphics")}
               className={`relative px-6 sm:px-7 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
@@ -794,7 +794,7 @@ export default function CollectionPortfolio() {
                 />
               )}
               <span className="relative z-10">Graphics</span>
-            </button>
+            </button> */}
           </div>
         </div>
 
