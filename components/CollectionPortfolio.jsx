@@ -35,11 +35,11 @@ export const graphicsCategories = [
 
 export const videosCategories = [
   "Shorts form edits",
-  "RealEstate",
+  "Real Estate",
   "Montage style",
-  "SaaS Videos",
   "Talking Heads",
   "Long form edits",
+  "SaaS Videos",
 ];
 
 export const graphicsItems = [
@@ -597,7 +597,7 @@ export const videosItems = [
   {
     id: "realestate-1",
     title: "RealEstate #1",
-    category: "RealEstate",
+    category: "Real Estate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789477840/Han_reel_1_ik1u7i.mp4",
     posterUrl: "/images/montageposters/montage-poster1.png",
@@ -607,7 +607,7 @@ export const videosItems = [
   {
     id: "realestate-2",
     title: "RealEstate #2",
-    category: "RealEstate",
+    category: "Real Estate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789478071/Diceman_drive_keykmv.mp4",
     posterUrl: "/images/montageposters/montage-poster2.png",
@@ -617,7 +617,7 @@ export const videosItems = [
   {
     id: "realestate-3",
     title: "RealEstate #3",
-    category: "RealEstate",
+    category: "Real Estate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
     posterUrl: "/images/video-tn/five.png",
@@ -627,7 +627,7 @@ export const videosItems = [
   {
     id: "realestate-4",
     title: "RealEstate #4",
-    category: "RealEstate",
+    category: "Rea lEstate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
     posterUrl: "/images/video-tn/six.png",
@@ -637,7 +637,7 @@ export const videosItems = [
   {
     id: "realestate-5",
     title: "RealEstate #5",
-    category: "RealEstate",
+    category: "Real Estate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789471166/Ali_reel_1_rev_rhealk.mp4",
     posterUrl: "/images/shortformvideoposters/shortvideoposter2.png",
@@ -647,7 +647,7 @@ export const videosItems = [
   {
     id: "realestate-6",
     title: "RealEstate #6",
-    category: "RealEstate",
+    category: "Real Estate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789472093/Alexing_closing_jw0ln9.mp4",
     posterUrl: "/images/shortformvideoposters/shortvideoposter8.png",
