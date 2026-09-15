@@ -157,6 +157,9 @@ const emptySubscribe = () => () => {};
 
 const ShortVideoClientTestimonials = () => {
   const [activeModalIndex, setActiveModalIndex] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimerRef = useRef(null);
+
   const isMounted = React.useSyncExternalStore(
     emptySubscribe,
     () => true,
@@ -164,13 +167,44 @@ const ShortVideoClientTestimonials = () => {
   );
   const scrollContainerRef = useRef(null);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
+  const closeModal = React.useCallback(() => {
+    if (activeModalIndex === null || isClosing) return;
+
+    // Check if big device (min-width: 768px)
+    const isBigDevice =
+      typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches;
+
+    if (isBigDevice) {
+      setIsClosing(true);
+      closeTimerRef.current = setTimeout(() => {
+        setActiveModalIndex(null);
+        setIsClosing(false);
+      }, 180); // matches popupCardOut 0.18s
+    } else {
+      // Instant close on small screens: zero lag, zero delay
+      setActiveModalIndex(null);
+    }
+  }, [activeModalIndex, isClosing]);
+
+  const openModal = (index) => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    setIsClosing(false);
+    setActiveModalIndex(index);
+  };
+
   // Keyboard navigation for modal (Escape, ArrowLeft, ArrowRight) and body scroll lock
   useEffect(() => {
     if (activeModalIndex === null) return;
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setActiveModalIndex(null);
+        closeModal();
       } else if (e.key === "ArrowLeft") {
         setActiveModalIndex((prev) =>
           prev > 0 ? prev - 1 : clientVideoTestimonialsData.length - 1
@@ -189,7 +223,7 @@ const ShortVideoClientTestimonials = () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeModalIndex]);
+  }, [activeModalIndex, closeModal]);
 
   const handlePrev = () => {
     setActiveModalIndex((prev) =>
@@ -304,7 +338,7 @@ const ShortVideoClientTestimonials = () => {
                   key={`t1-${videoItem.id}`}
                   item={videoItem}
                   index={index}
-                  onOpenModal={setActiveModalIndex}
+                  onOpenModal={openModal}
                 />
               ))}
             </div>
@@ -321,7 +355,7 @@ const ShortVideoClientTestimonials = () => {
                   key={`t2-${videoItem.id}`}
                   item={videoItem}
                   index={index}
-                  onOpenModal={setActiveModalIndex}
+                  onOpenModal={openModal}
                 />
               ))}
             </div>
@@ -338,7 +372,7 @@ const ShortVideoClientTestimonials = () => {
                   key={`t3-${videoItem.id}`}
                   item={videoItem}
                   index={index}
-                  onOpenModal={setActiveModalIndex}
+                  onOpenModal={openModal}
                 />
               ))}
             </div>
@@ -351,8 +385,12 @@ const ShortVideoClientTestimonials = () => {
         activeVideo &&
         createPortal(
           <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md transition-all duration-300"
-            onClick={() => setActiveModalIndex(null)}
+            className={`fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md ${
+              isClosing
+                ? "animate-modal-backdrop-out"
+                : "animate-modal-backdrop-in"
+            }`}
+            onClick={closeModal}
           >
             {/* Previous Video Button (Desktop) */}
             <button
@@ -362,7 +400,9 @@ const ShortVideoClientTestimonials = () => {
                 handlePrev();
               }}
               aria-label="Previous video"
-              className="hidden sm:flex absolute left-4 md:left-8 lg:left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl"
+              className={`hidden sm:flex absolute left-4 md:left-8 lg:left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl ${
+                isClosing ? "md:opacity-0" : "md:opacity-100"
+              }`}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
@@ -375,14 +415,20 @@ const ShortVideoClientTestimonials = () => {
                 handleNext();
               }}
               aria-label="Next video"
-              className="hidden sm:flex absolute right-4 md:right-8 lg:right-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl"
+              className={`hidden sm:flex absolute right-4 md:right-8 lg:right-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl ${
+                isClosing ? "md:opacity-0" : "md:opacity-100"
+              }`}
             >
               <ChevronRight className="w-6 h-6" />
             </button>
 
             {/* Video Modal Box */}
             <div
-              className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[9/16] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none"
+              className={`relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[9/16] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none ${
+                isClosing
+                  ? "animate-modal-card-out"
+                  : "animate-modal-card-in"
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Top Gradient Header: Client Details + Controls */}
@@ -425,7 +471,7 @@ const ShortVideoClientTestimonials = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveModalIndex(null)}
+                    onClick={closeModal}
                     aria-label="Close modal"
                     className="p-2 sm:p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                   >
