@@ -416,7 +416,7 @@ const ShortVideoClientTestimonials = () => {
 
             {/* Video Modal Box */}
             <div
-              className={`relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[14/18] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none ${
+              className={`relative w-full max-w-[340px] sm:max-w-[440px] md:max-w-[520px] lg:max-w-[580px] aspect-[14/18] md:aspect-[15/18] max-h-[88vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none ${
                 isClosing
                   ? "animate-modal-card-out"
                   : "animate-modal-card-in"
@@ -427,7 +427,7 @@ const ShortVideoClientTestimonials = () => {
               <div className="absolute top-0 inset-x-0 p-4 sm:p-5 bg-gradient-to-b from-black/95 via-black/60 to-transparent flex items-start justify-between z-20">
                 <div className="pr-3">
                   {activeVideo.role?.trim() ? (
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#48A2FF]/20 border border-[#48A2FF]/40 text-[#48A2FF] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1">
+                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-black/20 border border-[#48A2FF]/40 text-gray-400 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1">
                       {activeVideo.role}
                     </span>
                   ) : null}
