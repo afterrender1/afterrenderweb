@@ -637,6 +637,51 @@ export default function CollectionPortfolio() {
     (item) => item.category.toLowerCase().trim() === activeCategory.toLowerCase().trim()
   );
 
+  const hasMixedVideos =
+    filteredVideos.some((v) => !v.isVertical) &&
+    filteredVideos.some((v) => v.isVertical);
+  const longVideos = filteredVideos.filter((v) => !v.isVertical);
+  const shortVideos = filteredVideos.filter((v) => v.isVertical);
+
+  const renderVideoCard = (video) => (
+    <div
+      key={video.id}
+      className="group relative self-start h-fit rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-gray-200/80 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:border-[#48A2FF]/50 hover:shadow-[0_10px_28px_rgba(72,162,255,0.18)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+      onClick={() => {
+        if (video.videoUrl) {
+          setSelectedVideo(video);
+        }
+      }}
+    >
+      <div
+        className={`relative w-full ${
+          video.aspect || (video.isVertical ? "aspect-[9/16]" : "aspect-[16/9]")
+        } overflow-hidden bg-gray-950`}
+      >
+        <img
+          src={video.posterUrl}
+          alt={video.title}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+
+        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-300" />
+
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] flex items-center justify-center shadow-[0_4px_16px_rgba(72,162,255,0.45)] group-hover:scale-115 active:scale-95 transition-all duration-300">
+            <Play className="w-4 h-4 fill-[#0A2540] text-[#0A2540] ml-0.5" />
+          </div>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <p className="text-white text-xs sm:text-[13px] font-bold line-clamp-1">
+            {video.title}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
   const filteredGraphics = graphicsItems.filter(
     (item) => item.category.toLowerCase().trim() === activeCategory.toLowerCase().trim()
   );
@@ -756,46 +801,43 @@ export default function CollectionPortfolio() {
                 className="w-full"
               >
                 {filteredVideos.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-                    {filteredVideos.map((video) => (
-                      <div
-                        key={video.id}
-                        className="group relative rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-gray-200/80 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:border-[#48A2FF]/50 hover:shadow-[0_10px_28px_rgba(72,162,255,0.18)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                        onClick={() => {
-                          if (video.videoUrl) {
-                            setSelectedVideo(video);
-                          }
-                        }}
-                      >
-                        <div
-                          className={`relative w-full ${
-                            video.aspect || "aspect-[16/9]"
-                          } overflow-hidden bg-gray-950`}
-                        >
-                          <img
-                            src={video.posterUrl}
-                            alt={video.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-
-                          <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-300" />
-
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] flex items-center justify-center shadow-[0_4px_16px_rgba(72,162,255,0.45)] group-hover:scale-115 active:scale-95 transition-all duration-300">
-                              <Play className="w-4 h-4 fill-[#0A2540] text-[#0A2540] ml-0.5" />
-                            </div>
-                          </div>
-
-                          <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p className="text-white text-xs sm:text-[13px] font-bold line-clamp-1">
-                              {video.title}
-                            </p>
-                          </div>
+                  hasMixedVideos ? (
+                    <div className="space-y-10">
+                      <div>
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="w-2 h-2 rounded-full bg-[#48A2FF]" />
+                          <h4 className="text-gray-950 text-sm sm:text-base font-bold tracking-tight">
+                            Long Form
+                          </h4>
+                          <span className="text-xs text-gray-600 font-semibold px-2 py-0.5 rounded-full bg-gray-100">
+                            {longVideos.length}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                          {longVideos.map(renderVideoCard)}
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="pt-2 border-t border-gray-200/80">
+                        <div className="flex items-center gap-2 mb-4 mt-6">
+                          <span className="w-2 h-2 rounded-full bg-[#48A2FF]" />
+                          <h4 className="text-gray-950 text-sm sm:text-base font-bold tracking-tight">
+                            Shorts
+                          </h4>
+                          <span className="text-xs text-gray-600 font-semibold px-2 py-0.5 rounded-full bg-gray-100">
+                            {shortVideos.length}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                          {shortVideos.map(renderVideoCard)}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                      {filteredVideos.map(renderVideoCard)}
+                    </div>
+                  )
                 ) : (
                   <div className="w-full py-16 sm:py-20 px-6 rounded-2xl bg-white border border-gray-200/80 shadow-xs flex flex-col items-center justify-center text-center">
                     <div className="w-14 h-14 rounded-full bg-[#48A2FF]/10 text-[#48A2FF] flex items-center justify-center mb-4">
