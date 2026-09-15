@@ -104,7 +104,7 @@ const VideoCard = ({ item, index, onOpenModal }) => {
   return (
     <div
       onClick={() => onOpenModal(index)}
-      className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[12px] overflow-hidden bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 hover:scale-[1.03]"
+      className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[12px] overflow-hidden bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-colors duration-300"
     >
       {/* Top subtle highlight */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none group-hover:via-[#48A2FF]/60 transition-colors duration-500 z-10" />
@@ -115,7 +115,7 @@ const VideoCard = ({ item, index, onOpenModal }) => {
           src={item.poster}
           alt={item.clientName}
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
         <video
@@ -123,7 +123,7 @@ const VideoCard = ({ item, index, onOpenModal }) => {
           preload="metadata"
           playsInline
           muted
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover"
         />
       )}
 
@@ -144,7 +144,7 @@ const VideoCard = ({ item, index, onOpenModal }) => {
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 flex items-center justify-center transition-all duration-300 z-20">
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 rounded-full bg-[#48A2FF]/40 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] group-hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transform transition-all duration-300 group-hover:scale-110 active:scale-95">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] group-hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transition-colors duration-300">
             <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white ml-0.5" />
           </div>
         </div>
