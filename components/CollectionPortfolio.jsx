@@ -40,8 +40,8 @@ export const videosCategories = [
   "Shorts form edits",
   "Talking Heads",
   "Product Showcase",
-  "Podcast Intro",
-  "Digital Course VSL",
+  // "Podcast Intro",
+  // "Digital Course VSL",
 ];
 
 export const graphicsItems = [
