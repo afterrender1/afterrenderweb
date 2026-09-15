@@ -470,11 +470,51 @@ export const videosItems = [
   },
   {
     id: "montage-1",
-    title: "Motion Graphics & B-Roll",
+    title: "Montage #1",
     category: "Montage style",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184449/Reel-1_pxvgud.mp4",
-    posterUrl: "/images/video-tn/three.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789477840/Han_reel_1_ik1u7i.mp4",
+    posterUrl: "/images/montageposters/montage-poster1.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-2",
+    title: "Montage #2",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789478071/Diceman_drive_keykmv.mp4",
+    posterUrl: "/images/montageposters/montage-poster2.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-3",
+    title: "Montage #3",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789481156/Reel_04_c8woob.mp4",
+    posterUrl: "/images/montageposters/montage-poster3.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-4",
+    title: "Montage #4",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789481191/Reel_01_p64dct.mp4",
+    posterUrl: "/images/montageposters/montage-poster4.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-5",
+    title: "Montage #5",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485708/Reel_09_wszdtq.mp4",
+    posterUrl: "/images/montageposters/montage-poster5.png",
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
