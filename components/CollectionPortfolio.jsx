@@ -408,6 +408,66 @@ export const videosItems = [
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
+  {
+    id: "th-4",
+    title: "Long form #4",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789474628/Faadi_1_asqfaz.mp4",
+    posterUrl: "/images/longformvideoposters/longform4.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
+    id: "th-6",
+    title: "Long form #6",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789474465/Spirit_airline_wcoflo.mp4",
+    posterUrl: "/images/longformvideoposters/longform6.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
+    id: "th-7",
+    title: "Long form #7",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789473496/Harel_g4s1bp.mp4",
+    posterUrl: "/images/longformvideoposters/longform7.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
+    id: "th-9",
+    title: "Long form #9",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789478131/PROFIT_MAX_vmv64g.mp4",
+    posterUrl: "/images/longformvideoposters/longform9.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
+    id: "th-10",
+    title: "Long form #10",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789480611/how_to_get_rid_of_moss_on_roofs_q1prfb.mp4",
+    posterUrl: "/images/longformvideoposters/longform10.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
+    id: "th-11",
+    title: "Long form #11",
+    category: "Talking Heads",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789483221/The_Hardest_Lesson_I_Learned_as_a_YouTuber_r0efqs.mp4",
+    posterUrl: "/images/longformvideoposters/longform11.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
 ];
 
 export default function CollectionPortfolio() {
