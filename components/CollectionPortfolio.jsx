@@ -34,12 +34,12 @@ export const graphicsCategories = [
 
 
 export const videosCategories = [
-  "Long form edits",
+  "Shorts form edits",
+  "RealEstate",
   "Montage style",
   "SaaS Videos",
-  "Shorts form edits",
   "Talking Heads",
-  "RealEstate",
+  "Long form edits",
 ];
 
 export const graphicsItems = [
@@ -463,6 +463,26 @@ export const videosItems = [
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
+  {
+    id: "short-19",
+    title: "Short #19",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789481191/Reel_01_p64dct.mp4",
+    posterUrl: "/images/montageposters/montage-poster4.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-20",
+    title: "Short #20",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485708/Reel_09_wszdtq.mp4",
+    posterUrl: "/images/montageposters/montage-poster5.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
 
   {
     id: "th-4",
@@ -559,8 +579,8 @@ export const videosItems = [
     title: "RealEstate #3",
     category: "RealEstate",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1789481191/Reel_01_p64dct.mp4",
-    posterUrl: "/images/montageposters/montage-poster4.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
+    posterUrl: "/images/video-tn/five.png",
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
@@ -569,8 +589,8 @@ export const videosItems = [
     title: "RealEstate #4",
     category: "RealEstate",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1789485708/Reel_09_wszdtq.mp4",
-    posterUrl: "/images/montageposters/montage-poster5.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
+    posterUrl: "/images/video-tn/six.png",
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
@@ -579,34 +599,14 @@ export const videosItems = [
     title: "RealEstate #5",
     category: "RealEstate",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
-    posterUrl: "/images/video-tn/five.png",
-    aspect: "aspect-[9/16]",
-    isVertical: true,
-  },
-  {
-    id: "realestate-6",
-    title: "RealEstate #6",
-    category: "RealEstate",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
-    posterUrl: "/images/video-tn/six.png",
-    aspect: "aspect-[9/16]",
-    isVertical: true,
-  },
-  {
-    id: "realestate-7",
-    title: "RealEstate #7",
-    category: "RealEstate",
-    videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789471166/Ali_reel_1_rev_rhealk.mp4",
     posterUrl: "/images/shortformvideoposters/shortvideoposter2.png",
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
   {
-    id: "realestate-8",
-    title: "RealEstate #8",
+    id: "realestate-6",
+    title: "RealEstate #6",
     category: "RealEstate",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789472093/Alexing_closing_jw0ln9.mp4",
