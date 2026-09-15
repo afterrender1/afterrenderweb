@@ -468,6 +468,16 @@ export const videosItems = [
     aspect: "aspect-[16/9]",
     isVertical: false,
   },
+  {
+    id: "montage-1",
+    title: "Motion Graphics & B-Roll",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184449/Reel-1_pxvgud.mp4",
+    posterUrl: "/images/video-tn/three.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
 ];
 
 export default function CollectionPortfolio() {
