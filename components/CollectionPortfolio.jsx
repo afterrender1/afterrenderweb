@@ -545,12 +545,52 @@ export const videosItems = [
     isVertical: false,
   },
   {
-    id: "montage-3",
-    title: "Montage #3",
+    id: "montage-1",
+    title: "Montage #1",
     category: "Montage style",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1789481156/Reel_04_c8woob.mp4",
     posterUrl: "/images/montageposters/montage-poster3.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-2",
+    title: "Montage #2",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789486847/Short_4_revise_o3a97r.mp4",
+    posterUrl: "/images/montageposters/mv2.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-3",
+    title: "Montage #3",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789486853/short_7_lcc3nm.mp4",
+    posterUrl: "/images/montageposters/mv3.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-4",
+    title: "Montage #4",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789486858/Short_6_xmvlfh.mp4",
+    posterUrl: "/images/montageposters/mv4.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "montage-5",
+    title: "Montage #5",
+    category: "Montage style",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789486867/Short_3_chexhi.mp4",
+    posterUrl: "/images/montageposters/mv5.png",
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
