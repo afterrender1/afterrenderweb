@@ -17,14 +17,11 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-// =========================================================================
-// CLIENT VIDEO TESTIMONIALS DATA
-// Aap yahan apni Video URLs (MP4 ya YouTube Shorts), Posters aur Details add kar sakte hain:
-// =========================================================================
+
 export const clientVideoTestimonialsData = [
   {
     id: 1,
-    clientName: "Deborah",
+    clientName: "Keith Hearn",
     role: "Medical Creator",
     result: "+120K Views per Video",
     // Yahan apni video URL daalein:
@@ -35,7 +32,7 @@ export const clientVideoTestimonialsData = [
   },
   {
     id: 2,
-    clientName: "Traction",
+    clientName: "Lauren ",
     role: "Digital Entrepreneur",
     result: "3x Engagement Growth",
     videoUrl:
@@ -245,7 +242,7 @@ const ShortVideoClientTestimonials = () => {
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
             <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block shadow-[0_0_8px_#CEFF00]" />
-            <span>VIDEO TESTIMONIALS</span>
+            <span>IMONIALS</span>
           </div>
           <div className="flex-1 h-[1px] bg-white/10" />
         </div>
