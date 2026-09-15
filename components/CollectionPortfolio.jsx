@@ -260,7 +260,7 @@ export const videosItems = [
   },
   {
     id: "short-1",
-    title: "Adam Reel",
+    title: "Short #1",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788183664/Adam_reel-1_phvxsx.mp4",
@@ -270,7 +270,7 @@ export const videosItems = [
   },
   {
     id: "short-2",
-    title: "Matt Short",
+    title: "Short #2",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788183792/Matt_Short_03_jjo3qx.mp4",
@@ -280,7 +280,7 @@ export const videosItems = [
   },
   {
     id: "short-3",
-    title: "Motion Graphics & B-Roll",
+    title: "Short #3",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184449/Reel-1_pxvgud.mp4",
@@ -290,7 +290,7 @@ export const videosItems = [
   },
   {
     id: "short-4",
-    title: "SaaS Product Demo",
+    title: "Short #4",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184603/reel-1_kuxlzp.mp4",
@@ -300,7 +300,7 @@ export const videosItems = [
   },
   {
     id: "short-5",
-    title: "Creator Storytelling",
+    title: "Short #5",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
@@ -310,7 +310,7 @@ export const videosItems = [
   },
   {
     id: "short-6",
-    title: "Nade Reel",
+    title: "Short #6",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
@@ -320,7 +320,7 @@ export const videosItems = [
   },
   {
     id: "short-7",
-    title: "Anthropic Reel",
+    title: "Short #7",
     category: "Shorts form edits",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788184812/Anthropic_reel_n76nlc.mp4",
