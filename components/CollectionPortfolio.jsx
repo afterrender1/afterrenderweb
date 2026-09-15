@@ -516,6 +516,46 @@ export const videosItems = [
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
+  {
+    id: "realestate-5",
+    title: "RealEstate #5",
+    category: "RealEstate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
+    posterUrl: "/images/video-tn/five.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-6",
+    title: "RealEstate #6",
+    category: "RealEstate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
+    posterUrl: "/images/video-tn/six.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-7",
+    title: "RealEstate #7",
+    category: "RealEstate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471166/Ali_reel_1_rev_rhealk.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter2.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-8",
+    title: "RealEstate #8",
+    category: "RealEstate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789472093/Alexing_closing_jw0ln9.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter8.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
 ];
 
 export default function CollectionPortfolio() {
