@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Urbanist, Playfair_Display } from "next/font/google";
-import { Play, Pause, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -17,17 +18,14 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-
 export const clientVideoTestimonialsData = [
   {
     id: 1,
     clientName: "Keith Hearn",
     role: "Medical Creator",
     result: "+120K Views per Video",
-    // Yahan apni video URL daalein:
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792634/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_1_mbldbt.mp4",
-    // Yahan apna thumbnail/poster image path daalein:
     poster: "/images/short-t-v/keith.png",
   },
   {
@@ -102,32 +100,22 @@ function getYouTubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
-const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
-  const isPlaying = currentPlayingKey === uniqueKey;
-  const isYT = isYouTubeUrl(item.videoUrl);
-
-  const handleCardClick = (e) => {
-    e.stopPropagation();
-    onTogglePlay(uniqueKey);
-  };
-
+const VideoCard = ({ item, index, onOpenModal }) => {
   return (
     <div
-      onClick={handleCardClick}
-      className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-2xl sm:rounded-[22px] overflow-hidden bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/40 shadow-[0_15px_40px_rgba(0,0,0,0.6)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300"
+      onClick={() => onOpenModal(index)}
+      className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[12px] overflow-hidden bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 hover:scale-[1.03]"
     >
       {/* Top subtle highlight */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none group-hover:via-[#48A2FF]/40 transition-colors duration-500 z-10" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none group-hover:via-[#48A2FF]/60 transition-colors duration-500 z-10" />
 
-      {/* Poster Image (Visible when not playing) or video preview frame if poster is omitted */}
+      {/* Poster Image or preview */}
       {item.poster ? (
         <img
           src={item.poster}
           alt={item.clientName}
           loading="lazy"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       ) : (
         <video
@@ -135,43 +123,8 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
           preload="metadata"
           playsInline
           muted
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-            isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-      )}
-
-      {/* Video Element / YouTube Iframe */}
-      {isPlaying && (
-        <div className="absolute inset-0 w-full h-full bg-black z-20">
-          {isYT ? (
-            <iframe
-              src={getYouTubeEmbedUrl(item.videoUrl)}
-              title={item.clientName}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <video
-              src={item.videoUrl}
-              autoPlay
-              loop
-              playsInline
-              controls={false}
-              className="w-full h-full object-cover"
-            />
-          )}
-          {/* Close / Pause Floating Button */}
-          <button
-            type="button"
-            onClick={handleCardClick}
-            aria-label="Stop video"
-            className="absolute top-2.5 right-2.5 z-30 p-1.5 rounded-full bg-black/80 hover:bg-black text-white hover:text-[#48A2FF] transition-colors cursor-pointer border border-white/20"
-          >
-            <X size={14} />
-          </button>
-        </div>
       )}
 
       {/* Bottom Gradient Overlay & Details */}
@@ -183,24 +136,16 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
           {item.clientName}
         </h4>
         <span className="text-[11px] text-gray-300/90 font-medium line-clamp-1">
-          "{item.result}"
+          &ldquo;{item.result}&rdquo;
         </span>
       </div>
 
       {/* Central Play Button Overlay */}
-      <div
-        className={`absolute inset-0 bg-black/25 flex items-center justify-center transition-all duration-300 z-20 ${
-          isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-        }`}
-      >
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 flex items-center justify-center transition-all duration-300 z-20">
         <div className="relative flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-[#48A2FF]/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transform transition-all duration-300 group-hover:scale-110 active:scale-95">
-            {isPlaying ? (
-              <Pause className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white" />
-            ) : (
-              <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white ml-0.5" />
-            )}
+          <div className="absolute inset-0 rounded-full bg-[#48A2FF]/40 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] group-hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transform transition-all duration-300 group-hover:scale-110 active:scale-95">
+            <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white ml-0.5" />
           </div>
         </div>
       </div>
@@ -208,12 +153,54 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
   );
 };
 
+const emptySubscribe = () => () => {};
+
 const ShortVideoClientTestimonials = () => {
-  const [currentPlayingKey, setCurrentPlayingKey] = useState(null);
+  const [activeModalIndex, setActiveModalIndex] = useState(null);
+  const isMounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
   const scrollContainerRef = useRef(null);
 
-  const handleTogglePlay = (uniqueKey) => {
-    setCurrentPlayingKey((prev) => (prev === uniqueKey ? null : uniqueKey));
+  // Keyboard navigation for modal (Escape, ArrowLeft, ArrowRight) and body scroll lock
+  useEffect(() => {
+    if (activeModalIndex === null) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setActiveModalIndex(null);
+      } else if (e.key === "ArrowLeft") {
+        setActiveModalIndex((prev) =>
+          prev > 0 ? prev - 1 : clientVideoTestimonialsData.length - 1
+        );
+      } else if (e.key === "ArrowRight") {
+        setActiveModalIndex((prev) =>
+          prev < clientVideoTestimonialsData.length - 1 ? prev + 1 : 0
+        );
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeModalIndex]);
+
+  const handlePrev = () => {
+    setActiveModalIndex((prev) =>
+      prev > 0 ? prev - 1 : clientVideoTestimonialsData.length - 1
+    );
+  };
+
+  const handleNext = () => {
+    setActiveModalIndex((prev) =>
+      prev < clientVideoTestimonialsData.length - 1 ? prev + 1 : 0
+    );
   };
 
   const handleScroll = (direction) => {
@@ -225,6 +212,9 @@ const ShortVideoClientTestimonials = () => {
       });
     }
   };
+
+  const activeVideo =
+    activeModalIndex !== null ? clientVideoTestimonialsData[activeModalIndex] : null;
 
   return (
     <section
@@ -242,7 +232,7 @@ const ShortVideoClientTestimonials = () => {
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
             <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block shadow-[0_0_8px_#CEFF00]" />
-            <span>IMONIALS</span>
+            <span>TESTIMONIALS</span>
           </div>
           <div className="flex-1 h-[1px] bg-white/10" />
         </div>
@@ -299,76 +289,180 @@ const ShortVideoClientTestimonials = () => {
           <div
             className="flex w-max hover:[&>*]:[animation-play-state:paused]"
             style={{
-              animationPlayState: currentPlayingKey ? "paused" : "running",
+              animationPlayState: activeModalIndex !== null ? "paused" : "running",
             }}
           >
             {/* Track 1 (1 to 7) */}
             <div
               style={{
-                animationPlayState: currentPlayingKey ? "paused" : "running",
+                animationPlayState: activeModalIndex !== null ? "paused" : "running",
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem) => {
-                const uniqueKey = `t1-${videoItem.id}`;
-                return (
-                  <VideoCard
-                    key={uniqueKey}
-                    uniqueKey={uniqueKey}
-                    item={videoItem}
-                    currentPlayingKey={currentPlayingKey}
-                    onTogglePlay={handleTogglePlay}
-                  />
-                );
-              })}
+              {clientVideoTestimonialsData.map((videoItem, index) => (
+                <VideoCard
+                  key={`t1-${videoItem.id}`}
+                  item={videoItem}
+                  index={index}
+                  onOpenModal={setActiveModalIndex}
+                />
+              ))}
             </div>
 
-            {/* Track 2 (1 to 7 - immediately attaches to the right of Track 1's 7th video) */}
+            {/* Track 2 (1 to 7) */}
             <div
               style={{
-                animationPlayState: currentPlayingKey ? "paused" : "running",
+                animationPlayState: activeModalIndex !== null ? "paused" : "running",
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem) => {
-                const uniqueKey = `t2-${videoItem.id}`;
-                return (
-                  <VideoCard
-                    key={uniqueKey}
-                    uniqueKey={uniqueKey}
-                    item={videoItem}
-                    currentPlayingKey={currentPlayingKey}
-                    onTogglePlay={handleTogglePlay}
-                  />
-                );
-              })}
+              {clientVideoTestimonialsData.map((videoItem, index) => (
+                <VideoCard
+                  key={`t2-${videoItem.id}`}
+                  item={videoItem}
+                  index={index}
+                  onOpenModal={setActiveModalIndex}
+                />
+              ))}
             </div>
 
-            {/* Track 3 (1 to 7 - guarantees zero empty space on wide screens) */}
+            {/* Track 3 (1 to 7) */}
             <div
               style={{
-                animationPlayState: currentPlayingKey ? "paused" : "running",
+                animationPlayState: activeModalIndex !== null ? "paused" : "running",
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem) => {
-                const uniqueKey = `t3-${videoItem.id}`;
-                return (
-                  <VideoCard
-                    key={uniqueKey}
-                    uniqueKey={uniqueKey}
-                    item={videoItem}
-                    currentPlayingKey={currentPlayingKey}
-                    onTogglePlay={handleTogglePlay}
-                  />
-                );
-              })}
+              {clientVideoTestimonialsData.map((videoItem, index) => (
+                <VideoCard
+                  key={`t3-${videoItem.id}`}
+                  item={videoItem}
+                  index={index}
+                  onOpenModal={setActiveModalIndex}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Big Video Popup Modal with Blurred Background */}
+      {isMounted &&
+        activeVideo &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md transition-all duration-300"
+            onClick={() => setActiveModalIndex(null)}
+          >
+            {/* Previous Video Button (Desktop) */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+              aria-label="Previous video"
+              className="hidden sm:flex absolute left-4 md:left-8 lg:left-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            {/* Next Video Button (Desktop) */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+              aria-label="Next video"
+              className="hidden sm:flex absolute right-4 md:right-8 lg:right-14 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white items-center justify-center backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer z-30 shadow-2xl"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Video Modal Box */}
+            <div
+              className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[9/16] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Top Gradient Header: Client Details + Controls */}
+              <div className="absolute top-0 inset-x-0 p-4 sm:p-5 bg-gradient-to-b from-black/95 via-black/60 to-transparent flex items-start justify-between z-20">
+                <div className="pr-3">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#48A2FF]/20 border border-[#48A2FF]/40 text-[#48A2FF] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1">
+                    {activeVideo.role}
+                  </span>
+                  <h3 className="text-white text-base sm:text-lg font-bold tracking-tight line-clamp-1">
+                    {activeVideo.clientName}
+                  </h3>
+                  <p className="text-xs sm:text-[13px] text-gray-300 font-medium line-clamp-1">
+                    &ldquo;{activeVideo.result}&rdquo;
+                  </p>
+                </div>
+
+                {/* Header Action Buttons: Mobile Prev/Next + Close */}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrev();
+                    }}
+                    aria-label="Previous video"
+                    className="sm:hidden p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 backdrop-blur-md cursor-pointer active:scale-95"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    aria-label="Next video"
+                    className="sm:hidden p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 backdrop-blur-md cursor-pointer active:scale-95"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalIndex(null)}
+                    aria-label="Close modal"
+                    className="p-2 sm:p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Video Display */}
+              <div className="w-full h-full bg-black flex items-center justify-center">
+                {isYouTubeUrl(activeVideo.videoUrl) ? (
+                  <iframe
+                    key={activeVideo.videoUrl}
+                    src={getYouTubeEmbedUrl(activeVideo.videoUrl)}
+                    title={activeVideo.clientName}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video
+                    key={activeVideo.videoUrl}
+                    src={activeVideo.videoUrl}
+                    autoPlay
+                    controls
+                    playsInline
+                    className="w-full h-full object-cover bg-black"
+                  />
+                )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </section>
   );
 };
 
 export default ShortVideoClientTestimonials;
+
