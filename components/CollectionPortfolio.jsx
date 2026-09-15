@@ -328,6 +328,86 @@ export const videosItems = [
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
+  {
+    id: "short-8",
+    title: "Short #8",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471135/reel_5_s0gu5p.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter1.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-9",
+    title: "Short #9",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471166/Ali_reel_1_rev_rhealk.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter2.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-10",
+    title: "Short #10",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471214/Indulge_spa_1_dtgdmm.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter3.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-11",
+    title: "Short #11",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471253/black_short_1_vzynuh.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter4.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-12",
+    title: "Short #12",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471770/Gage_reel_1_qeemre.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter5.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-13",
+    title: "Short #13",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789471786/Alex_short_1_agkwns.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter6.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-14",
+    title: "Short #14",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789472020/Reel_4_fnavvl.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter7.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-15",
+    title: "Short #15",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789472093/Alexing_closing_jw0ln9.mp4",
+    posterUrl: "/images/shortformvideoposters/shortvideoposter8.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
 ];
 
 export default function CollectionPortfolio() {
