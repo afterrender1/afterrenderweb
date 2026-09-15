@@ -219,6 +219,16 @@ export const videosItems = [
     isVertical: false,
   },
   {
+    id: "long-11",
+    title: "Long form #11",
+    category: "Long form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1789483221/The_Hardest_Lesson_I_Learned_as_a_YouTuber_r0efqs.mp4",
+    posterUrl: "/images/longformvideoposters/longform11.png",
+    aspect: "aspect-[16/9]",
+    isVertical: false,
+  },
+  {
     id: "saas-1",
     title: "SaaS #1",
     category: "SaaS Videos",
@@ -247,6 +257,76 @@ export const videosItems = [
     posterUrl: "/images/longformvideoposters/longform8.png",
     aspect: "aspect-[16/9]",
     isVertical: false,
+  },
+  {
+    id: "short-1",
+    title: "Adam Reel",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788183664/Adam_reel-1_phvxsx.mp4",
+    posterUrl: "/images/video-tn/one.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-2",
+    title: "Matt Short",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788183792/Matt_Short_03_jjo3qx.mp4",
+    posterUrl: "/images/video-tn/two.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-3",
+    title: "Motion Graphics & B-Roll",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184449/Reel-1_pxvgud.mp4",
+    posterUrl: "/images/video-tn/three.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-4",
+    title: "SaaS Product Demo",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184603/reel-1_kuxlzp.mp4",
+    posterUrl: "/images/video-tn/four.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-5",
+    title: "Creator Storytelling",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184746/reel-1_wveaag.mp4",
+    posterUrl: "/images/video-tn/five.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-6",
+    title: "Nade Reel",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184788/Nade_reel-1_revise_ejrqar.mp4",
+    posterUrl: "/images/video-tn/six.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "short-7",
+    title: "Anthropic Reel",
+    category: "Shorts form edits",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788184812/Anthropic_reel_n76nlc.mp4",
+    posterUrl: "/images/video-tn/seven.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
   },
 ];
 
@@ -390,7 +470,7 @@ export default function CollectionPortfolio() {
                 className="w-full"
               >
                 {filteredVideos.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
                     {filteredVideos.map((video) => (
                       <div
                         key={video.id}
