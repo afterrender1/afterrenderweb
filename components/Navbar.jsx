@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -25,6 +25,46 @@ export default function Navbar({ hideHiring = false } = {}) {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setOpenMenu(null);
+  };
+
+  // Scroll to #contact on page navigation if hash exists
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if (window.location.hash === "#contact") {
+      const scrollToContact = () => {
+        const el = document.getElementById("contact");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      };
+
+      scrollToContact();
+      const t1 = setTimeout(scrollToContact, 150);
+      const t2 = setTimeout(scrollToContact, 400);
+      const t3 = setTimeout(scrollToContact, 800);
+
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
+    }
+  }, [pathname]);
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    closeMobileMenu();
+
+    if (pathname === "/") {
+      const el = document.getElementById("contact");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", "#contact");
+      }
+    } else {
+      router.push("/#contact");
+    }
   };
 
   return (
@@ -79,7 +119,8 @@ export default function Navbar({ hideHiring = false } = {}) {
               Blogs
             </Link>
             <Link
-              href="#contact"
+              href="/#contact"
+              onClick={handleContactClick}
               className={`transition-colors ${
                 isPricing
                   ? "text-black hover:text-[#59B7FF]"
@@ -223,8 +264,8 @@ export default function Navbar({ hideHiring = false } = {}) {
                       </Link>
 
                       <Link
-                        href="#contact"
-                        onClick={closeMobileMenu}
+                        href="/#contact"
+                        onClick={handleContactClick}
                         className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
                       >
                         Contact
