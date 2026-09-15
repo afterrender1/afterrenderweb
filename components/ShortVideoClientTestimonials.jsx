@@ -19,6 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const clientVideoTestimonialsData = [
+ 
   {
     id: 1,
     clientName: "KEITH HEARN",
@@ -27,8 +28,16 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792634/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_1_mbldbt.mp4",
     poster: "/images/short-t-v/keith.png",
   },
-  {
+     {
     id: 2,
+    clientName: "MATHEW",
+    role: "Marketing Agency",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
+    poster: "/images/short-t-v/nothing.png",
+  },
+  {
+    id: 3,
     clientName: "LAUREN LOVEJOY",
     role: "Regenerative Agriculture, Farms & Farmers",
     videoUrl:
@@ -36,45 +45,40 @@ export const clientVideoTestimonialsData = [
     poster: "/images/short-t-v/lauren.png",
   },
   {
-    id: 3,
+    id: 4,
     clientName: "LVAN BOSNJAK",
     role: "Musician and Content Creator",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_3_q5bumj.mp4",
     poster: "/images/short-t-v/lvan.png",
   },
-  {
-    id: 4,
-    clientName: "JUSTIN CREATOR",
-    role: "Business Coach",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_2_mz0nv5.mp4",
-    poster: "/images/short-t-v/justin.png",
-  },
-  {
+    {
     id: 5,
     clientName: "CJ",
-    role: "",
+    role: "Marketing Agency",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Another_one_locked_in.We_just_closed_a_deal_with_CJ_for_55_reels._That_is_55_pieces_of_content_b_rmi8mu.mp4",
     poster: "/images/short-t-v/dc.png",
   },
   {
     id: 6,
+    clientName: "JUSTIN CREATOR",
+    role: "Business Coach",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_2_mz0nv5.mp4",
+    poster: "/images/short-t-v/justin.png",
+  },
+
+  {
+    id: 7,
     clientName: "MATT",
-    role: "YouTube Creator",
+        role: "Marketing Agency",
+
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Matt_came_to_us_for_short_form_content._The_shorts_performed._And_he_took_the_time_to_share_his_aemz7y.mp4",
     poster: "/images/short-t-v/matt.png",
   },
-  {
-    id: 7,
-    clientName: "MATHEW",
-    role: "Agency Founder",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
-    poster: "/images/short-t-v/nothing.png",
-  },
+
 ];
 
 // Helper to check if URL is a YouTube link
