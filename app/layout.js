@@ -138,7 +138,7 @@ export default function RootLayout({ children }) {
 
         <Analytics />
         {children}
-        <CrispChat />
+        {/* <CrispChat /> */}
       </body>
     </html>
   );
