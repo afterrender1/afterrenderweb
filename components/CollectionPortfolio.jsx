@@ -39,7 +39,7 @@ export const videosCategories = [
   "SaaS Videos",
   "Shorts form edits",
   "Talking Heads",
-  "Product Showcase",
+  "RealEstate",
   // "Podcast Intro",
   // "Digital Course VSL",
 ];
