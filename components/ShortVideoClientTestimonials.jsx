@@ -21,63 +21,56 @@ const playfair = Playfair_Display({
 export const clientVideoTestimonialsData = [
   {
     id: 1,
-    clientName: "Keith Hearn",
-    role: "Medical Creator",
-    result: "+120K Views per Video",
+    clientName: "KEITH HEARN",
+    role: "Finepoint Design And Marketing",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792634/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_1_mbldbt.mp4",
     poster: "/images/short-t-v/keith.png",
   },
   {
     id: 2,
-    clientName: "Lauren ",
-    role: "Digital Entrepreneur",
-    result: "3x Engagement Growth",
+    clientName: "LAUREN LOVEJOY",
+    role: "Regenerative Agriculture, Farms & Farmers",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_tewro7.mp4",
     poster: "/images/short-t-v/lauren.png",
   },
   {
     id: 3,
-    clientName: "Crypto Simba",
-    role: "Crypto Trader & Creator",
-    result: "High Watch Time & Retention",
+    clientName: "LVAN BOSNJAK",
+    role: "Musician and Content Creator",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_3_q5bumj.mp4",
     poster: "/images/short-t-v/lvan.png",
   },
   {
     id: 4,
-    clientName: "FinePoint Marketing",
-    role: "SaaS Company",
-    result: "Lower CAC & Better ROAS",
+    clientName: "JUSTIN CREATOR",
+    role: "Business Coach",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_2_mz0nv5.mp4",
     poster: "/images/short-t-v/justin.png",
   },
   {
     id: 5,
-    clientName: "Audrey",
-    role: "Fitness Coach",
-    result: "+2M Monthly Impressions",
+    clientName: "CJ",
+    role: "",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Another_one_locked_in.We_just_closed_a_deal_with_CJ_for_55_reels._That_is_55_pieces_of_content_b_rmi8mu.mp4",
     poster: "/images/short-t-v/dc.png",
   },
   {
     id: 6,
-    clientName: "BigHots",
+    clientName: "MATT",
     role: "YouTube Creator",
-    result: "100K+ Organic Subscribers",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Matt_came_to_us_for_short_form_content._The_shorts_performed._And_he_took_the_time_to_share_his_aemz7y.mp4",
     poster: "/images/short-t-v/matt.png",
   },
   {
     id: 7,
-    clientName: "Alex R.",
+    clientName: "MATHEW",
     role: "Agency Founder",
-    result: "Viral Brand Packaging",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
     poster: "/images/short-t-v/nothing.png",
@@ -129,15 +122,14 @@ const VideoCard = ({ item, index, onOpenModal }) => {
 
       {/* Bottom Gradient Overlay & Details */}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-4 sm:p-5 flex flex-col justify-end z-10 pointer-events-none">
-        <span className="text-[10px] sm:text-[11px] font-bold text-[#48A2FF] uppercase tracking-wider mb-0.5">
-          {item.role}
-        </span>
+        {item.role?.trim() ? (
+          <span className="text-[10px] sm:text-[11px] font-bold text-[#48A2FF] uppercase tracking-wider mb-0.5 line-clamp-1">
+            {item.role}
+          </span>
+        ) : null}
         <h4 className="text-white text-sm sm:text-base font-bold tracking-tight line-clamp-1 mb-1">
           {item.clientName}
         </h4>
-        <span className="text-[11px] text-gray-300/90 font-medium line-clamp-1">
-          &ldquo;{item.result}&rdquo;
-        </span>
       </div>
 
       {/* Central Play Button Overlay */}
@@ -424,7 +416,7 @@ const ShortVideoClientTestimonials = () => {
 
             {/* Video Modal Box */}
             <div
-              className={`relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[9/16] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none ${
+              className={`relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[440px] aspect-[14/18] max-h-[86vh] rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(72,162,255,0.25)] flex flex-col justify-center select-none ${
                 isClosing
                   ? "animate-modal-card-out"
                   : "animate-modal-card-in"
@@ -434,15 +426,14 @@ const ShortVideoClientTestimonials = () => {
               {/* Top Gradient Header: Client Details + Controls */}
               <div className="absolute top-0 inset-x-0 p-4 sm:p-5 bg-gradient-to-b from-black/95 via-black/60 to-transparent flex items-start justify-between z-20">
                 <div className="pr-3">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#48A2FF]/20 border border-[#48A2FF]/40 text-[#48A2FF] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1">
-                    {activeVideo.role}
-                  </span>
+                  {activeVideo.role?.trim() ? (
+                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#48A2FF]/20 border border-[#48A2FF]/40 text-[#48A2FF] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-1">
+                      {activeVideo.role}
+                    </span>
+                  ) : null}
                   <h3 className="text-white text-base sm:text-lg font-bold tracking-tight line-clamp-1">
                     {activeVideo.clientName}
                   </h3>
-                  <p className="text-xs sm:text-[13px] text-gray-300 font-medium line-clamp-1">
-                    &ldquo;{activeVideo.result}&rdquo;
-                  </p>
                 </div>
 
                 {/* Header Action Buttons: Mobile Prev/Next + Close */}
