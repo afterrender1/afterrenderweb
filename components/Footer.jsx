@@ -15,7 +15,11 @@ const spaceGrotesk = Space_Grotesk({
 
 const Footer = ({ theme }) => {
   const pathname = usePathname();
-  const isLight = theme === "light" || pathname === "/pricing" || pathname === "/our-work";
+  const isLight =
+    theme === "light" ||
+    pathname === "/pricing" ||
+    pathname === "/our-work" ||
+    pathname === "/about-us";
 
   const [currentYear, setCurrentYear] = useState(null);
   const [form, setForm] = useState({ email: "" });

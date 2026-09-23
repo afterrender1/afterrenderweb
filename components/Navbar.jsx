@@ -19,7 +19,10 @@ export default function Navbar({ hideHiring = false } = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const isPricing = pathname === "/pricing" || pathname === "/our-work";
+  const isPricing =
+    pathname === "/pricing" ||
+    pathname === "/our-work" ||
+    pathname === "/about-us";
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
   const closeMobileMenu = () => {
