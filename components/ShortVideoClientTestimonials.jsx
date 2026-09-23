@@ -20,7 +20,6 @@ const playfair = Playfair_Display({
 });
 
 export const clientVideoTestimonialsData = [
- 
   {
     id: 1,
     clientName: "KEITH HEARN",
@@ -29,13 +28,14 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792634/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_1_mbldbt.mp4",
     poster: "/images/short-t-v/keith.png",
   },
-     {
-    id: 2,
-    clientName: "MATHEW",
-    role: "Marketing Agency",
+  {
+    id: 8,
+    clientName: "RAY",
+    role: "Apex Growth",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
-    poster: "/images/short-t-v/nothing.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172026/Review_02_nrztis.mp4",
+    poster:
+      "https://res.cloudinary.com/dlurrugno/image/upload/v1790173147/99ccc58b-7a6c-49cb-9c01-71042ce43474.png",
   },
   {
     id: 3,
@@ -46,20 +46,29 @@ export const clientVideoTestimonialsData = [
     poster: "/images/short-t-v/lauren.png",
   },
   {
-    id: 4,
-    clientName: "LVAN BOSNJAK",
-    role: "Musician and Content Creator",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_3_q5bumj.mp4",
-    poster: "/images/short-t-v/lvan.png",
-  },
-    {
     id: 5,
     clientName: "CJ",
     role: "Marketing Agency",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Another_one_locked_in.We_just_closed_a_deal_with_CJ_for_55_reels._That_is_55_pieces_of_content_b_rmi8mu.mp4",
     poster: "/images/short-t-v/dc.png",
+  },
+  {
+    id: 9,
+    clientName: "HYRA",
+    role: "Guardian Heart CPR",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172018/Review_01_seebp9.mp4",
+    poster:
+      "https://res.cloudinary.com/dlurrugno/image/upload/v1790173209/01eafeb5-9ede-49bf-a408-5cc2b4977b75.png",
+  },
+  {
+    id: 4,
+    clientName: "LVAN BOSNJAK",
+    role: "Musician and Content Creator",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_3_q5bumj.mp4",
+    poster: "/images/short-t-v/lvan.png",
   },
   {
     id: 6,
@@ -69,33 +78,29 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_2_mz0nv5.mp4",
     poster: "/images/short-t-v/justin.png",
   },
-
   {
     id: 7,
     clientName: "MATT",
-        role: "Marketing Agency",
-
+    role: "Marketing Agency",
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Matt_came_to_us_for_short_form_content._The_shorts_performed._And_he_took_the_time_to_share_his_aemz7y.mp4",
     poster: "/images/short-t-v/matt.png",
   },
   {
-    id: 8,
-    clientName: "MATT",
-        role: "Marketing Agency",
-
+    id: 2,
+    clientName: "MATHEW",
+    role: "Marketing Agency",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172026/Review_02_nrztis.mp4",
-    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173147/99ccc58b-7a6c-49cb-9c01-71042ce43474.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
+    poster: "/images/short-t-v/nothing.png",
   },
   {
-    id: 9,
-    clientName: "MATT",
-        role: "Marketing Agency",
-
+    id: 10,
+    clientName: "HANRECCA",
+    role: "Marketing Agency",
     videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172018/Review_01_seebp9.mp4",
-    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173209/01eafeb5-9ede-49bf-a408-5cc2b4977b75.png",
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1790173374/Review_03_b1yk8f.mp4",
+    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173470/52536881-0296-4c9d-9fa6-3a64c773a9a3.png",
   },
 
 ];
