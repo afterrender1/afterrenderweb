@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import AboutUsHero from "@/components/AboutUsHero";
 import OurStory from "@/components/OurStory";
+import WhatWeDo from "@/components/WhatWeDo";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import PricingFAQ from "@/components/PricingFAQ";
 import Footer from "@/components/Footer";
@@ -18,6 +19,7 @@ const AboutUsPage = () => {
       <Navbar />
       <AboutUsHero />
       <OurStory />
+      <WhatWeDo />
       <PricingTestimonials />
       <PricingFAQ />
       <Footer theme="light" />
