@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { Check, ChevronDown , Info } from "lucide-react";
 import Link from "next/link";
@@ -237,49 +237,71 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
       </motion.div>
 
       {/* 3D Stacked Cards Deck Container */}
-      <div className="relative w-full max-w-[720px] mx-auto z-10 px-2 sm:px-0 pt-8 sm:pt-10">
-        {/* Helper to get the other plan for the background stacked card */}
+      <div className="relative w-full max-w-[720px] mx-auto z-10 px-2 sm:px-0 pt-9 sm:pt-12">
+        {/* Stacked deck: 2 slim peeking cards behind the active one, one per remaining plan */}
         {(() => {
           const currentIndex = tabKeys.indexOf(activeTab);
-          const otherTabKey = tabKeys[(currentIndex + 1) % tabKeys.length];
-          const otherPlan = plans[otherTabKey];
-          if (!otherPlan) return null;
+          const nearKey = tabKeys[(currentIndex + 1) % tabKeys.length];
+          const farKey = tabKeys[(currentIndex + 2) % tabKeys.length];
+          const nearPlan = plans[nearKey];
+          const farPlan = plans[farKey];
 
           return (
-            <div
-              onClick={() => handleTabChange(otherTabKey)}
-              className="absolute -top-2.5 sm:-top-3.5 inset-x-3 sm:inset-x-4 h-24 bg-white rounded-[26px] border border-gray-300/90 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] -z-10 cursor-pointer transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full px-5 sm:px-6 pt-2.5 items-start">
-                <div className="md:col-span-6 flex items-center gap-2 opacity-70">
-                  <span className="shrink-0 w-3.5 h-3.5 rounded-[4px] border border-gray-700 flex items-center justify-center bg-white">
-                    <Check className="w-2.5 h-2.5 text-gray-800 stroke-[3]" />
+            <>
+              {/* Far peek (3rd card, deepest in the stack) */}
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={farKey}
+                  onClick={() => handleTabChange(farKey)}
+                  initial={{ opacity: 0, y: 6, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                  transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ willChange: "transform, opacity" }}
+                  className="absolute -top-6 sm:-top-8 inset-x-7 sm:inset-x-10 h-10 sm:h-11 bg-gray-100 rounded-[22px] border border-gray-200 shadow-[0_10px_26px_-12px_rgba(0,0,0,0.16)] -z-20 cursor-pointer overflow-hidden flex items-center justify-between px-5 sm:px-6"
+                >
+                  <span className="text-[10.5px] sm:text-[11px] font-bold text-gray-500 truncate">
+                    {farPlan.title}
                   </span>
-                  <span className="text-[11px] font-bold text-gray-800 tracking-tight truncate">
-                    {otherPlan.features[0]}
+                  <span className="text-[10.5px] sm:text-[11px] font-bold text-gray-400 shrink-0">
+                    USD {farPlan.basePrice}
                   </span>
-                </div>
-                <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[18px] px-4 py-2 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
-                  <span className="text-xs font-extrabold truncate">
-                    {otherPlan.title}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Near peek (2nd card) */}
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={nearKey}
+                  onClick={() => handleTabChange(nearKey)}
+                  initial={{ opacity: 0, y: 5, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -5, scale: 0.98 }}
+                  transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ willChange: "transform, opacity" }}
+                  className="absolute -top-3 sm:-top-4 inset-x-3 sm:inset-x-4 h-12 sm:h-14 bg-white rounded-[24px] border border-gray-200/90 shadow-[0_14px_32px_-10px_rgba(0,0,0,0.18)] -z-10 cursor-pointer transition-transform duration-300 hover:-translate-y-1 overflow-hidden flex items-center justify-between px-5 sm:px-6"
+                >
+                  <span className="text-xs font-extrabold text-gray-800 truncate">
+                    {nearPlan.title}
                   </span>
-                  <span className="text-[11px] font-bold opacity-90">
-                    USD {otherPlan.basePrice}
+                  <span className="text-xs font-bold text-gray-500 shrink-0">
+                    USD {nearPlan.basePrice}
                   </span>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </AnimatePresence>
+            </>
           );
         })()}
 
         {/* Main Active Card (Front) */}
+        <AnimatePresence initial={false} mode="popLayout">
         <motion.div
-          layout
           key={activeTab}
-          initial={{ opacity: 0, scale: 0.98, y: 8 }}
+          initial={{ opacity: 0, scale: 0.98, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.98, y: -8 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          exit={{ opacity: 0, scale: 0.98, y: -10 }}
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+          style={{ willChange: "transform, opacity" }}
           className="relative bg-white rounded-[26px] border border-gray-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.22),0_10px_25px_-5px_rgba(0,0,0,0.1)] ring-1 ring-black/[0.05] p-5 sm:p-6 md:p-7"
         >
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
@@ -435,6 +457,7 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
             </div>
           </div>
         </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
