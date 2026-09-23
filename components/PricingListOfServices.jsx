@@ -59,6 +59,36 @@ const serviceData = {
     "Gym & Fitness Edits",
     "Car Edits",
   ],
+  realtor: [
+    "Service Promo Videos",
+    "Brand Story Videos",
+    "Client Testimonial Videos",
+    "Before & After Videos",
+    "Behind-the-Scenes Edits",
+    "Team & Staff Intro Videos",
+    "Explainer Videos",
+    "How-It-Works Videos",
+    "FAQ Videos",
+    "Reels",
+    "Shorts",
+    "TikToks",
+    "YouTube Editing",
+    "Video Ads (Performance & Social)",
+    "Offer & Promotion Videos",
+    "Case Study Videos",
+    "Educational & Tips Videos",
+    "Event Highlight Videos",
+    "Webinar Edits",
+    "Podcast Edits",
+    "Training & Onboarding Videos",
+    "Motion Graphics",
+    "Subtitles, Captions, Titling & Transitions",
+    "Voice-over Integration",
+    "Intro/Outro Creation",
+    "Logo Animation",
+    "Color Grading",
+    "B-roll Integration",
+  ],
 };
 
 const PricingListOfServices = () => {
@@ -94,6 +124,7 @@ const PricingListOfServices = () => {
             {[
               { key: "graphics", label: "Graphics" },
               { key: "videos", label: "Videos" },
+              { key: "realtor", label: "Realtor" },
             ].map((tab) => {
               const isActive = activeTab === tab.key;
               return (
