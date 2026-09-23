@@ -119,6 +119,16 @@ export default function Navbar({ hideHiring = false } = {}) {
               Blogs
             </Link>
             <Link
+              href="/about-us"
+              className={`transition-colors ${
+                isPricing
+                  ? "text-black hover:text-[#59B7FF]"
+                  : "hover:text-[#59B7FF]"
+              }`}
+            >
+              About Us
+            </Link>
+            <Link
               href="/#contact"
               onClick={handleContactClick}
               className={`transition-colors ${
@@ -263,6 +273,13 @@ export default function Navbar({ hideHiring = false } = {}) {
                         Blogs
                       </Link>
 
+                      <Link
+                        href="/about-us"
+                        onClick={closeMobileMenu}
+                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                      >
+                        About Us
+                      </Link>
                       <Link
                         href="/#contact"
                         onClick={handleContactClick}
