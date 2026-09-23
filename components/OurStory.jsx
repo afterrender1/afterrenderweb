@@ -58,11 +58,11 @@ export default function OurStory({
               >
                 Creativity
               </span>{" "}
-              into Endless Opportunities for{" "}
+              into Endless{" "}
               <span
                 className={`${playfair.className} italic font-normal text-[#1a1a1a]`}
               >
-                Creative Minds.
+                Possibilities.
               </span>
               &rdquo;
             </motion.h2>
@@ -75,10 +75,11 @@ export default function OurStory({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mt-6 sm:mt-8 text-xs sm:text-sm md:text-[14.5px] text-[#444444] leading-relaxed max-w-xl font-normal"
             >
-              What started as a small idea helping brands stand out with
-              scroll-stopping edits has grown into Afterrender: a creative
-              partner trusted worldwide shaping stories, designs, and
-              experiences that connect.
+              Afterrender started with a simple idea: help brands stand out with
+              edits people actually stop scrolling for. Today, we&apos;re a
+              creative partner to businesses around the world, shaping stories,
+              designs and experiences that connect with the people who matter
+              most to them.
             </motion.p>
           </div>
 
@@ -137,9 +138,11 @@ export default function OurStory({
           className="mt-10 sm:mt-14 max-w-2xl"
         >
           <p className="text-xs sm:text-sm md:text-[14.5px] text-[#444444] leading-relaxed font-normal">
-            We’ve always believed great storytelling isn’t just about visual
-            it’s about creating impact. From our very first project to the
-            thousands of edits we deliver today.
+            We&apos;ve always believed great storytelling goes beyond good visuals.
+            It&apos;s about making an impact. That belief has guided us from our
+            very first project to the thousands of edits we deliver today, and
+            it&apos;s what keeps every video we touch focused on one thing:
+            results for our clients.
           </p>
         </motion.div>
       </div>
