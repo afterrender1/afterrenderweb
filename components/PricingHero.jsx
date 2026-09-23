@@ -18,6 +18,10 @@ const playfair = Playfair_Display({
 });
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
+const WHATSAPP_NUMBER = "923235100033";
+const REALTOR_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  "Hi! I'm interested in the Real Estate Video Editing plan."
+)}`;
 
 const plans = {
   video: {
@@ -32,7 +36,11 @@ const plans = {
       2: 1199,
       3: 1999,
     },
-    calendlyUrl: CALENDLY_URL,
+    requestOptions: [1, 2, 3],
+    requestLabel: "Active Request",
+    requestTooltip: "Number of requests we actively work on simultaneously.",
+    ctaLabel: "Subscribe",
+    ctaUrl: CALENDLY_URL,
     features: [
       "Unlimited Video Requests",
       "Unlimited Revisions",
@@ -57,7 +65,11 @@ const plans = {
       2: 899,
       3: 1299,
     },
-    calendlyUrl: CALENDLY_URL,
+    requestOptions: [1, 2, 3],
+    requestLabel: "Active Request",
+    requestTooltip: "Number of requests we actively work on simultaneously.",
+    ctaLabel: "Subscribe",
+    ctaUrl: CALENDLY_URL,
     features: [
       "Unlimited Graphic Requests",
       "Unlimited Revisions",
@@ -70,6 +82,34 @@ const plans = {
       "Monday to Friday Workday",
     ],
   },
+  realtor: {
+    id: "realtor",
+    tabLabel: "Realtor",
+    title: "Real Estate Video Editing",
+    description:
+      "Made for realtors who'd rather be closing deals than editing videos. Send us your footage, and we'll turn it into listing tours, walkthroughs, reels and ads that help your properties sell.",
+    basePrice: 900,
+    prices: {
+      10: 900,
+      20: 1700,
+      30: 2500,
+    },
+    requestOptions: [10, 20, 30],
+    requestLabel: "Videos / Month",
+    requestTooltip: "Number of listing videos we edit for you each month.",
+    ctaLabel: "Chat on WhatsApp",
+    ctaUrl: REALTOR_WHATSAPP_URL,
+    features: [
+      "Professional cuts & pacing",
+      "Full video editing",
+      "Motion graphics (price tags, property details, agent branding, lower thirds)",
+      "B-roll integration",
+      "Cinematic color grading",
+      "Unlimited revisions",
+      "Dedicated project manager",
+      "Slack channel for project management",
+    ],
+  },
 };
 
 export default function PricingHero({ hideHeader = false, id = "plans" }) {
@@ -80,6 +120,12 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
   const [showLightningTooltip, setShowLightningTooltip] = useState(false);
 
   const currentPlan = plans[activeTab];
+  const tabKeys = ["video", "graphics", "realtor"];
+
+  const handleTabChange = (tabKey) => {
+    setActiveTab(tabKey);
+    setActiveRequests(plans[tabKey].requestOptions[0]);
+  };
 
   // Calculate dynamic price based on active requests + lightning fast delivery ($600)
   const baseOrTierPrice =
@@ -163,13 +209,13 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
         className="mt-6 mb-7 z-10"
       >
         <div className="bg-[#EFEFEF] p-1 mb-5 rounded-full flex items-center shadow-inner border border-gray-200/70">
-          {["video", "graphics"].map((tabKey) => {
+          {tabKeys.map((tabKey) => {
             const plan = plans[tabKey];
             const isActive = activeTab === tabKey;
             return (
               <button
                 key={tabKey}
-                onClick={() => setActiveTab(tabKey)}
+                onClick={() => handleTabChange(tabKey)}
                 className={`relative px-4 sm:px-6 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer ${
                   isActive
                     ? "text-[#0A2540] font-bold"
@@ -194,13 +240,14 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
       <div className="relative w-full max-w-[720px] mx-auto z-10 px-2 sm:px-0 pt-8 sm:pt-10">
         {/* Helper to get the other plan for the background stacked card */}
         {(() => {
-          const otherTabKey = activeTab === "video" ? "graphics" : "video";
+          const currentIndex = tabKeys.indexOf(activeTab);
+          const otherTabKey = tabKeys[(currentIndex + 1) % tabKeys.length];
           const otherPlan = plans[otherTabKey];
           if (!otherPlan) return null;
 
           return (
             <div
-              onClick={() => setActiveTab(otherTabKey)}
+              onClick={() => handleTabChange(otherTabKey)}
               className="absolute -top-2.5 sm:-top-3.5 inset-x-3 sm:inset-x-4 h-24 bg-white rounded-[26px] border border-gray-300/90 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] -z-10 cursor-pointer transition-all duration-300 hover:-translate-y-1 overflow-hidden"
             >
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full px-5 sm:px-6 pt-2.5 items-start">
@@ -287,16 +334,18 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
                         }
                         className="appearance-none bg-white border border-black/10 rounded-md px-2.5 py-1 pr-7 text-xs font-bold text-black focus:outline-none focus:ring-1 focus:ring-black cursor-pointer shadow-2xs"
                       >
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
+                        {currentPlan.requestOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                       <ChevronDown className="w-3.5 h-3.5 text-black absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
 
                     <div className="flex items-center gap-1 relative">
                       <span className="text-xs font-bold text-black">
-                        Active Request
+                        {currentPlan.requestLabel}
                       </span>
                       <button
                         type="button"
@@ -313,7 +362,7 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
                       {/* Tooltip */}
                       {showActiveReqTooltip && (
                         <div className="absolute left-0 bottom-6 z-30 w-48 bg-black text-white text-[10.5px] rounded-md p-1.5 shadow-lg">
-                          Number of requests we actively work on simultaneously.
+                          {currentPlan.requestTooltip}
                         </div>
                       )}
                     </div>
@@ -375,12 +424,12 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
                 </div>
 
                 <Link
-                  href={currentPlan.calendlyUrl}
+                  href={currentPlan.ctaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center bg-black hover:bg-neutral-900 active:scale-[0.98] text-white font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
                 >
-                  Subscribe
+                  {currentPlan.ctaLabel}
                 </Link>
               </div>
             </div>
