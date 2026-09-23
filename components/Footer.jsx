@@ -19,7 +19,10 @@ const Footer = ({ theme }) => {
     theme === "light" ||
     pathname === "/pricing" ||
     pathname === "/our-work" ||
-    pathname === "/about-us";
+    pathname === "/about-us" ||
+    pathname === "/privacy-policy" ||
+    pathname === "/refund-policy" ||
+    pathname === "/terms-conditions";
 
   const [currentYear, setCurrentYear] = useState(null);
   const [form, setForm] = useState({ email: "" });
@@ -335,15 +338,42 @@ const Footer = ({ theme }) => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
+      {/* Copyright & Legal Bar */}
       <div
-        className={`text-center py-5 text-xs font-medium relative z-10 ${
+        className={`py-5 px-6 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-medium relative z-10 ${
           isLight
             ? "border-t border-gray-200/80 text-gray-500"
             : "border-t border-[#48A2FF]/20 text-[#9FC8F1]"
         }`}
       >
-        © {currentYear || ""} AfterRender. All rights reserved.
+        <div>© {currentYear || ""} AfterRender. All rights reserved.</div>
+
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[11.5px] sm:text-xs">
+          <Link
+            href="/privacy-policy"
+            className={`transition-colors ${
+              isLight ? "hover:text-black" : "hover:text-white"
+            }`}
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href="/refund-policy"
+            className={`transition-colors ${
+              isLight ? "hover:text-black" : "hover:text-white"
+            }`}
+          >
+            Refund Policy
+          </Link>
+          <Link
+            href="/terms-conditions"
+            className={`transition-colors ${
+              isLight ? "hover:text-black" : "hover:text-white"
+            }`}
+          >
+            Terms & Conditions
+          </Link>
+        </div>
       </div>
     </motion.footer>
   );

@@ -22,7 +22,10 @@ export default function Navbar({ hideHiring = false } = {}) {
   const isPricing =
     pathname === "/pricing" ||
     pathname === "/our-work" ||
-    pathname === "/about-us";
+    pathname === "/about-us" ||
+    pathname === "/privacy-policy" ||
+    pathname === "/refund-policy" ||
+    pathname === "/terms-conditions";
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
   const closeMobileMenu = () => {
