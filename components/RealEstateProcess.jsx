@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { PhoneCall, FileText, Camera, UploadCloud } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -17,25 +18,33 @@ const playfair = Playfair_Display({
 
 const steps = [
   {
-    step: "01",
+    icon: PhoneCall,
+    iconBg: "linear-gradient(135deg, #FFF3D6 0%, #FBE4A8 100%)",
+    iconColor: "#B8860B",
     title: "We learn your business",
     description:
       "First, we get on a call and learn about your business: who your customers are, what you sell, and what's worked (or hasn't) before.",
   },
   {
-    step: "02",
+    icon: FileText,
+    iconBg: "linear-gradient(135deg, #FFEEDB 0%, #FBD9AE 100%)",
+    iconColor: "#B0680B",
     title: "We plan & write the scripts",
     description:
       "Then we plan the month and write the scripts. You see them before anything gets filmed.",
   },
   {
-    step: "03",
+    icon: Camera,
+    iconBg: "linear-gradient(135deg, #FFF9EC 0%, #F8E7BC 100%)",
+    iconColor: "#9C7A0A",
     title: "We film, twice a week",
     description:
       "Our camera operator comes by twice a week to shoot. Each visit usually takes a couple of hours.",
   },
   {
-    step: "04",
+    icon: UploadCloud,
+    iconBg: "linear-gradient(135deg, #FBF0DA 0%, #F2DBA6 100%)",
+    iconColor: "#8B6508",
     title: "We edit, approve & post",
     description:
       "We edit, send you the videos to approve, and post them once you're happy.",
@@ -69,36 +78,40 @@ const RealEstateProcess = () => {
         </div>
 
         {/* Steps */}
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
-          {/* Connecting line (desktop only) */}
-          <div className="hidden lg:block absolute top-6 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-[#FFD700] via-[#B8860B] to-[#FFD700] opacity-40" />
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-6">
+          {/* Connecting line (desktop only), running through the icon centers */}
+          <div className="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-[#DCC078] to-transparent" />
 
-          {steps.map((item, index) => (
-            <motion.div
-              key={item.step}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="relative flex flex-col"
-            >
-              <div
-                className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center text-sm font-extrabold text-black shadow-[0_8px_20px_rgba(184,134,11,0.35)] mb-4"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
-                }}
+          {steps.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="relative flex flex-col items-center text-center px-2"
               >
-                {item.step}
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-gray-950 tracking-tight mb-1.5">
-                {item.title}
-              </h3>
-              <p className="text-xs sm:text-[13px] text-gray-500 leading-relaxed">
-                {item.description}
-              </p>
-            </motion.div>
-          ))}
+                <div
+                  className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-[0_6px_18px_rgba(184,134,11,0.15)]"
+                  style={{ background: item.iconBg }}
+                >
+                  <Icon
+                    className="w-6 h-6"
+                    style={{ color: item.iconColor }}
+                    strokeWidth={1.75}
+                  />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-gray-950 tracking-tight mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-xs sm:text-[13.5px] text-gray-500 leading-relaxed max-w-[220px]">
+                  {item.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
