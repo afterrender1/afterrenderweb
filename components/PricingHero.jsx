@@ -94,7 +94,7 @@ const plans = {
   },
   realtor: {
     id: "realtor",
-    tabLabel: "Realtor",
+    tabLabel: "Realtors",
     title: "Real Estate Video Editing",
     description:
       "Made for realtors who'd rather be closing deals than editing videos. Send us your footage, and we'll turn it into listing tours, walkthroughs, reels and ads that help your properties sell.",

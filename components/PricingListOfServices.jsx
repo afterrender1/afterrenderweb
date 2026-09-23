@@ -124,7 +124,7 @@ const PricingListOfServices = () => {
             {[
               { key: "graphics", label: "Graphics" },
               { key: "videos", label: "Videos" },
-              { key: "realtor", label: "Realtor" },
+              { key: "realtor", label: "Realtors" },
             ].map((tab) => {
               const isActive = activeTab === tab.key;
               return (
