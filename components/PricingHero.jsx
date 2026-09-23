@@ -45,31 +45,6 @@ const plans = {
       "Monday to Friday Workday",
     ],
   },
-  both: {
-    id: "both",
-    tabLabel: "Both",
-    title: "Graphic + Video",
-    description:
-      "All-in-One for agencies, creators & brands unlimited videos and graphics, from ads and posts to long-form edits & more.",
-    basePrice: 1037,
-    prices: {
-      1: 1037,
-      2: 1899,
-      3: 2899,
-    },
-    calendlyUrl: CALENDLY_URL,
-    features: [
-      "Unlimited Graphic + Video Requests",
-      "Unlimited Revisions",
-      "Upgrade or Downgrade Anytime",
-      "Dedicated Project Manager",
-      "Pause or Cancel Anytime",
-      "Unlimited Brands",
-      "No Contract",
-      "Unlimited User Seats",
-      "Monday to Friday Workday",
-    ],
-  },
   graphics: {
     id: "graphics",
     tabLabel: "Graphics",
@@ -188,7 +163,7 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
         className="mt-6 mb-7 z-10"
       >
         <div className="bg-[#EFEFEF] p-1 mb-5 rounded-full flex items-center shadow-inner border border-gray-200/70">
-          {["video", "both", "graphics"].map((tabKey) => {
+          {["video", "graphics"].map((tabKey) => {
             const plan = plans[tabKey];
             const isActive = activeTab === tabKey;
             return (
@@ -217,67 +192,36 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
       {/* 3D Stacked Cards Deck Container */}
       <div className="relative w-full max-w-[720px] mx-auto z-10 px-2 sm:px-0 pt-8 sm:pt-10">
-        {/* Helper to get other plans for the background stacked cards */}
+        {/* Helper to get the other plan for the background stacked card */}
         {(() => {
-          const allTabs = ["video", "both", "graphics"];
-          const otherTabs = allTabs.filter((t) => t !== activeTab);
-          const middleTabKey = otherTabs[0];
-          const backTabKey = otherTabs[1];
-          const middlePlan = plans[middleTabKey];
-          const backPlan = plans[backTabKey];
+          const otherTabKey = activeTab === "video" ? "graphics" : "video";
+          const otherPlan = plans[otherTabKey];
+          if (!otherPlan) return null;
 
           return (
-            <>
-              {/* Stack Layer 2 (Back-most Card Peeking) */}
-              <div
-                onClick={() => setActiveTab(backTabKey)}
-                className="absolute -top-6 sm:-top-7 inset-x-6 sm:inset-x-8 h-24 bg-white rounded-[26px] border border-gray-300/80 shadow-[0_15px_35px_-8px_rgba(0,0,0,0.18)] -z-20 cursor-pointer transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full px-5 sm:px-6 pt-2.5 items-start">
-                  <div className="md:col-span-6 flex items-center gap-2 opacity-60">
-                    <span className="shrink-0 w-3.5 h-3.5 rounded-[4px] border border-gray-700 flex items-center justify-center bg-white">
-                      <Check className="w-2.5 h-2.5 text-gray-800 stroke-[3]" />
-                    </span>
-                    <span className="text-[11px] font-bold text-gray-800 tracking-tight truncate">
-                      {backPlan.features[0]}
-                    </span>
-                  </div>
-                  <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[16px] px-4 py-1.5 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
-                    <span className="text-xs font-extrabold truncate">
-                      {backPlan.title}
-                    </span>
-                    <span className="text-[10px] font-bold opacity-80">
-                      USD {backPlan.basePrice}
-                    </span>
-                  </div>
+            <div
+              onClick={() => setActiveTab(otherTabKey)}
+              className="absolute -top-2.5 sm:-top-3.5 inset-x-3 sm:inset-x-4 h-24 bg-white rounded-[26px] border border-gray-300/90 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] -z-10 cursor-pointer transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full px-5 sm:px-6 pt-2.5 items-start">
+                <div className="md:col-span-6 flex items-center gap-2 opacity-70">
+                  <span className="shrink-0 w-3.5 h-3.5 rounded-[4px] border border-gray-700 flex items-center justify-center bg-white">
+                    <Check className="w-2.5 h-2.5 text-gray-800 stroke-[3]" />
+                  </span>
+                  <span className="text-[11px] font-bold text-gray-800 tracking-tight truncate">
+                    {otherPlan.features[0]}
+                  </span>
+                </div>
+                <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[18px] px-4 py-2 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
+                  <span className="text-xs font-extrabold truncate">
+                    {otherPlan.title}
+                  </span>
+                  <span className="text-[11px] font-bold opacity-90">
+                    USD {otherPlan.basePrice}
+                  </span>
                 </div>
               </div>
-
-              {/* Stack Layer 1 (Middle Card Peeking) */}
-              <div
-                onClick={() => setActiveTab(middleTabKey)}
-                className="absolute -top-1 sm:-top-1.5 inset-x-3 sm:inset-x-4 h-24 bg-white rounded-[26px] border border-gray-300/90 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] -z-10 cursor-pointer transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full px-5 sm:px-6 pt-2.5 items-start">
-                  <div className="md:col-span-6 flex items-center gap-2 opacity-70">
-                    <span className="shrink-0 w-3.5 h-3.5 rounded-[4px] border border-gray-700 flex items-center justify-center bg-white">
-                      <Check className="w-2.5 h-2.5 text-gray-800 stroke-[3]" />
-                    </span>
-                    <span className="text-[11px] font-bold text-gray-800 tracking-tight truncate">
-                      {middlePlan.features[0]}
-                    </span>
-                  </div>
-                  <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-t-[18px] px-4 py-2 h-full flex items-center justify-between border-t border-x border-white/20 shadow-xs text-[#0A2540]">
-                    <span className="text-xs font-extrabold truncate">
-                      {middlePlan.title}
-                    </span>
-                    <span className="text-[11px] font-bold opacity-90">
-                      USD {middlePlan.basePrice}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </>
+            </div>
           );
         })()}
 
