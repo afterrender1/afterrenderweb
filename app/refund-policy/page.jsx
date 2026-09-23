@@ -234,8 +234,8 @@ export default function RefundPolicyPage() {
                 <Phone className="w-5 h-5 text-[#48A2FF] shrink-0 mt-0.5" />
                 <div className="text-xs sm:text-sm">
                   <strong className="block text-gray-900 mb-0.5">Direct Line:</strong>
-                  <a href="tel:+13075550123" className="text-[#0E4A86] hover:underline font-semibold">
-                    +1 (307) 555-0123
+                  <a href="tel:+13076677665" className="text-[#0E4A86] hover:underline font-semibold">
+                    +1 (307) 667-7665
                   </a>
                 </div>
               </div>

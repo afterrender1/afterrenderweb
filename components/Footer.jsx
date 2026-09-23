@@ -233,18 +233,18 @@ const Footer = ({ theme }) => {
             United States
           </p>
 
-          {/* Phone Number (Fake - easily editable) */}
+          {/* Phone Number */}
           <div className="flex items-center gap-2 text-xs sm:text-[13px] font-medium">
             <Phone className="w-3.5 h-3.5 text-[#48A2FF] shrink-0" />
             <a
-              href="tel:+13075550123"
+              href="tel:+13076677665"
               className={`transition-colors ${
                 isLight
                   ? "text-gray-700 hover:text-[#48A2FF]"
                   : "text-[#C9E4FF] hover:text-white"
               }`}
             >
-              +1 (307) 555-0123
+              +1 (307) 667-7665
             </a>
           </div>
         </div>
