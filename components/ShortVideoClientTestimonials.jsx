@@ -36,6 +36,7 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1790172026/Review_02_nrztis.mp4",
     poster:
       "https://res.cloudinary.com/dlurrugno/image/upload/v1790173147/99ccc58b-7a6c-49cb-9c01-71042ce43474.png",
+    fit: "contain",
   },
   {
     id: 3,
@@ -61,6 +62,7 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1790172018/Review_01_seebp9.mp4",
     poster:
       "https://res.cloudinary.com/dlurrugno/image/upload/v1790173209/01eafeb5-9ede-49bf-a408-5cc2b4977b75.png",
+    fit: "contain",
   },
   {
     id: 4,
@@ -101,6 +103,7 @@ export const clientVideoTestimonialsData = [
     videoUrl:
       "https://res.cloudinary.com/dlurrugno/video/upload/v1790173374/Review_03_b1yk8f.mp4",
     poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173470/52536881-0296-4c9d-9fa6-3a64c773a9a3.png",
+    fit: "contain",
   },
 
 ];
@@ -618,7 +621,11 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
                     playsInline
-                    className="w-full h-full object-cover bg-black"
+                    className={`w-full h-full bg-black ${
+                      activeVideo.fit === "contain"
+                        ? "object-contain"
+                        : "object-cover"
+                    }`}
                   />
                 )}
               </div>
