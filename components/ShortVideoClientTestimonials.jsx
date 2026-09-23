@@ -79,6 +79,24 @@ export const clientVideoTestimonialsData = [
       "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Matt_came_to_us_for_short_form_content._The_shorts_performed._And_he_took_the_time_to_share_his_aemz7y.mp4",
     poster: "/images/short-t-v/matt.png",
   },
+  {
+    id: 8,
+    clientName: "MATT",
+        role: "Marketing Agency",
+
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172026/Review_02_nrztis.mp4",
+    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173147/99ccc58b-7a6c-49cb-9c01-71042ce43474.png",
+  },
+  {
+    id: 9,
+    clientName: "MATT",
+        role: "Marketing Agency",
+
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172018/Review_01_seebp9.mp4",
+    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173209/01eafeb5-9ede-49bf-a408-5cc2b4977b75.png",
+  },
 
 ];
 
