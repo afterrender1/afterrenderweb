@@ -1,11 +1,17 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import RealEstateHero from "@/components/RealEstateHero";
+import RealEstateWhatYouGet from "@/components/RealEstateWhatYouGet";
+import RealEstatePackages from "@/components/RealEstatePackages";
+import RealEstateProcess from "@/components/RealEstateProcess";
+import RealEstateFAQ from "@/components/RealEstateFAQ";
+import RealEstateLeadForm from "@/components/RealEstateLeadForm";
 
 export const metadata = {
-  title: "Real Estate Video Editing | AfterRender",
+  title: "Done-For-You Video Content | AfterRender",
   description:
-    "High-impact real estate video editing for realtors, agents & brokerages. Listing walkthroughs, drone edits, reels & ads that sell properties faster.",
+    "We write the scripts, film at your location twice a week, edit everything, and post it to your channels. Done-for-you video content for realtors, local businesses and service brands.",
 };
 
 const RealEstatePage = () => {
@@ -13,10 +19,12 @@ const RealEstatePage = () => {
     <main className="min-h-screen bg-[#FAFAFA] text-black">
       <Navbar />
 
-      {/* Content wrapper */}
-      <div className="pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        {/* Placeholder / Header area ready for user's content */}
-      </div>
+      <RealEstateHero />
+      <RealEstateWhatYouGet />
+      <RealEstatePackages />
+      <RealEstateProcess />
+      <RealEstateFAQ />
+      <RealEstateLeadForm />
 
       <Footer />
     </main>

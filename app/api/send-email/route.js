@@ -3,7 +3,17 @@ import nodemailer from "nodemailer";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { name, email, service, message, phone, link } = body;
+    const {
+      name,
+      email,
+      service,
+      message,
+      phone,
+      link,
+      businessName,
+      industry,
+      packageInterest,
+    } = body;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -16,15 +26,18 @@ export async function POST(req) {
     const mailOptions = {
       from: `"AfterRender Contact" <${process.env.EMAIL_USER}>`,
       to: process.env.RECEIVER_EMAIL || process.env.EMAIL_USER,
-      subject: `New Contact Form Submission - ${service}`,
+      subject: `New Contact Form Submission - ${service || packageInterest || "General Inquiry"}`,
       html: `
         <h2>New Inquiry from AfterRender Website</h2>
         <p><strong>Name:</strong> ${name}</p>
+        ${businessName ? `<p><strong>Business Name:</strong> ${businessName}</p>` : ""}
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone || "N/A"}</p>
-        <p><strong>Service:</strong> ${service}</p>
+        ${industry ? `<p><strong>Industry:</strong> ${industry}</p>` : ""}
+        ${service ? `<p><strong>Service:</strong> ${service}</p>` : ""}
+        ${packageInterest ? `<p><strong>Package Interested In:</strong> ${packageInterest}</p>` : ""}
         <p><strong>Link:</strong> ${link || "N/A"}</p>
-        <p><strong>Message:</strong><br/>${message}</p>
+        ${message ? `<p><strong>Message:</strong><br/>${message}</p>` : ""}
       `,
     };
 
