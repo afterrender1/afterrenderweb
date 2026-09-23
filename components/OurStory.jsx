@@ -23,7 +23,7 @@ const caveat = Caveat({
 
 
 export default function OurStory({
-  founderImage = "/images/about-founder.svg",
+  founderImage = "/images/ArhamKhan.webp",
   signatureImage = "/images/signature.svg",
   founderName = "Divyang",
 }) {
