@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, Youtube, Facebook } from "lucide-react";
+import { Instagram, Youtube, Facebook, Phone } from "lucide-react";
 import { Space_Grotesk } from "next/font/google";
 import { usePathname } from "next/navigation";
 
@@ -93,9 +93,9 @@ const Footer = ({ theme }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAFA] to-[#F0F2F5] z-0" />
       )}
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
         {/* Col 1: Brand */}
-        <div>
+        <div className="lg:col-span-3">
           <Link href="/" className="text-2xl font-semibold inline-block mb-3">
             <Image
               src="/logos/arlogo.png"
@@ -150,7 +150,7 @@ const Footer = ({ theme }) => {
         </div>
 
         {/* Col 2: Navigation */}
-        <div>
+        <div className="lg:col-span-2">
           <h3
             className={`text-base font-bold mb-4 ${
               isLight ? "text-gray-950" : "text-[#C9E4FF]"
@@ -163,27 +163,91 @@ const Footer = ({ theme }) => {
               isLight ? "text-gray-600" : "text-[#9FC8F1]"
             }`}
           >
-            {["Videos", "Contact"].map((item, i) => (
+            {[
+              { name: "Our Work", href: "/our-work" },
+              { name: "Pricing", href: "/pricing" },
+              { name: "Blogs", href: "/blogs" },
+              { name: "About Us", href: "/about-us" },
+              { name: "Contact", href: "/#contact" },
+            ].map((item, i) => (
               <motion.li
                 key={i}
                 whileHover={{ x: 4 }}
                 transition={{ duration: 0.2 }}
               >
                 <Link
-                  href={`/#${item.toLowerCase()}`}
+                  href={item.href}
                   className={`transition-colors ${
                     isLight ? "hover:text-black" : "hover:text-[#48A2FF]"
                   }`}
                 >
-                  {item}
+                  {item.name}
                 </Link>
               </motion.li>
             ))}
           </ul>
         </div>
 
-        {/* Col 3: Get a Quote */}
-        <div>
+        {/* Col 3: Address */}
+        <div className="lg:col-span-3">
+          <h3
+            className={`text-base font-bold mb-4 ${
+              isLight ? "text-gray-950" : "text-[#C9E4FF]"
+            }`}
+          >
+            Address
+          </h3>
+
+          {/* Flag image slot & USA on its right */}
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="relative w-6 h-4 rounded-[2px] overflow-hidden border border-black/10 shadow-2xs shrink-0 bg-gray-200">
+              <Image
+                src="/images/usa.png"
+                alt="USA Flag"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <span
+              className={`text-sm font-bold tracking-wide ${
+                isLight ? "text-gray-900" : "text-white"
+              }`}
+            >
+              USA
+            </span>
+          </div>
+
+          {/* Full Address */}
+          <p
+            className={`text-xs sm:text-[13px] leading-relaxed mb-3.5 ${
+              isLight ? "text-gray-600" : "text-[#9FC8F1]"
+            }`}
+          >
+            30 N Gould St Ste N,
+            <br />
+            Sheridan, WY 82801,
+            <br />
+            United States
+          </p>
+
+          {/* Phone Number (Fake - easily editable) */}
+          <div className="flex items-center gap-2 text-xs sm:text-[13px] font-medium">
+            <Phone className="w-3.5 h-3.5 text-[#48A2FF] shrink-0" />
+            <a
+              href="tel:+13075550123"
+              className={`transition-colors ${
+                isLight
+                  ? "text-gray-700 hover:text-[#48A2FF]"
+                  : "text-[#C9E4FF] hover:text-white"
+              }`}
+            >
+              +1 (307) 555-0123
+            </a>
+          </div>
+        </div>
+
+        {/* Col 4: Get a Quote */}
+        <div className="lg:col-span-4">
           <h3
             className={`text-base font-bold mb-3 ${
               isLight ? "text-gray-950" : "text-[#C9E4FF]"
@@ -252,31 +316,22 @@ const Footer = ({ theme }) => {
             </p>
           )}
 
-          <p
-            className={`text-[11px] mt-2.5 font-medium ${
-              isLight ? "text-gray-400" : "text-[#9FC8F1]"
-            }`}
-          >
-            We respect your time — expect a fast, personalized response.
-          </p>
-        </div>
-
-        {/* Col 4: Contact */}
-        <div>
-          <h3
-            className={`text-base font-bold mb-4 ${
-              isLight ? "text-gray-950" : "text-[#C9E4FF]"
-            }`}
-          >
-            Contact
-          </h3>
-          <ul
-            className={`space-y-2 text-sm font-medium ${
-              isLight ? "text-gray-600" : "text-[#9FC8F1]"
-            }`}
-          >
-            <li>arham@afterrender.com</li>
-          </ul>
+          <div className="flex flex-wrap items-center justify-between gap-2 mt-3">
+            <span
+              className={`text-[11px] font-medium ${
+                isLight ? "text-gray-400" : "text-[#9FC8F1]"
+              }`}
+            >
+              Fast response guaranteed
+            </span>
+            <span
+              className={`text-[11px] font-semibold ${
+                isLight ? "text-gray-700" : "text-white"
+              }`}
+            >
+              arham@afterrender.com
+            </span>
+          </div>
         </div>
       </div>
 
