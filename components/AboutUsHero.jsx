@@ -92,7 +92,7 @@ export default function AboutUsHero() {
 
   return (
     <section
-      className={`${jakarta.className} relative min-h-screen bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
+      className={`${jakarta.className} relative min-h-100 bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-start`}
     >
       {/* Background Soft Mesh Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/60 via-[#f5f8ff]/30 to-transparent blur-3xl pointer-events-none -z-10" />
@@ -152,8 +152,12 @@ export default function AboutUsHero() {
           transition={{ duration: 0.45, delay: 0.08 }}
           className="mt-4 text-[#555555] text-xs sm:text-sm md:text-[15.5px] leading-relaxed max-w-2xl mx-auto font-medium"
         >
-          At DSQR Studio, we blend creativity, strategy, and technology to craft
-          videos, graphics, and AI-driven content that elevate brands and engage
+          At{" "}
+          <span className="inline-block bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#fff] font-bold px-2 py-0.5 rounded-md shadow-xs">
+            Afterrender
+          </span>
+          , we blend creativity, strategy, and technology to craft videos,
+          graphics, and AI-driven content that elevate brands and engage
           audiences across every platform.
         </motion.p>
 
@@ -181,117 +185,10 @@ export default function AboutUsHero() {
         </motion.div>
       </div>
 
-      {/* Tab Switcher (Like PricingHero) */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.18 }}
-        className="mt-8 mb-6 z-10"
-      >
-        <div className="bg-[#EFEFEF] p-1 rounded-full flex items-center shadow-inner border border-gray-200/70">
-          {["creativity", "strategy", "technology"].map((tabKey) => {
-            const pillar = pillars[tabKey];
-            const isActive = activeTab === tabKey;
-            return (
-              <button
-                key={tabKey}
-                onClick={() => setActiveTab(tabKey)}
-                className={`relative px-4 sm:px-6 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "text-[#0A2540] font-bold"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeAboutTabBadge"
-                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full shadow-[0_2px_12px_rgba(72,162,255,0.4)]"
-                  />
-                )}
-                <span className="relative z-10">{pillar.tabLabel}</span>
-              </button>
-            );
-          })}
-        </div>
-      </motion.div>
 
-      {/* Interactive Showcase Card (Pricing Deck Layout) */}
-      <div className="relative w-full max-w-[760px] mx-auto z-10 px-2 sm:px-0">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="bg-white rounded-3xl p-6 sm:p-9 border border-gray-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
-        >
-          {/* Card Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#48A2FF]/15 to-[#C9E4FF]/30 border border-[#48A2FF]/30 flex items-center justify-center text-[#0A2540]">
-                <IconComponent className="w-6 h-6 text-[#2563eb]" />
-              </div>
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#2563eb] bg-blue-50 px-2.5 py-0.5 rounded-full">
-                  {currentPillar.badge}
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-[#111111] mt-1">
-                  {currentPillar.title}
-                </h3>
-              </div>
-            </div>
 
-            <Link
-              href="/our-work"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A2540] hover:text-[#2563eb] transition-colors"
-            >
-              <span>Explore Work</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
 
-          {/* Description */}
-          <p className="mt-5 text-gray-600 text-xs sm:text-sm md:text-[14.5px] leading-relaxed font-normal">
-            {currentPillar.description}
-          </p>
 
-          {/* Key Stats Grid */}
-          <div className="grid grid-cols-3 gap-3 my-6 p-4 rounded-2xl bg-[#F8FAFC] border border-gray-100">
-            {currentPillar.stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-lg sm:text-2xl font-extrabold text-[#0A2540]">
-                  {stat.val}
-                </div>
-                <div className="text-[10px] sm:text-xs text-gray-500 font-medium mt-0.5">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Features / Capabilities */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-              Capabilities & Focus
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {currentPillar.features.map((feature, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-2.5 text-xs sm:text-[13px] text-gray-700 font-medium"
-                >
-                  <div className="w-4 h-4 rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3 h-3 stroke-[2.5]" />
-                  </div>
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Trust Points (Like PricingHero footer) */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

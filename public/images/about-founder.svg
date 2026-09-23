@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="600" height="700" fill="none">
+  <defs>
+    <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b88365"/>
+      <stop offset="100%" stop-color="#8a5338"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fa"/>
+      <stop offset="100%" stop-color="#e9ecef"/>
+    </linearGradient>
+    <linearGradient id="glasses" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shirt / Shoulders -->
+  <path d="M120 700 C130 540, 190 480, 260 450 L340 450 C410 480, 470 540, 480 700 Z" fill="url(#shirt)"/>
+  <!-- Collar & buttons -->
+  <path d="M250 450 L280 570 L300 590 L320 570 L350 450 L300 485 Z" fill="#dee2e6"/>
+  <path d="M260 450 L230 520 L275 510 Z" fill="#e9ecef"/>
+  <path d="M340 450 L370 520 L325 510 Z" fill="#e9ecef"/>
+  <circle cx="300" cy="530" r="4" fill="#adb5bd"/>
+  <circle cx="300" cy="570" r="4" fill="#adb5bd"/>
+  
+  <!-- Chain necklace -->
+  <path d="M260 465 C280 505, 320 505, 340 465" stroke="#d4af37" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+  <!-- Neck -->
+  <path d="M255 350 L255 460 C270 475, 330 475, 345 460 L345 350 Z" fill="url(#skin)"/>
+
+  <!-- Head Base -->
+  <path d="M220 250 C210 360, 230 420, 300 425 C370 420, 390 360, 380 250 C375 160, 225 160, 220 250 Z" fill="url(#skin)"/>
+
+  <!-- Hair -->
+  <path d="M210 240 C200 170, 240 100, 300 95 C360 95, 400 160, 390 235 C385 190, 370 140, 300 140 C240 140, 220 185, 210 240 Z" fill="#181515"/>
+  <path d="M215 220 C225 140, 300 115, 385 145 C380 120, 350 100, 300 100 C245 100, 218 135, 215 220 Z" fill="#252020"/>
+
+  <!-- Ears -->
+  <ellipse cx="218" cy="275" rx="14" ry="24" fill="#9e694d"/>
+  <ellipse cx="382" cy="275" rx="14" ry="24" fill="#9e694d"/>
+
+  <!-- Beard & Mustache -->
+  <path d="M230 280 C230 380, 245 425, 300 425 C355 425, 370 380, 370 280 C360 300, 345 310, 335 310 C325 310, 315 295, 300 295 C285 295, 275 310, 265 310 C255 310, 240 300, 230 280 Z" fill="#181515"/>
+  <!-- Mustache -->
+  <path d="M260 315 C275 305, 290 305, 300 312 C310 305, 325 305, 340 315 C330 330, 315 330, 300 322 C285 330, 270 330, 260 315 Z" fill="#111111"/>
+
+  <!-- Sunglasses -->
+  <g>
+    <!-- Bridge -->
+    <rect x="290" y="240" width="20" height="4" rx="2" fill="#d4af37"/>
+    <!-- Top bar -->
+    <path d="M235 232 L365 232" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+    <!-- Left lens -->
+    <rect x="235" y="235" width="55" height="42" rx="10" fill="url(#glasses)" stroke="#d4af37" stroke-width="3"/>
+    <!-- Right lens -->
+    <rect x="310" y="235" width="55" height="42" rx="10" fill="url(#glasses)" stroke="#d4af37" stroke-width="3"/>
+    <!-- Glare highlights -->
+    <path d="M245 240 L275 240" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M320 240 L350 240" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
