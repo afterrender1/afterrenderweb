@@ -96,7 +96,7 @@ const OurWorkHero = () => {
             Start Your Free Trial
           </Link>
           <Link
-            href="#plans"
+            href="/pricing"
             className="bg-white hover:bg-gray-50 text-gray-800 font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-full border border-gray-200 shadow-2xs hover:border-gray-300 hover:scale-105 active:scale-95 transition-all duration-300"
           >
             See Plans
