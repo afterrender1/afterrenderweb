@@ -225,31 +225,6 @@ export default function Navbar({ hideHiring = false } = {}) {
                       </button>
                     </div>
 
-                    {/* Apply Now Banner (Old Theme) */}
-                    <div className="mb-5 text-center">
-                      <div className="relative inline-block w-full">
-                        <span className="absolute -top-1 -right-1 z-10 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white shadow-xs"></span>
-                        </span>
-
-                        <Link
-                          href="/apply"
-                          onClick={closeMobileMenu}
-                          className="relative flex flex-col items-center justify-center gap-0.5 py-3 px-6 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] rounded-xl text-center shadow-lg transition-all duration-200 hover:brightness-105 active:scale-[0.98]"
-                        >
-                          <span className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-none">
-                            Hiring Talent
-                          </span>
-                          <span className="text-base font-bold tracking-tight">
-                            Apply Now
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-
-
-
                     {/* Navigation Links (Old Theme) */}
                     <div className="flex flex-col space-y-1 mt-1">
                       <Link
