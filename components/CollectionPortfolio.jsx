@@ -987,6 +987,9 @@ export default function CollectionPortfolio() {
                 src={selectedVideo.videoUrl}
                 autoPlay
                 controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                onContextMenu={(e) => e.preventDefault()}
                 playsInline
                 className="w-full h-full object-contain bg-black"
               />

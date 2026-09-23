@@ -132,6 +132,8 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
           preload="metadata"
           playsInline
           muted
+          controlsList="nodownload"
+          onContextMenu={(e) => e.preventDefault()}
           className="absolute inset-0 w-full h-full object-cover"
         />
       )}
@@ -589,6 +591,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
                     src={activeVideo.videoUrl}
                     autoPlay
                     controls
+                    controlsList="nodownload"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
                     playsInline
                     className="w-full h-full object-cover bg-black"
                   />

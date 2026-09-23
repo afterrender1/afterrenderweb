@@ -108,6 +108,8 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
           loop
           playsInline
           controls={false}
+          controlsList="nodownload"
+          onContextMenu={(e) => e.preventDefault()}
           className="w-full h-full object-cover"
         />
       )}
