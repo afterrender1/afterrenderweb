@@ -15,11 +15,13 @@ const spaceGrotesk = Space_Grotesk({
 
 const Footer = ({ theme }) => {
   const pathname = usePathname();
+  const isRealEstate = pathname === "/real-estate";
   const isLight =
     theme === "light" ||
     pathname === "/pricing" ||
     pathname === "/our-work" ||
     pathname === "/about-us" ||
+    isRealEstate ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
     pathname === "/terms-conditions";
@@ -101,11 +103,13 @@ const Footer = ({ theme }) => {
         <div className="lg:col-span-3">
           <Link href="/" className="text-2xl font-semibold inline-block mb-3">
             <Image
-              src="/logos/arlogo.png"
+              src={isRealEstate ? "/images/argold.webp" : "/logos/arlogo.png"}
               alt="AfterRender Logo"
               width={180}
               height={46}
-              className="w-[160px] sm:w-[180px] h-auto"
+              priority={isRealEstate}
+              loading={isRealEstate ? "eager" : undefined}
+              className="w-[160px] sm:w-[180px] h-auto object-contain"
             />
           </Link>
           <p
@@ -142,7 +146,9 @@ const Footer = ({ theme }) => {
                 whileHover={{ scale: 1.15, y: -2 }}
                 className={`p-2.5 rounded-full transition ${
                   isLight
-                    ? "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black shadow-2xs"
+                    ? isRealEstate
+                      ? "bg-white border border-gray-200 text-gray-700 hover:bg-yellow-50 hover:text-[#B8860B] hover:border-[#B8860B]/40 shadow-2xs"
+                      : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black shadow-2xs"
                     : "bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 text-[#C9E4FF]"
                 }`}
               >
@@ -181,7 +187,11 @@ const Footer = ({ theme }) => {
                 <Link
                   href={item.href}
                   className={`transition-colors ${
-                    isLight ? "hover:text-black" : "hover:text-[#48A2FF]"
+                    isLight
+                      ? isRealEstate
+                        ? "hover:text-[#B8860B]"
+                        : "hover:text-black"
+                      : "hover:text-[#48A2FF]"
                   }`}
                 >
                   {item.name}
@@ -235,12 +245,18 @@ const Footer = ({ theme }) => {
 
           {/* Phone Number */}
           <div className="flex items-center gap-2 text-xs sm:text-[13px] font-medium">
-            <Phone className="w-3.5 h-3.5 text-[#48A2FF] shrink-0" />
+            <Phone
+              className={`w-3.5 h-3.5 shrink-0 ${
+                isRealEstate ? "text-[#B8860B]" : "text-[#48A2FF]"
+              }`}
+            />
             <a
               href="tel:+13076677665"
               className={`transition-colors ${
                 isLight
-                  ? "text-gray-700 hover:text-[#48A2FF]"
+                  ? isRealEstate
+                    ? "text-gray-700 hover:text-[#B8860B]"
+                    : "text-gray-700 hover:text-[#48A2FF]"
                   : "text-[#C9E4FF] hover:text-white"
               }`}
             >
@@ -275,7 +291,9 @@ const Footer = ({ theme }) => {
             viewport={{ once: true }}
             className={`flex flex-col sm:flex-row items-center rounded-2xl p-1.5 backdrop-blur-lg shadow-sm transition-all duration-300 w-full ${
               isLight
-                ? "bg-white border border-gray-300/80 shadow-2xs hover:border-gray-400"
+                ? isRealEstate
+                  ? "bg-white border border-yellow-600/30 shadow-2xs hover:border-[#B8860B] focus-within:border-[#B8860B]"
+                  : "bg-white border border-gray-300/80 shadow-2xs hover:border-gray-400"
                 : "bg-white/10 border border-[#48A2FF]/30 hover:shadow-[#48A2FF]/40"
             }`}
           >
@@ -289,7 +307,9 @@ const Footer = ({ theme }) => {
                 placeholder="Enter your email"
                 className={`w-full bg-transparent text-xs sm:text-sm px-3.5 py-2.5 outline-none rounded-xl sm:rounded-full transition-all duration-300 ${
                   isLight
-                    ? "text-gray-900 placeholder:text-gray-400 focus:bg-gray-50/50"
+                    ? isRealEstate
+                      ? "text-gray-900 placeholder:text-gray-400 focus:bg-yellow-50/20"
+                      : "text-gray-900 placeholder:text-gray-400 focus:bg-gray-50/50"
                     : "text-white placeholder-[#9FC8F1] focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5"
                 }`}
               />
@@ -300,9 +320,20 @@ const Footer = ({ theme }) => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
               disabled={loading}
-              className={`mt-2.5 sm:mt-0 sm:ml-2 text-xs sm:text-[13px] font-bold w-full sm:w-auto cursor-pointer bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] px-4 py-2.5 rounded-xl sm:rounded-full shadow-2xs transition-all duration-300 shrink-0 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              style={
+                isRealEstate
+                  ? {
+                      background:
+                        "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                      color: "#000",
+                    }
+                  : undefined
+              }
+              className={`mt-2.5 sm:mt-0 sm:ml-2 text-xs sm:text-[13px] font-bold w-full sm:w-auto cursor-pointer px-4 py-2.5 rounded-xl sm:rounded-full shadow-2xs transition-all duration-300 shrink-0 ${
+                isRealEstate
+                  ? "text-black shadow-[0_4px_14px_rgba(218,165,32,0.35)]"
+                  : "bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A]"
+              } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
             >
               {loading ? "Sending..." : "Get Quote"}
             </motion.button>
@@ -352,7 +383,11 @@ const Footer = ({ theme }) => {
           <Link
             href="/privacy-policy"
             className={`transition-colors ${
-              isLight ? "hover:text-black" : "hover:text-white"
+              isLight
+                ? isRealEstate
+                  ? "hover:text-[#B8860B]"
+                  : "hover:text-black"
+                : "hover:text-white"
             }`}
           >
             Privacy Policy
@@ -360,7 +395,11 @@ const Footer = ({ theme }) => {
           <Link
             href="/refund-policy"
             className={`transition-colors ${
-              isLight ? "hover:text-black" : "hover:text-white"
+              isLight
+                ? isRealEstate
+                  ? "hover:text-[#B8860B]"
+                  : "hover:text-black"
+                : "hover:text-white"
             }`}
           >
             Refund Policy
@@ -368,7 +407,11 @@ const Footer = ({ theme }) => {
           <Link
             href="/terms-conditions"
             className={`transition-colors ${
-              isLight ? "hover:text-black" : "hover:text-white"
+              isLight
+                ? isRealEstate
+                  ? "hover:text-[#B8860B]"
+                  : "hover:text-black"
+                : "hover:text-white"
             }`}
           >
             Terms & Conditions

@@ -14,18 +14,23 @@ const urbanist = Urbanist({
   display: "swap",
 });
 
-export default function Navbar({ hideHiring = false } = {}) {
+export default function Navbar({ hideHiring = false, logo = null } = {}) {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const isRealEstate = pathname === "/real-estate";
   const isPricing =
     pathname === "/pricing" ||
     pathname === "/our-work" ||
     pathname === "/about-us" ||
+    pathname === "/real-estate" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
     pathname === "/terms-conditions";
+
+  const currentLogo =
+    logo || (isRealEstate ? "/images/argold.webp" : "/logos/arlogo.png");
 
   const toggleMenu = (menu) => setOpenMenu(openMenu === menu ? null : menu);
   const closeMobileMenu = () => {
@@ -80,11 +85,14 @@ export default function Navbar({ hideHiring = false } = {}) {
         <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 text-white">
           <Link href="/" className="text-2xl font-semibold tracking-wide z-50">
             <Image
-              src="/logos/arlogo.png"
+              src={currentLogo}
               alt="AfterRender"
               width={180}
               height={45}
               priority
+              loading="eager"
+              fetchPriority="high"
+              sizes="(max-width: 640px) 145px, (max-width: 1024px) 170px, 185px"
               className="w-[145px] xs:w-[170px] sm:w-[190px] lg:w-[185px] h-auto object-contain"
             />
           </Link>
@@ -95,7 +103,9 @@ export default function Navbar({ hideHiring = false } = {}) {
             <Link
               href="/our-work"
               className={`transition-colors ${
-                isPricing
+                isRealEstate
+                  ? "text-black hover:text-[#B8860B]"
+                  : isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
@@ -103,11 +113,12 @@ export default function Navbar({ hideHiring = false } = {}) {
               Our Work
             </Link>
 
-
             <Link
               href="/pricing"
               className={`transition-colors ${
-                isPricing
+                isRealEstate
+                  ? "text-black hover:text-[#B8860B]"
+                  : isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
@@ -117,7 +128,9 @@ export default function Navbar({ hideHiring = false } = {}) {
             <Link
               href="/blogs"
               className={`transition-colors ${
-                isPricing
+                isRealEstate
+                  ? "text-black hover:text-[#B8860B]"
+                  : isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
@@ -127,7 +140,9 @@ export default function Navbar({ hideHiring = false } = {}) {
             <Link
               href="/about-us"
               className={`transition-colors ${
-                isPricing
+                isRealEstate
+                  ? "text-black hover:text-[#B8860B]"
+                  : isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
@@ -138,7 +153,9 @@ export default function Navbar({ hideHiring = false } = {}) {
               href="/#contact"
               onClick={handleContactClick}
               className={`transition-colors ${
-                isPricing
+                isRealEstate
+                  ? "text-black hover:text-[#B8860B]"
+                  : isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
@@ -151,7 +168,20 @@ export default function Navbar({ hideHiring = false } = {}) {
             <Link
               target="_blank"
               href="https://calendly.com/afterrenderagency/new-meeting"
-              className="cursor-pointer ml-3 bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-xs lg:text-sm text-[#0A2540] font-semibold px-5 py-2.5 rounded-lg shadow-md hover:scale-105 hover:shadow-lg hover:brightness-110 transition-all duration-300"
+              style={
+                isRealEstate
+                  ? {
+                      background:
+                        "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                      color: "#000",
+                    }
+                  : undefined
+              }
+              className={`cursor-pointer ml-3 text-xs lg:text-sm font-bold px-5 py-2.5 rounded-lg shadow-md hover:scale-105 hover:shadow-lg hover:brightness-105 transition-all duration-300 ${
+                isRealEstate
+                  ? "text-black shadow-[0_4px_16px_rgba(218,165,32,0.4)]"
+                  : "bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]"
+              }`}
             >
               Book a Call
             </Link>
@@ -160,7 +190,9 @@ export default function Navbar({ hideHiring = false } = {}) {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`lg:hidden z-50 p-2 transition-colors ${
-              isPricing
+              isRealEstate
+                ? "text-black hover:text-[#B8860B]"
+                : isPricing
                 ? "text-black hover:text-[#59B7FF]"
                 : "hover:text-[#59B7FF]"
             }`}
@@ -271,14 +303,27 @@ export default function Navbar({ hideHiring = false } = {}) {
                     </div>
                   </div>
 
-                  {/* Book a Call Button (Old Theme) */}
+                  {/* Book a Call Button */}
                   <div className="pt-4 mt-6">
                     <Link
                       href="https://calendly.com/afterrenderagency/new-meeting"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={closeMobileMenu}
-                      className="block text-center bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-semibold text-sm sm:text-base px-6 py-3 rounded-lg shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200"
+                      style={
+                        isRealEstate
+                          ? {
+                              background:
+                                "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                              color: "#000",
+                            }
+                          : undefined
+                      }
+                      className={`block text-center font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200 ${
+                        isRealEstate
+                          ? "text-black shadow-[0_4px_16px_rgba(218,165,32,0.4)]"
+                          : "bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]"
+                      }`}
                     >
                       Book a Call
                     </Link>
