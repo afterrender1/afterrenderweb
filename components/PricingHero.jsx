@@ -29,7 +29,17 @@ const plans = {
     tabLabel: "Video",
     title: "Video Editing",
     description:
-      "Tailored for agencies, creators & brands who outsource video editing, from reels and long-form edits to ads, promos & more.",
+      "Producing 10 or more videos a month? This is your best deal. Tailored for agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
+    tierDescriptions: {
+      1: "Producing 10 or more videos a month? This is your best deal. Tailored for agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
+      2: "Producing 30 or more videos a month? This is your best deal. Tailored for growing agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
+      3: "Producing 50 or more videos a month? This is your best deal. Tailored for high-volume agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
+    },
+    tierSubtitles: {
+      1: "10 Videos",
+      2: "30 Videos",
+      3: "50 Videos",
+    },
     basePrice: 699,
     prices: {
       1: 699,
@@ -121,6 +131,10 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
   const currentPlan = plans[activeTab];
   const tabKeys = ["video", "graphics", "realtor"];
+
+  const currentDescription =
+    currentPlan.tierDescriptions?.[activeRequests] || currentPlan.description;
+  const currentTierSubtitle = currentPlan.tierSubtitles?.[activeRequests];
 
   const handleTabChange = (tabKey) => {
     setActiveTab(tabKey);
@@ -337,11 +351,18 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
             {/* Right Side: Gradient Action Card */}
             <div className="md:col-span-6 bg-gradient-to-r from-[#48A2FF] via-[#75B8FF] to-[#C9E4FF] rounded-[20px] p-5 sm:p-6 text-[#0A2540] flex flex-col justify-between shadow-[0_12px_30px_rgba(72,162,255,0.35)]">
               <div>
-                <h3 className="text-xl sm:text-[22px] font-extrabold text-black tracking-tight mb-1.5">
-                  {currentPlan.title}
-                </h3>
-                <p className="text-xs sm:text-[12.5px] font-medium text-black/85 leading-relaxed mb-4">
-                  {currentPlan.description}
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <h3 className="text-xl sm:text-[22px] font-extrabold text-black tracking-tight">
+                    {currentPlan.title}
+                  </h3>
+                  {currentTierSubtitle && (
+                    <span className="text-[11px] sm:text-xs font-extrabold bg-black text-white px-2.5 py-0.5 rounded-full shadow-2xs shrink-0">
+                      {currentTierSubtitle}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs sm:text-[12.5px] font-medium text-black/85 leading-relaxed mb-4 min-h-[44px]">
+                  {currentDescription}
                 </p>
 
                 {/* Dropdown & Controls */}
