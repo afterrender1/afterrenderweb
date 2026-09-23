@@ -87,6 +87,9 @@ const scopeChips = [
   "Pitch Decks",
   "Podcast Audio/Video",
   "Social Carousels",
+  "Realtors",
+  "Real Estate Videos",
+  "Service Base Business Videos"
 ];
 
 export default function WhatWeDo() {

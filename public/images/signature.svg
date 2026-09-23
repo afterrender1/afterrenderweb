@@ -1,7 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" width="240" height="100" fill="none">
-  <path d="M25 60 C20 40, 30 15, 42 20 C50 25, 48 65, 42 80 M42 45 C45 35, 55 30, 62 42 C68 55, 60 70, 56 75 M68 45 L74 68 M71 34 A2 2 0 1 1 71 30 M78 50 C82 45, 88 44, 94 52 L102 70 L110 46 C114 42, 120 42, 124 50 L128 68 C128 85, 120 105, 105 102 C95 100, 98 88, 108 82 M134 50 C140 44, 148 46, 150 56 C152 66, 142 72, 136 68 C132 64, 134 52, 144 48 M150 50 L154 68 M160 50 C165 44, 172 45, 175 52 L176 68 M182 50 C188 45, 196 46, 198 55 C200 66, 188 72, 182 66 C178 62, 182 52, 192 48 M198 50 L202 70 C204 88, 194 102, 180 98" 
-        stroke="#111111" 
-        stroke-width="3" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 100" width="250" height="100" fill="none">
+  <!-- Cursive "Arham" Founder Signature -->
+  <!-- Letter 'A' -->
+  <path d="M 28 72 C 22 54, 34 22, 50 16 C 60 12, 68 18, 64 34 C 57 56, 44 76, 38 84" 
+        stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 48 18 C 62 25, 72 48, 78 80" 
+        stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 40 54 C 56 48, 76 46, 90 52" 
+        stroke="#111111" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Letter 'r' -->
+  <path d="M 90 52 C 96 46, 106 44, 112 50 C 116 54, 112 64, 114 72" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Letter 'h' (Ascending Loop) -->
+  <path d="M 114 72 C 117 60, 125 24, 133 16 C 138 11, 143 15, 140 26 C 135 44, 127 70, 125 76" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 127 58 C 133 50, 143 48, 148 53 C 153 58, 150 68, 149 74" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Letter 'a' -->
+  <path d="M 149 74 C 155 66, 164 54, 173 54 C 182 54, 184 62, 181 70 C 177 76, 167 76, 164 69 C 161 62, 168 54, 176 54 C 181 54, 184 60, 182 74" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Letter 'm' -->
+  <path d="M 182 74 C 186 62, 193 54, 200 55 C 206 56, 203 66, 201 74" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 201 62 C 206 54, 214 54, 220 56 C 226 58, 224 68, 222 75" 
+        stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Elegant Underline Flourish -->
+  <path d="M 222 75 C 226 83, 216 88, 195 89 C 152 91, 100 90, 60 88 C 42 87, 52 85, 85 84 C 135 83, 195 84, 238 86" 
+        stroke="#111111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
 </svg>

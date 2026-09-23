@@ -25,7 +25,7 @@ const caveat = Caveat({
 export default function OurStory({
   founderImage = "/images/ArhamKhan.webp",
   signatureImage = "/images/signature.svg",
-  founderName = "Divyang",
+  founderName = "Arham",
 }) {
   return (
     <section
