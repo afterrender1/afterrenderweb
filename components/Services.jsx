@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Play, X } from "lucide-react";
 import { Urbanist, Playfair_Display } from "next/font/google";
 
@@ -166,11 +167,12 @@ export default function Services() {
                           onClick={() => setPlayingVideoId(item.id)}
                         >
                           {/* Thumbnail / Poster */}
-                          <img
+                          <Image
                             src={item.posterUrl}
                             alt={item.title}
-                            loading="lazy"
-                            className="w-full h-full absolute inset-0 object-cover transition-transform duration-700 ease-out group-hover/media:scale-105"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-700 ease-out group-hover/media:scale-105"
                           />
 
                           {/* Ambient vignette */}

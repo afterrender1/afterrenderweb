@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { Play, X, Video } from "lucide-react";
@@ -698,11 +699,12 @@ export default function CollectionPortfolio() {
           video.aspect || (video.isVertical ? "aspect-[9/16]" : "aspect-[16/9]")
         } overflow-hidden bg-gray-950`}
       >
-        <img
+        <Image
           src={video.posterUrl}
           alt={video.title}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
         <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-300" />
@@ -914,11 +916,12 @@ export default function CollectionPortfolio() {
                         className={`${item.gridSpan} group relative rounded-2xl overflow-hidden bg-white border border-gray-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:border-gray-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1`}
                       >
                         <div className={`relative w-full ${item.aspect} overflow-hidden bg-gray-100`}>
-                          <img
+                          <Image
                             src={item.imageUrl}
                             alt={item.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                           />
 
                           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end">

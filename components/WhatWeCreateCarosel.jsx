@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -89,11 +90,12 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
       className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-2xl sm:rounded-[22px] overflow-hidden bg-neutral-950 border border-gray-200/90 shadow-[0_10px_30px_rgba(0,0,0,0.04)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)]"
     >
       {/* Poster Image (Visible when not playing) */}
-      <img
+      <Image
         src={item.poster}
         alt={item.title}
-        loading="lazy"
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+        fill
+        sizes="(max-width: 640px) 190px, (max-width: 768px) 220px, 240px"
+        className={`object-cover transition-opacity duration-300 ${
           isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       />

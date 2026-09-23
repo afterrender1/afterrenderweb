@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { Urbanist, Playfair_Display } from "next/font/google";
 import { Play, ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -108,11 +109,12 @@ const VideoCard = ({ item, index, onOpenModal }) => {
 
       {/* Poster Image or preview */}
       {item.poster ? (
-        <img
+        <Image
           src={item.poster}
           alt={item.clientName}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="(max-width: 640px) 190px, (max-width: 768px) 220px, 240px"
+          className="object-cover"
         />
       ) : (
         <video
