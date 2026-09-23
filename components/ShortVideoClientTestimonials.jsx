@@ -98,14 +98,24 @@ function getYouTubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
-const VideoCard = ({ item, index, onOpenModal }) => {
+const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
   return (
     <div
       onClick={() => onOpenModal(index)}
-      className="relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[12px] overflow-hidden bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)] shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-colors duration-300"
+      className={`relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[14px] overflow-hidden shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 ${
+        isLight
+          ? "bg-white border-2 border-gray-200/90 hover:border-[#48A2FF] shadow-[0_10px_25px_rgba(0,0,0,0.06)] hover:shadow-[0_15px_35px_rgba(72,162,255,0.22)]"
+          : "bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)]"
+      }`}
     >
       {/* Top subtle highlight */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none group-hover:via-[#48A2FF]/60 transition-colors duration-500 z-10" />
+      <div
+        className={`absolute top-0 inset-x-0 h-px pointer-events-none transition-colors duration-500 z-10 ${
+          isLight
+            ? "bg-gradient-to-r from-transparent via-black/10 to-transparent group-hover:via-[#48A2FF]"
+            : "bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:via-[#48A2FF]/60"
+        }`}
+      />
 
       {/* Poster Image or preview */}
       {item.poster ? (
@@ -127,19 +137,39 @@ const VideoCard = ({ item, index, onOpenModal }) => {
       )}
 
       {/* Bottom Gradient Overlay & Details */}
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-4 sm:p-5 flex flex-col justify-end z-10 pointer-events-none">
+      <div
+        className={`absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col justify-end z-10 pointer-events-none ${
+          isLight
+            ? "bg-gradient-to-t from-white via-white/95 to-transparent"
+            : "bg-gradient-to-t from-black/95 via-black/60 to-transparent"
+        }`}
+      >
         {item.role?.trim() ? (
-          <span className="text-[10px] sm:text-[11px] font-bold text-[#48A2FF] uppercase tracking-wider mb-0.5 line-clamp-1">
+          <span
+            className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5 line-clamp-1 ${
+              isLight ? "text-[#0A2540]" : "text-[#48A2FF]"
+            }`}
+          >
             {item.role}
           </span>
         ) : null}
-        <h4 className="text-white text-sm sm:text-base font-bold tracking-tight line-clamp-1 mb-1">
+        <h4
+          className={`text-sm sm:text-base font-extrabold tracking-tight line-clamp-1 mb-1 ${
+            isLight ? "text-black" : "text-white"
+          }`}
+        >
           {item.clientName}
         </h4>
       </div>
 
       {/* Central Play Button Overlay */}
-      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 flex items-center justify-center transition-all duration-300 z-20">
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-all duration-300 z-20 ${
+          isLight
+            ? "bg-black/10 group-hover:bg-black/5"
+            : "bg-black/30 group-hover:bg-black/15"
+        }`}
+      >
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 rounded-full bg-[#48A2FF]/40 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] group-hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transition-colors duration-300">
@@ -153,7 +183,7 @@ const VideoCard = ({ item, index, onOpenModal }) => {
 
 const emptySubscribe = () => () => {};
 
-const ShortVideoClientTestimonials = () => {
+const ShortVideoClientTestimonials = ({ isLight = false }) => {
   const [activeModalIndex, setActiveModalIndex] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
@@ -251,36 +281,66 @@ const ShortVideoClientTestimonials = () => {
   return (
     <section
       id="client-video-testimonials"
-      className={`${urbanist.className} relative bg-black text-white py-14 sm:py-20 lg:py-24 overflow-hidden`}
-      style={{
-        backgroundImage: "url('/images/casebg.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      className={`${urbanist.className} relative ${
+        isLight ? "bg-[#FAFAFA] text-black" : "bg-black text-white"
+      } py-14 sm:py-20 lg:py-24 overflow-hidden`}
+      style={
+        isLight
+          ? { backgroundImage: "none", backgroundColor: "#FAFAFA" }
+          : {
+              backgroundImage: "url('/images/casebg.png')",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+      }
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Tag & Divider Line */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block shadow-[0_0_8px_#CEFF00]" />
+          <div
+            className={`flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase ${
+              isLight ? "text-black" : "text-gray-400"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full inline-block ${
+                isLight
+                  ? "bg-[#48A2FF] shadow-[0_0_8px_rgba(72,162,255,0.6)]"
+                  : "bg-[#CEFF00] shadow-[0_0_8px_#CEFF00]"
+              }`}
+            />
             <span>TESTIMONIALS</span>
           </div>
-          <div className="flex-1 h-[1px] bg-white/10" />
+          <div
+            className={`flex-1 h-[1px] ${
+              isLight ? "bg-gray-300" : "bg-white/10"
+            }`}
+          />
         </div>
 
         {/* Section Header with Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div className="max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
+            <h2
+              className={`text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15] ${
+                isLight ? "text-black" : "text-white"
+              }`}
+            >
               <span>Stories from </span>
               <span
-                className={`${playfair.className} italic font-normal text-[#F4EBD9] block sm:inline`}
+                className={`${playfair.className} italic font-normal ${
+                  isLight ? "text-black" : "text-[#F4EBD9]"
+                } block sm:inline`}
               >
                 Real Clients.
               </span>
             </h2>
-            <p className="mt-3.5 text-gray-400 text-xs sm:text-sm md:text-[14.5px] leading-relaxed font-medium">
+            <p
+              className={`mt-3.5 text-xs sm:text-sm md:text-[14.5px] leading-relaxed font-semibold ${
+                isLight ? "text-black" : "text-gray-400"
+              }`}
+            >
               Hear directly from creators, founders, and brands who transformed their reach with AfterRender.
             </p>
           </div>
@@ -291,17 +351,37 @@ const ShortVideoClientTestimonials = () => {
               type="button"
               onClick={() => handleScroll("left")}
               aria-label="Previous testimonials"
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group"
+              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group ${
+                isLight
+                  ? "bg-white hover:bg-gray-100 border-gray-300 text-black shadow-xs"
+                  : "bg-white/10 hover:bg-white/20 border-white/15 text-white"
+              }`}
             >
-              <ChevronLeft className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+              <ChevronLeft
+                className={`w-5 h-5 transition-colors ${
+                  isLight
+                    ? "text-black group-hover:scale-110"
+                    : "text-gray-300 group-hover:text-white"
+                }`}
+              />
             </button>
             <button
               type="button"
               onClick={() => handleScroll("right")}
               aria-label="Next testimonials"
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group"
+              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group ${
+                isLight
+                  ? "bg-white hover:bg-gray-100 border-gray-300 text-black shadow-xs"
+                  : "bg-white/10 hover:bg-white/20 border-white/15 text-white"
+              }`}
             >
-              <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+              <ChevronRight
+                className={`w-5 h-5 transition-colors ${
+                  isLight
+                    ? "text-black group-hover:scale-110"
+                    : "text-gray-300 group-hover:text-white"
+                }`}
+              />
             </button>
           </div>
         </div>
@@ -310,8 +390,20 @@ const ShortVideoClientTestimonials = () => {
       {/* Seamless Infinite Running Carousel Track */}
       <div className="relative w-full overflow-hidden">
         {/* Soft edge blur gradient masks */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-black via-black/80 to-transparent z-20" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-black via-black/80 to-transparent z-20" />
+        <div
+          className={`pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r ${
+            isLight
+              ? "from-[#FAFAFA] via-[#FAFAFA]/80"
+              : "from-black via-black/80"
+          } to-transparent z-20`}
+        />
+        <div
+          className={`pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l ${
+            isLight
+              ? "from-[#FAFAFA] via-[#FAFAFA]/80"
+              : "from-black via-black/80"
+          } to-transparent z-20`}
+        />
 
         {/* Scrollable / Animated Marquee Track */}
         <div
@@ -337,6 +429,7 @@ const ShortVideoClientTestimonials = () => {
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
+                  isLight={isLight}
                 />
               ))}
             </div>
@@ -354,6 +447,7 @@ const ShortVideoClientTestimonials = () => {
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
+                  isLight={isLight}
                 />
               ))}
             </div>
@@ -371,6 +465,7 @@ const ShortVideoClientTestimonials = () => {
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
+                  isLight={isLight}
                 />
               ))}
             </div>

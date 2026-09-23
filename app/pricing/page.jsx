@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import PricingHero from "@/components/PricingHero";
 import PricingListOfServices from "@/components/PricingListOfServices";
 import PricingBenefits from "@/components/PricingBenefits";
+import ShortVideoClientTestimonials from "@/components/ShortVideoClientTestimonials";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import PricingFAQ from "@/components/PricingFAQ";
 import Footer from "@/components/Footer";
@@ -20,6 +21,7 @@ const PricingPage = () => {
       <PricingHero />
       <PricingListOfServices />
       <PricingBenefits />
+      <ShortVideoClientTestimonials isLight={true} />
       <PricingTestimonials />
       <PricingFAQ />
       <Footer />
