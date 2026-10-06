@@ -40,7 +40,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-2xl border border-gray-200/90 shadow-2xs hover:border-[#B8860B]/40 transition-all duration-200 cursor-pointer overflow-hidden"
+      className="bg-white rounded-2xl border border-gray-200/90 shadow-2xs hover:border-[#48A2FF]/40 transition-all duration-200 cursor-pointer overflow-hidden"
     >
       <button
         type="button"
@@ -52,7 +52,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         <div className="shrink-0">
           <ChevronDown
             className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
-              isOpen ? "rotate-180 text-[#B8860B]" : ""
+              isOpen ? "rotate-180 text-[#48A2FF]" : ""
             }`}
           />
         </div>
@@ -112,7 +112,7 @@ const RealEstateFAQ = () => {
             {industries.map((industry) => (
               <span
                 key={industry}
-                className="bg-[#FDF6E3] border border-[#B8860B]/25 text-[#0A0A0A] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1 rounded-full"
+                className="bg-[#EAF4FF] border border-[#48A2FF]/25 text-[#0A0A0A] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1 rounded-full"
               >
                 {industry}
               </span>
@@ -139,7 +139,7 @@ const RealEstateFAQ = () => {
         {/* Top Tag & Divider Line */}
         <div className="flex items-center gap-3 mb-10">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-[#B8860B] inline-block shadow-[0_0_8px_rgba(184,134,11,0.6)]" />
+            <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block" />
             <span>FAQ</span>
           </div>
           <div className="flex-1 h-[1px] bg-gray-200" />

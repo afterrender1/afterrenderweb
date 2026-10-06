@@ -19,32 +19,32 @@ const playfair = Playfair_Display({
 const steps = [
   {
     icon: PhoneCall,
-    iconBg: "linear-gradient(135deg, #FFF3D6 0%, #FBE4A8 100%)",
-    iconColor: "#B8860B",
+    iconBg: "linear-gradient(135deg, #EAF4FF 0%, #C9E4FF 100%)",
+    iconColor: "#48A2FF",
     title: "We learn your business",
     description:
       "First, we get on a call and learn about your business: who your customers are, what you sell, and what's worked (or hasn't) before.",
   },
   {
     icon: FileText,
-    iconBg: "linear-gradient(135deg, #FFEEDB 0%, #FBD9AE 100%)",
-    iconColor: "#B0680B",
+    iconBg: "linear-gradient(135deg, #E6F0FF 0%, #BFD8FF 100%)",
+    iconColor: "#2F7FE0",
     title: "We plan & write the scripts",
     description:
       "Then we plan the month and write the scripts. You see them before anything gets filmed.",
   },
   {
     icon: Camera,
-    iconBg: "linear-gradient(135deg, #FFF9EC 0%, #F8E7BC 100%)",
-    iconColor: "#9C7A0A",
+    iconBg: "linear-gradient(135deg, #EEF6FF 0%, #D4E9FF 100%)",
+    iconColor: "#3A8CF0",
     title: "We film, twice a week",
     description:
       "Our camera operator comes by twice a week to shoot. Each visit usually takes a couple of hours.",
   },
   {
     icon: UploadCloud,
-    iconBg: "linear-gradient(135deg, #FBF0DA 0%, #F2DBA6 100%)",
-    iconColor: "#8B6508",
+    iconBg: "linear-gradient(135deg, #E3EEFF 0%, #B5D3FF 100%)",
+    iconColor: "#1F6FD1",
     title: "We edit, approve & post",
     description:
       "We edit, send you the videos to approve, and post them once you're happy.",
@@ -60,7 +60,7 @@ const RealEstateProcess = () => {
         {/* Top Tag & Divider */}
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-[#B8860B] inline-block shadow-[0_0_8px_rgba(184,134,11,0.6)]" />
+            <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block" />
             <span>How It Works</span>
           </div>
           <div className="flex-1 h-[1px] bg-gray-200" />
@@ -80,7 +80,7 @@ const RealEstateProcess = () => {
         {/* Steps */}
         <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-6">
           {/* Connecting line (desktop only), running through the icon centers */}
-          <div className="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-[#DCC078] to-transparent" />
+          <div className="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-[#9CCBFF] to-transparent" />
 
           {steps.map((item, index) => {
             const Icon = item.icon;
@@ -94,7 +94,7 @@ const RealEstateProcess = () => {
                 className="relative flex flex-col items-center text-center px-2"
               >
                 <div
-                  className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-[0_6px_18px_rgba(184,134,11,0.15)]"
+                  className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-[0_6px_18px_rgba(72,162,255,0.15)]"
                   style={{ background: item.iconBg }}
                 >
                   <Icon

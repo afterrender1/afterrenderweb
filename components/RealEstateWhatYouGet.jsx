@@ -46,7 +46,7 @@ const RealEstateWhatYouGet = () => {
         {/* Top Tag & Divider */}
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-[#B8860B] inline-block shadow-[0_0_8px_rgba(184,134,11,0.6)]" />
+            <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block" />
             <span>What You Get</span>
           </div>
           <div className="flex-1 h-[1px] bg-gray-200" />
@@ -89,13 +89,13 @@ const RealEstateWhatYouGet = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.08 }}
-                  className="flex items-start gap-4 bg-[#FAFAFA] border border-gray-200/80 rounded-2xl p-5 sm:p-6 hover:border-[#B8860B]/40 hover:shadow-[0_12px_30px_rgba(184,134,11,0.1)] transition-all duration-300"
+                  className="flex items-start gap-4 bg-[#FAFAFA] border border-gray-200/80 rounded-2xl p-5 sm:p-6 hover:border-[#48A2FF]/40 hover:shadow-[0_12px_30px_rgba(72,162,255,0.1)] transition-all duration-300"
                 >
                   <div
-                    className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-black shadow-[0_6px_16px_rgba(184,134,11,0.3)]"
+                    className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-[#0A2540] shadow-[0_6px_16px_rgba(72,162,255,0.3)]"
                     style={{
                       background:
-                        "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                        "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
                     }}
                   >
                     <Icon className="w-5 h-5" />

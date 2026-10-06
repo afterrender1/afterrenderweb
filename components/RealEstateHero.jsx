@@ -24,8 +24,8 @@ const RealEstateHero = () => {
     <section
       className={`${jakarta.className} relative bg-[#FAFAFA] text-black pt-32 sm:pt-40 pb-14 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
     >
-      {/* Background Soft Gold Mesh Glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#FFD700]/15 via-[#FDF6E3]/40 to-transparent blur-3xl pointer-events-none -z-10" />
+      {/* Background Soft Mesh Glow */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
 
       {/* Floating Badges */}
       <div className="w-full max-w-2xl relative">
@@ -34,9 +34,9 @@ const RealEstateHero = () => {
           animate={{ opacity: 1, x: 0, rotate: -8 }}
           whileHover={{ scale: 1.06, rotate: -4 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute -top-7 left-0 sm:left-2 md:left-4 z-20 hidden sm:flex items-center gap-1 text-black text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(184,134,11,0.35)] cursor-pointer select-none"
+          className="absolute -top-7 left-0 sm:left-2 md:left-4 z-20 hidden sm:flex items-center gap-1 text-[#0A2540] text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(72,162,255,0.35)] cursor-pointer select-none"
           style={{
-            background: "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+            background: "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
           }}
         >
           <span>@DoneForYou</span>
@@ -95,9 +95,9 @@ const RealEstateHero = () => {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              background: "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+              background: "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
             }}
-            className="group inline-flex items-center gap-2 text-black font-bold text-xs sm:text-sm px-7 py-3 rounded-full shadow-[0_8px_20px_rgba(184,134,11,0.4)] hover:shadow-[0_12px_28px_rgba(184,134,11,0.5)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300"
+            className="group inline-flex items-center gap-2 text-[#0A2540] font-bold text-xs sm:text-sm px-7 py-3 rounded-full shadow-[0_8px_20px_rgba(72,162,255,0.4)] hover:shadow-[0_12px_28px_rgba(72,162,255,0.5)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300"
           >
             <span>Book a Free Call</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -112,15 +112,15 @@ const RealEstateHero = () => {
           className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-7 gap-y-2 text-xs sm:text-[13px] font-medium text-gray-700"
         >
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-bold text-[#B8860B]">✓</span>
+            <span className="text-xs font-bold text-[#48A2FF]">✓</span>
             <span>Scripts written for every video</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-bold text-[#B8860B]">✓</span>
+            <span className="text-xs font-bold text-[#48A2FF]">✓</span>
             <span>Filmed at your location</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-bold text-[#B8860B]">✓</span>
+            <span className="text-xs font-bold text-[#48A2FF]">✓</span>
             <span>We upload it for you</span>
           </div>
         </motion.div>

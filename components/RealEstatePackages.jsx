@@ -100,7 +100,7 @@ const RealEstatePackages = () => {
         {/* Top Tag & Divider */}
         <div className="flex items-center gap-3 mb-6">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-gray-400">
-            <span className="w-2 h-2 rounded-full bg-[#B8860B] inline-block shadow-[0_0_8px_rgba(184,134,11,0.6)]" />
+            <span className="w-2 h-2 rounded-full bg-[#CEFF00] inline-block" />
             <span>Packages</span>
           </div>
           <div className="flex-1 h-[1px] bg-gray-200" />
@@ -131,7 +131,7 @@ const RealEstatePackages = () => {
                 transition={{ duration: 0.4, delay: index * 0.08 }}
                 className={`relative flex flex-col rounded-2xl p-6 sm:p-7 transition-all duration-300 ${
                   pkg.featured
-                    ? "bg-[#111111] text-white border border-white/10 shadow-[0_25px_60px_-15px_rgba(184,134,11,0.35)] lg:-translate-y-3"
+                    ? "bg-[#111111] text-white border border-white/10 shadow-[0_25px_60px_-15px_rgba(72,162,255,0.35)] lg:-translate-y-3"
                     : "bg-white text-black border border-gray-200/90 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.08)]"
                 }`}
               >
@@ -149,7 +149,7 @@ const RealEstatePackages = () => {
                   <span
                     className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
                       pkg.featured
-                        ? "text-black border-transparent"
+                        ? "text-[#0A2540] border-transparent"
                         : isPremium
                         ? "bg-[#111111] text-white border-transparent"
                         : "bg-gray-100 text-gray-600 border-gray-200"
@@ -158,7 +158,7 @@ const RealEstatePackages = () => {
                       pkg.featured
                         ? {
                             background:
-                              "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                              "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
                           }
                         : undefined
                     }
@@ -168,7 +168,7 @@ const RealEstatePackages = () => {
                         pkg.featured
                           ? "bg-black/60"
                           : isPremium
-                          ? "bg-[#FFD700]"
+                          ? "bg-[#48A2FF]"
                           : "bg-gray-400"
                       }`}
                     />

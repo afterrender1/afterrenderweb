@@ -85,8 +85,8 @@ const RealEstateLeadForm = () => {
     <section
       className={`${jakarta.className} relative bg-[#111111] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden`}
     >
-      {/* Gold ambient glow */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-gradient-to-r from-[#FFD700] to-[#B8860B] rounded-full blur-3xl opacity-[0.08] pointer-events-none" />
+      {/* Blue ambient glow */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[450px] h-[300px] md:h-[450px] bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full blur-3xl opacity-[0.08] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
         {/* Left: Closing CTA copy */}
@@ -100,7 +100,7 @@ const RealEstateLeadForm = () => {
           <h2 className="text-3xl sm:text-4xl md:text-[42px] font-extrabold tracking-tight leading-[1.15] mb-4">
             <span>Not sure which </span>
             <span
-              className={`${playfair.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#B8860B]`}
+              className={`${playfair.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF]`}
             >
               package fits?
             </span>
@@ -115,15 +115,15 @@ const RealEstateLeadForm = () => {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              background: "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+              background: "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
             }}
-            className="hidden lg:inline-flex items-center gap-2 text-black font-bold text-xs sm:text-sm px-7 py-3 rounded-full shadow-[0_8px_20px_rgba(184,134,11,0.4)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300 mb-8"
+            className="hidden lg:inline-flex items-center gap-2 text-[#0A2540] font-bold text-xs sm:text-sm px-7 py-3 rounded-full shadow-[0_8px_20px_rgba(72,162,255,0.4)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300 mb-8"
           >
             Book a Free Call
           </a>
 
           <div className="hidden lg:flex items-center gap-3.5 bg-white/5 border border-white/10 rounded-xl p-3.5 backdrop-blur-lg max-w-xs">
-            <Phone className="text-[#FFD700] w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <Phone className="text-[#48A2FF] w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
             <div className="text-left">
               <p className="font-medium text-xs text-gray-300">
                 Prefer to talk first?
@@ -156,7 +156,7 @@ const RealEstateLeadForm = () => {
                 onChange={handleChange}
                 placeholder="Your Name"
                 required
-                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
 
@@ -171,7 +171,7 @@ const RealEstateLeadForm = () => {
                 onChange={handleChange}
                 placeholder="Your Business"
                 required
-                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ const RealEstateLeadForm = () => {
                 onChange={handleChange}
                 placeholder="you@business.com"
                 required
-                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
 
@@ -203,7 +203,7 @@ const RealEstateLeadForm = () => {
                 onChange={handleChange}
                 placeholder="Your Phone Number"
                 required
-                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+                className="bg-black/30 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
               />
             </div>
           </div>
@@ -221,7 +221,7 @@ const RealEstateLeadForm = () => {
               value={form.industry}
               onChange={handleChange}
               required
-              className="bg-black/30 border cursor-pointer border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+              className="bg-black/30 border cursor-pointer border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
             >
               <option value="" className="bg-black">
                 Select your industry
@@ -250,7 +250,7 @@ const RealEstateLeadForm = () => {
               value={form.packageInterest}
               onChange={handleChange}
               required
-              className="bg-black/30 border cursor-pointer border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#B8860B] transition-all"
+              className="bg-black/30 border cursor-pointer border-white/10 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#48A2FF] transition-all"
             >
               <option value="" className="bg-black">
                 Select a package
@@ -274,13 +274,13 @@ const RealEstateLeadForm = () => {
                   ? undefined
                   : {
                       background:
-                        "linear-gradient(135deg, #FFD700 0%, #B8860B 100%)",
+                        "linear-gradient(90deg, #48A2FF 0%, #C9E4FF 100%)",
                     }
               }
               className={`w-full font-bold px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all duration-300 ${
                 loading
                   ? "bg-gray-700 text-gray-300 cursor-not-allowed"
-                  : "text-black hover:shadow-lg hover:brightness-105"
+                  : "text-[#0A2540] hover:shadow-lg hover:brightness-105"
               }`}
             >
               {loading ? (
