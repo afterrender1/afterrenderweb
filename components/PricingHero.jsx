@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  animate,
+  useMotionValue,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { Check, ChevronDown , Info } from "lucide-react";
 import Link from "next/link";
@@ -22,6 +28,9 @@ const WHATSAPP_NUMBER = "923235100033";
 const REALTOR_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Hi! I'm interested in the Real Estate Video Editing plan."
 )}`;
+const VIDEO_CUSTOM_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  "Hi! I'd like a custom Video Editing plan."
+)}`;
 
 const plans = {
   video: {
@@ -34,15 +43,28 @@ const plans = {
       1: "Producing 10 or more videos a month? This is your best deal. Tailored for agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
       2: "Producing 30 or more videos a month? This is your best deal. Tailored for growing agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
       3: "Producing 50 or more videos a month? This is your best deal. Tailored for high-volume agencies, creators & brands who outsource everything from reels and long-form edits to ads, promos & more.",
+      4: "Need more than 100 videos a month or a custom workflow? Let's build a plan around your volume, turnaround and team.",
     },
-  
+    tierFeatures: {
+      1: "10 to 30 Videos",
+      2: "30 to 70 Videos",
+      3: "100+ Videos",
+      4: "Custom Video Volume",
+    },
+    // Tier with no listed price; CTA goes to WhatsApp instead of Subscribe
+    customTier: {
+      request: 4,
+      ctaLabel: "Customize on WhatsApp",
+      ctaUrl: VIDEO_CUSTOM_WHATSAPP_URL,
+    },
+
     basePrice: 699,
     prices: {
       1: 399,
       2: 1199,
       3: 1999,
     },
-    requestOptions: [1, 2, 3],
+    requestOptions: [1, 2, 3, 4],
     requestLabel: "Active Request",
     requestTooltip: "Number of requests we actively work on simultaneously.",
     ctaLabel: "Subscribe",
@@ -53,7 +75,6 @@ const plans = {
       "Upgrade or Downgrade Anytime",
       "Dedicated Project Manager",
       "Pause or Cancel Anytime",
-      "Unlimited Brands",
       "No Contract",
       "Unlimited User Seats",
       "Monday to Friday Workday",
@@ -118,6 +139,26 @@ const plans = {
   },
 };
 
+// Counts up/down from the previous value to the new one whenever `value` changes
+function AnimatedNumber({ value }) {
+  const motionValue = useMotionValue(value);
+  const [display, setDisplay] = useState(value);
+
+  useMotionValueEvent(motionValue, "change", (latest) =>
+    setDisplay(Math.round(latest))
+  );
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 0.6,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [motionValue, value]);
+
+  return <>{display.toLocaleString()}</>;
+}
+
 export default function PricingHero({ hideHeader = false, id = "plans" }) {
   const [activeTab, setActiveTab] = useState("video");
   const [activeRequests, setActiveRequests] = useState(1);
@@ -131,6 +172,15 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
   const currentDescription =
     currentPlan.tierDescriptions?.[activeRequests] || currentPlan.description;
 
+  const tierFeature = currentPlan.tierFeatures?.[activeRequests];
+  const currentFeatures = tierFeature
+    ? [tierFeature, ...currentPlan.features]
+    : currentPlan.features;
+
+  const isCustomTier = currentPlan.customTier?.request === activeRequests;
+  const ctaLabel = isCustomTier ? currentPlan.customTier.ctaLabel : currentPlan.ctaLabel;
+  const ctaUrl = isCustomTier ? currentPlan.customTier.ctaUrl : currentPlan.ctaUrl;
+
   const handleTabChange = (tabKey) => {
     setActiveTab(tabKey);
     setActiveRequests(plans[tabKey].requestOptions[0]);
@@ -142,7 +192,7 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
     currentPlan.basePrice * activeRequests;
 
   const lightningFee = lightningFast ? 100 : 0;
-  const calculatedPrice = (baseOrTierPrice + lightningFee).toLocaleString();
+  const calculatedPrice = baseOrTierPrice + lightningFee;
 
   return (
     <section
@@ -322,7 +372,7 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
                 </h3>
 
                 <ul className="space-y-2.5 sm:space-y-3">
-                  {currentPlan.features.map((feature, index) => (
+                  {currentFeatures.map((feature, index) => (
                     <li
                       key={index}
                       className="flex items-center gap-2.5 text-gray-900"
@@ -443,22 +493,24 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
               {/* Price & Subscribe Button */}
               <div className="mt-3 pt-1">
-                <div className="flex items-baseline gap-1.5 mb-3">
-                  <span className="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
-                    USD {calculatedPrice}
-                  </span>
-                  <span className="text-[11px] font-bold text-black/75 tracking-tight">
-                    Per month
-                  </span>
-                </div>
+                {!isCustomTier && (
+                  <div className="flex items-baseline gap-1.5 mb-3">
+                    <span className="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
+                      USD <AnimatedNumber value={calculatedPrice} />
+                    </span>
+                    <span className="text-[11px] font-bold text-black/75 tracking-tight">
+                      Per month
+                    </span>
+                  </div>
+                )}
 
                 <Link
-                  href={currentPlan.ctaUrl}
+                  href={ctaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center bg-black hover:bg-neutral-900 active:scale-[0.98] text-white font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
                 >
-                  {currentPlan.ctaLabel}
+                  {ctaLabel}
                 </Link>
               </div>
             </div>
