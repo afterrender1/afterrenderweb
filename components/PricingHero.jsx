@@ -28,9 +28,6 @@ const WHATSAPP_NUMBER = "923235100033";
 const REALTOR_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Hi! I'm interested in the Real Estate Video Editing plan."
 )}`;
-const VIDEO_CUSTOM_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  "Hi! I'd like a custom Video Editing plan."
-)}`;
 
 const plans = {
   video: {
@@ -51,11 +48,10 @@ const plans = {
       3: "100+ Videos",
       4: "Custom Video Volume",
     },
-    // Tier with no listed price; CTA goes to WhatsApp instead of Subscribe
+    // Tier with no listed price; CTA opens WhatsApp with the selected plan details
     customTier: {
       request: 4,
       ctaLabel: "Customize on WhatsApp",
-      ctaUrl: VIDEO_CUSTOM_WHATSAPP_URL,
     },
 
     basePrice: 699,
@@ -179,7 +175,6 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
   const isCustomTier = currentPlan.customTier?.request === activeRequests;
   const ctaLabel = isCustomTier ? currentPlan.customTier.ctaLabel : currentPlan.ctaLabel;
-  const ctaUrl = isCustomTier ? currentPlan.customTier.ctaUrl : currentPlan.ctaUrl;
 
   const handleTabChange = (tabKey) => {
     setActiveTab(tabKey);
@@ -193,6 +188,23 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
   const lightningFee = lightningFast ? 100 : 0;
   const calculatedPrice = baseOrTierPrice + lightningFee;
+
+  // Custom tier: pre-filled WhatsApp message with the selected plan details
+  const customWhatsappMessage = [
+    `Hi! I'd like a custom ${currentPlan.title} plan.`,
+    "",
+    `Plan: ${currentPlan.title}`,
+    `${currentPlan.requestLabel}: ${activeRequests}`,
+    tierFeature && `Videos: ${tierFeature}`,
+    `Lightning Fast Delivery: ${lightningFast ? "Yes" : "No"}`,
+  ]
+    .filter((line) => line !== undefined)
+    .join("\n");
+  const ctaUrl = isCustomTier
+    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        customWhatsappMessage
+      )}`
+    : currentPlan.ctaUrl;
 
   return (
     <section
