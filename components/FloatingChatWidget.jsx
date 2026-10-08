@@ -316,17 +316,13 @@ export default function FloatingChatWidget() {
               <div className="flex items-start gap-3.5">
                 {/* Avatar with Live Indicator */}
                 <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#48A2FF]/60 shadow-[0_0_15px_rgba(72,162,255,0.3)] bg-[#131E30] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#48A2FF]/60 shadow-[0_0_15px_rgba(72,162,255,0.3)] bg-[#0B1528] flex items-center justify-center p-1.5">
                     <Image
-                      src="/images/ArhamKhan.webp"
-                      alt="Representative Avatar"
+                      src="/images/logos/logoxar.png"
+                      alt="AfterRender Representative"
                       width={48}
                       height={48}
-                      className="w-full h-full object-cover object-top"
-                      onError={(e) => {
-                        // Fallback in case of missing asset
-                        e.currentTarget.style.display = "none";
-                      }}
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   {/* Status Indicator */}
