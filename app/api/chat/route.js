@@ -5,11 +5,11 @@ export async function POST(req) {
     const body = await req.json();
     const { name, phone, email, message } = body;
 
-    if (!name || (!email && !phone)) {
+    if (!name || !email || !message) {
       return new Response(
         JSON.stringify({
           success: false,
-          message: "Please provide your name and at least an email or phone number.",
+          message: "Please fill out all required fields: Name, E-mail, and Message.",
         }),
         {
           status: 400,

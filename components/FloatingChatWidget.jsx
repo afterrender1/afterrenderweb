@@ -110,10 +110,18 @@ export default function FloatingChatWidget() {
       return;
     }
 
-    if (!formData.email.trim() && !formData.phone.trim()) {
+    if (!formData.email.trim()) {
       setStatus({
         type: "error",
-        message: "Please provide an email or phone number so we can reach you.",
+        message: "Please provide your email address.",
+      });
+      return;
+    }
+
+    if (!formData.message.trim()) {
+      setStatus({
+        type: "error",
+        message: "Please enter your question.",
       });
       return;
     }
@@ -419,7 +427,7 @@ export default function FloatingChatWidget() {
                         htmlFor="chat-phone"
                         className="block text-gray-300 text-xs font-medium mb-1"
                       >
-                        Phone
+                        Phone <span className="text-gray-500 text-[11px] font-normal">(optional)</span>
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -443,7 +451,7 @@ export default function FloatingChatWidget() {
                         htmlFor="chat-email"
                         className="block text-gray-300 text-xs font-medium mb-1"
                       >
-                        E-mail
+                        E-mail <span className="text-[#48A2FF]">*</span>
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -453,6 +461,7 @@ export default function FloatingChatWidget() {
                           id="chat-email"
                           type="email"
                           name="email"
+                          required
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="you@email.com"
@@ -469,7 +478,7 @@ export default function FloatingChatWidget() {
                         htmlFor="chat-message"
                         className="block text-gray-300 text-xs font-medium"
                       >
-                        How can we help?
+                        How can we help? <span className="text-[#48A2FF]">*</span>
                       </label>
                 
                     </div>
@@ -477,6 +486,7 @@ export default function FloatingChatWidget() {
                       id="chat-message"
                       name="message"
                       rows={3}
+                      required
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Enter your question here..."
