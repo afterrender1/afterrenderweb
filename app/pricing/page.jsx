@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import PricingHero from "@/components/PricingHero";
+import ReelEditingStyles from "@/components/ReelEditingStyles";
 import PricingListOfServices from "@/components/PricingListOfServices";
 import PricingBenefits from "@/components/PricingBenefits";
 import ShortVideoClientTestimonials from "@/components/ShortVideoClientTestimonials";
@@ -19,6 +20,7 @@ const PricingPage = () => {
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
       <PricingHero />
+      <ReelEditingStyles />
       <PricingListOfServices />
       <PricingBenefits />
       <ShortVideoClientTestimonials isLight={true} />
