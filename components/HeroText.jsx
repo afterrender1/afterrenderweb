@@ -92,20 +92,21 @@ const HeroText = () => {
 
         <div className="flex justify-center items-center ">
           <motion.video
-            poster="https://res.cloudinary.com/dlurrugno/image/upload/f_auto,q_auto,w_900/v1770043205/mainvposter_mw1d20.png"
+            poster="https://res.cloudinary.com/dlurrugno/image/upload/v1791545041/main-poster_a9zfxj.webp"
             preload="none"
             aria-label="AfterRender Introduction Video"
             controls
             autoPlay={false}
             muted={false}
             loop={false}
+            controlsList="nodownload"
             playsInline
             className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1770041503/mainintrovideo_m2pujs.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1791544554/showreel_ihkbqv.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
         </div>
