@@ -95,11 +95,11 @@ const DeleteBlogPostModel = () => {
     };
 
     return (
-        <div className="p-4">
+        <div>
             {/* 1. Animated Manage Button (Restored Old UI) */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="group relative dark:bg-neutral-800 bg-neutral-200 rounded-full p-px overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
+                className="group relative bg-neutral-200 rounded-full p-px overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
             >
                 <span className="absolute inset-0 rounded-full overflow-hidden">
                     <span className="inset-0 absolute pointer-events-none select-none">
@@ -109,14 +109,14 @@ const DeleteBlogPostModel = () => {
                         ></span>
                     </span>
                 </span>
-                <span className="flex items-center justify-center gap-1 relative z-1 dark:bg-neutral-950/90 bg-neutral-50/90 rounded-full py-2.5 px-5 pl-3 w-full">
+                <span className="flex items-center justify-center gap-1 relative z-1 bg-neutral-50/90 rounded-full py-2.5 px-5 pl-3 w-full">
                     <span className="relative group-hover:rotate-180 transition-transform duration-700">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={THEME_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                     </span>
-                    <span className="bg-neutral-900 dark:bg-white bg-clip-text text-[11px] font-bold uppercase tracking-widest text-transparent">
+                    <span className="bg-neutral-900 bg-clip-text text-[11px] font-bold uppercase tracking-widest text-transparent">
                         Manage Blogs
                     </span>
                 </span>

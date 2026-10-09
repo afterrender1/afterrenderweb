@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageSquare,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 
 export default function FloatingChatWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -177,6 +179,8 @@ export default function FloatingChatWidget() {
       message: "I want to know more",
     });
   };
+
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <aside aria-label="Floating Live Chat Widget">
