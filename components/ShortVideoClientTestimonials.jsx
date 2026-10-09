@@ -19,95 +19,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const clientVideoTestimonialsData = [
-  {
-    id: 1,
-    clientName: "KEITH HEARN",
-    role: "Finepoint Design And Marketing",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792634/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_1_mbldbt.mp4",
-    poster: "/images/short-t-v/keith.png",
-  },
-  {
-    id: 8,
-    clientName: "RAY",
-    role: "Apex Growth",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172026/Review_02_nrztis.mp4",
-    poster:
-      "https://res.cloudinary.com/dlurrugno/image/upload/v1790173147/99ccc58b-7a6c-49cb-9c01-71042ce43474.png",
-    fit: "contain",
-  },
-  {
-    id: 3,
-    clientName: "LAUREN LOVEJOY",
-    role: "Regenerative Agriculture, Farms & Farmers",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_tewro7.mp4",
-    poster: "/images/short-t-v/lauren.png",
-  },
-  {
-    id: 5,
-    clientName: "CJ",
-    role: "Marketing Agency",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Another_one_locked_in.We_just_closed_a_deal_with_CJ_for_55_reels._That_is_55_pieces_of_content_b_rmi8mu.mp4",
-    poster: "/images/short-t-v/dc.png",
-  },
-  {
-    id: 9,
-    clientName: "HYRA",
-    role: "Guardian Heart CPR",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1790172018/Review_01_seebp9.mp4",
-    poster:
-      "https://res.cloudinary.com/dlurrugno/image/upload/v1790173209/01eafeb5-9ede-49bf-a408-5cc2b4977b75.png",
-    fit: "contain",
-  },
-  {
-    id: 4,
-    clientName: "LVAN BOSNJAK",
-    role: "Musician and Content Creator",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_3_q5bumj.mp4",
-    poster: "/images/short-t-v/lvan.png",
-  },
-  {
-    id: 6,
-    clientName: "JUSTIN CREATOR",
-    role: "Business Coach",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792636/Checkout_our_Recent_Testimonials_from_our_beloved_clients_DM_EDIT_and_let_s_get_started_tes_2_mz0nv5.mp4",
-    poster: "/images/short-t-v/justin.png",
-  },
-  {
-    id: 7,
-    clientName: "MATT",
-    role: "Marketing Agency",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792639/Matt_came_to_us_for_short_form_content._The_shorts_performed._And_he_took_the_time_to_share_his_aemz7y.mp4",
-    poster: "/images/short-t-v/matt.png",
-  },
-  {
-    id: 2,
-    clientName: "MATHEW",
-    role: "Marketing Agency",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788792739/Nothing_speaks_louder_than_a_client_jumping_on_a_call_just_to_tell_you_the_work_exceeded_their_e_wswjkb.mp4",
-    poster: "/images/short-t-v/nothing.png",
-  },
-  {
-    id: 10,
-    clientName: "HANRECCA",
-    role: "Marketing Agency",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1790173374/Review_03_b1yk8f.mp4",
-    poster: "https://res.cloudinary.com/dlurrugno/image/upload/v1790173470/52536881-0296-4c9d-9fa6-3a64c773a9a3.png",
-    fit: "contain",
-  },
-
-];
-
 // Helper to check if URL is a YouTube link
 function isYouTubeUrl(url) {
   if (!url) return false;
@@ -128,21 +39,12 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
   return (
     <div
       onClick={() => onOpenModal(index)}
-      className={`relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-xl sm:rounded-[14px] overflow-hidden shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 ${
+      className={`relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 hover:-translate-y-1 ${
         isLight
-          ? "bg-white border-2 border-gray-200/90 hover:border-[#48A2FF] shadow-[0_10px_25px_rgba(0,0,0,0.06)] hover:shadow-[0_15px_35px_rgba(72,162,255,0.22)]"
-          : "bg-[#0C1017] border border-white/10 hover:border-[#48A2FF]/60 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_0_30px_rgba(72,162,255,0.3)]"
+          ? "bg-white ring-1 ring-black/10 shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.14)]"
+          : "bg-[#0C1017] ring-1 ring-white/10 hover:ring-white/25"
       }`}
     >
-      {/* Top subtle highlight */}
-      <div
-        className={`absolute top-0 inset-x-0 h-px pointer-events-none transition-colors duration-500 z-10 ${
-          isLight
-            ? "bg-gradient-to-r from-transparent via-black/10 to-transparent group-hover:via-[#48A2FF]"
-            : "bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:via-[#48A2FF]/60"
-        }`}
-      />
-
       {/* Poster Image or preview */}
       {item.poster ? (
         <Image
@@ -164,46 +66,23 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
         />
       )}
 
-      {/* Bottom Gradient Overlay & Details */}
-      <div
-        className={`absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col justify-end z-10 pointer-events-none ${
-          isLight
-            ? "bg-gradient-to-t from-white via-white/95 to-transparent"
-            : "bg-gradient-to-t from-black/95 via-black/60 to-transparent"
-        }`}
-      >
-        {item.role?.trim() ? (
-          <span
-            className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5 line-clamp-1 ${
-              isLight ? "text-[#0A2540]" : "text-[#48A2FF]"
-            }`}
-          >
-            {item.role}
-          </span>
-        ) : null}
-        <h4
-          className={`text-sm sm:text-base font-extrabold tracking-tight line-clamp-1 mb-1 ${
-            isLight ? "text-black" : "text-white"
-          }`}
-        >
-          {item.clientName}
-        </h4>
+      {/* Play button */}
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm text-black flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+          <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-black ml-0.5" />
+        </div>
       </div>
 
-      {/* Central Play Button Overlay */}
-      <div
-        className={`absolute inset-0 flex items-center justify-center transition-all duration-300 z-20 ${
-          isLight
-            ? "bg-black/10 group-hover:bg-black/5"
-            : "bg-black/30 group-hover:bg-black/15"
-        }`}
-      >
-        <div className="relative flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-[#48A2FF]/40 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#48A2FF] group-hover:bg-[#3b8ee6] text-white flex items-center justify-center shadow-2xl transition-colors duration-300">
-            <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white ml-0.5" />
-          </div>
-        </div>
+      {/* Name & role */}
+      <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-12 bg-gradient-to-t from-black/75 to-transparent z-10 pointer-events-none">
+        <h4 className="text-sm sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
+          {item.clientName}
+        </h4>
+        {item.role?.trim() ? (
+          <p className="mt-0.5 text-[11px] sm:text-xs text-white/70 line-clamp-1">
+            {item.role}
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -212,6 +91,7 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
 const emptySubscribe = () => () => {};
 
 const ShortVideoClientTestimonials = ({ isLight = false }) => {
+  const [videos, setVideos] = useState([]);
   const [activeModalIndex, setActiveModalIndex] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
@@ -222,6 +102,19 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     () => false
   );
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/video-reviews")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data.success) setVideos(data.reviews);
+      })
+      .catch((err) => console.error("Failed to load video reviews", err));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -263,11 +156,11 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
         closeModal();
       } else if (e.key === "ArrowLeft") {
         setActiveModalIndex((prev) =>
-          prev > 0 ? prev - 1 : clientVideoTestimonialsData.length - 1
+          prev > 0 ? prev - 1 : videos.length - 1
         );
       } else if (e.key === "ArrowRight") {
         setActiveModalIndex((prev) =>
-          prev < clientVideoTestimonialsData.length - 1 ? prev + 1 : 0
+          prev < videos.length - 1 ? prev + 1 : 0
         );
       }
     };
@@ -279,17 +172,17 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeModalIndex, closeModal]);
+  }, [activeModalIndex, closeModal, videos.length]);
 
   const handlePrev = () => {
     setActiveModalIndex((prev) =>
-      prev > 0 ? prev - 1 : clientVideoTestimonialsData.length - 1
+      prev > 0 ? prev - 1 : videos.length - 1
     );
   };
 
   const handleNext = () => {
     setActiveModalIndex((prev) =>
-      prev < clientVideoTestimonialsData.length - 1 ? prev + 1 : 0
+      prev < videos.length - 1 ? prev + 1 : 0
     );
   };
 
@@ -304,7 +197,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
   };
 
   const activeVideo =
-    activeModalIndex !== null ? clientVideoTestimonialsData[activeModalIndex] : null;
+    activeModalIndex !== null ? videos[activeModalIndex] : null;
+
+  if (videos.length === 0) return null;
 
   return (
     <section
@@ -451,9 +346,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem, index) => (
+              {videos.map((videoItem, index) => (
                 <VideoCard
-                  key={`t1-${videoItem.id}`}
+                  key={`t1-${videoItem._id}`}
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
@@ -469,9 +364,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem, index) => (
+              {videos.map((videoItem, index) => (
                 <VideoCard
-                  key={`t2-${videoItem.id}`}
+                  key={`t2-${videoItem._id}`}
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
@@ -487,9 +382,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
               }}
               className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
             >
-              {clientVideoTestimonialsData.map((videoItem, index) => (
+              {videos.map((videoItem, index) => (
                 <VideoCard
-                  key={`t3-${videoItem.id}`}
+                  key={`t3-${videoItem._id}`}
                   item={videoItem}
                   index={index}
                   onOpenModal={openModal}
