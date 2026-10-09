@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { ArrowUpRight } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({

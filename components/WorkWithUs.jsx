@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Loader, Calendar } from "lucide-react";
-import { Urbanist, Playfair_Display } from "next/font/google";
+import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
 
 const urbanist = Urbanist({
   subsets: ["latin"],

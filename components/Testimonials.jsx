@@ -1,7 +1,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Urbanist, Playfair_Display } from "next/font/google";
+import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
 
 const urbanist = Urbanist({
   subsets: ["latin"],

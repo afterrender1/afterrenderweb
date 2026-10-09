@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { Video, Palette, Sparkles, Layers, ArrowRight, Check, Zap, Flame, MonitorPlay } from "lucide-react";
 import Link from "next/link";
 

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader, Phone } from "lucide-react";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { industries } from "./RealEstateFAQ";
 
 const jakarta = Plus_Jakarta_Sans({

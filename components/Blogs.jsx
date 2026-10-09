@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Poppins, Inter } from "next/font/google";
+import { Poppins, Inter } from "@/app/lib/fonts";
 import Image from "next/image";
 import Navbar from "./Navbar";
 import { useRouter } from "next/navigation";

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { ChevronDown, ArrowRight } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play, X } from "lucide-react";
-import { Urbanist, Playfair_Display } from "next/font/google";
+import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
 
 const urbanist = Urbanist({
   subsets: ["latin"],

@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import CrispChat from "@/components/CrispChat";
 import FloatingChatWidget from "@/components/FloatingChatWidget";
-import { Poppins, Montserrat, Michroma, Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
+import { Poppins, Montserrat, Michroma, Space_Grotesk, Plus_Jakarta_Sans } from "@/app/lib/fonts";
 
 const poppins = Poppins({
   subsets: ["latin"],

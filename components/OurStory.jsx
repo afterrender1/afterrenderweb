@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Plus_Jakarta_Sans, Playfair_Display, Caveat } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, Caveat } from "@/app/lib/fonts";
 import Image from "next/image";
 
 const jakarta = Plus_Jakarta_Sans({

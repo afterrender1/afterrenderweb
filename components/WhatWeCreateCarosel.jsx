@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat } from "@/app/lib/fonts";
 import Navbar from "@/components/Navbar";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";

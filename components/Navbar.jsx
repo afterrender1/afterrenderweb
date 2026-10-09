@@ -6,7 +6,7 @@ import { Menu, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Urbanist } from "next/font/google";
+import { Urbanist } from "@/app/lib/fonts";
 
 const urbanist = Urbanist({
   subsets: ["latin"],

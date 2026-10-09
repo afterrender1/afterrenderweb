@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Urbanist, Playfair_Display } from "next/font/google";
+import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
 import { motion } from "framer-motion";
 import BookACall from "./BookACall";
 

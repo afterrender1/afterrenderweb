@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Youtube, Facebook, Phone } from "lucide-react";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from "@/app/lib/fonts";
 import { usePathname } from "next/navigation";
 
 const spaceGrotesk = Space_Grotesk({

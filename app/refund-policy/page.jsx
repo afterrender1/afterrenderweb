@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { RefreshCcw, CheckCircle2, AlertCircle, Mail, MapPin, Phone } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
