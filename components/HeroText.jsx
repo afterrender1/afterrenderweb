@@ -18,7 +18,7 @@ export const editorialSerif = Playfair_Display({
   display: "swap",
 });
 
-const words = ["Video Edits", "Graphic Design"];
+const words = ["Video Edits", "Graphic Design", "AI Avatars"];
 
 const HeroText = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -96,17 +96,17 @@ const HeroText = () => {
             preload="none"
             aria-label="AfterRender Introduction Video"
             controls
-            autoPlay={false}
+            autoPlay={true}
             muted={false}
-            loop={false}
+            loop={true}
             controlsList="nodownload"
             playsInline
-            className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[70%] h-auto"
+            className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] h-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1791544554/showreel_ihkbqv.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1791548318/Afterrender_showcase_w9j6uv.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
         </div>
