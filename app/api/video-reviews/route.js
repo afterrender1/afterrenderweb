@@ -11,16 +11,16 @@ export async function POST(req) {
     try {
         const { clientName, role, videoUrl, poster, fit } = await req.json();
 
-        if (!clientName?.trim() || !role?.trim() || !videoUrl?.trim()) {
+        if (!role?.trim() || !videoUrl?.trim()) {
             return NextResponse.json(
-                { success: false, error: "Client name, role and video URL are required" },
+                { success: false, error: "Role and video URL are required" },
                 { status: 400 }
             );
         }
 
         await dbConnect();
         const review = await VideoReview.create({
-            clientName,
+            clientName: clientName || "",
             role,
             videoUrl,
             poster: poster || "",

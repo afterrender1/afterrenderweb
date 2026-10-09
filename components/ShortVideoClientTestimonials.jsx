@@ -75,9 +75,11 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
 
       {/* Name & role */}
       <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-12 bg-gradient-to-t from-black/75 to-transparent z-10 pointer-events-none">
-        <h4 className="text-sm sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
-          {item.clientName}
-        </h4>
+        {item.clientName?.trim() ? (
+          <h4 className="text-sm sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
+            {item.clientName}
+          </h4>
+        ) : null}
         {item.role?.trim() ? (
           <p className="mt-0.5 text-[11px] sm:text-xs text-white/70 line-clamp-1">
             {item.role}
@@ -455,9 +457,11 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
                       {activeVideo.role}
                     </span>
                   ) : null}
-                  <h3 className="text-white text-base sm:text-lg font-bold tracking-tight line-clamp-1">
-                    {activeVideo.clientName}
-                  </h3>
+                  {activeVideo.clientName?.trim() ? (
+                    <h3 className="text-white text-base sm:text-lg font-bold tracking-tight line-clamp-1">
+                      {activeVideo.clientName}
+                    </h3>
+                  ) : null}
                 </div>
 
                 {/* Header Action Buttons: Mobile Prev/Next + Close */}

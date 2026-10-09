@@ -4,8 +4,8 @@ const VideoReviewSchema = new mongoose.Schema(
     {
         clientName: {
             type: String,
-            required: true,
             trim: true,
+            default: "",
         },
         role: {
             type: String,
@@ -31,4 +31,7 @@ const VideoReviewSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-export default mongoose.models.VideoReview || mongoose.model("VideoReview", VideoReviewSchema);
+// In dev, hot reload keeps the old compiled model, so schema edits would be ignored
+if (process.env.NODE_ENV !== "production") delete mongoose.models.VideoReview;
+
+export default mongoose.models.VideoReview ||mongoose.model("VideoReview", VideoReviewSchema);

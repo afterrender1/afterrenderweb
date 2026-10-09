@@ -77,14 +77,14 @@ const VideoReviewForm = () => {
             >
                 <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                        <label className={labelClass}>Client Name</label>
+                        <label className={labelClass}>Client Name (optional)</label>
                         <input
                             type="text"
                             placeholder="HANRECCA"
                             className={inputClass}
                             value={form.clientName}
                             onChange={update("clientName")}
-                            required
+                            
                         />
                     </div>
                     <div>
@@ -150,7 +150,7 @@ const VideoReviewForm = () => {
                                 <div className="w-9 h-14 rounded-md bg-neutral-100" />
                             )}
                             <div className="min-w-0">
-                                <p className="text-sm font-medium text-neutral-900 truncate">{review.clientName}</p>
+                                <p className="text-sm font-medium text-neutral-900 truncate">{review.clientName || review.role}</p>
                                 <p className="text-xs text-neutral-500 truncate">{review.role}</p>
                             </div>
                         </li>
