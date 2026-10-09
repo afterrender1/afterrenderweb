@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Urbanist, Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import BookACall from "./BookACall";
@@ -24,6 +24,16 @@ const HeroText = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const videoRef = useRef(null);
+
+  // React doesn't reliably render the `muted` attribute on SSR'd video, and
+  // browsers only allow autoplay when muted, so force it and start playback.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, []);
 
   // Typewriter effect logic
   useEffect(() => {
@@ -93,12 +103,13 @@ const HeroText = () => {
         <div className="flex justify-center items-center ">
           <motion.video
             poster="https://res.cloudinary.com/dlurrugno/image/upload/v1791545041/main-poster_a9zfxj.webp"
-            preload="none"
+            ref={videoRef}
+            preload="metadata"
             aria-label="AfterRender Introduction Video"
             controls
-            autoPlay={true}
-            muted={false}
-            loop={true}
+            autoPlay
+            muted
+            loop
             controlsList="nodownload"
             playsInline
             className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] h-auto"
@@ -106,7 +117,7 @@ const HeroText = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1791548318/Afterrender_showcase_w9j6uv.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dlurrugno/video/upload/v1791555685/Afterrendershowreel_uv3d14.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
         </div>
