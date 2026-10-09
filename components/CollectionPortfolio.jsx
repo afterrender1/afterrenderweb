@@ -655,6 +655,56 @@ export const videosItems = [
     aspect: "aspect-[9/16]",
     isVertical: true,
   },
+  {
+    id: "realestate-7",
+    title: "RealEstate #7",
+    category: "Real Estate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1791554813/Leslie_Losing_v4m1k1.mp4",
+    posterUrl: "https://res.cloudinary.com/dlurrugno/image/upload/v1791557766/Screenshot_2026-10-09_195252_fnbrdu.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-8",
+    title: "RealEstate #8",
+    category: "Real Estate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1791554912/Ruth_Closing_uqhihw.mp4",
+    posterUrl: "https://res.cloudinary.com/dlurrugno/image/upload/v1791557810/Screenshot_2026-10-09_195628_naxasl.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-9",
+    title: "RealEstate #9",
+    category: "Real Estate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1791554990/recruitment_1_imlb7q.mp4",
+    posterUrl: "https://res.cloudinary.com/dlurrugno/image/upload/v1791557767/Screenshot_2026-10-09_195534_u6owiu.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-10",
+    title: "RealEstate #10",
+    category: "Real Estate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1791555050/Recruitment_1_ffrkib.mp4",
+    posterUrl: "https://res.cloudinary.com/dlurrugno/image/upload/v1791557797/Screenshot_2026-10-09_195341_tshvul.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
+  {
+    id: "realestate-11",
+    title: "RealEstate #11",
+    category: "Real Estate",
+    videoUrl:
+      "https://res.cloudinary.com/dlurrugno/video/upload/v1791555056/recruitment_3_pkdoj8.mp4",
+    posterUrl: "https://res.cloudinary.com/dlurrugno/image/upload/v1791555249/Screenshot_2026-10-09_191223_n2kjj9.png",
+    aspect: "aspect-[9/16]",
+    isVertical: true,
+  },
 ];
 
 export default function CollectionPortfolio() {
