@@ -14,17 +14,16 @@ const Home = () => {
       <Navbar />
       <main id="main-content">
         <Hero />
-        <Testimonials />
-        <Services />
-        <ShortVideoClientTestimonials />
-        <FAQ />
-        <WorkWithUs />
+        {/* defer-render: skip layout/paint of off-screen sections on first load */}
+        <div className="defer-render"><Testimonials /></div>
+        <div className="defer-render"><Services /></div>
+        <div className="defer-render"><ShortVideoClientTestimonials /></div>
+        <div className="defer-render"><FAQ /></div>
+        <div className="defer-render"><WorkWithUs /></div>
       </main>
-      <Footer />
+      <div className="defer-render"><Footer /></div>
     </>
   )
 }
 
 export default Home
-
-

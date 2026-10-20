@@ -114,6 +114,81 @@ html {
   animation: marqueeTrack 35s linear infinite;
 }
 
+/* Below-the-fold sections: the browser skips their layout/paint until they near
+   the viewport. `auto` remembers the real height once rendered, so scrolling stays stable. */
+.defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Hero entrance: pure CSS so content is visible without waiting for JS hydration */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-hero-fade-up {
+  animation: heroFadeUp 0.7s ease-out both;
+}
+
+/* Event hanging decorations: drop in, then swing from the top edge (compositor-only) */
+@keyframes hangDrop {
+  from {
+    opacity: 0;
+    translate: 0 -40px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes hangSwing {
+  0%,
+  100% {
+    rotate: -3deg;
+  }
+  50% {
+    rotate: 3deg;
+  }
+}
+.animate-hang {
+  transform-origin: top center;
+  animation:
+    hangDrop 0.8s ease-out both,
+    hangSwing 5s ease-in-out 0.8s infinite;
+}
+.animate-hang-reverse {
+  transform-origin: top center;
+  animation:
+    hangDrop 0.8s ease-out both,
+    hangSwing 5s ease-in-out 0.8s infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-fade-up,
+  .animate-hang,
+  .animate-hang-reverse {
+    animation: none;
+  }
+}
+
+/* Event announcement bar under the navbar */
+.animate-announcement-track {
+  animation: marqueeTrack 30s linear infinite;
+}
+.announcement-bar:hover .animate-announcement-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-announcement-track {
+    animation-duration: 90s;
+  }
+}
+
 /* === High-Performance No-Lag Modal Animations (Big Devices Only >= 768px) === */
 @keyframes popupBackdropIn {
   from {

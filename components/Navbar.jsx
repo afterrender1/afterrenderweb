@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +16,9 @@ const urbanist = Urbanist({
 export default function Navbar({ hideHiring = false, logo = null } = {}) {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // The drawer stays in the DOM for its CSS transition; only load its
+  // background image once it has actually been opened.
+  const [menuOpenedOnce, setMenuOpenedOnce] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const isPricing =
@@ -164,7 +166,10 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
           </div>
 
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              setMenuOpenedOnce(true);
+            }}
             className={`lg:hidden z-50 p-2 transition-colors ${
               isPricing
                 ? "text-black hover:text-[#59B7FF]"
@@ -176,35 +181,29 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
           </button>
         </div>
 
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
+        {/* CSS transitions instead of framer-motion: keeps animation code out of the initial JS */}
+        <>
               {/* Dim Backdrop - Clean & lag-free (no heavy dynamic blur) */}
-              <motion.div
-                key="mobile-backdrop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="lg:hidden fixed inset-0 bg-black/70 z-40"
+              <div
+                className={`lg:hidden fixed inset-0 bg-black/70 z-40 transition-opacity duration-200 ${
+                  mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
                 onClick={closeMobileMenu}
                 aria-hidden="true"
               />
 
               {/* Mobile Drawer (Old Theme + 60FPS Lag-Free Hardware Acceleration) */}
-              <motion.div
-                key="mobile-menu"
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                style={{ willChange: "transform", transform: "translateZ(0)" }}
-                className="lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto z-50 flex flex-col justify-between text-white shadow-2xl bg-[#080B10]"
+              <div
+                inert={!mobileMenuOpen}
+                aria-hidden={!mobileMenuOpen}
+                className={`lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto z-50 flex flex-col justify-between text-white shadow-2xl bg-[#080B10] will-change-transform transition-[translate,visibility] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  mobileMenuOpen ? "translate-x-0 visible" : "translate-x-full invisible"
+                }`}
               >
                 {/* Background Layer with old theme */}
                 <div
                   className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40"
-                  style={{ backgroundImage: "url('/images/herobg.png')" }}
+                  style={menuOpenedOnce ? { backgroundImage: "url('/images/herobg.png')" } : undefined}
                 />
                 <div className="absolute inset-0 bg-black/65 pointer-events-none" />
 
@@ -290,10 +289,8 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                     </Link>
                   </div>
                 </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+              </div>
+        </>
       </nav>
 
     </>

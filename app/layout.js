@@ -2,7 +2,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import CrispChat from "@/components/CrispChat";
-import FloatingChatWidget from "@/components/FloatingChatWidget";
+import LazyFloatingChat from "@/components/LazyFloatingChat";
 import { Poppins, Montserrat, Michroma, Space_Grotesk, Plus_Jakarta_Sans } from "@/app/lib/fonts";
 
 const poppins = Poppins({
@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
 
         <Analytics />
         {children}
-        <FloatingChatWidget />
+        <LazyFloatingChat />
       </body>
     </html>
   );

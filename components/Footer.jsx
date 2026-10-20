@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Youtube, Facebook, Phone } from "lucide-react";
@@ -70,11 +69,7 @@ const Footer = ({ theme }) => {
   }, []);
 
   return (
-    <motion.footer
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+    <footer
       className={`${spaceGrotesk.className} relative ${
         isLight
           ? "mx-4 sm:mx-6 mt-8 mb-0 rounded-3xl bg-[#F4F4F5] text-gray-900 border border-gray-200/90 shadow-sm"
@@ -134,21 +129,20 @@ const Footer = ({ theme }) => {
                 url: "https://www.facebook.com/p/AfterRender-61563053082911/",
               },
             ].map(({ Icon, name, url }, i) => (
-              <motion.a
+              <a
                 key={i}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={name}
-                whileHover={{ scale: 1.15, y: -2 }}
-                className={`p-2.5 rounded-full transition ${
+                className={`p-2.5 rounded-full transition hover:scale-[1.15] hover:-translate-y-0.5 ${
                   isLight
                     ? "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black shadow-2xs"
                     : "bg-[#5E748C]/40 hover:bg-[#48A2FF]/50 text-[#C9E4FF]"
                 }`}
               >
                 <Icon className="w-4 h-4" />
-              </motion.a>
+              </a>
             ))}
           </div>
         </div>
@@ -174,11 +168,7 @@ const Footer = ({ theme }) => {
               { name: "About Us", href: "/about-us" },
               { name: "Contact", href: "/#contact" },
             ].map((item, i) => (
-              <motion.li
-                key={i}
-                whileHover={{ x: 4 }}
-                transition={{ duration: 0.2 }}
-              >
+              <li key={i} className="transition-transform duration-200 hover:translate-x-1">
                 <Link
                   href={item.href}
                   className={`transition-colors ${
@@ -189,7 +179,7 @@ const Footer = ({ theme }) => {
                 >
                   {item.name}
                 </Link>
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>
@@ -272,12 +262,8 @@ const Footer = ({ theme }) => {
             personalized quote.
           </p>
 
-          <motion.form
+          <form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
             className={`flex flex-col sm:flex-row items-center rounded-2xl p-1.5 backdrop-blur-lg shadow-sm transition-all duration-300 w-full ${
               isLight
                 ? "bg-white border border-gray-300/80 shadow-2xs hover:border-gray-400"
@@ -300,16 +286,14 @@ const Footer = ({ theme }) => {
               />
             </div>
 
-            <motion.button
+            <button
               type="submit"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
               disabled={loading}
-              className={`mt-2.5 sm:mt-0 sm:ml-2 text-xs sm:text-[13px] font-bold w-full sm:w-auto cursor-pointer px-4 py-2.5 rounded-xl sm:rounded-full shadow-2xs transition-all duration-300 shrink-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+              className={`hover:scale-[1.03] active:scale-[0.96] mt-2.5 sm:mt-0 sm:ml-2 text-xs sm:text-[13px] font-bold w-full sm:w-auto cursor-pointer px-4 py-2.5 rounded-xl sm:rounded-full shadow-2xs transition-all duration-300 shrink-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0C1A2A] ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
             >
               {loading ? "Sending..." : "Get Quote"}
-            </motion.button>
-          </motion.form>
+            </button>
+          </form>
 
           {messageSent && (
             <p className="text-green-600 font-medium text-xs mt-2.5 transition-opacity duration-500">
@@ -384,7 +368,7 @@ const Footer = ({ theme }) => {
           </Link>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 
