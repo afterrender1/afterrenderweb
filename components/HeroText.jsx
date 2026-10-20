@@ -23,6 +23,7 @@ export const editorialSerif = Playfair_Display({
 });
 
 const words = ["Video Edits", "Graphic Design", "AI Avatars"];
+const LONGEST_WORD = words.reduce((a, b) => (b.length > a.length ? b : a));
 
 // Original upload is ~23MB; Cloudinary transcodes to a right-sized, compressed
 // rendition (~1.5MB mobile / ~4MB desktop) with the best codec per browser.
@@ -30,10 +31,11 @@ const VIDEO_BASE = "https://res.cloudinary.com/dlurrugno/video/upload";
 const VIDEO_ID = "v1791555685/Afterrendershowreel_uv3d14.mp4";
 const videoSrc = (isMobile) =>
   `${VIDEO_BASE}/${isMobile ? "q_auto:eco,vc_auto,w_720" : "q_auto,vc_auto,w_1280"}/${VIDEO_ID}`;
-const VIDEO_POSTER = cloudinaryImage(
-  "https://res.cloudinary.com/dlurrugno/image/upload/v1791545041/main-poster_a9zfxj.webp",
-  { width: 1280 }
-);
+// The poster is the page's LCP element. A <video poster> can't be responsive or
+// high-priority, so it's a real <img> (srcset + fetchpriority) under the video instead.
+const POSTER_URL = "https://res.cloudinary.com/dlurrugno/image/upload/v1791545041/main-poster_a9zfxj.webp";
+// Rendered width of the video frame: 80% of the 960px content column on xl, ~75-90% of the viewport below
+const POSTER_SIZES = "(min-width: 1280px) 768px, (min-width: 1024px) 720px, 85vw";
 
 // Matches the fixed navbar height (logo + vertical padding) at each breakpoint
 const NAV_OFFSET = "top-[60px] sm:top-[78px]";
@@ -72,19 +74,29 @@ const Typewriter = ({ gradient = null }) => {
     return () => clearTimeout(timeout);
   }, [currentText, isDeleting, currentWordIndex]);
 
+  const cursor = <span className="inline-block w-[1.5px] sm:w-[2px] h-[0.9em] bg-white/70 ml-1.5 align-middle animate-pulse" />;
+
+  // An invisible copy of the longest word reserves the width, so typing doesn't
+  // reflow the headline on every tick (that movement counted as layout shift).
   return (
-    <span
-      className={`${editorialSerif.className} italic font-normal text-transparent bg-clip-text ${
-        gradient ? "" : "bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]"
-      } tracking-normal inline-flex items-center min-h-[1.2em]`}
-      style={
-        gradient
-          ? { backgroundImage: `linear-gradient(to right, ${gradient.from}, ${gradient.via}, ${gradient.to})` }
-          : undefined
-      }
-    >
-      {currentText}
-      <span className="inline-block w-[1.5px] sm:w-[2px] h-[0.9em] bg-white/70 ml-1.5 align-middle animate-pulse" />
+    <span className={`${editorialSerif.className} italic font-normal tracking-normal inline-grid min-h-[1.2em]`}>
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1 inline-flex items-center">
+        {LONGEST_WORD}
+        {cursor}
+      </span>
+      <span
+        className={`col-start-1 row-start-1 justify-self-start inline-flex items-center text-transparent bg-clip-text ${
+          gradient ? "" : "bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]"
+        }`}
+        style={
+          gradient
+            ? { backgroundImage: `linear-gradient(to right, ${gradient.from}, ${gradient.via}, ${gradient.to})` }
+            : undefined
+        }
+      >
+        {currentText}
+        {cursor}
+      </span>
     </span>
   );
 };
@@ -217,7 +229,9 @@ const HeroText = ({ event = null }) => {
       {event?.topRightUrl && <HangingImage src={event.topRightUrl} side="right" belowBar={hasBar} />}
       {hasBar && <AnnouncementBar text={event.announcementText} link={event.announcementLink} style={event.announcementStyle} />}
 
-      <div className="relative z-10 text-center px-4 sm:px-8 max-w-5xl">
+      {/* w-full: without it this column shrink-wraps its content, and the video has no
+          intrinsic size until its media loads, so the whole hero jumped wider (layout shift) */}
+      <div className="relative z-10 w-full text-center px-4 sm:px-8 max-w-5xl">
         <div className="mb-8 animate-hero-fade-up">
           {/* Main Animated Headline */}
           <h1
@@ -241,8 +255,19 @@ const HeroText = ({ event = null }) => {
             }`}
             style={videoFrame}
           >
+          <div className="relative">
+          {/* Poster sits behind the video; a <video> with no frames yet is transparent */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={cloudinaryImage(POSTER_URL, { width: 1280 })}
+            srcSet={cloudinarySrcSet(POSTER_URL, [480, 640, 768, 960, 1280, 1536])}
+            sizes={POSTER_SIZES}
+            alt=""
+            aria-hidden="true"
+            fetchPriority="high"
+            className={`absolute inset-0 w-full h-full object-cover ${videoFrame ? "rounded-[10px]" : ""}`}
+          />
           <video
-            poster={VIDEO_POSTER}
             ref={videoRef}
             preload="none"
             aria-label="AfterRender Introduction Video"
@@ -253,7 +278,7 @@ const HeroText = ({ event = null }) => {
             playsInline
             width={1804}
             height={966}
-            className={`block w-full h-auto ${videoFrame ? "rounded-[10px]" : ""}`}
+            className={`relative block w-full h-auto ${videoFrame ? "rounded-[10px]" : ""}`}
             onPlay={(e) => {
               // User pressed play before the deferred start attached a source
               const video = e.currentTarget;
@@ -263,6 +288,7 @@ const HeroText = ({ event = null }) => {
               }
             }}
           />
+          </div>
           </div>
         </div>
 

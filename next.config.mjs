@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // Inline the (small) CSS into the HTML so it doesn't block first paint
+    inlineCss: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
