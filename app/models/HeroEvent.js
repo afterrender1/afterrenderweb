@@ -28,6 +28,12 @@ const HeroEventSchema = new mongoose.Schema(
         offerButtonColor: { type: String, trim: true, default: "#FF7A00" },
         offerButtonTextColor: { type: String, trim: true, default: "#FFFFFF" },
         offerBadgeColor: { type: String, trim: true, default: "#EF4444" },
+
+        // Gradient for the changing typewriter word after "Unlimited"
+        showHeadlineColors: { type: Boolean, default: false },
+        headlineFrom: { type: String, trim: true, default: "#48A2FF" },
+        headlineVia: { type: String, trim: true, default: "#7EC0FF" },
+        headlineTo: { type: String, trim: true, default: "#C9E4FF" },
     },
     { timestamps: true }
 );

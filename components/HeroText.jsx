@@ -6,6 +6,7 @@ import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
 import BookACall from "./BookACall";
 import AnnouncementTrack, { announcementWrapperStyle } from "./AnnouncementTrack";
 import { cloudinaryImage, cloudinarySrcSet } from "@/app/lib/cloudinaryUrl";
+import { announcementBackground } from "@/app/lib/announcementStyle";
 
 export const urbanist = Urbanist({
   subsets: ["latin"],
@@ -39,7 +40,8 @@ const NAV_OFFSET = "top-[60px] sm:top-[78px]";
 
 // Typewriter lives in its own component so its 40–80ms ticks re-render only
 // this span, not the whole hero.
-const Typewriter = () => {
+// `gradient` ({ from, via, to }) comes from the live event; null keeps the default blues.
+const Typewriter = ({ gradient = null }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -72,7 +74,14 @@ const Typewriter = () => {
 
   return (
     <span
-      className={`${editorialSerif.className} italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF] tracking-normal inline-flex items-center min-h-[1.2em]`}
+      className={`${editorialSerif.className} italic font-normal text-transparent bg-clip-text ${
+        gradient ? "" : "bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]"
+      } tracking-normal inline-flex items-center min-h-[1.2em]`}
+      style={
+        gradient
+          ? { backgroundImage: `linear-gradient(to right, ${gradient.from}, ${gradient.via}, ${gradient.to})` }
+          : undefined
+      }
     >
       {currentText}
       <span className="inline-block w-[1.5px] sm:w-[2px] h-[0.9em] bg-white/70 ml-1.5 align-middle animate-pulse" />
@@ -161,6 +170,10 @@ const HeroBackground = ({ url }) => {
 
 const HeroText = ({ event = null }) => {
   const hasBar = Boolean(event?.announcementText);
+  // With the bar showing, the video frame takes the bar's color/gradient (full opacity)
+  const videoFrame = hasBar
+    ? { background: announcementBackground({ ...event.announcementStyle, bgOpacity: 100 }) }
+    : undefined;
   const videoRef = useRef(null);
 
   // The showreel is ~4MB. Start it only after the page has loaded so it
@@ -211,7 +224,7 @@ const HeroText = ({ event = null }) => {
             className={`${urbanist.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-[1.2] mb-3 text-white flex flex-wrap items-center justify-center gap-x-3`}
           >
             <span>Unlimited</span>
-            <Typewriter />
+            <Typewriter gradient={event?.headlineGradient} />
           </h1>
 
           <h2
@@ -222,6 +235,12 @@ const HeroText = ({ event = null }) => {
         </div>
 
         <div className="flex justify-center items-center animate-hero-fade-up [animation-delay:0.15s]">
+          <div
+            className={`mx-auto rounded-xl shadow-lg w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] ${
+              videoFrame ? "p-[2px]" : "border-2 border-[#48A2FF]/40 overflow-hidden"
+            }`}
+            style={videoFrame}
+          >
           <video
             poster={VIDEO_POSTER}
             ref={videoRef}
@@ -234,7 +253,7 @@ const HeroText = ({ event = null }) => {
             playsInline
             width={1804}
             height={966}
-            className="mx-auto rounded-xl shadow-lg border-2 border-[#48A2FF]/40 w-[90%] sm:w-[85%] md:w-[80%] lg:w-[75%] xl:w-[80%] h-auto"
+            className={`block w-full h-auto ${videoFrame ? "rounded-[10px]" : ""}`}
             onPlay={(e) => {
               // User pressed play before the deferred start attached a source
               const video = e.currentTarget;
@@ -244,6 +263,7 @@ const HeroText = ({ event = null }) => {
               }
             }}
           />
+          </div>
         </div>
 
         <div className="mt-4 sm:mt-6 animate-hero-fade-up [animation-delay:0.3s]">

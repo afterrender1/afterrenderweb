@@ -17,8 +17,9 @@ import {
     Sparkles,
     Palette,
     ChevronDown,
-    CheckCircle2,
-    MinusCircle,
+    Settings2,
+    Type,
+    Copy,
 } from "lucide-react";
 import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal, api, friendlyError } from "./ui";
 import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
@@ -46,6 +47,10 @@ const emptyEvent = {
     offerButtonColor: "#FF7A00",
     offerButtonTextColor: "#FFFFFF",
     offerBadgeColor: "#EF4444",
+    showHeadlineColors: false,
+    headlineFrom: "#48A2FF",
+    headlineVia: "#7EC0FF",
+    headlineTo: "#C9E4FF",
 };
 
 // Signed direct upload: the server signs, the browser sends the file straight to Cloudinary
@@ -241,6 +246,9 @@ const HeroPreview = ({ event, className = "" }) => {
     const left = event.showTopLeft && event.topLeftUrl;
     const right = event.showTopRight && event.topRightUrl;
     const announcement = event.showAnnouncement && event.announcementText;
+    const headline = event.showHeadlineColors
+        ? `linear-gradient(to right, ${event.headlineFrom}, ${event.headlineVia}, ${event.headlineTo})`
+        : "linear-gradient(to right, #48A2FF, #7EC0FF, #C9E4FF)";
 
     return (
         <div
@@ -269,47 +277,99 @@ const HeroPreview = ({ event, className = "" }) => {
             )}
 
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-[3%] pt-[10%]">
-                <span className="w-[44%] h-[5%] rounded bg-white/85" />
+                <span className="flex items-center gap-[3%] w-[48%] h-[5%]">
+                    <span className="w-[35%] h-full rounded bg-white/85" />
+                    <span className="flex-1 h-full rounded" style={{ background: headline }} />
+                </span>
                 <span className="w-[32%] h-[4%] rounded bg-white/45" />
-                <span className="w-[46%] aspect-video rounded-md border border-[#48A2FF]/50 bg-white/10 mt-[1%]" />
+                <span
+                    className="w-[46%] aspect-video rounded-md mt-[1%] p-[1.5px]"
+                    style={{
+                        background: announcement
+                            ? announcementBackground({ ...event.announcementStyle, bgOpacity: 100 })
+                            : "rgba(72,162,255,0.5)",
+                    }}
+                >
+                    <span className="block w-full h-full rounded-[5px] bg-neutral-800" />
+                </span>
             </div>
         </div>
     );
 };
 
-/* ---------- Editor building blocks ---------- */
-const Section = ({ icon: Icon, title, description, enabled, onToggle, children }) => {
-    const toggleable = typeof onToggle === "function";
-    const open = !toggleable || enabled;
+/* ---------- Event code (copy / paste between events) ---------- */
+const CODE_PREFIX = "AR-EVENT:";
 
-    return (
-        <section className="rounded-xl border border-neutral-200 bg-white">
-            <header className="flex items-center gap-3 px-5 py-4">
-                {Icon && (
-                    <div
-                        className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                            open ? "bg-[#1a73e8]/10 text-[#1a73e8]" : "bg-neutral-100 text-neutral-400"
-                        }`}
-                    >
-                        <Icon size={16} />
-                    </div>
-                )}
-                <div className="flex-1 min-w-0">
-                    <h3 className={`text-[15px] font-medium ${open ? "text-neutral-900" : "text-neutral-500"}`}>{title}</h3>
-                    {description && <p className="text-xs text-neutral-500 mt-0.5">{description}</p>}
-                </div>
-                {toggleable && <Switch checked={enabled} onChange={onToggle} label={`Show ${title}`} />}
-            </header>
-            {open && children && <div className="px-5 pb-5">{children}</div>}
-        </section>
-    );
+// Base64 of the event's editable settings (UTF-8 safe, so emoji survive)
+const encodeEventCode = (event) => {
+    const data = {};
+    for (const key of Object.keys(emptyEvent)) if (key !== "isActive") data[key] = event[key] ?? emptyEvent[key];
+    const bytes = new TextEncoder().encode(JSON.stringify({ v: 1, event: data }));
+    let bin = "";
+    bytes.forEach((b) => (bin += String.fromCharCode(b)));
+    return CODE_PREFIX + btoa(bin);
 };
 
-// One hanging-image slot inside the "Hanging decorations" section
+const copyText = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch {
+        // Clipboard API blocked (e.g. insecure context): fall back to a hidden textarea
+        const el = document.createElement("textarea");
+        el.value = text;
+        el.style.position = "fixed";
+        el.style.opacity = "0";
+        document.body.appendChild(el);
+        el.select();
+        const ok = document.execCommand("copy");
+        el.remove();
+        return ok;
+    }
+};
+
+/* ---------- Editor building blocks ---------- */
+const StatusDot = ({ state }) => (
+    <span
+        className={`w-2 h-2 rounded-full shrink-0 ${
+            state === "ready" ? "bg-green-500" : state === "missing" ? "bg-amber-500" : "bg-neutral-300"
+        }`}
+        title={state === "ready" ? "Ready" : state === "missing" ? "Needs content" : "Off"}
+    />
+);
+
+// Header of the active tab: title, description, optional on/off switch
+const PanelHeader = ({ title, description, enabled, onToggle }) => (
+    <div className="flex items-start gap-4 pb-5 mb-6 border-b border-neutral-200">
+        <div className="flex-1 min-w-0">
+            <h3 className="text-lg text-neutral-900">{title}</h3>
+            {description && <p className="text-sm text-neutral-500 mt-1">{description}</p>}
+        </div>
+        {onToggle && (
+            <div className="flex items-center gap-2.5 pt-1 shrink-0">
+                <span className={`text-xs font-medium ${enabled ? "text-[#1a73e8]" : "text-neutral-400"}`}>
+                    {enabled ? "On" : "Off"}
+                </span>
+                <Switch checked={enabled} onChange={onToggle} label={`Show ${title}`} />
+            </div>
+        )}
+    </div>
+);
+
+const OffNotice = ({ onEnable }) => (
+    <div className="flex flex-col items-center text-center py-12 rounded-xl border border-dashed border-neutral-300">
+        <p className="text-sm text-neutral-500">This element is turned off and won&apos;t show on the site.</p>
+        <button type="button" onClick={onEnable} className={`${ghostBtn} mt-3`}>
+            Turn on
+        </button>
+    </div>
+);
+
+// One hanging-image slot inside the Decorations tab
 const DecorationSlot = ({ title, enabled, onToggle, value, onChange, onBusyChange }) => (
-    <div className={`rounded-lg border p-3 transition-colors ${enabled ? "border-neutral-200" : "border-dashed border-neutral-200 bg-neutral-50"}`}>
+    <div className={`rounded-xl border p-4 transition-colors ${enabled ? "border-neutral-200" : "border-dashed border-neutral-200 bg-neutral-50"}`}>
         <div className="flex items-center justify-between gap-2 mb-3">
-            <p className={`text-[13px] font-medium ${enabled ? "text-neutral-800" : "text-neutral-400"}`}>{title}</p>
+            <p className={`text-sm font-medium ${enabled ? "text-neutral-800" : "text-neutral-400"}`}>{title}</p>
             <Switch checked={enabled} onChange={onToggle} label={`Show ${title}`} />
         </div>
         {enabled ? (
@@ -320,37 +380,28 @@ const DecorationSlot = ({ title, enabled, onToggle, value, onChange, onBusyChang
     </div>
 );
 
-// Readiness line in the preview pane
-const StatusRow = ({ label, state }) => {
-    const map = {
-        ready: { text: "Ready", className: "text-green-700", Icon: CheckCircle2 },
-        missing: { text: "Needs content", className: "text-amber-600", Icon: AlertCircle },
-        off: { text: "Off", className: "text-neutral-400", Icon: MinusCircle },
-    };
-    const { text, className, Icon } = map[state];
-    return (
-        <li className="flex items-center justify-between py-2 text-sm">
-            <span className={state === "off" ? "text-neutral-400" : "text-neutral-700"}>{label}</span>
-            <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${className}`}>
-                <Icon size={14} />
-                {text}
-            </span>
-        </li>
-    );
-};
-
 const elementState = (enabled, hasContent) => (!enabled ? "off" : hasContent ? "ready" : "missing");
 
+const TABS = [
+    { id: "general", label: "General", icon: Settings2 },
+    { id: "background", label: "Background", icon: ImageIcon },
+    { id: "decorations", label: "Decorations", icon: Sparkles },
+    { id: "announcement", label: "Announcement", icon: Megaphone },
+    { id: "offer", label: "Offer", icon: BadgePercent },
+    { id: "headline", label: "Headline", icon: Type },
+];
+
 /* ---------- Add / edit dialog ---------- */
-const EventDialog = ({ initial, onClose, onSaved }) => {
+const EventDialog = ({ initial, onClose, onSaved, onToast }) => {
     const isEdit = Boolean(initial?._id);
     const [form, setForm] = useState(() => {
         const base = { ...emptyEvent };
-        if (isEdit) for (const key of Object.keys(emptyEvent)) base[key] = initial[key] ?? emptyEvent[key];
+        for (const key of Object.keys(emptyEvent)) base[key] = initial?.[key] ?? emptyEvent[key];
         // Events saved before bar styling existed have no style yet
         base.announcementStyle = withStyleDefaults(base.announcementStyle);
         return base;
     });
+    const [tab, setTab] = useState("general");
     const [saving, setSaving] = useState(false);
     const [uploads, setUploads] = useState(0);
     const [error, setError] = useState("");
@@ -370,25 +421,42 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         if (!busyRef.current) onClose();
     }, [onClose]);
 
+    const decorationsState = (() => {
+        const parts = [elementState(form.showTopLeft, form.topLeftUrl), elementState(form.showTopRight, form.topRightUrl)];
+        if (parts.includes("missing")) return "missing";
+        return parts.includes("ready") ? "ready" : "off";
+    })();
+    const tabState = {
+        general: form.name.trim() ? "ready" : "missing",
+        background: elementState(form.showBackground, form.backgroundUrl),
+        decorations: decorationsState,
+        announcement: elementState(form.showAnnouncement, form.announcementText.trim()),
+        offer: elementState(form.showOffer, form.offerText.trim()),
+        headline: elementState(form.showHeadlineColors, true),
+    };
+    const missing = Object.values(tabState).filter((s) => s === "missing").length;
+
+    // Returns [tab, message] for the first problem, or null
     const validate = () => {
-        if (!form.name.trim()) return "Give the event a name.";
-        if (form.showBackground && !form.backgroundUrl) return "Upload a hero background or turn it off.";
-        if (form.showTopLeft && !form.topLeftUrl) return "Upload the top-left image or turn it off.";
-        if (form.showTopRight && !form.topRightUrl) return "Upload the top-right image or turn it off.";
-        if (form.showAnnouncement && !form.announcementText.trim()) return "Add announcement text or turn it off.";
-        if (form.showOffer && !form.offerText.trim()) return "Add offer text (e.g. 20% OFF) or turn the offer off.";
+        if (!form.name.trim()) return ["general", "Give the event a name."];
+        if (form.showBackground && !form.backgroundUrl) return ["background", "Upload a hero background or turn it off."];
+        if (form.showTopLeft && !form.topLeftUrl) return ["decorations", "Upload the top-left image or turn it off."];
+        if (form.showTopRight && !form.topRightUrl) return ["decorations", "Upload the top-right image or turn it off."];
+        if (form.showAnnouncement && !form.announcementText.trim()) return ["announcement", "Add announcement text or turn it off."];
         const link = form.announcementLink.trim();
         if (link && !link.startsWith("/") && !/^https?:\/\//i.test(link)) {
-            return "Announcement link must start with https:// or / (e.g. /pricing).";
+            return ["announcement", "Announcement link must start with https:// or / (e.g. /pricing)."];
         }
-        return "";
+        if (form.showOffer && !form.offerText.trim()) return ["offer", "Add offer text (e.g. 20% OFF) or turn the offer off."];
+        return null;
     };
 
     const submit = async (e) => {
         e.preventDefault();
         const problem = validate();
         if (problem) {
-            setError(problem);
+            setTab(problem[0]);
+            setError(problem[1]);
             return;
         }
         setSaving(true);
@@ -405,45 +473,251 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         }
     };
 
+    const copyCode = async () => {
+        const ok = await copyText(encodeEventCode(form));
+        onToast(ok ? { type: "success", message: "Event code copied" } : { type: "error", message: "Couldn't copy — check browser permissions." });
+    };
+
     const busy = saving || uploads > 0;
-    const statuses = [
-        ["Hero background", elementState(form.showBackground, form.backgroundUrl)],
-        ["Top left image", elementState(form.showTopLeft, form.topLeftUrl)],
-        ["Top right image", elementState(form.showTopRight, form.topRightUrl)],
-        ["Announcement bar", elementState(form.showAnnouncement, form.announcementText.trim())],
-        ["Offer", elementState(form.showOffer, form.offerText.trim())],
-    ];
-    const missing = statuses.filter(([, s]) => s === "missing").length;
 
-    const preview = (
-        <div className="space-y-5">
-            <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-2">Preview</p>
-                <HeroPreview event={form} className="rounded-xl shadow-sm ring-1 ring-black/5" />
-            </div>
+    const panels = {
+        general: (
+            <>
+                <PanelHeader title="General" description="Name the event and choose whether it's live." />
+                <div className="space-y-6">
+                    <div>
+                        <label className={labelClass}>Event name</label>
+                        <input
+                            type="text"
+                            placeholder="Halloween 2026"
+                            className={inputClass}
+                            value={form.name}
+                            onChange={(e) => set("name")(e.target.value)}
+                            autoFocus={!isEdit}
+                        />
+                    </div>
 
-            <div className="rounded-xl bg-white border border-neutral-200 px-4 py-2">
-                <ul className="divide-y divide-neutral-100">
-                    {statuses.map(([label, state]) => (
-                        <StatusRow key={label} label={label} state={state} />
-                    ))}
-                </ul>
-            </div>
+                    <div
+                        className={`flex items-center gap-3 p-4 rounded-xl border transition-colors ${
+                            form.isActive ? "bg-[#1a73e8]/[0.06] border-[#1a73e8]/30" : "border-neutral-200"
+                        }`}
+                    >
+                        <Radio size={18} className={form.isActive ? "text-[#1a73e8]" : "text-neutral-400"} />
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-neutral-900">Live on website</p>
+                            <p className="text-xs text-neutral-500 mt-0.5">Turning this on replaces any other live event.</p>
+                        </div>
+                        <Switch checked={form.isActive} onChange={set("isActive")} label="Live on website" />
+                    </div>
 
-            <div
-                className={`flex items-center gap-3 p-4 rounded-xl border transition-colors ${
-                    form.isActive ? "bg-[#1a73e8]/[0.06] border-[#1a73e8]/30" : "bg-white border-neutral-200"
-                }`}
-            >
-                <Radio size={18} className={form.isActive ? "text-[#1a73e8]" : "text-neutral-400"} />
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-neutral-900">Live on website</p>
-                    <p className="text-xs text-neutral-500 mt-0.5">Replaces any other live event.</p>
+                    <div className="flex items-center gap-3 p-4 rounded-xl border border-neutral-200">
+                        <Copy size={18} className="text-neutral-400" />
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-neutral-900">Event code</p>
+                            <p className="text-xs text-neutral-500 mt-0.5">
+                                Copy all of this event&apos;s settings as a code.
+                            </p>
+                        </div>
+                        <button type="button" onClick={copyCode} className={ghostBtn}>
+                            Copy code
+                        </button>
+                    </div>
                 </div>
-                <Switch checked={form.isActive} onChange={set("isActive")} label="Live on website" />
-            </div>
-        </div>
-    );
+            </>
+        ),
+        background: (
+            <>
+                <PanelHeader
+                    title="Hero background"
+                    description="Replaces the default hero background image."
+                    enabled={form.showBackground}
+                    onToggle={set("showBackground")}
+                />
+                {form.showBackground ? (
+                    <ImageUpload value={form.backgroundUrl} onChange={set("backgroundUrl")} onBusyChange={onBusyChange} />
+                ) : (
+                    <OffNotice onEnable={() => set("showBackground")(true)} />
+                )}
+            </>
+        ),
+        decorations: (
+            <>
+                <PanelHeader title="Hanging decorations" description="Swing gently from the top corners. Transparent PNGs work best." />
+                <div className="grid grid-cols-2 gap-4">
+                    <DecorationSlot
+                        title="Top left"
+                        enabled={form.showTopLeft}
+                        onToggle={set("showTopLeft")}
+                        value={form.topLeftUrl}
+                        onChange={set("topLeftUrl")}
+                        onBusyChange={onBusyChange}
+                    />
+                    <DecorationSlot
+                        title="Top right"
+                        enabled={form.showTopRight}
+                        onToggle={set("showTopRight")}
+                        value={form.topRightUrl}
+                        onChange={set("topRightUrl")}
+                        onBusyChange={onBusyChange}
+                    />
+                </div>
+            </>
+        ),
+        announcement: (
+            <>
+                <PanelHeader
+                    title="Announcement bar"
+                    description="Scrolling strip under the navbar. The hero video border uses the same color."
+                    enabled={form.showAnnouncement}
+                    onToggle={set("showAnnouncement")}
+                />
+                {form.showAnnouncement ? (
+                    <div className="space-y-5">
+                        <div>
+                            <div className="flex items-baseline justify-between mb-1.5">
+                                <label className="text-[13px] font-medium text-neutral-700">Message</label>
+                                <span className="text-[11px] text-neutral-400">{form.announcementText.length}/120</span>
+                            </div>
+                            <input
+                                type="text"
+                                maxLength={120}
+                                placeholder="🎃 Halloween offer — 20% off your first month"
+                                className={inputClass}
+                                value={form.announcementText}
+                                onChange={(e) => set("announcementText")(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClass}>
+                                Link <span className="text-neutral-400 font-normal">· optional</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="/pricing or https://…"
+                                className={inputClass}
+                                value={form.announcementLink}
+                                onChange={(e) => set("announcementLink")(e.target.value)}
+                            />
+                        </div>
+
+                        <BarPreview text={form.announcementText} style={form.announcementStyle} />
+
+                        <div className="rounded-xl border border-neutral-200">
+                            <button
+                                type="button"
+                                onClick={() => setStyleOpen((v) => !v)}
+                                aria-expanded={styleOpen}
+                                className="w-full flex items-center gap-3 px-4 h-12 text-left cursor-pointer hover:bg-neutral-50 rounded-xl"
+                            >
+                                <Palette size={16} className="text-neutral-500" />
+                                <span className="flex-1 text-sm font-medium text-neutral-800">Colors & style</span>
+                                <span
+                                    className="w-5 h-5 rounded-full border border-black/10"
+                                    style={{ background: announcementBackground({ ...form.announcementStyle, bgOpacity: 100 }) }}
+                                />
+                                <ChevronDown size={16} className={`text-neutral-500 transition-transform ${styleOpen ? "rotate-180" : ""}`} />
+                            </button>
+                            {styleOpen && (
+                                <div className="px-4 pb-4 pt-4 border-t border-neutral-100">
+                                    <AnnouncementStyleEditor value={form.announcementStyle} onChange={set("announcementStyle")} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ) : (
+                    <OffNotice onEnable={() => set("showAnnouncement")(true)} />
+                )}
+            </>
+        ),
+        offer: (
+            <>
+                <PanelHeader
+                    title="Offer"
+                    description="Shaking “See Plans” button with a badge in the hero, plus the badge and a struck-through price on pricing. Real prices don't change."
+                    enabled={form.showOffer}
+                    onToggle={set("showOffer")}
+                />
+                {form.showOffer ? (
+                    <div className="space-y-5">
+                        <div>
+                            <div className="flex items-baseline justify-between mb-1.5">
+                                <label className="text-[13px] font-medium text-neutral-700">Badge text</label>
+                                <span className="text-[11px] text-neutral-400">{form.offerText.length}/24</span>
+                            </div>
+                            <input
+                                type="text"
+                                maxLength={24}
+                                placeholder="20% OFF"
+                                className={inputClass}
+                                value={form.offerText}
+                                onChange={(e) => set("offerText")(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="grid gap-4 sm:grid-cols-3">
+                            <ColorField label="Button color" value={form.offerButtonColor} onChange={set("offerButtonColor")} />
+                            <ColorField label="Button text" value={form.offerButtonTextColor} onChange={set("offerButtonTextColor")} />
+                            <ColorField label="Badge color" value={form.offerBadgeColor} onChange={set("offerBadgeColor")} />
+                        </div>
+
+                        <div
+                            className="flex items-center justify-center gap-3 pt-9 pb-7 rounded-xl bg-neutral-900 bg-cover bg-center"
+                            style={{ backgroundImage: "linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('/images/hb1.png')" }}
+                        >
+                            <span className="px-5 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]">
+                                Book a Call
+                            </span>
+                            <div className="relative animate-offer-shake">
+                                <OfferBadge text={form.offerText || "20% OFF"} color={form.offerBadgeColor} />
+                                <span
+                                    className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold"
+                                    style={{ backgroundColor: form.offerButtonColor, color: form.offerButtonTextColor }}
+                                >
+                                    See Plans <ArrowRight size={12} />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <OffNotice onEnable={() => set("showOffer")(true)} />
+                )}
+            </>
+        ),
+        headline: (
+            <>
+                <PanelHeader
+                    title="Headline colors"
+                    description="Gradient for the changing word after “Unlimited”."
+                    enabled={form.showHeadlineColors}
+                    onToggle={set("showHeadlineColors")}
+                />
+                {form.showHeadlineColors ? (
+                    <div className="space-y-5">
+                        <div className="grid gap-4 sm:grid-cols-3">
+                            <ColorField label="From" value={form.headlineFrom} onChange={set("headlineFrom")} />
+                            <ColorField label="Via" value={form.headlineVia} onChange={set("headlineVia")} />
+                            <ColorField label="To" value={form.headlineTo} onChange={set("headlineTo")} />
+                        </div>
+                        <div className="flex items-center justify-center py-8 rounded-xl bg-neutral-900">
+                            <p className="text-2xl sm:text-3xl font-medium text-white">
+                                Unlimited{" "}
+                                <span
+                                    className="italic font-serif text-transparent bg-clip-text"
+                                    style={{
+                                        backgroundImage: `linear-gradient(to right, ${form.headlineFrom}, ${form.headlineVia}, ${form.headlineTo})`,
+                                    }}
+                                >
+                                    Video Edits
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    <OffNotice onEnable={() => set("showHeadlineColors")(true)} />
+                )}
+            </>
+        ),
+    };
 
     return (
         <Modal onClose={safeClose} className="w-full sm:max-w-6xl">
@@ -453,11 +727,14 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
             >
                 {/* Header */}
                 <div className="flex items-center gap-4 px-6 h-16 border-b border-neutral-200 shrink-0">
-                    <div className="flex-1 min-w-0">
-                        <h2 className="text-lg text-neutral-900 truncate">
-                            {isEdit ? `Edit “${initial.name}”` : "New event"}
-                        </h2>
-                    </div>
+                    <h2 className="flex-1 min-w-0 text-lg text-neutral-900 truncate">
+                        {isEdit ? `Edit “${initial.name}”` : form.name.trim() ? form.name : "New event"}
+                    </h2>
+                    {form.isActive && (
+                        <span className="hidden sm:inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-[#1a73e8]/10 text-[#1a73e8] text-xs font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8]" /> Live
+                        </span>
+                    )}
                     <button
                         type="button"
                         onClick={safeClose}
@@ -469,182 +746,46 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                     </button>
                 </div>
 
-                {/* Body: form and preview scroll independently */}
-                <div className="flex-1 min-h-0 grid lg:grid-cols-[minmax(0,1fr)_400px]">
-                    <div className="overflow-y-auto overscroll-contain bg-neutral-50 px-4 sm:px-6 py-6">
-                        <div className="max-w-2xl mx-auto space-y-4">
-                            <div className="lg:hidden">{preview}</div>
+                {/* Body: tabs · panel · preview */}
+                <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-[200px_minmax(0,1fr)_360px]">
+                    <nav
+                        className="shrink-0 flex lg:flex-col gap-1 overflow-x-auto lg:overflow-y-auto px-3 py-2 lg:py-4 border-b lg:border-b-0 lg:border-r border-neutral-200"
+                        aria-label="Event sections"
+                    >
+                        {TABS.map(({ id, label, icon: Icon }) => {
+                            const active = tab === id;
+                            return (
+                                <button
+                                    key={id}
+                                    type="button"
+                                    onClick={() => setTab(id)}
+                                    aria-current={active ? "page" : undefined}
+                                    className={`flex items-center gap-3 h-10 px-3 rounded-full lg:rounded-r-full lg:rounded-l-md text-sm whitespace-nowrap transition-colors cursor-pointer ${
+                                        active
+                                            ? "bg-[#1a73e8]/10 text-[#174ea6] font-medium"
+                                            : "text-neutral-700 hover:bg-neutral-100"
+                                    }`}
+                                >
+                                    <Icon size={16} className={active ? "text-[#1a73e8]" : "text-neutral-500"} />
+                                    <span className="flex-1 text-left">{label}</span>
+                                    <StatusDot state={tabState[id]} />
+                                </button>
+                            );
+                        })}
+                    </nav>
 
-                            <Section title="Details">
-                                <label className={labelClass}>Event name</label>
-                                <input
-                                    type="text"
-                                    placeholder="Halloween 2026"
-                                    className={inputClass}
-                                    value={form.name}
-                                    onChange={(e) => set("name")(e.target.value)}
-                                    autoFocus={!isEdit}
-                                />
-                            </Section>
-
-                            <Section
-                                icon={ImageIcon}
-                                title="Hero background"
-                                description="Replaces the default hero background image."
-                                enabled={form.showBackground}
-                                onToggle={set("showBackground")}
-                            >
-                                <ImageUpload value={form.backgroundUrl} onChange={set("backgroundUrl")} onBusyChange={onBusyChange} />
-                            </Section>
-
-                            <Section
-                                icon={Sparkles}
-                                title="Hanging decorations"
-                                description="Swing gently from the top corners. Transparent PNGs work best."
-                            >
-                                <div className="grid grid-cols-2 gap-3">
-                                    <DecorationSlot
-                                        title="Top left"
-                                        enabled={form.showTopLeft}
-                                        onToggle={set("showTopLeft")}
-                                        value={form.topLeftUrl}
-                                        onChange={set("topLeftUrl")}
-                                        onBusyChange={onBusyChange}
-                                    />
-                                    <DecorationSlot
-                                        title="Top right"
-                                        enabled={form.showTopRight}
-                                        onToggle={set("showTopRight")}
-                                        value={form.topRightUrl}
-                                        onChange={set("topRightUrl")}
-                                        onBusyChange={onBusyChange}
-                                    />
-                                </div>
-                            </Section>
-
-                            <Section
-                                icon={Megaphone}
-                                title="Announcement bar"
-                                description="Scrolling strip under the navbar."
-                                enabled={form.showAnnouncement}
-                                onToggle={set("showAnnouncement")}
-                            >
-                                <div className="space-y-4">
-                                    <div>
-                                        <div className="flex items-baseline justify-between mb-1.5">
-                                            <label className="text-[13px] font-medium text-neutral-700">Message</label>
-                                            <span className="text-[11px] text-neutral-400">{form.announcementText.length}/120</span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            maxLength={120}
-                                            placeholder="🎃 Halloween offer — 20% off your first month"
-                                            className={inputClass}
-                                            value={form.announcementText}
-                                            onChange={(e) => set("announcementText")(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className={labelClass}>
-                                            Link <span className="text-neutral-400 font-normal">· optional</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="/pricing or https://…"
-                                            className={inputClass}
-                                            value={form.announcementLink}
-                                            onChange={(e) => set("announcementLink")(e.target.value)}
-                                        />
-                                    </div>
-
-                                    <BarPreview text={form.announcementText} style={form.announcementStyle} />
-
-                                    <div className="rounded-lg border border-neutral-200">
-                                        <button
-                                            type="button"
-                                            onClick={() => setStyleOpen((v) => !v)}
-                                            aria-expanded={styleOpen}
-                                            className="w-full flex items-center gap-3 px-4 h-12 text-left cursor-pointer hover:bg-neutral-50 rounded-lg"
-                                        >
-                                            <Palette size={16} className="text-neutral-500" />
-                                            <span className="flex-1 text-sm font-medium text-neutral-800">Colors & style</span>
-                                            <span
-                                                className="w-5 h-5 rounded-full border border-black/10"
-                                                style={{ background: announcementBackground({ ...form.announcementStyle, bgOpacity: 100 }) }}
-                                            />
-                                            <ChevronDown
-                                                size={16}
-                                                className={`text-neutral-500 transition-transform ${styleOpen ? "rotate-180" : ""}`}
-                                            />
-                                        </button>
-                                        {styleOpen && (
-                                            <div className="px-4 pb-4 pt-1 border-t border-neutral-100">
-                                                <div className="pt-4">
-                                                    <AnnouncementStyleEditor
-                                                        value={form.announcementStyle}
-                                                        onChange={set("announcementStyle")}
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </Section>
-
-                            <Section
-                                icon={BadgePercent}
-                                title="Offer"
-                                description="Shaking “See Plans” button with a badge in the hero, and the badge on pricing Subscribe buttons. Prices don't change."
-                                enabled={form.showOffer}
-                                onToggle={set("showOffer")}
-                            >
-                                <div className="space-y-4">
-                                    <div>
-                                        <div className="flex items-baseline justify-between mb-1.5">
-                                            <label className="text-[13px] font-medium text-neutral-700">Badge text</label>
-                                            <span className="text-[11px] text-neutral-400">{form.offerText.length}/24</span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            maxLength={24}
-                                            placeholder="20% OFF"
-                                            className={inputClass}
-                                            value={form.offerText}
-                                            onChange={(e) => set("offerText")(e.target.value)}
-                                        />
-                                    </div>
-
-                                    <div className="grid gap-4 sm:grid-cols-3">
-                                        <ColorField label="Button color" value={form.offerButtonColor} onChange={set("offerButtonColor")} />
-                                        <ColorField label="Button text" value={form.offerButtonTextColor} onChange={set("offerButtonTextColor")} />
-                                        <ColorField label="Badge color" value={form.offerBadgeColor} onChange={set("offerBadgeColor")} />
-                                    </div>
-
-                                    {/* Live preview of the hero button */}
-                                    <div
-                                        className="flex items-center justify-center gap-3 pt-8 pb-6 rounded-lg bg-neutral-900 bg-cover bg-center"
-                                        style={{ backgroundImage: "linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('/images/hb1.png')" }}
-                                    >
-                                        <span className="px-5 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]">
-                                            Book a Call
-                                        </span>
-                                        <div className="relative animate-offer-shake">
-                                            <OfferBadge text={form.offerText || "20% OFF"} color={form.offerBadgeColor} />
-                                            <span
-                                                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold"
-                                                style={{ backgroundColor: form.offerButtonColor, color: form.offerButtonTextColor }}
-                                            >
-                                                See Plans <ArrowRight size={12} />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Section>
-                        </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 py-6">
+                        <div className="max-w-2xl">{panels[tab]}</div>
                     </div>
 
-                    <aside className="hidden lg:block overflow-y-auto overscroll-contain border-l border-neutral-200 p-6">
-                        {preview}
+                    <aside className="hidden lg:block overflow-y-auto overscroll-contain bg-neutral-50 border-l border-neutral-200 p-6">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-2">Preview</p>
+                        <HeroPreview event={form} className="rounded-xl shadow-sm ring-1 ring-black/5" />
+                        <p className="text-xs text-neutral-500 mt-3 leading-relaxed">
+                            Approximate layout. Dots in the menu show what&apos;s{" "}
+                            <span className="text-green-600 font-medium">ready</span>,{" "}
+                            <span className="text-amber-600 font-medium">needs content</span> or off.
+                        </p>
                     </aside>
                 </div>
 
@@ -663,7 +804,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                             </p>
                         ) : missing > 0 ? (
                             <p className="text-amber-600 text-xs sm:text-sm">
-                                {missing} {missing === 1 ? "element needs" : "elements need"} content
+                                {missing} {missing === 1 ? "section needs" : "sections need"} content
                             </p>
                         ) : null}
                     </div>
@@ -681,7 +822,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
 };
 
 /* ---------- Event card ---------- */
-const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
+const EventCard = ({ event, onEdit, onDelete, onToggleLive, onCopy }) => {
     const [confirming, setConfirming] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [toggling, setToggling] = useState(false);
@@ -692,6 +833,7 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
         event.showTopRight && "Top right",
         event.showAnnouncement && "Announcement",
         event.showOffer && `Offer · ${event.offerText}`,
+        event.showHeadlineColors && "Headline",
     ].filter(Boolean);
 
     const handleDelete = async () => {
@@ -777,6 +919,14 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
                                     <span className="text-[11px] text-neutral-400">No elements enabled</span>
                                 )}
                             </div>
+                            <button
+                                onClick={() => onCopy(event)}
+                                className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
+                                aria-label="Copy event code"
+                                title="Copy event code"
+                            >
+                                <Copy size={15} />
+                            </button>
                             <button
                                 onClick={() => onEdit(event)}
                                 className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
@@ -875,6 +1025,11 @@ const EventManager = () => {
         }
     };
 
+    const handleCopy = async (event) => {
+        const ok = await copyText(encodeEventCode(event));
+        setToast(ok ? { type: "success", message: "Event code copied" } : { type: "error", message: "Couldn't copy — check browser permissions." });
+    };
+
     const live = events.find((e) => e.isActive);
 
     return (
@@ -957,13 +1112,14 @@ const EventManager = () => {
                                 onEdit={setEditing}
                                 onDelete={handleDelete}
                                 onToggleLive={handleToggleLive}
+                                onCopy={handleCopy}
                             />
                         ))}
                     </ul>
                 )}
             </div>
 
-            {editing && <EventDialog initial={editing} onClose={closeDialog} onSaved={handleSaved} />}
+            {editing && <EventDialog initial={editing} onClose={closeDialog} onSaved={handleSaved} onToast={setToast} />}
             <Snackbar toast={toast} onClose={closeToast} />
         </div>
     );

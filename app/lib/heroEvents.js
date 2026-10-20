@@ -11,9 +11,12 @@ const STRING_FIELDS = [
     "offerButtonColor",
     "offerButtonTextColor",
     "offerBadgeColor",
+    "headlineFrom",
+    "headlineVia",
+    "headlineTo",
 ];
-const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement", "showOffer"];
-const OFFER_COLOR_FIELDS = ["offerButtonColor", "offerButtonTextColor", "offerBadgeColor"];
+const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement", "showOffer", "showHeadlineColors"];
+const COLOR_FIELDS = ["offerButtonColor", "offerButtonTextColor", "offerBadgeColor", "headlineFrom", "headlineVia", "headlineTo"];
 
 export const EVENT_DEFAULTS = {
     name: "",
@@ -33,6 +36,10 @@ export const EVENT_DEFAULTS = {
     offerButtonColor: "#FF7A00",
     offerButtonTextColor: "#FFFFFF",
     offerBadgeColor: "#EF4444",
+    showHeadlineColors: false,
+    headlineFrom: "#48A2FF",
+    headlineVia: "#7EC0FF",
+    headlineTo: "#C9E4FF",
 };
 
 const isHttpUrl = (value) => {
@@ -66,8 +73,8 @@ export const parseEventInput = (body, { partial = false } = {}) => {
     if (!partial && !data.name) return { error: "Event name is required" };
     if (data.name !== undefined && !data.name) return { error: "Event name can't be empty" };
 
-    for (const key of OFFER_COLOR_FIELDS) {
-        if (data[key] !== undefined && !isValidHex(data[key])) return { error: "Offer colors must be hex values like #FF7A00" };
+    for (const key of COLOR_FIELDS) {
+        if (data[key] !== undefined && !isValidHex(data[key])) return { error: "Colors must be hex values like #FF7A00" };
     }
     if (data.offerText && data.offerText.length > 24) return { error: "Offer text must be 24 characters or less" };
 
@@ -101,6 +108,11 @@ const offerFor = (event) => {
     };
 };
 
+const headlineFor = (event) => {
+    const color = (key) => (isValidHex(event[key]) ? event[key] : EVENT_DEFAULTS[key]);
+    return { from: color("headlineFrom"), via: color("headlineVia"), to: color("headlineTo") };
+};
+
 // Used by the public hero. Never throws: on any failure the default hero shows.
 export async function getActiveEvent() {
     try {
@@ -120,6 +132,7 @@ export async function getActiveEvent() {
             announcementLink: event.showAnnouncement ? event.announcementLink : "",
             announcementStyle: withStyleDefaults(event.announcementStyle),
             offer: event.showOffer && event.offerText ? offerFor(event) : null,
+            headlineGradient: event.showHeadlineColors ? headlineFor(event) : null,
         };
     } catch (err) {
         console.error("Failed to load active hero event:", err);
