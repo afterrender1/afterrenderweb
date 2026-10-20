@@ -19,7 +19,6 @@ import {
     ChevronDown,
     Settings2,
     Type,
-    Copy,
 } from "lucide-react";
 import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal, api, friendlyError } from "./ui";
 import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
@@ -297,37 +296,6 @@ const HeroPreview = ({ event, className = "" }) => {
     );
 };
 
-/* ---------- Event code (copy / paste between events) ---------- */
-const CODE_PREFIX = "AR-EVENT:";
-
-// Base64 of the event's editable settings (UTF-8 safe, so emoji survive)
-const encodeEventCode = (event) => {
-    const data = {};
-    for (const key of Object.keys(emptyEvent)) if (key !== "isActive") data[key] = event[key] ?? emptyEvent[key];
-    const bytes = new TextEncoder().encode(JSON.stringify({ v: 1, event: data }));
-    let bin = "";
-    bytes.forEach((b) => (bin += String.fromCharCode(b)));
-    return CODE_PREFIX + btoa(bin);
-};
-
-const copyText = async (text) => {
-    try {
-        await navigator.clipboard.writeText(text);
-        return true;
-    } catch {
-        // Clipboard API blocked (e.g. insecure context): fall back to a hidden textarea
-        const el = document.createElement("textarea");
-        el.value = text;
-        el.style.position = "fixed";
-        el.style.opacity = "0";
-        document.body.appendChild(el);
-        el.select();
-        const ok = document.execCommand("copy");
-        el.remove();
-        return ok;
-    }
-};
-
 /* ---------- Editor building blocks ---------- */
 const StatusDot = ({ state }) => (
     <span
@@ -392,7 +360,7 @@ const TABS = [
 ];
 
 /* ---------- Add / edit dialog ---------- */
-const EventDialog = ({ initial, onClose, onSaved, onToast }) => {
+const EventDialog = ({ initial, onClose, onSaved }) => {
     const isEdit = Boolean(initial?._id);
     const [form, setForm] = useState(() => {
         const base = { ...emptyEvent };
@@ -473,17 +441,12 @@ const EventDialog = ({ initial, onClose, onSaved, onToast }) => {
         }
     };
 
-    const copyCode = async () => {
-        const ok = await copyText(encodeEventCode(form));
-        onToast(ok ? { type: "success", message: "Event code copied" } : { type: "error", message: "Couldn't copy — check browser permissions." });
-    };
-
     const busy = saving || uploads > 0;
 
     const panels = {
         general: (
             <>
-                <PanelHeader title="General" description="Name the event and choose whether it's live." />
+                <PanelHeader title="General" description="Name the event and choose whether it&apos;s live." />
                 <div className="space-y-6">
                     <div>
                         <label className={labelClass}>Event name</label>
@@ -510,18 +473,6 @@ const EventDialog = ({ initial, onClose, onSaved, onToast }) => {
                         <Switch checked={form.isActive} onChange={set("isActive")} label="Live on website" />
                     </div>
 
-                    <div className="flex items-center gap-3 p-4 rounded-xl border border-neutral-200">
-                        <Copy size={18} className="text-neutral-400" />
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-neutral-900">Event code</p>
-                            <p className="text-xs text-neutral-500 mt-0.5">
-                                Copy all of this event&apos;s settings as a code.
-                            </p>
-                        </div>
-                        <button type="button" onClick={copyCode} className={ghostBtn}>
-                            Copy code
-                        </button>
-                    </div>
                 </div>
             </>
         ),
@@ -822,7 +773,7 @@ const EventDialog = ({ initial, onClose, onSaved, onToast }) => {
 };
 
 /* ---------- Event card ---------- */
-const EventCard = ({ event, onEdit, onDelete, onToggleLive, onCopy }) => {
+const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
     const [confirming, setConfirming] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [toggling, setToggling] = useState(false);
@@ -919,14 +870,6 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive, onCopy }) => {
                                     <span className="text-[11px] text-neutral-400">No elements enabled</span>
                                 )}
                             </div>
-                            <button
-                                onClick={() => onCopy(event)}
-                                className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
-                                aria-label="Copy event code"
-                                title="Copy event code"
-                            >
-                                <Copy size={15} />
-                            </button>
                             <button
                                 onClick={() => onEdit(event)}
                                 className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
@@ -1025,11 +968,6 @@ const EventManager = () => {
         }
     };
 
-    const handleCopy = async (event) => {
-        const ok = await copyText(encodeEventCode(event));
-        setToast(ok ? { type: "success", message: "Event code copied" } : { type: "error", message: "Couldn't copy — check browser permissions." });
-    };
-
     const live = events.find((e) => e.isActive);
 
     return (
@@ -1112,14 +1050,13 @@ const EventManager = () => {
                                 onEdit={setEditing}
                                 onDelete={handleDelete}
                                 onToggleLive={handleToggleLive}
-                                onCopy={handleCopy}
                             />
                         ))}
                     </ul>
                 )}
             </div>
 
-            {editing && <EventDialog initial={editing} onClose={closeDialog} onSaved={handleSaved} onToast={setToast} />}
+            {editing && <EventDialog initial={editing} onClose={closeDialog} onSaved={handleSaved} />}
             <Snackbar toast={toast} onClose={closeToast} />
         </div>
     );
