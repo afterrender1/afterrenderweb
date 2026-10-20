@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import Link from "next/link";
+import EventHeroBackdrop from "./EventHeroBackdrop";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,11 +17,14 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-const OurWorkHero = () => {
+// `backgroundUrl`: live event background (admin → Events); empty keeps the default look
+const OurWorkHero = ({ backgroundUrl = "" }) => {
   return (
     <section
-      className={`${jakarta.className} relative bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-12 sm:pb-14 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
+      className={`${jakarta.className} relative ${backgroundUrl ? "isolate" : ""} bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-12 sm:pb-14 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
     >
+      <EventHeroBackdrop url={backgroundUrl} />
+
       {/* Background Soft Mesh Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
 

@@ -13,11 +13,4 @@ const OfferBadge = ({ text, color = "#EF4444", className = "" }) => (
   </span>
 );
 
-// "20% OFF" -> 20. Returns null when the text has no usable percentage.
-export const offerPercent = (text) => {
-  const match = /(\d{1,2}(?:\.\d+)?)\s*%/.exec(text || "");
-  const pct = match ? Number(match[1]) : NaN;
-  return pct > 0 && pct < 100 ? pct : null;
-};
-
 export default OfferBadge;

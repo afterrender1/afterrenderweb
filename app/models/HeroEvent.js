@@ -22,12 +22,13 @@ const HeroEventSchema = new mongoose.Schema(
         announcementStyle: { type: mongoose.Schema.Types.Mixed, default: undefined },
 
         // Discount offer: badge + shaking "See Plans" button in the hero, badge on pricing CTAs.
-        // Display only — prices are never changed.
+        // discountPercent > 0 lowers the prices shown on /pricing (0 = badge only).
         showOffer: { type: Boolean, default: false },
         offerText: { type: String, trim: true, default: "20% OFF" },
         offerButtonColor: { type: String, trim: true, default: "#FF7A00" },
         offerButtonTextColor: { type: String, trim: true, default: "#FFFFFF" },
         offerBadgeColor: { type: String, trim: true, default: "#EF4444" },
+        discountPercent: { type: Number, min: 0, max: 90, default: 20 },
 
         // Gradient for the changing typewriter word after "Unlimited"
         showHeadlineColors: { type: Boolean, default: false },

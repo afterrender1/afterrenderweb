@@ -1,3 +1,4 @@
+import { resolveDiscount } from "@/app/lib/offer";
 import { DEFAULT_ANNOUNCEMENT_STYLE, isValidHex, parseAnnouncementStyle, withStyleDefaults } from "@/app/lib/announcementStyle";
 
 const STRING_FIELDS = [
@@ -36,6 +37,7 @@ export const EVENT_DEFAULTS = {
     offerButtonColor: "#FF7A00",
     offerButtonTextColor: "#FFFFFF",
     offerBadgeColor: "#EF4444",
+    discountPercent: 20,
     showHeadlineColors: false,
     headlineFrom: "#48A2FF",
     headlineVia: "#7EC0FF",
@@ -76,6 +78,11 @@ export const parseEventInput = (body, { partial = false } = {}) => {
     for (const key of COLOR_FIELDS) {
         if (data[key] !== undefined && !isValidHex(data[key])) return { error: "Colors must be hex values like #FF7A00" };
     }
+    if (body.discountPercent !== undefined) {
+        const pct = Number(body.discountPercent);
+        if (!Number.isInteger(pct) || pct < 0 || pct > 90) return { error: "Discount must be a whole number from 0 to 90" };
+        data.discountPercent = pct;
+    }
     if (data.offerText && data.offerText.length > 24) return { error: "Offer text must be 24 characters or less" };
 
     for (const key of ["backgroundUrl", "topLeftUrl", "topRightUrl"]) {
@@ -105,6 +112,7 @@ const offerFor = (event) => {
         buttonColor: color("offerButtonColor"),
         buttonTextColor: color("offerButtonTextColor"),
         badgeColor: color("offerBadgeColor"),
+        discountPercent: resolveDiscount(event),
     };
 };
 

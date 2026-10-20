@@ -36,6 +36,7 @@ export async function POST(req) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/our-work");
         return NextResponse.json({ success: true, event }, { status: 201 });
     } catch (err) {
         console.error("Error in POST /api/events:", err);

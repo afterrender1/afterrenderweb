@@ -23,6 +23,7 @@ import {
 import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal, api, friendlyError } from "./ui";
 import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
 import OfferBadge from "@/components/OfferBadge";
+import { resolveDiscount } from "@/app/lib/offer";
 import AnnouncementTrack, { announcementWrapperStyle } from "@/components/AnnouncementTrack";
 import { DEFAULT_ANNOUNCEMENT_STYLE, announcementBackground, withStyleDefaults } from "@/app/lib/announcementStyle";
 
@@ -46,6 +47,7 @@ const emptyEvent = {
     offerButtonColor: "#FF7A00",
     offerButtonTextColor: "#FFFFFF",
     offerBadgeColor: "#EF4444",
+    discountPercent: 20,
     showHeadlineColors: false,
     headlineFrom: "#48A2FF",
     headlineVia: "#7EC0FF",
@@ -367,6 +369,8 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         for (const key of Object.keys(emptyEvent)) base[key] = initial?.[key] ?? emptyEvent[key];
         // Events saved before bar styling existed have no style yet
         base.announcementStyle = withStyleDefaults(base.announcementStyle);
+        // Same discount the site applies (older events: taken from the badge text)
+        if (initial?._id) base.discountPercent = resolveDiscount(initial);
         return base;
     });
     const [tab, setTab] = useState("general");
@@ -416,6 +420,10 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
             return ["announcement", "Announcement link must start with https:// or / (e.g. /pricing)."];
         }
         if (form.showOffer && !form.offerText.trim()) return ["offer", "Add offer text (e.g. 20% OFF) or turn the offer off."];
+        const pct = Number(form.discountPercent);
+        if (form.showOffer && (!Number.isInteger(pct) || pct < 0 || pct > 90)) {
+            return ["offer", "Discount must be a whole number from 0 to 90."];
+        }
         return null;
     };
 
@@ -432,7 +440,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         try {
             const data = await api(isEdit ? `/api/events/${initial._id}` : "/api/events", {
                 method: isEdit ? "PATCH" : "POST",
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, discountPercent: Number(form.discountPercent) }),
             });
             onSaved(data.event, isEdit);
         } catch (err) {
@@ -584,7 +592,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
             <>
                 <PanelHeader
                     title="Offer"
-                    description="Shaking “See Plans” button with a badge in the hero, plus the badge and a struck-through price on pricing. Real prices don't change."
+                    description="Shaking “See Plans” button with a badge in the hero, plus the badge and a real discount on the pricing page."
                     enabled={form.showOffer}
                     onToggle={set("showOffer")}
                 />
@@ -603,6 +611,30 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                                 value={form.offerText}
                                 onChange={(e) => set("offerText")(e.target.value)}
                             />
+                        </div>
+
+                        <div>
+                            <label className={labelClass}>Real discount on pricing</label>
+                            <div className="flex items-center gap-3">
+                                <div className="relative w-32">
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={90}
+                                        step={1}
+                                        inputMode="numeric"
+                                        className={`${inputClass} pr-8`}
+                                        value={form.discountPercent}
+                                        onChange={(e) => set("discountPercent")(e.target.value === "" ? "" : Number(e.target.value))}
+                                    />
+                                    <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm text-neutral-500">%</span>
+                                </div>
+                                <p className="text-xs text-neutral-500">
+                                    {Number(form.discountPercent) > 0
+                                        ? `Pricing shows prices ${form.discountPercent}% lower, original struck through. e.g. USD 399 → USD ${Math.round(399 * (1 - Number(form.discountPercent) / 100))}`
+                                        : "0 = badge only, prices unchanged."}
+                                </p>
+                            </div>
                         </div>
 
                         <div className="grid gap-4 sm:grid-cols-3">

@@ -26,7 +26,7 @@ const PricingPage = async () => {
   return (
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
-      <PricingHero offer={event?.offer} />
+      <PricingHero offer={event?.offer} backgroundUrl={event?.backgroundUrl} />
       <ReelEditingStyles />
       <PricingListOfServices />
       <PricingBenefits />

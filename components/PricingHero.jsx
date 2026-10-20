@@ -11,7 +11,8 @@ import {
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { Check, ChevronDown , Info } from "lucide-react";
 import Link from "next/link";
-import OfferBadge, { offerPercent } from "./OfferBadge";
+import OfferBadge from "./OfferBadge";
+import EventHeroBackdrop from "./EventHeroBackdrop";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -156,8 +157,12 @@ function AnimatedNumber({ value }) {
   return <>{display.toLocaleString()}</>;
 }
 
-// `offer` (from the live event) only adds a badge on the Subscribe button — prices never change.
-export default function PricingHero({ hideHeader = false, id = "plans", offer = null }) {
+// From the live event (admin → Events): `offer` adds the Subscribe badge and, when
+// offer.discountPercent > 0, really lowers the shown prices (original shown struck through).
+// `backgroundUrl` swaps in the event background.
+export default function PricingHero({ hideHeader = false, id = "plans", offer = null, backgroundUrl = "" }) {
+  const discount = offer?.discountPercent > 0 ? offer.discountPercent : 0;
+  const applyDiscount = (price) => (discount ? Math.round(price * (1 - discount / 100)) : price);
   const [activeTab, setActiveTab] = useState("video");
   const [activeRequests, setActiveRequests] = useState(1);
   const [lightningFast, setLightningFast] = useState(false);
@@ -191,10 +196,10 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
   const lightningFee = lightningFast ? 100 : 0;
   const calculatedPrice = baseOrTierPrice + lightningFee;
 
-  // Offer display only: the real price stays as-is; a struck-through "before"
-  // price is derived from the badge percentage (e.g. 20% -> price / 0.8).
-  const pct = offer && !isCustomTier ? offerPercent(offer.text) : null;
-  const struckPrice = pct ? Math.round(calculatedPrice / (1 - pct / 100)) : null;
+  // Real discount from the event: show the reduced price, original struck through
+  const discounted = discount && !isCustomTier;
+  const finalPrice = discounted ? applyDiscount(calculatedPrice) : calculatedPrice;
+  const struckPrice = discounted ? calculatedPrice : null;
 
   // Custom tier: pre-filled WhatsApp message with the selected plan details
   const customWhatsappMessage = [
@@ -216,10 +221,12 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
   return (
     <section
       id={id}
-      className={`${jakarta.className} relative min-h-screen bg-[#FAFAFA] text-black ${
+      className={`${jakarta.className} relative ${backgroundUrl ? "isolate" : ""} min-h-screen bg-[#FAFAFA] text-black ${
         hideHeader ? "pt-8 sm:pt-12" : "pt-32 sm:pt-36"
       } pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center justify-center`}
     >
+      <EventHeroBackdrop url={backgroundUrl} />
+
       {/* Background Soft Mesh Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
 
@@ -342,7 +349,7 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
                     {farPlan.title}
                   </span>
                   <span className="text-[10.5px] sm:text-[11px] font-bold text-gray-400 shrink-0">
-                    USD {farPlan.basePrice}
+                    USD {applyDiscount(farPlan.basePrice)}
                   </span>
                 </motion.div>
               </AnimatePresence>
@@ -363,7 +370,7 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
                     {nearPlan.title}
                   </span>
                   <span className="text-xs font-bold text-gray-500 shrink-0">
-                    USD {nearPlan.basePrice}
+                    USD {applyDiscount(nearPlan.basePrice)}
                   </span>
                 </motion.div>
               </AnimatePresence>
@@ -513,25 +520,34 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
               {/* Price & Subscribe Button */}
               <div className="mt-3 pt-1">
                 {!isCustomTier && (
-                  <div className="flex items-baseline gap-1.5 mb-3">
-                    <span className="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
-                      USD <AnimatedNumber value={calculatedPrice} />
-                    </span>
+                  <div className="mb-3">
+                    {/* Original price, cut, with the discount chip (only while an offer discount is on) */}
                     {struckPrice && (
-                      <span className="relative text-sm sm:text-base font-semibold text-black/40 tracking-tight">
-                        <span className="sr-only">Was </span>
-                        USD {struckPrice.toLocaleString()}
-                        {/* Diagonal cut line */}
+                      <div className="flex items-center gap-2 mb-0.5">
                         <span
-                          aria-hidden="true"
-                          className="absolute left-[-2px] right-[-2px] top-1/2 h-[2px] -rotate-[8deg] rounded-full"
-                          style={{ backgroundColor: offer.badgeColor }}
-                        />
-                      </span>
+                          className="text-sm font-semibold text-black/40 tracking-tight line-through decoration-2"
+                          style={{ textDecorationColor: offer.badgeColor }}
+                        >
+                          <span className="sr-only">Regular price </span>
+                          USD <AnimatedNumber value={struckPrice} />
+                        </span>
+                        <span
+                          className="inline-flex items-center h-5 px-2 rounded-full text-[11px] font-bold leading-none"
+                          style={{ color:"black", backgroundColor: `${offer.badgeColor}1F` }}
+                        >
+                          -{discount}%
+                        </span>
+                      </div>
                     )}
-                    <span className="text-[11px] font-bold text-black/75 tracking-tight">
-                      Per month
-                    </span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
+                        {struckPrice && <span className="sr-only">Offer price </span>}
+                        USD <AnimatedNumber value={finalPrice} />
+                      </span>
+                      <span className="text-[11px] font-bold text-black/75 tracking-tight">
+                        Per month
+                      </span>
+                    </div>
                   </div>
                 )}
 

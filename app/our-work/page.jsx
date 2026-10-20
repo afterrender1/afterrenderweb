@@ -7,6 +7,10 @@ import PricingTestimonials from "@/components/PricingTestimonials";
 import PricingFAQ from "@/components/PricingFAQ";
 import Footer from "@/components/Footer";
 import React from "react";
+import { getActiveEvent } from "@/app/lib/heroEvents";
+
+// Event changes revalidate this page immediately; this is just a safety net
+export const revalidate = 600;
 
 export const metadata = {
   title: "Our Work & Plans | AfterRender",
@@ -14,11 +18,13 @@ export const metadata = {
     "Your Brand’s Next Big Moment Starts Here. Explore our work, video editing, and graphic design packages tailored for your business growth.",
 };
 
-const OurWorkPage = () => {
+const OurWorkPage = async () => {
+  const event = await getActiveEvent();
+
   return (
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
-      <OurWorkHero />
+      <OurWorkHero backgroundUrl={event?.backgroundUrl} />
       <WhatWeCreateCarosel />
       <CollectionPortfolio />
       <PricingBenefits />

@@ -33,6 +33,7 @@ export async function PATCH(req, { params }) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/our-work");
         return NextResponse.json({ success: true, event: existing });
     } catch (err) {
         console.error("Error in PATCH /api/events/[id]:", err);
@@ -53,6 +54,7 @@ export async function DELETE(req, { params }) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/our-work");
         return NextResponse.json({ success: true });
     } catch (err) {
         console.error("Error in DELETE /api/events/[id]:", err);
