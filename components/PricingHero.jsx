@@ -191,7 +191,9 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
     currentPlan.prices?.[activeRequests] ||
     currentPlan.basePrice * activeRequests;
 
-  const lightningFee = lightningFast ? 100 : 0;
+  // "Get High Quality" add-on: $300 for 1 active request, $500 for 2 or 3; other counts keep $100
+  const HIGH_QUALITY_FEES = { 1: 300, 2: 500, 3: 500 };
+  const lightningFee = lightningFast ? HIGH_QUALITY_FEES[activeRequests] ?? 100 : 0;
   const calculatedPrice = baseOrTierPrice + lightningFee;
 
   // Real discount from the event: show the reduced price, original struck through
