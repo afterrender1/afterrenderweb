@@ -1,7 +1,19 @@
-import { DEFAULT_ANNOUNCEMENT_STYLE, parseAnnouncementStyle, withStyleDefaults } from "@/app/lib/announcementStyle";
+import { DEFAULT_ANNOUNCEMENT_STYLE, isValidHex, parseAnnouncementStyle, withStyleDefaults } from "@/app/lib/announcementStyle";
 
-const STRING_FIELDS = ["name", "backgroundUrl", "topLeftUrl", "topRightUrl", "announcementText", "announcementLink"];
-const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement"];
+const STRING_FIELDS = [
+    "name",
+    "backgroundUrl",
+    "topLeftUrl",
+    "topRightUrl",
+    "announcementText",
+    "announcementLink",
+    "offerText",
+    "offerButtonColor",
+    "offerButtonTextColor",
+    "offerBadgeColor",
+];
+const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement", "showOffer"];
+const OFFER_COLOR_FIELDS = ["offerButtonColor", "offerButtonTextColor", "offerBadgeColor"];
 
 export const EVENT_DEFAULTS = {
     name: "",
@@ -16,6 +28,11 @@ export const EVENT_DEFAULTS = {
     announcementText: "",
     announcementLink: "",
     announcementStyle: DEFAULT_ANNOUNCEMENT_STYLE,
+    showOffer: false,
+    offerText: "20% OFF",
+    offerButtonColor: "#FF7A00",
+    offerButtonTextColor: "#FFFFFF",
+    offerBadgeColor: "#EF4444",
 };
 
 const isHttpUrl = (value) => {
@@ -49,6 +66,11 @@ export const parseEventInput = (body, { partial = false } = {}) => {
     if (!partial && !data.name) return { error: "Event name is required" };
     if (data.name !== undefined && !data.name) return { error: "Event name can't be empty" };
 
+    for (const key of OFFER_COLOR_FIELDS) {
+        if (data[key] !== undefined && !isValidHex(data[key])) return { error: "Offer colors must be hex values like #FF7A00" };
+    }
+    if (data.offerText && data.offerText.length > 24) return { error: "Offer text must be 24 characters or less" };
+
     for (const key of ["backgroundUrl", "topLeftUrl", "topRightUrl"]) {
         if (data[key] && !isHttpUrl(data[key])) return { error: "Images must be valid URLs" };
     }
@@ -65,7 +87,18 @@ export const validateComplete = (event) => {
     if (event.showTopLeft && !event.topLeftUrl) return "Upload the top-left image or turn it off";
     if (event.showTopRight && !event.topRightUrl) return "Upload the top-right image or turn it off";
     if (event.showAnnouncement && !event.announcementText) return "Add announcement text or turn it off";
+    if (event.showOffer && !event.offerText) return "Add offer text (e.g. 20% OFF) or turn the offer off";
     return null;
+};
+
+const offerFor = (event) => {
+    const color = (key) => (isValidHex(event[key]) ? event[key] : EVENT_DEFAULTS[key]);
+    return {
+        text: event.offerText,
+        buttonColor: color("offerButtonColor"),
+        buttonTextColor: color("offerButtonTextColor"),
+        badgeColor: color("offerBadgeColor"),
+    };
 };
 
 // Used by the public hero. Never throws: on any failure the default hero shows.
@@ -86,6 +119,7 @@ export async function getActiveEvent() {
             announcementText: event.showAnnouncement ? event.announcementText : "",
             announcementLink: event.showAnnouncement ? event.announcementLink : "",
             announcementStyle: withStyleDefaults(event.announcementStyle),
+            offer: event.showOffer && event.offerText ? offerFor(event) : null,
         };
     } catch (err) {
         console.error("Failed to load active hero event:", err);

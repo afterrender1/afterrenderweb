@@ -35,6 +35,7 @@ export async function POST(req) {
         const event = await HeroEvent.create(data);
 
         revalidatePath("/");
+        revalidatePath("/pricing");
         return NextResponse.json({ success: true, event }, { status: 201 });
     } catch (err) {
         console.error("Error in POST /api/events:", err);

@@ -11,6 +11,8 @@ import {
     ImageIcon,
     PartyPopper,
     Megaphone,
+    BadgePercent,
+    ArrowRight,
     Radio,
     Sparkles,
     Palette,
@@ -19,7 +21,8 @@ import {
     MinusCircle,
 } from "lucide-react";
 import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal, api, friendlyError } from "./ui";
-import AnnouncementStyleEditor, { BarPreview } from "./AnnouncementStyleEditor";
+import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
+import OfferBadge from "@/components/OfferBadge";
 import AnnouncementTrack, { announcementWrapperStyle } from "@/components/AnnouncementTrack";
 import { DEFAULT_ANNOUNCEMENT_STYLE, announcementBackground, withStyleDefaults } from "@/app/lib/announcementStyle";
 
@@ -38,6 +41,11 @@ const emptyEvent = {
     announcementText: "",
     announcementLink: "",
     announcementStyle: DEFAULT_ANNOUNCEMENT_STYLE,
+    showOffer: false,
+    offerText: "20% OFF",
+    offerButtonColor: "#FF7A00",
+    offerButtonTextColor: "#FFFFFF",
+    offerBadgeColor: "#EF4444",
 };
 
 // Signed direct upload: the server signs, the browser sends the file straight to Cloudinary
@@ -368,6 +376,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         if (form.showTopLeft && !form.topLeftUrl) return "Upload the top-left image or turn it off.";
         if (form.showTopRight && !form.topRightUrl) return "Upload the top-right image or turn it off.";
         if (form.showAnnouncement && !form.announcementText.trim()) return "Add announcement text or turn it off.";
+        if (form.showOffer && !form.offerText.trim()) return "Add offer text (e.g. 20% OFF) or turn the offer off.";
         const link = form.announcementLink.trim();
         if (link && !link.startsWith("/") && !/^https?:\/\//i.test(link)) {
             return "Announcement link must start with https:// or / (e.g. /pricing).";
@@ -402,6 +411,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         ["Top left image", elementState(form.showTopLeft, form.topLeftUrl)],
         ["Top right image", elementState(form.showTopRight, form.topRightUrl)],
         ["Announcement bar", elementState(form.showAnnouncement, form.announcementText.trim())],
+        ["Offer", elementState(form.showOffer, form.offerText.trim())],
     ];
     const missing = statuses.filter(([, s]) => s === "missing").length;
 
@@ -580,6 +590,56 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                                     </div>
                                 </div>
                             </Section>
+
+                            <Section
+                                icon={BadgePercent}
+                                title="Offer"
+                                description="Shaking “See Plans” button with a badge in the hero, and the badge on pricing Subscribe buttons. Prices don't change."
+                                enabled={form.showOffer}
+                                onToggle={set("showOffer")}
+                            >
+                                <div className="space-y-4">
+                                    <div>
+                                        <div className="flex items-baseline justify-between mb-1.5">
+                                            <label className="text-[13px] font-medium text-neutral-700">Badge text</label>
+                                            <span className="text-[11px] text-neutral-400">{form.offerText.length}/24</span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            maxLength={24}
+                                            placeholder="20% OFF"
+                                            className={inputClass}
+                                            value={form.offerText}
+                                            onChange={(e) => set("offerText")(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-4 sm:grid-cols-3">
+                                        <ColorField label="Button color" value={form.offerButtonColor} onChange={set("offerButtonColor")} />
+                                        <ColorField label="Button text" value={form.offerButtonTextColor} onChange={set("offerButtonTextColor")} />
+                                        <ColorField label="Badge color" value={form.offerBadgeColor} onChange={set("offerBadgeColor")} />
+                                    </div>
+
+                                    {/* Live preview of the hero button */}
+                                    <div
+                                        className="flex items-center justify-center gap-3 pt-8 pb-6 rounded-lg bg-neutral-900 bg-cover bg-center"
+                                        style={{ backgroundImage: "linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('/images/hb1.png')" }}
+                                    >
+                                        <span className="px-5 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]">
+                                            Book a Call
+                                        </span>
+                                        <div className="relative animate-offer-shake">
+                                            <OfferBadge text={form.offerText || "20% OFF"} color={form.offerBadgeColor} />
+                                            <span
+                                                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold"
+                                                style={{ backgroundColor: form.offerButtonColor, color: form.offerButtonTextColor }}
+                                            >
+                                                See Plans <ArrowRight size={12} />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Section>
                         </div>
                     </div>
 
@@ -631,6 +691,7 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
         event.showTopLeft && "Top left",
         event.showTopRight && "Top right",
         event.showAnnouncement && "Announcement",
+        event.showOffer && `Offer · ${event.offerText}`,
     ].filter(Boolean);
 
     const handleDelete = async () => {

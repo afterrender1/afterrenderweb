@@ -176,6 +176,24 @@ html {
   }
 }
 
+/* Event offer: "See Plans" button shakes in a loop (burst, then a short rest) */
+@keyframes offerShake {
+  0%, 30%, 100% { transform: translateX(0) rotate(0); }
+  5%, 15%, 25% { transform: translateX(-3px) rotate(-2deg); }
+  10%, 20% { transform: translateX(3px) rotate(2deg); }
+}
+.animate-offer-shake {
+  animation: offerShake 2.5s ease-in-out infinite;
+}
+.animate-offer-shake:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-offer-shake {
+    animation: none;
+  }
+}
+
 /* Event announcement bar under the navbar */
 .animate-announcement-track {
   animation: marqueeTrack 30s linear infinite;

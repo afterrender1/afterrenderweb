@@ -1,8 +1,11 @@
 import Link from "next/link";
 import React from "react";
 import { ArrowRight, PhoneCall } from "lucide-react";
+import OfferBadge from "./OfferBadge";
 
-const BookACall = () => {
+// `offer` comes from the live event (admin → Events → Offer). When set, the
+// "See Plans" button takes the offer colors, shows the badge and shakes.
+const BookACall = ({ offer = null }) => {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-3.5 mt-5 sm:mt-6 w-full max-w-sm mx-auto px-4">
       {/* Book a Call Button */}
@@ -28,10 +31,16 @@ const BookACall = () => {
       </Link>
 
       {/* See Plans Button */}
+      <div className={`relative w-full sm:w-auto ${offer ? "animate-offer-shake mt-2 sm:mt-0" : ""}`}>
+      {offer && <OfferBadge text={offer.text} color={offer.badgeColor} />}
       <Link
         href="/pricing"
-        style={{ fontFamily: "montserrat" }}
-        className="w-full sm:w-auto cursor-pointer 
+        style={
+          offer
+            ? { fontFamily: "montserrat", backgroundColor: offer.buttonColor, color: offer.buttonTextColor, borderColor: "transparent" }
+            : { fontFamily: "montserrat" }
+        }
+        className="w-full sm:w-auto cursor-pointer hover:brightness-110 
                  bg-white/10 hover:bg-white/15 
                  text-white font-semibold 
                  border border-white/20 hover:border-white/30 
@@ -48,6 +57,7 @@ const BookACall = () => {
         <span>See Plans</span>
         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
       </Link>
+      </div>
     </div>
   );
 };

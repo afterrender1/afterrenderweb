@@ -247,7 +247,7 @@ const HeroText = ({ event = null }) => {
         </div>
 
         <div className="mt-4 sm:mt-6 animate-hero-fade-up [animation-delay:0.3s]">
-          <BookACall />
+          <BookACall offer={event?.offer} />
         </div>
       </div>
     </section>

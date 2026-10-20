@@ -11,6 +11,7 @@ import {
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { Check, ChevronDown , Info } from "lucide-react";
 import Link from "next/link";
+import OfferBadge, { offerPercent } from "./OfferBadge";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -155,7 +156,8 @@ function AnimatedNumber({ value }) {
   return <>{display.toLocaleString()}</>;
 }
 
-export default function PricingHero({ hideHeader = false, id = "plans" }) {
+// `offer` (from the live event) only adds a badge on the Subscribe button — prices never change.
+export default function PricingHero({ hideHeader = false, id = "plans", offer = null }) {
   const [activeTab, setActiveTab] = useState("video");
   const [activeRequests, setActiveRequests] = useState(1);
   const [lightningFast, setLightningFast] = useState(false);
@@ -188,6 +190,11 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
 
   const lightningFee = lightningFast ? 100 : 0;
   const calculatedPrice = baseOrTierPrice + lightningFee;
+
+  // Offer display only: the real price stays as-is; a struck-through "before"
+  // price is derived from the badge percentage (e.g. 20% -> price / 0.8).
+  const pct = offer && !isCustomTier ? offerPercent(offer.text) : null;
+  const struckPrice = pct ? Math.round(calculatedPrice / (1 - pct / 100)) : null;
 
   // Custom tier: pre-filled WhatsApp message with the selected plan details
   const customWhatsappMessage = [
@@ -510,20 +517,35 @@ export default function PricingHero({ hideHeader = false, id = "plans" }) {
                     <span className="text-xl sm:text-2xl font-extrabold text-black tracking-tight">
                       USD <AnimatedNumber value={calculatedPrice} />
                     </span>
+                    {struckPrice && (
+                      <span className="relative text-sm sm:text-base font-semibold text-black/40 tracking-tight">
+                        <span className="sr-only">Was </span>
+                        USD {struckPrice.toLocaleString()}
+                        {/* Diagonal cut line */}
+                        <span
+                          aria-hidden="true"
+                          className="absolute left-[-2px] right-[-2px] top-1/2 h-[2px] -rotate-[8deg] rounded-full"
+                          style={{ backgroundColor: offer.badgeColor }}
+                        />
+                      </span>
+                    )}
                     <span className="text-[11px] font-bold text-black/75 tracking-tight">
                       Per month
                     </span>
                   </div>
                 )}
 
-                <Link
-                  href={ctaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full text-center bg-black hover:bg-neutral-900 active:scale-[0.98] text-white font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  {ctaLabel}
-                </Link>
+                <div className={`relative ${offer && !isCustomTier ? "mt-5" : ""}`}>
+                  {offer && !isCustomTier && <OfferBadge text={offer.text} color={offer.badgeColor} />}
+                  <Link
+                    href={ctaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center bg-black hover:bg-neutral-900 active:scale-[0.98] text-white font-bold text-xs sm:text-sm py-2.5 sm:py-3 px-5 rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    {ctaLabel}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ import {
 const sameStyle = (a, b) => JSON.stringify(withStyleDefaults(a)) === JSON.stringify(withStyleDefaults(b));
 
 /* ---------- Color picker: native swatch + editable hex ---------- */
-const ColorField = ({ label, value, onChange }) => {
+export const ColorField = ({ label, value, onChange }) => {
     // Local draft so half-typed hex values don't get rejected mid-typing
     const [draft, setDraft] = useState(value);
     const [synced, setSynced] = useState(value);

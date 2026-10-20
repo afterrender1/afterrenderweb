@@ -20,6 +20,14 @@ const HeroEventSchema = new mongoose.Schema(
         announcementLink: { type: String, trim: true, default: "" },
         // Colors / gradient for the bar; validated by app/lib/announcementStyle.js
         announcementStyle: { type: mongoose.Schema.Types.Mixed, default: undefined },
+
+        // Discount offer: badge + shaking "See Plans" button in the hero, badge on pricing CTAs.
+        // Display only — prices are never changed.
+        showOffer: { type: Boolean, default: false },
+        offerText: { type: String, trim: true, default: "20% OFF" },
+        offerButtonColor: { type: String, trim: true, default: "#FF7A00" },
+        offerButtonTextColor: { type: String, trim: true, default: "#FFFFFF" },
+        offerBadgeColor: { type: String, trim: true, default: "#EF4444" },
     },
     { timestamps: true }
 );
