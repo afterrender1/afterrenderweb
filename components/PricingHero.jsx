@@ -166,8 +166,6 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
   const [activeTab, setActiveTab] = useState("video");
   const [activeRequests, setActiveRequests] = useState(1);
   const [lightningFast, setLightningFast] = useState(false);
-  const [showActiveReqTooltip, setShowActiveReqTooltip] = useState(false);
-  const [showLightningTooltip, setShowLightningTooltip] = useState(false);
 
   const currentPlan = plans[activeTab];
   const tabKeys = ["video", "graphics", "realtor"];
@@ -464,12 +462,7 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
                         <Info className="w-3 h-3" />
                       </button>
 
-                      {/* Tooltip */}
-                      {showActiveReqTooltip && (
-                        <div className="absolute left-0 bottom-6 z-30 w-48 bg-black text-white text-[10.5px] rounded-md p-1.5 shadow-lg">
-                          {currentPlan.requestTooltip}
-                        </div>
-                      )}
+                     
                     </div>
                   </div>
 
@@ -491,27 +484,16 @@ export default function PricingHero({ hideHeader = false, id = "plans", offer = 
 
                     <div className="flex items-center gap-1 relative">
                       <span className="text-xs font-bold text-black">
-                        Get Lightning Fast Delivery
+                        Get High Quality
                       </span>
                       <button
                         type="button"
-                        onMouseEnter={() => setShowLightningTooltip(true)}
-                        onMouseLeave={() => setShowLightningTooltip(false)}
-                        onClick={() =>
-                          setShowLightningTooltip(!showLightningTooltip)
-                        }
+                       
                         className="cursor-pointer text-black/70 hover:text-black focus:outline-none"
                       >
                         <Info className="w-3 h-3" />
                       </button>
 
-                      {/* Tooltip */}
-                      {showLightningTooltip && (
-                        <div className="absolute left-0 bottom-6 z-30 w-52 bg-black text-white text-[10.5px] rounded-md p-1.5 shadow-lg">
-                          Priority turnaround within 24-48 hours for all your
-                          assets.
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

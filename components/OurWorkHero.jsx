@@ -92,12 +92,18 @@ const OurWorkHero = ({ backgroundUrl = "" }) => {
           className="mt-6 flex flex-wrap items-center justify-center gap-3"
         >
           <Link
-            href="https://calendly.com/afterrenderagency/new-meeting"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-bold text-xs sm:text-sm px-6 py-2.5 rounded-full shadow-[0_6px_16px_rgba(72,162,255,0.3)] hover:shadow-[0_10px_20px_rgba(72,162,255,0.4)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300"
+            href="#portfolio"
+            onClick={(e) => {
+              const el = document.getElementById("portfolio");
+              if (el) {
+                e.preventDefault();
+                el.scrollIntoView({ behavior: "smooth" });
+                window.history.pushState(null, "", "#portfolio");
+              }
+            }}
+            className="bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-bold text-xs sm:text-sm px-6 py-2.5 rounded-full shadow-[0_6px_16px_rgba(72,162,255,0.3)] hover:shadow-[0_10px_20px_rgba(72,162,255,0.4)] hover:brightness-105 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
           >
-            Start Your Free Trial
+            View Portfolio
           </Link>
           <Link
             href="/pricing"

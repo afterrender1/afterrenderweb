@@ -780,8 +780,8 @@ export default function CollectionPortfolio() {
 
   return (
     <section
-      id="collection-portfolio"
-      className={`${jakarta.className} relative w-full bg-[#FAFAFA] text-black pt-12 sm:pt-16 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden`}
+      id="portfolio"
+      className={`${jakarta.className} relative w-full bg-[#FAFAFA] text-black pt-12 sm:pt-16 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-20`}
     >
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#48A2FF]/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-1/2 right-10 w-96 h-96 bg-[#C9E4FF]/30 rounded-full blur-3xl pointer-events-none -z-10" />
