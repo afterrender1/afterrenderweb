@@ -2,26 +2,18 @@
 import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Play } from "lucide-react";
 
-// If the video hasn't started playing by then (slow network), show the page
 const START_TIMEOUT_MS = 8000;
 const FADE_MS = 700;
 
-// Phones get the portrait cut; matches the `md` breakpoint used across the site
 const MOBILE_QUERY = "(max-width: 767px)";
 
 const noopSubscribe = () => () => {};
-// false during SSR and before hydration, true once React runs in the browser
 const useHydrated = () => useSyncExternalStore(noopSubscribe, () => true, () => false);
 
-// Fullscreen muted intro that plays once over the page, then fades away.
-// Rendered on the server too, so the page never flashes before the video.
-// The source is picked on the client, so only the video for this screen is downloaded.
 const WebsiteIntroVideo = ({ src, mobileSrc = src }) => {
   const videoRef = useRef(null);
   const startTimer = useRef(null);
   const hydrated = useHydrated();
-  // playing -> leaving (fade out) -> done (unmounted)
-  // blocked = the browser refused autoplay (iOS Low Power Mode, data saver): wait for a tap
   const [phase, setPhase] = useState("playing");
 
   const finish = useCallback(() => {
@@ -35,10 +27,8 @@ const WebsiteIntroVideo = ({ src, mobileSrc = src }) => {
     video.play().then(
       () => setPhase((p) => (p === "blocked" ? "playing" : p)),
       (err) => {
-        // A newer load/play replaced this one (e.g. React StrictMode re-running the effect); not a failure
         if (err?.name === "AbortError") return;
         if (err?.name === "NotAllowedError") {
-          // Autoplay blocked: keep the intro and ask for a tap instead of silently skipping it
           clearTimeout(startTimer.current);
           setPhase((p) => (p === "playing" ? "blocked" : p));
         } else {
@@ -51,15 +41,11 @@ const WebsiteIntroVideo = ({ src, mobileSrc = src }) => {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    // Mobile browsers (iOS especially) only autoplay when these are real attributes;
-    // React sets `muted` as a property only, so add them by hand before loading
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
-    // Only load once: setting src again (StrictMode runs effects twice in dev) restarts the video
-    // and aborts the pending play()
     if (!video.getAttribute("src")) {
       video.src = window.matchMedia(MOBILE_QUERY).matches ? mobileSrc : src;
       video.load();
@@ -84,14 +70,11 @@ const WebsiteIntroVideo = ({ src, mobileSrc = src }) => {
       }`}
       style={{
         transitionDuration: `${FADE_MS}ms`,
-        // Safety net if the page's JS never loads: the intro removes itself after 12s instead of covering the page
         animation: hydrated ? undefined : "ar-intro-fallback 0.6s ease-out 12s forwards",
       }}
     >
       <style>
         {"@keyframes ar-intro-fallback{to{opacity:0;visibility:hidden;pointer-events:none}}" +
-          // Lock page scroll while the intro is on screen (only once JS can also unlock it)
-          // <html> only: hiding <body> overflow makes it a scroll container and breaks sticky sections
           (hydrated ? "html{overflow:hidden!important;}" : "")}
       </style>
       <video
