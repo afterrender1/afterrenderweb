@@ -124,14 +124,14 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
               Pricing
             </Link>
             <Link
-              href="/blogs"
+              href="/website"
               className={`transition-colors ${
                 isPricing
                   ? "text-black hover:text-[#59B7FF]"
                   : "hover:text-[#59B7FF]"
               }`}
             >
-              Blogs
+              Website
             </Link>
             <Link
               href="/about-us"
@@ -253,11 +253,11 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                       </Link>
 
                       <Link
-                        href="/blogs"
+                        href="/website"
                         onClick={closeMobileMenu}
                         className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
                       >
-                        Blogs
+                        Website
                       </Link>
 
                       <Link

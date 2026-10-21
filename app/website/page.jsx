@@ -32,7 +32,10 @@ const WebsitePage = async () => {
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       {isHalloweenEvent(event) && <WebsiteIntroVideo src={HALLOWEEN_INTRO_URL} mobileSrc={HALLOWEEN_INTRO_MOBILE_URL} />}
       <Navbar />
-      <WebsiteHero backgroundUrl={event?.backgroundUrl} />
+      <WebsiteHero
+        backgroundUrl={event?.backgroundUrl}
+        showcase={portfolio.map(({ id, name, url, image }) => ({ id, name, url, image }))}
+      />
       <WebsiteSections portfolio={<WebsitePortfolio items={portfolio} />} />
       <Footer />
     </main>

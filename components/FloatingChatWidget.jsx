@@ -17,6 +17,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+const AUTO_OPEN_MS = 9000;
+
 export default function FloatingChatWidget() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,12 +32,34 @@ export default function FloatingChatWidget() {
   });
   const [showTooltip, setShowTooltip] = useState(false);
   const modalRef = useRef(null);
+  // Set once the visitor opens/closes the chat or dismisses the bubble, so auto-open never overrides them
+  const userInteracted = useRef(false);
 
   // Show a gentle greeting tooltip after 3 seconds if not opened yet
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTooltip(true);
     }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-open the chat 9s after the visitor lands (the widget itself mounts lazily, so count from
+  // navigation start). It lives in the root layout, so this runs once per visit, not per page.
+  useEffect(() => {
+    let timer;
+
+    const tryOpen = () => {
+      if (userInteracted.current) return;
+      // Another overlay (intro video, a dialog) has locked the page: wait until it closes
+      if (getComputedStyle(document.documentElement).overflowY === "hidden") {
+        timer = setTimeout(tryOpen, 1000);
+        return;
+      }
+      setIsOpen(true);
+      setShowTooltip(false);
+    };
+
+    timer = setTimeout(tryOpen, Math.max(0, AUTO_OPEN_MS - performance.now()));
     return () => clearTimeout(timer);
   }, []);
 
@@ -195,6 +219,7 @@ export default function FloatingChatWidget() {
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               transition={{ duration: 0.25 }}
               onClick={() => {
+                userInteracted.current = true;
                 setIsOpen(true);
                 setShowTooltip(false);
               }}
@@ -213,6 +238,7 @@ export default function FloatingChatWidget() {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
+                  userInteracted.current = true;
                   setShowTooltip(false);
                 }}
                 className="text-gray-400 hover:text-white p-0.5 rounded transition-colors"
@@ -229,6 +255,7 @@ export default function FloatingChatWidget() {
           id="floating-chat-trigger"
           type="button"
           onClick={() => {
+            userInteracted.current = true;
             setIsOpen((prev) => !prev);
             setShowTooltip(false);
           }}

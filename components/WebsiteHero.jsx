@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import EventHeroBackdrop from "./EventHeroBackdrop";
+import WebsiteShowcaseCarousel from "./WebsiteShowcaseCarousel";
 import {
   Check,
   ArrowRight,
@@ -44,14 +45,65 @@ const features = [
   "Free SSL & 7 days support",
 ];
 
-const CheckDot = () => (
-  <span className="mt-px flex items-center justify-center w-[18px] h-[18px] rounded-full border border-[#2f8cf5]/40 bg-white text-[#2f8cf5] shrink-0">
-    <Check size={11} strokeWidth={3} />
-  </span>
-);
+const words = ["Landing Pages", "Business Websites", "Portfolio Sites", "Online Stores"];
+const LONGEST_WORD = words.reduce((a, b) => (b.length > a.length ? b : a));
 
-// `backgroundUrl` swaps in the live event background (same as the pricing hero)
-const WebsiteHero = ({ backgroundUrl = "" }) => {
+// Same typewriter as the home hero, with website words and a darker gradient for the light background.
+// Lives in its own component so its 40–80ms ticks re-render only this span.
+const Typewriter = () => {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const word = words[wordIndex];
+
+    // Full word typed: hold it for 2s before deleting
+    if (!deleting && text === word) {
+      const hold = setTimeout(() => setDeleting(true), 2000);
+      return () => clearTimeout(hold);
+    }
+
+    const timeout = setTimeout(
+      () => {
+        if (!deleting) {
+          setText(word.substring(0, text.length + 1));
+        } else if (text === "") {
+          setDeleting(false);
+          setWordIndex((prev) => (prev + 1) % words.length);
+        } else {
+          setText(word.substring(0, text.length - 1));
+        }
+      },
+      deleting ? 40 : 80
+    );
+    return () => clearTimeout(timeout);
+  }, [text, deleting, wordIndex]);
+
+  const cursor = (
+    <span className="inline-block w-[2px] h-[0.85em] bg-[#2f8cf5]/70 ml-1.5 align-middle animate-pulse" />
+  );
+
+  // An invisible copy of the longest word reserves the width, so typing doesn't reflow the headline
+  return (
+    <span className={`${playfair.className} italic font-normal tracking-normal inline-grid min-h-[1.2em]`}>
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1 inline-flex items-center whitespace-nowrap">
+        {LONGEST_WORD}
+        {cursor}
+      </span>
+      <span className="col-start-1 row-start-1 justify-self-center lg:justify-self-start inline-flex items-center whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-[#1a73e8] via-[#2f8cf5] to-[#48A2FF]">
+        {text}
+        {cursor}
+      </span>
+    </span>
+  );
+};
+
+const highlights = ["Custom design", "Mobile-first", "SEO-ready", "Delivered in 5–7 days"];
+
+// `backgroundUrl` swaps in the live event background (same as the pricing hero);
+// `showcase` (portfolio items) feeds the carousel under the headline
+const WebsiteHero = ({ backgroundUrl = "", showcase = [] }) => {
   return (
     <section
       id="pricing"
@@ -62,155 +114,173 @@ const WebsiteHero = ({ backgroundUrl = "" }) => {
       {/* Background Soft Mesh Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-gradient-to-b from-[#eaf4ff]/80 via-[#f5f8ff]/30 to-transparent blur-3xl pointer-events-none -z-10" />
 
-      {/* Floating Badges */}
-      <div className="w-full max-w-3xl relative">
-        <motion.div
-          initial={{ opacity: 0, x: -20, rotate: -8 }}
-          animate={{ opacity: 1, x: 0, rotate: -8 }}
-          whileHover={{ scale: 1.06, rotate: -4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute -top-7 left-1 sm:left-4 md:left-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#3b82f6] to-[#60a5fa] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(59,130,246,0.3)] cursor-pointer select-none"
-        >
-          <span>@Design</span>
-        </motion.div>
+      {/* Text on the left, pricing card on the right (stacked on phones/tablets) */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_440px] items-center gap-10 sm:gap-12 lg:gap-16">
+        {/* Hero Title & Subtitle */}
+        {/* Sits near the top of the card on desktop instead of centering against its full height */}
+        <div className="relative min-w-0 text-center lg:text-left lg:self-start lg:pt-12">
+          {/* Floating Badges */}
+          <motion.div
+            initial={{ opacity: 0, x: -20, rotate: -8 }}
+            animate={{ opacity: 1, x: 0, rotate: -8 }}
+            whileHover={{ scale: 1.06, rotate: -4 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute -top-10 left-[8%] lg:left-0 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#3b82f6] to-[#60a5fa] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(59,130,246,0.3)] cursor-pointer select-none"
+          >
+            <span>@Design</span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20, rotate: 10 }}
+            animate={{ opacity: 1, x: 0, rotate: 10 }}
+            whileHover={{ scale: 1.06, rotate: 6 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute -top-8 right-[8%] lg:right-[12%] z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#48A2FF] to-[#93C5FD] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(72,162,255,0.3)] cursor-pointer select-none"
+          >
+            <span>@Develop</span>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20, rotate: 10 }}
-          animate={{ opacity: 1, x: 0, rotate: 10 }}
-          whileHover={{ scale: 1.06, rotate: 6 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="absolute -top-7 right-1 sm:right-4 md:right-8 z-20 hidden sm:flex items-center gap-1 bg-gradient-to-r from-[#48A2FF] to-[#93C5FD] text-white text-[11px] md:text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-[0_8px_20px_rgba(72,162,255,0.3)] cursor-pointer select-none"
-        >
-          <span>@Develop</span>
-        </motion.div>
-      </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="text-[clamp(2rem,3.6vw+0.9rem,3.5rem)] font-extrabold tracking-tight text-[#111111] leading-[1.1]"
+          >
+            <span className="block">We Build</span>
+            <span className="block">
+              <Typewriter />
+            </span>
+            <span className="block">That Win Clients.</span>
+          </motion.h1>
 
-      {/* Hero Title & Subtitle */}
-      <div className="text-center max-w-2xl mx-auto z-10">
-        <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="text-[clamp(1.75rem,5vw+0.6rem,2.875rem)] tracking-tight text-[#111111] leading-[1.15]"
-        >
-          <span className={`${playfair.className} italic font-normal block sm:inline-block`}>
-            Professional Website!
-          </span>{" "}
-          <span className="font-extrabold block sm:inline-block">One Simple Price.</span>
-        </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="mt-4 sm:mt-5 text-[#555555] text-[13.5px] sm:text-sm md:text-[15px] leading-relaxed max-w-md sm:max-w-xl mx-auto lg:mx-0 font-medium"
+          >
+            A fast, modern and mobile-friendly website for your business, designed
+            and built by our team and delivered ready to launch.
+          </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.08 }}
-          className="mt-3.5 text-[#555555] text-[13.5px] sm:text-sm md:text-[15px] leading-relaxed max-w-md sm:max-w-xl mx-auto font-medium"
-        >
-          A fast, modern and mobile-friendly website for your business, designed
-          and built by our team and delivered ready to launch.
-        </motion.p>
-      </div>
+          <motion.ul
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.14 }}
+            className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-2"
+          >
+            {highlights.map((text) => (
+              <li key={text} className="flex items-center gap-1.5 text-[13px] sm:text-sm font-medium text-gray-700">
+                <Check size={15} strokeWidth={2.5} className="text-[#2f8cf5]" />
+                {text}
+              </li>
+            ))}
+          </motion.ul>
+
+          {showcase.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.22 }}
+              className="mt-8 sm:mt-10 -mx-4 sm:mx-0"
+            >
+              <WebsiteShowcaseCarousel items={showcase} />
+            </motion.div>
+          )}
+        </div>
 
       {/* Pricing Card */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15 }}
-        className="relative z-10 mt-8 sm:mt-12 w-full max-w-[440px]"
+        className="relative w-full max-w-[440px] mx-auto lg:mx-0 lg:justify-self-end"
       >
-        <div className="rounded-[24px] border border-[#D9E7FB] bg-gradient-to-b from-[#EEF5FF] via-white to-white p-5 sm:p-7 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_24px_50px_-24px_rgba(47,140,245,0.35)]">
-          {/* Plan */}
-          <div className="flex items-start justify-between gap-3">
-            <h2 className="text-[22px] sm:text-2xl font-bold tracking-tight text-gray-950 leading-tight">
+        <div className="rounded-2xl bg-white border border-zinc-200 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-16px_rgba(15,23,42,0.18)] overflow-hidden">
+          {/* Plan + price */}
+          <div className="p-5 sm:p-7">
+            <p className="text-[13px] font-medium text-[#1a73e8]">Website package</p>
+            <h2 className="mt-1 text-xl sm:text-[22px] font-semibold tracking-tight text-zinc-950 leading-tight">
               Landing Page Website
             </h2>
-            <span className="mt-1 shrink-0 rounded-full bg-[#2f8cf5] text-white text-[11px] font-semibold px-2.5 py-1 leading-none">
-              Popular
-            </span>
-          </div>
-          <p className="mt-2 text-[13px] sm:text-[13.5px] text-gray-500 leading-relaxed">
-            Everything a new business needs to look professional online and
-            start getting enquiries.
-          </p>
-
-          {/* Price */}
-          <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-            <span className="text-[44px] sm:text-5xl font-bold tracking-tight text-gray-950 leading-none">
-              $300
-            </span>
-            <del className="text-lg font-semibold text-gray-400 decoration-[#2f8cf5] decoration-2">
-              <span className="sr-only">Regular price </span>$400
-            </del>
-            <span className="text-[13px] sm:text-sm font-medium text-gray-500">/one-time</span>
-          </div>
-
-          {/* CTA */}
-          <Link
-            href={CALENDLY_URL}
-            target="_blank"
-            className="group mt-5 flex items-center justify-center gap-2 w-full h-12 rounded-xl bg-gradient-to-b from-[#4FA6FF] to-[#2f8cf5] hover:to-[#1f7be6] active:scale-[0.99] text-white font-semibold text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_22px_-8px_rgba(47,140,245,0.7)] transition-all duration-200"
-          >
-            Book a Free Call
-            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-          </Link>
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12.5px] text-gray-500">
-            <Link href={WHATSAPP_URL} target="_blank" className="font-medium text-gray-700 hover:text-[#1a5fd0] hover:underline">
-              Chat on WhatsApp
-            </Link>
-            <span className="text-gray-300" aria-hidden="true">•</span>
-            <span className="inline-flex items-center gap-1">
-              <Clock size={12} />
-              Delivery in 5–7 days
-            </span>
-          </div>
-
-          {/* Key features */}
-          <div className="mt-6 pt-5 border-t border-gray-200/80">
-            <p className="text-[13px] font-semibold text-gray-900">Key features</p>
-            <ul className="mt-3.5 space-y-3">
-              {pages.map(({ label, note }, index) => (
-                <motion.li
-                  key={label}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35, delay: 0.35 + index * 0.06, ease: "easeOut" }}
-                  className="flex items-start gap-2.5"
-                >
-                  <CheckDot />
-                  <span className="text-[13.5px] leading-snug text-gray-800">
-                    <span className="font-semibold text-gray-950">{label} page</span>
-                    <span className="text-gray-500"> · {note}</span>
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
-
-            <p className="mt-5 pt-5 border-t border-dashed border-gray-200 text-[13px] font-semibold text-gray-900">
-              Plus, on every page:
+            <p className="mt-2 text-sm leading-6 text-zinc-500">
+              Everything a new business needs to look professional online and start getting enquiries.
             </p>
-            <ul className="mt-3.5 space-y-3">
-              {features.map((text, index) => (
-                <motion.li
-                  key={text}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35, delay: 0.6 + index * 0.05, ease: "easeOut" }}
-                  className="flex items-start gap-2.5"
-                >
-                  <CheckDot />
-                  <span className="text-[13.5px] leading-snug text-gray-800">{text}</span>
-                </motion.li>
+
+            <div className="mt-6 flex items-end justify-between gap-4">
+              <div className="min-w-0">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-[44px] sm:text-5xl font-semibold tracking-[-0.03em] text-zinc-950 leading-none">
+                    $300
+                  </span>
+                  <span className="text-sm text-zinc-500">USD</span>
+                </div>
+                <p className="mt-2 text-[13px] text-zinc-500">One-time payment · no monthly fees</p>
+              </div>
+              <div className="shrink-0 text-right">
+                <del className="block text-sm text-zinc-400">
+                  <span className="sr-only">Regular price </span>$400
+                </del>
+                <span className="mt-1 inline-block rounded-md bg-emerald-50 px-1.5 py-0.5 text-[12px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/15">
+                  Save $100
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-2.5">
+              <Link
+                href={CALENDLY_URL}
+                target="_blank"
+                className="group inline-flex items-center justify-center gap-2 h-11 rounded-lg bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] hover:brightness-105 text-[#0A2540] text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40 focus-visible:ring-offset-2"
+              >
+                Book a free call
+                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                href={WHATSAPP_URL}
+                target="_blank"
+                className="inline-flex items-center justify-center h-11 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-900 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40"
+              >
+                Chat on WhatsApp
+              </Link>
+            </div>
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-[12.5px] text-zinc-500">
+              <Clock size={13} />
+              Delivered in 5–7 days
+            </p>
+          </div>
+
+          {/* What's included */}
+          <div className="border-t border-zinc-200 p-5 sm:p-7">
+            <p className="text-[13px] font-semibold text-zinc-950">4 custom pages</p>
+            <dl className="mt-3 rounded-lg border border-zinc-200 divide-y divide-zinc-100">
+              {pages.map(({ label, note }) => (
+                <div key={label} className="flex items-baseline justify-between gap-4 px-3.5 py-2.5">
+                  <dt className="text-sm font-medium text-zinc-900">{label}</dt>
+                  <dd className="text-[13px] text-zinc-500 text-right">{note}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <p className="mt-6 text-[13px] font-semibold text-zinc-950">Included on every page</p>
+            <ul className="mt-3 grid gap-2.5">
+              {features.map((text) => (
+                <li key={text} className="flex items-start gap-2.5 text-sm text-zinc-700">
+                  <Check size={16} strokeWidth={2.25} className="mt-0.5 shrink-0 text-[#1a73e8]" />
+                  {text}
+                </li>
               ))}
             </ul>
           </div>
 
-          <p className="mt-6 pt-4 border-t border-gray-200/80 text-[12.5px] text-gray-500 leading-relaxed text-center">
+          <div className="border-t border-zinc-200 bg-zinc-50 px-5 sm:px-7 py-3.5 text-[13px] text-zinc-600">
             Need more pages or e-commerce?{" "}
-            <Link href={CALENDLY_URL} target="_blank" className="font-semibold text-[#1a5fd0] hover:underline">
+            <Link href={CALENDLY_URL} target="_blank" className="font-medium text-[#1a73e8] hover:underline">
               Get a custom quote
             </Link>
-          </p>
+          </div>
         </div>
       </motion.div>
+      </div>
     </section>
   );
 };
