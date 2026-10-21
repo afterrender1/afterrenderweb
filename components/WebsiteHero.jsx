@@ -45,7 +45,7 @@ const features = [
   "Free SSL & 7 days support",
 ];
 
-const words = ["Landing Pages", "Business Websites", "Portfolio Sites", "Online Stores"];
+const words = ["Landing Pages", "Business Websites", "Portfolio Sites"];
 const LONGEST_WORD = words.reduce((a, b) => (b.length > a.length ? b : a));
 
 // Same typewriter as the home hero, with website words and a darker gradient for the light background.
