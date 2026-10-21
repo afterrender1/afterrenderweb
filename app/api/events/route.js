@@ -36,6 +36,7 @@ export async function POST(req) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/website");
         revalidatePath("/our-work");
         return NextResponse.json({ success: true, event }, { status: 201 });
     } catch (err) {

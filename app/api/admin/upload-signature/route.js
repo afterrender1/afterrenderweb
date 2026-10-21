@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import cloudinary from "@/app/lib/cloudinary";
 import { ADMIN_COOKIE, isValidSessionToken } from "@/app/lib/adminAuth";
 
-const ALLOWED_FOLDERS = ["events"];
+const ALLOWED_FOLDERS = ["events", "portfolio"];
 
 // Signs a direct browser -> Cloudinary upload, so large files skip our server
 // and the API secret never leaves it.

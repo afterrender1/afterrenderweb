@@ -20,6 +20,7 @@ const Footer = ({ theme }) => {
     pathname === "/our-work" ||
     pathname === "/about-us" ||
     pathname === "/real-estate" ||
+    pathname === "/website" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
     pathname === "/terms-conditions";

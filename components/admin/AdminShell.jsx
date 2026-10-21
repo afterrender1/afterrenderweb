@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Video, PartyPopper, Lock } from "lucide-react";
+import { FileText, Video, PartyPopper, Globe, Lock } from "lucide-react";
 import AdminLogin from "./AdminLogin";
 
 const NAV_ITEMS = [
     { label: "Blogs", href: "/admin", icon: FileText },
     { label: "Video Reviews", href: "/admin/video-reviews", icon: Video },
     { label: "Events", href: "/admin/events", icon: PartyPopper },
+    { label: "Portfolio", href: "/admin/portfolio", icon: Globe },
 ];
 
 const AdminShell = ({ children }) => {
