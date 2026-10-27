@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Loader2, Pencil, Trash2, Settings2, AlertCircle } from "lucide-react";
 import {
@@ -17,6 +17,7 @@ import {
     iconBtn,
     iconBtnDanger,
 } from "./admin/ui";
+import { useBlogs, setList } from "./admin/hooks";
 
 // Loaded on demand so the editor never ships in a public bundle
 const RichTextEditor = dynamic(() => import("./admin/RichTextEditor"), {
@@ -43,8 +44,8 @@ const previewText = (blog) =>
 const DeleteBlogPostModel = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(false);
+    // Cached by SWR; only fetched while the manage modal is open
+    const { list: blogs, isLoading: loading, mutate } = useBlogs(isOpen);
     const [updating, setUpdating] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
 
@@ -53,31 +54,13 @@ const DeleteBlogPostModel = () => {
     const [editContent, setEditContent] = useState("");
     const [converted, setConverted] = useState(false);
 
-    // Fetch blogs when main modal opens
-    useEffect(() => {
-        if (isOpen) fetchBlogs();
-    }, [isOpen]);
-
-    const fetchBlogs = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch("/api/blog");
-            const data = await res.json();
-            setBlogs(data.blogs || data);
-        } catch (err) {
-            console.error("Failed to fetch blogs", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleDelete = async (id) => {
         if (!confirm("Are you sure?")) return;
         setDeletingId(id);
         try {
             const res = await fetch(`/api/blog/delete-blog/${id}`, { method: "DELETE" });
             if (res.ok) {
-                setBlogs(prev => prev.filter((blog) => blog._id !== id));
+                setList(mutate, "blogs", (prev) => prev.filter((blog) => blog._id !== id));
             }
         } catch (err) {
             alert("Error deleting blog");
@@ -112,7 +95,7 @@ const DeleteBlogPostModel = () => {
 
             const data = await res.json().catch(() => ({}));
             if (res.ok && data.success) {
-                setBlogs(prev =>
+                setList(mutate, "blogs", (prev) =>
                     prev.map((blog) => (blog._id === selectedBlog._id ? data.blog : blog))
                 );
                 setIsEditOpen(false);

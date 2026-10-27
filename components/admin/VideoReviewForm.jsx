@@ -16,10 +16,13 @@ import {
     ModalBody,
     ModalFooter,
     PageHeader,
+    api,
+    friendlyError,
     EmptyState,
     Skeleton,
     Badge,
 } from "./ui";
+import { useVideoReviews, setList } from "./hooks";
 
 const emptyForm = { clientName: "", role: "", videoUrl: "", poster: "", fit: "cover" };
 
@@ -399,59 +402,34 @@ const ReviewCard = ({ review, onEdit, onDelete, onPlay }) => {
 
 /* ---------- Page ---------- */
 const VideoReviewForm = () => {
-    const [reviews, setReviews] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [toast, setToast] = useState(null);
+    const { list: reviews, isLoading: loading, mutate } = useVideoReviews({
+        onError: () => setToast({ type: "error", message: "Couldn't load video reviews." }),
+    });
     const [query, setQuery] = useState("");
     // null = closed, {} = new, review = editing
     const [editing, setEditing] = useState(null);
-    const [toast, setToast] = useState(null);
     const [playing, setPlaying] = useState(null);
 
     const closeToast = useCallback(() => setToast(null), []);
     const closeDialog = useCallback(() => setEditing(null), []);
     const closePlayer = useCallback(() => setPlaying(null), []);
 
-    const fetchReviews = useCallback(async () => {
-        try {
-            const res = await fetch("/api/video-reviews");
-            const data = await res.json();
-            if (!data.success) throw new Error(data.error);
-            setReviews(data.reviews);
-        } catch (err) {
-            console.error("Failed to fetch video reviews", err);
-            setToast({ type: "error", message: "Couldn't load video reviews." });
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchReviews();
-    }, [fetchReviews]);
-
+    // Cached by SWR: revisits show the list instantly and revalidate in the background
     const handleSaved = (review, isEdit) => {
-        setReviews((prev) => (isEdit ? prev.map((r) => (r._id === review._id ? review : r)) : [review, ...prev]));
+        setList(mutate, "reviews", (prev) => (isEdit ? prev.map((r) => (r._id === review._id ? review : r)) : [review, ...prev]));
         setEditing(null);
         setToast({ type: "success", message: isEdit ? "Review updated" : "Review added" });
     };
 
     const handleDelete = async (review) => {
         try {
-            const res = await fetch(`/api/video-reviews/${review._id}`, { method: "DELETE" });
-            const data = await res.json().catch(() => ({}));
-            if (res.status === 401) throw new Error("Session expired — please log in again.");
-            if (!res.ok || !data.success) throw new Error(data.error || `Delete failed (${res.status})`);
-            setReviews((prev) => prev.filter((r) => r._id !== review._id));
+            await api(`/api/video-reviews/${review._id}`, { method: "DELETE" });
+            setList(mutate, "reviews", (prev) => prev.filter((r) => r._id !== review._id));
             setToast({ type: "success", message: "Review deleted" });
             return true;
         } catch (err) {
-            setToast({
-                type: "error",
-                message:
-                    err.message === "Failed to fetch"
-                        ? "Network error — check your connection."
-                        : err.message || "Couldn't delete review.",
-            });
+            setToast({ type: "error", message: friendlyError(err, "Couldn't delete review.") });
             return false;
         }
     };

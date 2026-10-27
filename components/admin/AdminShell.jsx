@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileText, Video, PartyPopper, Globe, Lock, Menu, X } from "lucide-react";
 import AdminLogin from "./AdminLogin";
-import { Skeleton, lockPageScroll } from "./ui";
+import { SWRConfig } from "swr";
+import { Skeleton, lockPageScroll, fetcher } from "./ui";
 
 const NAV_ITEMS = [
     { label: "Blogs", href: "/admin", icon: FileText },
@@ -84,6 +85,10 @@ const ShellSkeleton = () => (
     </div>
 );
 
+// In-memory only. The provider lives inside the authenticated branch, so logging out or an expired
+// session unmounts it and the next login starts with an empty cache.
+const newCache = () => new Map();
+
 const AdminShell = ({ children }) => {
     const pathname = usePathname();
     // null = still checking the session
@@ -125,6 +130,22 @@ const AdminShell = ({ children }) => {
     const current = NAV_ITEMS.find((item) => isActive(pathname, item.href));
 
     return (
+        <SWRConfig
+            value={{
+                provider: newCache,
+                fetcher,
+                revalidateOnFocus: true,
+                revalidateIfStale: true,
+                dedupingInterval: 10_000,
+                focusThrottleInterval: 30_000,
+                keepPreviousData: true,
+                errorRetryCount: 2,
+                shouldRetryOnError: (err) => err?.status !== 401 && err?.status !== 404,
+                onError: (err) => {
+                    if (err?.status === 401) setAuthenticated(false);
+                },
+            }}
+        >
         <div className="min-h-dvh bg-stone-50 md:flex">
             {/* md+: icon rail, lg+: full sidebar */}
             <aside className="hidden md:flex md:flex-col md:w-16 lg:w-60 shrink-0 h-dvh sticky top-0 bg-stone-50 border-r border-stone-200 p-3 lg:p-4">
@@ -181,6 +202,7 @@ const AdminShell = ({ children }) => {
                 <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-5 sm:py-8">{children}</div>
             </main>
         </div>
+        </SWRConfig>
     );
 };
 

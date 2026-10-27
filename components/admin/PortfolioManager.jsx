@@ -35,6 +35,7 @@ import {
     api,
     friendlyError,
 } from "./ui";
+import { usePortfolio, setList } from "./hooks";
 import ImageUpload from "./ImageUpload";
 import { cloudinaryImage } from "@/app/lib/cloudinaryUrl";
 
@@ -451,28 +452,19 @@ const PortfolioCard = ({ item, onEdit, onDelete }) => {
 
 /* ---------- Page ---------- */
 const PortfolioManager = () => {
-    const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [toast, setToast] = useState(null);
+    const { list: items, isLoading: loading, mutate } = usePortfolio({
+        onError: () => setToast({ type: "error", message: "Couldn't load portfolio." }),
+    });
     const [query, setQuery] = useState("");
     // null = closed, {} = new, item = editing
     const [editing, setEditing] = useState(null);
-    const [toast, setToast] = useState(null);
 
     const closeToast = useCallback(() => setToast(null), []);
     const closeDialog = useCallback(() => setEditing(null), []);
 
-    useEffect(() => {
-        api("/api/portfolio")
-            .then((data) => setItems(data.items))
-            .catch((err) => {
-                console.error("Failed to fetch portfolio", err);
-                setToast({ type: "error", message: "Couldn't load portfolio." });
-            })
-            .finally(() => setLoading(false));
-    }, []);
-
     const handleSaved = (item, isEdit) => {
-        setItems((prev) => (isEdit ? prev.map((i) => (i._id === item._id ? item : i)) : [item, ...prev]));
+        setList(mutate, "items", (prev) => (isEdit ? prev.map((i) => (i._id === item._id ? item : i)) : [item, ...prev]));
         setEditing(null);
         setToast({ type: "success", message: isEdit ? "Website updated" : "Website added" });
     };
@@ -480,7 +472,7 @@ const PortfolioManager = () => {
     const handleDelete = async (item) => {
         try {
             await api(`/api/portfolio/${item._id}`, { method: "DELETE" });
-            setItems((prev) => prev.filter((i) => i._id !== item._id));
+            setList(mutate, "items", (prev) => prev.filter((i) => i._id !== item._id));
             setToast({ type: "success", message: "Website deleted" });
             return true;
         } catch (err) {

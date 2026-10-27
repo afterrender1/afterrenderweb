@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { AlertCircle, CheckCircle2, ImagePlus, Loader2, X } from "lucide-react";
+import { mutate as globalMutate } from "swr";
 import DeleteBlogPostModel from "../DeleteBlogPostModel";
+import { KEYS } from "./hooks";
 import { Card, PageHeader, inputClass, selectClass, labelClass, primaryBtn, iconBtn } from "./ui";
 
 // Loaded on demand so the editor never ships in a public bundle
@@ -71,6 +73,8 @@ const BlogPostForm = () => {
             const data = await res.json();
             if (!data.success) throw new Error(data.error);
 
+            // The manage-blogs list is cached, so refresh it with the new post
+            globalMutate(KEYS.blogs);
             setStatus({ type: "success", message: "Story published!" });
             setTitle("");
             setContent("");

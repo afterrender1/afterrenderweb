@@ -166,7 +166,15 @@ export const api = async (url, options = {}) => {
         headers: options.body ? { "Content-Type": "application/json" } : undefined,
     });
     const data = await res.json().catch(() => null);
-    if (res.status === 401) throw new Error("Session expired — please log in again.");
-    if (!res.ok || !data?.success) throw new Error(data?.error || `Request failed (${res.status})`);
+    if (!res.ok || !data?.success) {
+        const err = new Error(
+            res.status === 401 ? "Session expired — please log in again." : data?.error || `Request failed (${res.status})`
+        );
+        // SWR's error handlers use this to spot an expired session
+        err.status = res.status;
+        throw err;
+    }
     return data;
 };
+
+export const fetcher = (url) => api(url);

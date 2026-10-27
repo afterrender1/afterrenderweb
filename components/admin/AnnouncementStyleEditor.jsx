@@ -1,7 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ArrowLeftRight, Bookmark, Loader2, X, AlertCircle, Check } from "lucide-react";
 import { inputClass, labelClass, primaryBtn, ghostBtn, iconBtn, api, friendlyError } from "./ui";
+import { usePalettes, setList } from "./hooks";
 import AnnouncementTrack, { announcementWrapperStyle } from "@/components/AnnouncementTrack";
 import {
     BUILT_IN_PALETTES,
@@ -146,24 +147,14 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
     const style = withStyleDefaults(value);
     const set = (key) => (v) => onChange({ ...style, [key]: v });
 
-    const [palettes, setPalettes] = useState([]);
-    const [loadingPalettes, setLoadingPalettes] = useState(true);
-    const [paletteError, setPaletteError] = useState("");
+    // Cached by SWR, so reopening the Event dialog reuses the palettes instead of refetching
+    const { list: palettes, isLoading: loadingPalettes, error: loadError, mutate } = usePalettes();
+    const [actionError, setPaletteError] = useState("");
+    const paletteError = actionError || (loadError ? friendlyError(loadError, "Couldn't load saved palettes.") : "");
     const [naming, setNaming] = useState(false);
     const [paletteName, setPaletteName] = useState("");
     const [savingPalette, setSavingPalette] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        api("/api/palettes")
-            .then((data) => !cancelled && setPalettes(data.palettes))
-            .catch((err) => !cancelled && setPaletteError(friendlyError(err, "Couldn't load saved palettes.")))
-            .finally(() => !cancelled && setLoadingPalettes(false));
-        return () => {
-            cancelled = true;
-        };
-    }, []);
 
     const savePalette = async () => {
         const name = paletteName.trim();
@@ -179,7 +170,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
         setPaletteError("");
         try {
             const data = await api("/api/palettes", { method: "POST", body: JSON.stringify({ name, style }) });
-            setPalettes((prev) => [data.palette, ...prev]);
+            setList(mutate, "palettes", (prev) => [data.palette, ...prev]);
             setNaming(false);
             setPaletteName("");
         } catch (err) {
@@ -194,7 +185,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
         setPaletteError("");
         try {
             await api(`/api/palettes/${palette._id}`, { method: "DELETE" });
-            setPalettes((prev) => prev.filter((p) => p._id !== palette._id));
+            setList(mutate, "palettes", (prev) => prev.filter((p) => p._id !== palette._id));
         } catch (err) {
             setPaletteError(friendlyError(err, "Couldn't delete palette."));
         } finally {

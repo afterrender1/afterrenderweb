@@ -37,6 +37,7 @@ import {
     api,
     friendlyError,
 } from "./ui";
+import { useEvents, setList } from "./hooks";
 import ImageUpload from "./ImageUpload";
 import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
 import OfferBadge from "@/components/OfferBadge";
@@ -778,9 +779,8 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
 
 /* ---------- Page ---------- */
 const EventManager = () => {
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loadError, setLoadError] = useState("");
+    const { list: events, isLoading: loading, error, mutate } = useEvents();
+    const loadError = error ? friendlyError(error, "Couldn't load events.") : "";
     // null = closed, {} = new, event = editing
     const [editing, setEditing] = useState(null);
     const [toast, setToast] = useState(null);
@@ -788,30 +788,13 @@ const EventManager = () => {
     const closeToast = useCallback(() => setToast(null), []);
     const closeDialog = useCallback(() => setEditing(null), []);
 
-    const fetchEvents = useCallback(async () => {
-        setLoading(true);
-        setLoadError("");
-        try {
-            const data = await api("/api/events");
-            setEvents(data.events);
-        } catch (err) {
-            setLoadError(friendlyError(err, "Couldn't load events."));
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchEvents();
-    }, [fetchEvents]);
-
     // Mirror the server rule locally: one live event at most
-    const applyEvent = (event) =>
-        setEvents((prev) => {
-            const exists = prev.some((e) => e._id === event._id);
-            const next = exists ? prev.map((e) => (e._id === event._id ? event : e)) : [event, ...prev];
-            return event.isActive ? next.map((e) => (e._id === event._id ? e : { ...e, isActive: false })) : next;
-        });
+    const withEvent = (list, event) => {
+        const exists = list.some((e) => e._id === event._id);
+        const next = exists ? list.map((e) => (e._id === event._id ? event : e)) : [event, ...list];
+        return event.isActive ? next.map((e) => (e._id === event._id ? e : { ...e, isActive: false })) : next;
+    };
+    const applyEvent = (event) => setList(mutate, "events", (prev) => withEvent(prev, event));
 
     const handleSaved = (event, isEdit) => {
         applyEvent(event);
@@ -822,13 +805,18 @@ const EventManager = () => {
         });
     };
 
+    // Optimistic: the switch flips at once and rolls back if the request fails
     const handleToggleLive = async (event, isActive) => {
         try {
-            const data = await api(`/api/events/${event._id}`, {
-                method: "PATCH",
-                body: JSON.stringify({ isActive }),
-            });
-            applyEvent(data.event);
+            await mutate(
+                api(`/api/events/${event._id}`, { method: "PATCH", body: JSON.stringify({ isActive }) }).then((r) => r.event),
+                {
+                    optimisticData: (d) => d && { ...d, events: withEvent(d.events || [], { ...event, isActive }) },
+                    populateCache: (updated, d) => ({ ...d, events: withEvent(d?.events || [], updated) }),
+                    rollbackOnError: true,
+                    revalidate: false,
+                }
+            );
             setToast({
                 type: "success",
                 message: isActive ? `“${event.name}” is live` : "Event disabled — default hero is showing",
@@ -841,7 +829,7 @@ const EventManager = () => {
     const handleDelete = async (event) => {
         try {
             await api(`/api/events/${event._id}`, { method: "DELETE" });
-            setEvents((prev) => prev.filter((e) => e._id !== event._id));
+            setList(mutate, "events", (prev) => prev.filter((e) => e._id !== event._id));
             setToast({ type: "success", message: "Event deleted" });
             return true;
         } catch (err) {
@@ -902,7 +890,7 @@ const EventManager = () => {
                         title="Couldn't load events"
                         description={loadError}
                         action={
-                            <button onClick={fetchEvents} className={secondaryBtn}>
+                            <button onClick={() => mutate()} className={secondaryBtn}>
                                 Try again
                             </button>
                         }
