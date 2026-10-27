@@ -1,5 +1,28 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+
+// Loaded on demand so the editor never ships in a public bundle
+const RichTextEditor = dynamic(() => import("./admin/RichTextEditor"), {
+    ssr: false,
+    loading: () => <div className="min-h-[360px] rounded-xl bg-neutral-50 animate-pulse" />,
+});
+
+const escapeHtml = (str) =>
+    str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+// Old posts are Markdown; load them as plain paragraphs so they can be re-saved as html
+const markdownToParagraphs = (md) =>
+    md
+        .split(/\n\s*\n/)
+        .map((block) => block.trim())
+        .filter(Boolean)
+        .map((block) => `<p>${escapeHtml(block).replace(/\n/g, "<br>")}</p>`)
+        .join("");
+
+// Card/list preview: html posts store an excerpt, old posts fall back to stripped text
+const previewText = (blog) =>
+    blog.excerpt || String(blog.content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
 const DeleteBlogPostModel = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +35,7 @@ const DeleteBlogPostModel = () => {
     const [selectedBlog, setSelectedBlog] = useState(null);
     const [editTitle, setEditTitle] = useState("");
     const [editContent, setEditContent] = useState("");
+    const [converted, setConverted] = useState(false);
 
     const THEME_COLOR = "#80C1FC";
 
@@ -61,7 +85,9 @@ const DeleteBlogPostModel = () => {
     const openEditModal = (blog) => {
         setSelectedBlog(blog);
         setEditTitle(blog.title);
-        setEditContent(blog.content);
+        const isHtml = blog.contentFormat === "html";
+        setEditContent(isHtml ? blog.content : markdownToParagraphs(blog.content || ""));
+        setConverted(!isHtml);
         setIsEditOpen(true);
     };
 
@@ -76,16 +102,18 @@ const DeleteBlogPostModel = () => {
                     id: selectedBlog._id,
                     title: editTitle,
                     content: editContent,
+                    contentFormat: "html",
                 }),
             });
 
-            if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.success) {
                 setBlogs(prev =>
-                    prev.map((blog) =>
-                        blog._id === selectedBlog._id ? { ...blog, title: editTitle, content: editContent } : blog
-                    )
+                    prev.map((blog) => (blog._id === selectedBlog._id ? data.blog : blog))
                 );
                 setIsEditOpen(false);
+            } else {
+                alert(data.message || data.error || "Update failed");
             }
         } catch (err) {
             alert("Update failed");
@@ -150,7 +178,7 @@ const DeleteBlogPostModel = () => {
                                         <div key={blog._id} className="group flex items-center justify-between gap-4 p-4 rounded-xl hover:bg-neutral-50 transition-colors duration-200">
                                             <div className="flex-1 min-w-0">
                                                 <h3 className="font-medium text-neutral-900 text-[15px] truncate">{blog.title}</h3>
-                                                <p className="text-neutral-500 text-sm mt-0.5 truncate">{blog.content}</p>
+                                                <p className="text-neutral-500 text-sm mt-0.5 truncate">{previewText(blog)}</p>
                                             </div>
                                             <div className="flex gap-2">
                                                 <button onClick={() => openEditModal(blog)} className="px-4 py-1.5 rounded-full text-sm font-medium border border-neutral-200 hover:border-[#80C1FC] hover:text-[#80C1FC] transition-all">Edit</button>
@@ -177,8 +205,8 @@ const DeleteBlogPostModel = () => {
 
             {/* 3. Edit Modal (Restored Studio Design) */}
             {isEditOpen && (
-                <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
-                    <div className="bg-white dark:bg-neutral-900 w-full max-w-lg rounded-2xl shadow-2xl p-8 space-y-6 border border-neutral-200 dark:border-neutral-800">
+                <div className="fixed inset-0 z-60 flex items-start sm:items-center justify-center bg-black/60 backdrop-blur-md p-2 sm:p-4">
+                    <div className="bg-white dark:bg-neutral-900 w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-2xl shadow-2xl p-4 sm:p-8 space-y-6 border border-neutral-200 dark:border-neutral-800">
                         <div>
                             <h2 className="text-2xl font-black text-neutral-800 dark:text-white uppercase tracking-tighter">Edit Post</h2>
                             <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Update your entry details</p>
@@ -194,12 +222,12 @@ const DeleteBlogPostModel = () => {
                             </div>
                             <div>
                                 <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 ml-2 mb-1 block">Content</label>
-                                <textarea
-                                    value={editContent}
-                                    onChange={(e) => setEditContent(e.target.value)}
-                                    rows="6"
-                                    className="w-full bg-neutral-50 dark:bg-neutral-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#80C1FC]/50 outline-none transition-all resize-none dark:text-white"
-                                />
+                                {converted && (
+                                    <p className="mb-2 ml-2 text-[11px] font-medium text-amber-600">
+                                        Converted from Markdown, check formatting.
+                                    </p>
+                                )}
+                                <RichTextEditor value={editContent} onChange={setEditContent} placeholder="Write your post..." />
                             </div>
                         </div>
                         <div className="flex justify-end gap-3 pt-2">

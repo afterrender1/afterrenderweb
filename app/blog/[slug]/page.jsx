@@ -3,6 +3,7 @@ import { Inter, Montserrat } from "@/app/lib/fonts";
 import Navbar from "@/components/Navbar";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import { sanitizeBlogHtml, toExcerpt } from "@/app/lib/blogContent";
 
 const inter = Inter({ subsets: ["latin"] });
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }) {
     if (!data?.success) return { title: "Blog Not Found" };
 
     const blog = data.blog;
-    const description = blog.content.substring(0, 160); // Short summary
+    const description = blog.excerpt || toExcerpt(blog.content); // Short summary
 
     return {
         title: `${blog.title} | Afterrender`,
@@ -109,7 +110,14 @@ export default async function BlogDetail({ params }) {
 
                 {/* Body */}
 
-                <div className="prose prose-invert prose-zinc max-w-none 
+                {blog.contentFormat === "html" ? (
+                    // Sanitized when saved; sanitized again here as defense in depth
+                    <div
+                        className="blog-content text-[18px] leading-[1.85] text-zinc-400 font-light tracking-wide"
+                        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(blog.content) }}
+                    />
+                ) : (
+                    <div className="prose prose-invert prose-zinc max-w-none
     text-[18px] leading-[1.85] text-zinc-400 font-light tracking-wide
     /* Headings: Extra Bold, White, and Tight tracking */
     prose-headings:font-extrabold prose-headings:text-white prose-headings:tracking-tight
@@ -118,22 +126,27 @@ export default async function BlogDetail({ params }) {
     /* Links & Lists styling */
     prose-li:marker:text-blue-400">
 
-                    <ReactMarkdown
-                        rehypePlugins={[rehypeRaw]}
-                        components={{
-                            // Remove horizontal rule gaps
-                            hr: () => <div className="my-10 border-t border-zinc-800" />,
-                            // Blue highlights - keep font-bold for legibility
-                            span: ({ node, ...props }) => (
-                                <span {...props} className="font-bold text-blue-400" />
-                            ),
-                            // Style the list items for a cleaner look
-                            li: ({ children }) => <li className="mb-2">{children}</li>
-                        }}
-                    >
-                        {blog.content}
-                    </ReactMarkdown>
-                </div>
+                        <ReactMarkdown
+                            rehypePlugins={[rehypeRaw]}
+                            components={{
+                                // Remove horizontal rule gaps
+                                hr: () => <div className="my-10 border-t border-zinc-800" />,
+                                // Blue highlights for bare spans only, so styled spans keep their own look
+                                span: ({ node, className, style, ...props }) => (
+                                    <span
+                                        {...props}
+                                        className={className || (style ? undefined : "font-bold text-blue-400")}
+                                        style={style}
+                                    />
+                                ),
+                                // Style the list items for a cleaner look
+                                li: ({ children }) => <li className="mb-2">{children}</li>
+                            }}
+                        >
+                            {blog.content}
+                        </ReactMarkdown>
+                    </div>
+                )}
                 {/* Footer */}
                 <footer className="mt-24 pt-12 border-t border-zinc-900">
                     <div className="flex flex-wrap gap-2">

@@ -1,6 +1,13 @@
 "use client";
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import DeleteBlogPostModel from "../DeleteBlogPostModel";
+
+// Loaded on demand so the editor never ships in a public bundle
+const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
+    ssr: false,
+    loading: () => <div className="min-h-[360px] rounded-xl bg-neutral-50 animate-pulse" />,
+});
 
 const inputClass =
     "w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#80C1FC] focus:ring-2 focus:ring-[#80C1FC]/30 transition";
@@ -54,6 +61,7 @@ const BlogPostForm = () => {
                 body: JSON.stringify({
                     title,
                     content,
+                    contentFormat: "html",
                     category,
                     tags: [...tags],
                     image,
@@ -110,7 +118,7 @@ const BlogPostForm = () => {
             <form
                 id="blog-form"
                 onSubmit={submitBlog}
-                className={`border border-neutral-200 rounded-2xl overflow-hidden transition-opacity ${
+                className={`border border-neutral-200 rounded-2xl overflow-clip transition-opacity ${
                     loading ? "opacity-50 pointer-events-none" : ""
                 }`}
             >
@@ -193,11 +201,10 @@ const BlogPostForm = () => {
                         </div>
                     </div>
 
-                    <textarea
-                        placeholder="Your narrative begins here..."
-                        className="w-full min-h-[360px] bg-transparent outline-none text-neutral-700 text-base leading-relaxed resize-none placeholder-neutral-400"
+                    <RichTextEditor
                         value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        onChange={setContent}
+                        placeholder="Your narrative begins here..."
                     />
                 </div>
             </form>

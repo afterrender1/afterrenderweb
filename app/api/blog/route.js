@@ -3,13 +3,29 @@ import dbConnect from "@/app/lib/db";
 import cloudinary from "@/app/lib/cloudinary";
 import Blog from "@/app/models/Post"
 import slugify from "slugify"
+import { ADMIN_COOKIE, isValidSessionToken } from "@/app/lib/adminAuth";
+import { sanitizeBlogHtml, toExcerpt } from "@/app/lib/blogContent";
 
 
 export async function POST(req) {
+    if (!isValidSessionToken(req.cookies.get(ADMIN_COOKIE)?.value)) {
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
     try {
         await dbConnect();
         const body = await req.json();
-        const { title, content, image, author, category, tags } = body;
+        const { title, image, author, category, tags } = body;
+        let { content } = body;
+        const isHtml = body.contentFormat === "html";
+        let excerpt = "";
+        if (isHtml) {
+            content = sanitizeBlogHtml(content);
+            excerpt = toExcerpt(content);
+            if (!excerpt) {
+                return NextResponse.json({ success: false, error: "Content cannot be empty" }, { status: 400 });
+            }
+        }
         const slug = slugify(title, {
             lower: true,
             strict: true
@@ -34,6 +50,8 @@ export async function POST(req) {
             title,
             slug,
             content,
+            contentFormat: isHtml ? "html" : "markdown",
+            excerpt,
             category,
             tags,
             image: imageUrl, // DB mein URL jayega

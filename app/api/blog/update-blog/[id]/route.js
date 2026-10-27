@@ -3,13 +3,29 @@ import dbConnect from "@/app/lib/db";
 import cloudinary from "@/app/lib/cloudinary";
 import Blog from "@/app/models/Post";
 import slugify from "slugify";
+import { ADMIN_COOKIE, isValidSessionToken } from "@/app/lib/adminAuth";
+import { sanitizeBlogHtml, toExcerpt } from "@/app/lib/blogContent";
 
 export async function PUT(req, { params }) {
+    if (!isValidSessionToken(req.cookies.get(ADMIN_COOKIE)?.value)) {
+        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
     try {
         await dbConnect();
         const { id } = await params;
         const body = await req.json();
-        const { title, content, image, category, tags } = body;
+        const { title, image, category, tags } = body;
+        let { content } = body;
+        const isHtml = body.contentFormat === "html";
+        let excerpt;
+        if (isHtml) {
+            content = sanitizeBlogHtml(content);
+            excerpt = toExcerpt(content);
+            if (!excerpt) {
+                return NextResponse.json({ success: false, message: "Content cannot be empty" }, { status: 400 });
+            }
+        }
 
         // 1. Validate ID exists
         if (!id) {
@@ -47,6 +63,8 @@ export async function PUT(req, { params }) {
                 title: title || existingBlog.title,
                 slug: updatedSlug,
                 content: content || existingBlog.content,
+                // Only switch format when new html content was sent, so old posts stay markdown
+                ...(isHtml ? { contentFormat: "html", excerpt } : {}),
                 category: category || existingBlog.category,
                 tags: tags || existingBlog.tags,
                 image: imageUrl,

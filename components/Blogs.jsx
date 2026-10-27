@@ -136,7 +136,7 @@ const AllBlogs = () => {
                                                 </h3>
 
                                                 <p className="text-gray-400 text-sm line-clamp-2 mb-6 font-light">
-                                                    {blog.content}
+                                                    {blog.excerpt || String(blog.content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}
                                                 </p>
 
                                                 <div className="flex items-center justify-between pt-6 border-t border-white/10">

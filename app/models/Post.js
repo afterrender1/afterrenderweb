@@ -16,6 +16,16 @@ const BlogSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        // Existing posts have no value here and default to markdown
+        contentFormat: {
+            type: String,
+            enum: ["markdown", "html"],
+            default: "markdown",
+        },
+        excerpt: {
+            type: String,
+            default: "",
+        },
         image: {
             type: String, // Cloudinary URL
         },
