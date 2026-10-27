@@ -1,9 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import { AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
+import { inputClass, labelClass, primaryBtn, iconBtn } from "./ui";
 
 const AdminLogin = ({ onSuccess }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -30,36 +33,65 @@ const AdminLogin = ({ onSuccess }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-6">
+        <div className="min-h-dvh flex items-center justify-center bg-stone-50 px-4 py-8">
             <form
                 onSubmit={handleLogin}
-                className="w-full max-w-md bg-white border border-neutral-200 p-8 rounded-2xl shadow-sm space-y-5"
+                className="w-full max-w-sm bg-white border border-stone-200 p-6 sm:p-8 rounded-xl shadow-xs space-y-5"
             >
-                <h2 className="text-2xl font-semibold text-neutral-900 text-center">Creator Studio</h2>
+                <div className="text-center">
+                    <div className="size-10 mx-auto mb-3 rounded-md bg-stone-900 text-stone-50 grid place-items-center font-semibold">A</div>
+                    <h2 className="text-xl font-semibold tracking-tight text-stone-900">Creator Studio</h2>
+                    <p className="text-sm text-stone-500 mt-1">Sign in to manage your site.</p>
+                </div>
 
-                <input
-                    type="email"
-                    placeholder="Admin Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#80C1FC] focus:ring-2 focus:ring-[#80C1FC]/30 transition"
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Security Key"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-neutral-200 text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#80C1FC] focus:ring-2 focus:ring-[#80C1FC]/30 transition"
-                    required
-                />
+                <div>
+                    <label htmlFor="admin-email" className={labelClass}>Email</label>
+                    <input
+                        id="admin-email"
+                        type="email"
+                        autoComplete="username"
+                        placeholder="admin@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={inputClass}
+                        required
+                    />
+                </div>
 
-                {error && <p className="text-sm text-red-600">{error}</p>}
+                <div>
+                    <label htmlFor="admin-key" className={labelClass}>Security key</label>
+                    <div className="relative">
+                        <input
+                            id="admin-key"
+                            type={showPassword ? "text" : "password"}
+                            autoComplete="current-password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className={`${inputClass} pr-11`}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((s) => !s)}
+                            className={`${iconBtn} absolute right-0.5 top-0.5 sm:top-0`}
+                            aria-label={showPassword ? "Hide security key" : "Show security key"}
+                            title={showPassword ? "Hide" : "Show"}
+                        >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                    </div>
+                </div>
 
-                <button
-                    disabled={loading}
-                    className="w-full py-3 rounded-xl bg-neutral-900 text-white font-medium hover:bg-neutral-800 disabled:opacity-60 transition cursor-pointer"
-                >
+                {error && (
+                    <p className="flex items-start gap-2 text-sm text-red-600" role="alert">
+                        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                        <span className="min-w-0 break-words">{error}</span>
+                    </p>
+                )}
+
+                <button disabled={loading} className={`${primaryBtn} w-full`}>
+                    {loading && <Loader2 size={16} className="animate-spin" />}
                     {loading ? "Checking..." : "Unlock Access"}
                 </button>
             </form>

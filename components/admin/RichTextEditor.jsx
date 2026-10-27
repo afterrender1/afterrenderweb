@@ -47,41 +47,60 @@ const ToolButton = ({ onClick, active = false, disabled = false, label, children
     aria-label={label}
     title={label}
     aria-pressed={active}
-    className={`w-8 h-8 shrink-0 flex items-center justify-center rounded-lg transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${
-      active ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
+    className={`size-8 shrink-0 grid place-items-center rounded-md transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/20 ${
+      active ? "bg-stone-900 text-stone-50" : "text-stone-600 hover:bg-stone-200/60"
     }`}
   >
     {children}
   </button>
 );
 
-const Divider = () => <span className="w-px h-5 bg-neutral-200 mx-1 shrink-0" />;
+const Divider = () => <span className="w-px h-5 bg-stone-200 mx-1 shrink-0" />;
 
 // Swatch popover used for both text color and highlight
 const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
-  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState(null);
   const ref = useRef(null);
+  const open = pos !== null;
+
+  const toggle = () => {
+    if (open) return setPos(null);
+    const rect = ref.current.getBoundingClientRect();
+    // 11rem popover; keep it inside the viewport
+    setPos({ top: rect.bottom + 4, left: Math.max(8, Math.min(rect.left, window.innerWidth - 184)) });
+  };
 
   useEffect(() => {
     if (!open) return;
-    const close = (e) => {
-      if (e.type === "keydown" ? e.key === "Escape" : !ref.current?.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    document.addEventListener("keydown", close);
+    const close = () => setPos(null);
+    const onMouseDown = (e) => !ref.current?.contains(e.target) && !e.target.closest?.("[data-color-popover]") && close();
+    const onKey = (e) => e.key === "Escape" && close();
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("keydown", onKey);
+    // The toolbar scrolls sideways on phones, so close instead of leaving the popover detached
+    window.addEventListener("scroll", close, true);
+    window.addEventListener("resize", close);
     return () => {
-      document.removeEventListener("mousedown", close);
-      document.removeEventListener("keydown", close);
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("resize", close);
     };
   }, [open]);
 
+  const setOpen = (v) => !v && setPos(null);
+
   return (
     <div ref={ref} className="relative shrink-0">
-      <ToolButton label={label} active={open || !!activeColor} onClick={() => setOpen((o) => !o)}>
+      <ToolButton label={label} active={open || !!activeColor} onClick={toggle}>
         {icon}
       </ToolButton>
       {open && (
-        <div className="absolute left-0 top-full mt-1 z-30 w-44 p-2.5 rounded-xl bg-white border border-neutral-200 shadow-xl">
+        <div
+          data-color-popover
+          style={{ top: pos.top, left: pos.left }}
+          className="fixed z-[80] w-44 p-2.5 rounded-lg bg-white border border-stone-200 shadow-xl"
+        >
           <div className="grid grid-cols-4 gap-2">
             {colors.map((c) => (
               <button
@@ -93,8 +112,8 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
                   setOpen(false);
                 }}
                 aria-label={`${label} ${c}`}
-                className={`w-8 h-8 rounded-lg border cursor-pointer ${
-                  activeColor?.toLowerCase() === c.toLowerCase() ? "border-neutral-900 ring-2 ring-neutral-900/20" : "border-neutral-200"
+                className={`size-8 rounded-md border cursor-pointer ${
+                  activeColor?.toLowerCase() === c.toLowerCase() ? "border-stone-900 ring-2 ring-stone-900/20" : "border-stone-200"
                 }`}
                 style={{ backgroundColor: c }}
               />
@@ -106,7 +125,7 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
               aria-label={`Custom ${label.toLowerCase()}`}
               value={/^#[0-9a-f]{6}$/i.test(activeColor || "") ? activeColor : colors[0]}
               onChange={(e) => onPick(e.target.value)}
-              className="w-8 h-7 p-0 border border-neutral-200 rounded cursor-pointer bg-white"
+              className="w-8 h-7 p-0 border border-stone-200 rounded cursor-pointer bg-white"
             />
             <button
               type="button"
@@ -115,7 +134,7 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
                 onClear();
                 setOpen(false);
               }}
-              className="text-[11px] font-semibold text-neutral-500 hover:text-neutral-900 cursor-pointer"
+              className="text-[11px] font-semibold text-stone-500 hover:text-stone-900 cursor-pointer"
             >
               Remove
             </button>
@@ -173,7 +192,7 @@ const Toolbar = ({ editor }) => {
   const c = () => editor.chain().focus();
 
   return (
-    <div className="sticky top-0 z-20 flex flex-wrap items-center gap-0.5 p-2 bg-white border-b border-neutral-200 rounded-t-xl">
+    <div className="sticky top-0 z-20 flex flex-nowrap sm:flex-wrap items-center gap-0.5 p-1.5 sm:p-2 overflow-x-auto sm:overflow-visible bg-stone-50/95 backdrop-blur border-b border-stone-200 rounded-t-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <ToolButton label="Undo" disabled={!s.canUndo} onClick={() => c().undo().run()}><Undo2 size={16} /></ToolButton>
       <ToolButton label="Redo" disabled={!s.canRedo} onClick={() => c().redo().run()}><Redo2 size={16} /></ToolButton>
       <Divider />
@@ -258,12 +277,12 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing..." }) =
   const minutes = Math.max(1, Math.ceil(words / 200));
 
   return (
-    <div className="border border-neutral-200 rounded-xl bg-white focus-within:border-[#80C1FC] focus-within:ring-2 focus-within:ring-[#80C1FC]/30 transition">
+    <div className="min-w-0 border border-stone-200 rounded-lg bg-white focus-within:border-stone-400 focus-within:ring-2 focus-within:ring-stone-900/10 transition-colors">
       {editor && <Toolbar editor={editor} />}
-      <div className="px-4 sm:px-5">
+      <div className="px-3 sm:px-5 min-w-0">
         <EditorContent editor={editor} />
       </div>
-      <div className="px-4 py-2 border-t border-neutral-100 text-[11px] font-medium text-neutral-400">
+      <div className="px-3 sm:px-4 py-2 border-t border-stone-100 text-[11px] font-medium text-stone-400">
         {words} {words === 1 ? "word" : "words"} · ~{minutes} min read
       </div>
     </div>

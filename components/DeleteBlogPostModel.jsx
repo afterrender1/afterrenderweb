@@ -1,11 +1,27 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { Loader2, Pencil, Trash2, Settings2, AlertCircle } from "lucide-react";
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    modalPanel,
+    Skeleton,
+    inputClass,
+    labelClass,
+    primaryBtn,
+    secondaryBtn,
+    ghostBtn,
+    iconBtn,
+    iconBtnDanger,
+} from "./admin/ui";
 
 // Loaded on demand so the editor never ships in a public bundle
 const RichTextEditor = dynamic(() => import("./admin/RichTextEditor"), {
     ssr: false,
-    loading: () => <div className="min-h-[360px] rounded-xl bg-neutral-50 animate-pulse" />,
+    loading: () => <div className="min-h-[360px] rounded-lg bg-stone-100 animate-pulse" />,
 });
 
 const escapeHtml = (str) =>
@@ -36,18 +52,6 @@ const DeleteBlogPostModel = () => {
     const [editTitle, setEditTitle] = useState("");
     const [editContent, setEditContent] = useState("");
     const [converted, setConverted] = useState(false);
-
-    const THEME_COLOR = "#80C1FC";
-
-    // Toggle body scroll
-    useEffect(() => {
-        if (isOpen || isEditOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
-        return () => { document.body.style.overflow = "unset"; };
-    }, [isOpen, isEditOpen]);
 
     // Fetch blogs when main modal opens
     useEffect(() => {
@@ -122,134 +126,128 @@ const DeleteBlogPostModel = () => {
         }
     };
 
+    const closeList = useCallback(() => setIsOpen(false), []);
+    const closeEdit = useCallback(() => {
+        if (!updating) setIsEditOpen(false);
+    }, [updating]);
+
     return (
-        <div>
-            {/* 1. Animated Manage Button (Restored Old UI) */}
-            <button
-                onClick={() => setIsOpen(true)}
-                className="group relative bg-neutral-200 rounded-full p-px overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
-            >
-                <span className="absolute inset-0 rounded-full overflow-hidden">
-                    <span className="inset-0 absolute pointer-events-none select-none">
-                        <span
-                            className="block -translate-x-1/2 -translate-y-1/3 size-24 blur-xl"
-                            style={{ background: `linear-gradient(135deg, ${THEME_COLOR}, #ffffff, ${THEME_COLOR})` }}
-                        ></span>
-                    </span>
-                </span>
-                <span className="flex items-center justify-center gap-1 relative z-1 bg-neutral-50/90 rounded-full py-2.5 px-5 pl-3 w-full">
-                    <span className="relative group-hover:rotate-180 transition-transform duration-700">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={THEME_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </span>
-                    <span className="bg-neutral-900 bg-clip-text text-[11px] font-bold uppercase tracking-widest text-transparent">
-                        Manage Blogs
-                    </span>
-                </span>
+        <div className="flex">
+            <button type="button" onClick={() => setIsOpen(true)} className={`${secondaryBtn} w-full sm:w-auto`}>
+                <Settings2 size={16} />
+                Manage blogs
             </button>
 
-            {/* 2. Main Modal (Google Style Surface) */}
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-900/40 backdrop-blur-[2px] p-4 transition-all">
-                    <div className="bg-white w-full max-w-xl max-h-[75vh] overflow-hidden rounded-xl shadow-2xl flex flex-col border border-neutral-200">
-                        <div className="px-6 pt-6 pb-4 flex justify-between items-center">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg" style={{ backgroundColor: `${THEME_COLOR}20` }}>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={THEME_COLOR} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </div>
-                                <h2 className="text-[22px] font-medium text-neutral-800 tracking-tight">Manage blogs</h2>
-                            </div>
-                            <button onClick={() => setIsOpen(false)} className="w-10 h-10 flex items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 transition-colors">✕</button>
-                        </div>
+            {/* Manage list; hidden while a post is being edited so Escape only closes the top dialog */}
+            {isOpen && !isEditOpen && (
+                <Modal onClose={closeList} className="sm:max-w-xl">
+                    <div className={`${modalPanel} sm:h-auto sm:max-h-[80dvh]`}>
+                        <ModalHeader title="Manage blogs" onClose={closeList} />
 
-                        <div className="flex-1 overflow-y-auto px-2 custom-scrollbar">
+                        <ModalBody className="!px-2 sm:!px-3 !py-2">
                             {loading ? (
-                                <div className="py-20 flex justify-center">
-                                    <div className="w-8 h-8 border-[3px] border-neutral-200 border-t-[#80C1FC] animate-spin rounded-full"></div>
+                                <div className="space-y-2 p-2">
+                                    {Array.from({ length: 4 }).map((_, i) => (
+                                        <Skeleton key={i} className="h-14 w-full" />
+                                    ))}
                                 </div>
+                            ) : blogs.length === 0 ? (
+                                <p className="py-14 text-center text-sm text-stone-500">No blog posts yet.</p>
                             ) : (
-                                <div className="px-2 py-2">
+                                <ul>
                                     {blogs.map((blog) => (
-                                        <div key={blog._id} className="group flex items-center justify-between gap-4 p-4 rounded-xl hover:bg-neutral-50 transition-colors duration-200">
+                                        <li
+                                            key={blog._id}
+                                            className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md hover:bg-stone-50 transition-colors"
+                                        >
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="font-medium text-neutral-900 text-[15px] truncate">{blog.title}</h3>
-                                                <p className="text-neutral-500 text-sm mt-0.5 truncate">{previewText(blog)}</p>
+                                                <h3 className="font-medium text-stone-900 text-sm truncate" title={blog.title}>
+                                                    {blog.title}
+                                                </h3>
+                                                <p className="text-stone-500 text-xs mt-0.5 line-clamp-1 break-all">
+                                                    {previewText(blog)}
+                                                </p>
                                             </div>
-                                            <div className="flex gap-2">
-                                                <button onClick={() => openEditModal(blog)} className="px-4 py-1.5 rounded-full text-sm font-medium border border-neutral-200 hover:border-[#80C1FC] hover:text-[#80C1FC] transition-all">Edit</button>
+                                            <div className="flex items-center gap-1 shrink-0">
+                                                {/* Icon buttons on phones, text buttons from sm up */}
+                                                <button
+                                                    onClick={() => openEditModal(blog)}
+                                                    className={`${iconBtn} sm:hidden`}
+                                                    aria-label={`Edit ${blog.title}`}
+                                                    title="Edit"
+                                                >
+                                                    <Pencil size={15} />
+                                                </button>
                                                 <button
                                                     onClick={() => handleDelete(blog._id)}
                                                     disabled={deletingId === blog._id}
-                                                    className="px-4 py-1.5 rounded-full text-sm font-medium text-red-600 border border-transparent hover:bg-red-50 disabled:opacity-30"
+                                                    className={`${iconBtnDanger} sm:hidden`}
+                                                    aria-label={`Delete ${blog.title}`}
+                                                    title="Delete"
+                                                >
+                                                    {deletingId === blog._id ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
+                                                </button>
+                                                <button onClick={() => openEditModal(blog)} className={`${secondaryBtn} hidden sm:inline-flex`}>
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(blog._id)}
+                                                    disabled={deletingId === blog._id}
+                                                    className={`${ghostBtn} hidden sm:inline-flex text-red-600 hover:bg-red-50`}
                                                 >
                                                     {deletingId === blog._id ? "..." : "Delete"}
                                                 </button>
                                             </div>
-                                        </div>
+                                        </li>
                                     ))}
-                                </div>
+                                </ul>
                             )}
-                        </div>
+                        </ModalBody>
 
-                        <div className="p-6 flex justify-end border-t border-neutral-100">
-                            <button onClick={() => setIsOpen(false)} className="px-6 py-2.5 rounded-full text-sm font-medium bg-[#80C1FC] text-white shadow-sm hover:shadow-md active:scale-95 transition-all">Done</button>
-                        </div>
+                        <ModalFooter>
+                            <button onClick={closeList} className={primaryBtn}>Done</button>
+                        </ModalFooter>
                     </div>
-                </div>
+                </Modal>
             )}
 
-            {/* 3. Edit Modal (Restored Studio Design) */}
             {isEditOpen && (
-                <div className="fixed inset-0 z-60 flex items-start sm:items-center justify-center bg-black/60 backdrop-blur-md p-2 sm:p-4">
-                    <div className="bg-white dark:bg-neutral-900 w-full max-w-4xl max-h-[94vh] overflow-y-auto rounded-2xl shadow-2xl p-4 sm:p-8 space-y-6 border border-neutral-200 dark:border-neutral-800">
-                        <div>
-                            <h2 className="text-2xl font-black text-neutral-800 dark:text-white uppercase tracking-tighter">Edit Post</h2>
-                            <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Update your entry details</p>
-                        </div>
-                        <div className="space-y-4">
+                <Modal onClose={closeEdit} className="sm:max-w-4xl">
+                    <div className={`${modalPanel} h-[92dvh] sm:h-auto`}>
+                        <ModalHeader title="Edit post" onClose={closeEdit} disabled={updating} />
+
+                        <ModalBody className="space-y-5">
                             <div>
-                                <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 ml-2 mb-1 block">Title</label>
+                                <label htmlFor="edit-title" className={labelClass}>Title</label>
                                 <input
+                                    id="edit-title"
                                     value={editTitle}
                                     onChange={(e) => setEditTitle(e.target.value)}
-                                    className="w-full bg-neutral-50 dark:bg-neutral-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#80C1FC]/50 outline-none transition-all dark:text-white"
+                                    className={inputClass}
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 ml-2 mb-1 block">Content</label>
+                                <label className={labelClass}>Content</label>
                                 {converted && (
-                                    <p className="mb-2 ml-2 text-[11px] font-medium text-amber-600">
+                                    <p className="mb-2 flex items-start gap-1.5 text-xs font-medium text-amber-700">
+                                        <AlertCircle size={13} className="mt-px shrink-0" />
                                         Converted from Markdown, check formatting.
                                     </p>
                                 )}
                                 <RichTextEditor value={editContent} onChange={setEditContent} placeholder="Write your post..." />
                             </div>
-                        </div>
-                        <div className="flex justify-end gap-3 pt-2">
-                            <button onClick={() => setIsEditOpen(false)} className="px-6 py-2 rounded-full text-xs font-bold uppercase text-neutral-400 hover:text-neutral-600 transition-colors">Cancel</button>
-                            <button
-                                onClick={handleUpdate}
-                                disabled={updating}
-                                className="px-8 py-3 rounded-full text-white text-xs font-bold uppercase shadow-lg shadow-[#80C1FC]/20 active:scale-95 transition-all flex items-center gap-2"
-                                style={{ backgroundColor: THEME_COLOR }}
-                            >
-                                {updating && <div className="w-3 h-3 border-2 border-white/30 border-t-white animate-spin rounded-full" />}
-                                {updating ? "Saving..." : "Update Post"}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+                        </ModalBody>
 
-            <style jsx>{`
-                .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: #80C1FC; border-radius: 10px; }
-            `}</style>
+                        <ModalFooter>
+                            <button onClick={closeEdit} disabled={updating} className={ghostBtn}>Cancel</button>
+                            <button onClick={handleUpdate} disabled={updating} className={primaryBtn}>
+                                {updating && <Loader2 size={16} className="animate-spin" />}
+                                {updating ? "Saving..." : "Update post"}
+                            </button>
+                        </ModalFooter>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };

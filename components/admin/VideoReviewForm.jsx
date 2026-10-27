@@ -2,14 +2,31 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Plus, Search, Pencil, Trash2, X, Play, Film, Loader2, AlertCircle } from "lucide-react";
 
-import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal } from "./ui";
+import {
+    inputClass,
+    labelClass,
+    primaryBtn,
+    ghostBtn,
+    iconBtn,
+    iconBtnDanger,
+    Snackbar,
+    Modal,
+    modalPanel,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    PageHeader,
+    EmptyState,
+    Skeleton,
+    Badge,
+} from "./ui";
 
 const emptyForm = { clientName: "", role: "", videoUrl: "", poster: "", fit: "cover" };
 
 const VideoError = ({ dark }) => (
     <div
         className={`absolute inset-0 flex flex-col items-center justify-center gap-2 px-4 text-center ${
-            dark ? "bg-neutral-900 text-neutral-400" : "bg-neutral-100 text-neutral-400"
+            dark ? "bg-stone-900 text-stone-400" : "bg-stone-100 text-stone-400"
         }`}
     >
         <AlertCircle size={22} />
@@ -49,7 +66,7 @@ const VideoThumb = ({ review, className = "", onOpen }) => {
         <Wrapper
             type={onOpen ? "button" : undefined}
             onClick={onOpen && !failed ? onOpen : undefined}
-            className={`relative block w-full bg-neutral-100 overflow-hidden ${onOpen && !failed ? "cursor-pointer" : ""} ${className}`}
+            className={`relative block w-full bg-stone-100 overflow-hidden ${onOpen && !failed ? "cursor-pointer" : ""} ${className}`}
             onMouseEnter={play}
             onMouseLeave={stop}
             aria-label={onOpen ? "Play video" : undefined}
@@ -67,7 +84,7 @@ const VideoThumb = ({ review, className = "", onOpen }) => {
                     className={`w-full h-full ${review.fit === "contain" ? "object-contain bg-black" : "object-cover"}`}
                 />
             ) : (
-                <div className="w-full h-full flex items-center justify-center text-neutral-400">
+                <div className="w-full h-full flex items-center justify-center text-stone-400">
                     <Film size={28} />
                 </div>
             )}
@@ -90,8 +107,8 @@ const VideoPlayerDialog = ({ review, onClose }) => {
 
     return (
         <Modal onClose={onClose} className="w-full sm:w-auto">
-            <div className="bg-neutral-950 sm:rounded-2xl rounded-t-2xl overflow-hidden shadow-2xl">
-                <div className="relative h-[80vh] sm:h-[78vh] aspect-[9/16] max-w-full mx-auto bg-black">
+            <div className="bg-stone-950 sm:rounded-xl rounded-t-xl overflow-hidden shadow-xl pb-[env(safe-area-inset-bottom)] sm:pb-0">
+                <div className="relative h-[80dvh] max-h-[80dvh] aspect-[9/16] max-w-[calc(100vw-2rem)] sm:max-w-full mx-auto bg-black">
                     {!failed && (
                         <video
                             src={review.videoUrl}
@@ -115,7 +132,7 @@ const VideoPlayerDialog = ({ review, onClose }) => {
                         </div>
                     )}
                     {failed && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-neutral-300">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center text-stone-300">
                             <AlertCircle size={28} />
                             <p className="text-sm">This video couldn&apos;t be loaded.</p>
                             <a
@@ -130,15 +147,16 @@ const VideoPlayerDialog = ({ review, onClose }) => {
                     )}
                     <button
                         onClick={onClose}
-                        className="absolute top-3 right-3 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 cursor-pointer"
+                        className="absolute top-3 right-3 size-9 grid place-items-center rounded-md bg-black/50 text-white hover:bg-black/70 cursor-pointer"
                         aria-label="Close"
+                        title="Close"
                     >
                         <X size={18} />
                     </button>
                 </div>
                 <div className="px-4 py-3">
                     <p className="text-sm font-medium text-white truncate">{review.clientName || "No name"}</p>
-                    <p className="text-xs text-neutral-400 truncate">{review.role}</p>
+                    <p className="text-xs text-stone-400 truncate">{review.role}</p>
                 </div>
             </div>
         </Modal>
@@ -204,31 +222,16 @@ const ReviewDialog = ({ initial, onClose, onSaved }) => {
 
     return (
         <Modal onClose={safeClose} className="w-full sm:max-w-3xl">
-            <form
-                onSubmit={submit}
-                className="w-full max-h-[92vh] overflow-y-auto overscroll-contain bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl"
-            >
-                <div className="flex items-center justify-between px-6 pt-5 pb-4">
-                    <h2 className="text-lg font-normal text-neutral-900">
-                        {isEdit ? "Edit video review" : "New video review"}
-                    </h2>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        disabled={saving}
-                        className="p-2 -mr-2 rounded-full text-neutral-500 hover:bg-neutral-100 cursor-pointer"
-                        aria-label="Close"
-                    >
-                        <X size={18} />
-                    </button>
-                </div>
+            <form onSubmit={submit} className={modalPanel}>
+                <ModalHeader title={isEdit ? "Edit video review" : "New video review"} onClose={onClose} disabled={saving} />
 
-                <div className="px-6 pb-2 grid gap-6 sm:grid-cols-[1fr_180px]">
-                    <div className="space-y-5">
+                <ModalBody>
+                <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_180px]">
+                    <div className="space-y-5 min-w-0">
                         <div className="grid gap-5 sm:grid-cols-2">
                             <div>
                                 <label className={labelClass}>
-                                    Client name <span className="text-neutral-400 font-normal">· optional</span>
+                                    Client name <span className="text-stone-400 font-normal">· optional</span>
                                 </label>
                                 <input
                                     type="text"
@@ -266,7 +269,7 @@ const ReviewDialog = ({ initial, onClose, onSaved }) => {
 
                         <div>
                             <label className={labelClass}>
-                                Poster URL <span className="text-neutral-400 font-normal">· optional</span>
+                                Poster URL <span className="text-stone-400 font-normal">· optional</span>
                             </label>
                             <input
                                 type="text"
@@ -279,16 +282,16 @@ const ReviewDialog = ({ initial, onClose, onSaved }) => {
 
                         <div>
                             <label className={labelClass}>Video fit</label>
-                            <div className="inline-flex p-1 rounded-full bg-neutral-100">
+                            <div className="inline-flex p-1 rounded-lg bg-stone-100">
                                 {["cover", "contain"].map((fit) => (
                                     <button
                                         key={fit}
                                         type="button"
                                         onClick={() => setForm((prev) => ({ ...prev, fit }))}
-                                        className={`h-8 px-4 rounded-full text-sm capitalize transition cursor-pointer ${
+                                        className={`h-8 px-3.5 rounded-md text-sm capitalize transition cursor-pointer ${
                                             form.fit === fit
-                                                ? "bg-white text-neutral-900 font-medium shadow-sm"
-                                                : "text-neutral-600 hover:text-neutral-900"
+                                                ? "bg-white text-stone-900 font-medium shadow-sm"
+                                                : "text-stone-600 hover:text-stone-900"
                                         }`}
                                     >
                                         {fit}
@@ -298,21 +301,25 @@ const ReviewDialog = ({ initial, onClose, onSaved }) => {
                         </div>
                     </div>
 
-                    <div>
+                    <div className="w-40 sm:w-auto mx-auto sm:mx-0 min-w-0">
                         <p className={labelClass}>Preview</p>
                         <VideoThumb
                             key={form.videoUrl}
                             review={form}
-                            className="aspect-[9/16] rounded-xl border border-neutral-200"
+                            className="aspect-[9/16] rounded-lg border border-stone-200"
                         />
                     </div>
                 </div>
 
                 {error && (
-                    <p className="mx-6 mt-4 px-4 py-3 rounded-lg text-sm bg-red-50 text-red-700">{error}</p>
+                    <p className="mt-5 flex items-start gap-2 px-3 py-2.5 rounded-md text-sm bg-red-50 text-red-700 border border-red-200" role="alert">
+                        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                        <span className="min-w-0 break-words">{error}</span>
+                    </p>
                 )}
+                </ModalBody>
 
-                <div className="flex justify-end gap-2 px-6 py-5">
+                <ModalFooter>
                     <button type="button" onClick={onClose} disabled={saving} className={ghostBtn}>
                         Cancel
                     </button>
@@ -320,7 +327,7 @@ const ReviewDialog = ({ initial, onClose, onSaved }) => {
                         {saving && <Loader2 size={16} className="animate-spin" />}
                         {isEdit ? "Save changes" : "Add review"}
                     </button>
-                </div>
+                </ModalFooter>
             </form>
         </Modal>
     );
@@ -341,25 +348,25 @@ const ReviewCard = ({ review, onEdit, onDelete, onPlay }) => {
     };
 
     return (
-        <li className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-[0_1px_3px_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-shadow">
+        <li className="group min-w-0 bg-white border border-stone-200 rounded-lg shadow-xs overflow-hidden hover:border-stone-300 transition-colors">
             <VideoThumb review={review} className="aspect-[9/16]" onOpen={() => onPlay(review)} />
 
-            <div className="p-3">
+            <div className="p-2.5 sm:p-3">
                 {confirming ? (
                     <div className="space-y-2.5">
-                        <p className="text-sm text-neutral-800">Delete this review?</p>
+                        <p className="text-sm text-stone-800">Delete this review?</p>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setConfirming(false)}
                                 disabled={deleting}
-                                className="flex-1 h-8 rounded-full text-xs font-medium text-neutral-700 border border-neutral-300 hover:bg-neutral-50 cursor-pointer"
+                                className="flex-1 h-9 rounded-md text-xs font-medium text-stone-700 border border-stone-200 hover:bg-stone-50 cursor-pointer"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleDelete}
                                 disabled={deleting}
-                                className="flex-1 h-8 inline-flex items-center justify-center gap-1.5 rounded-full text-xs font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
+                                className="flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-md text-xs font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
                             >
                                 {deleting && <Loader2 size={12} className="animate-spin" />}
                                 Delete
@@ -369,29 +376,17 @@ const ReviewCard = ({ review, onEdit, onDelete, onPlay }) => {
                 ) : (
                     <div className="flex items-start gap-2">
                         <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-neutral-900 truncate">
-                                {review.clientName || <span className="text-neutral-400 font-normal">No name</span>}
+                            <p className="text-sm font-medium text-stone-900 truncate">
+                                {review.clientName || <span className="text-stone-400 font-normal">No name</span>}
                             </p>
-                            <p className="text-xs text-neutral-500 truncate mt-0.5">{review.role}</p>
-                            <span className="inline-block mt-2 px-2 py-0.5 rounded text-[11px] capitalize bg-neutral-100 text-neutral-600">
-                                {review.fit}
-                            </span>
+                            <p className="text-xs text-stone-500 truncate mt-0.5">{review.role}</p>
+                            <Badge className="mt-2 capitalize">{review.fit}</Badge>
                         </div>
-                        <div className="flex -mr-1 -mt-1 shrink-0">
-                            <button
-                                onClick={() => onEdit(review)}
-                                className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
-                                aria-label="Edit"
-                                title="Edit"
-                            >
+                        <div className="flex -mr-1.5 -mt-1 shrink-0">
+                            <button onClick={() => onEdit(review)} className={iconBtn} aria-label="Edit" title="Edit">
                                 <Pencil size={15} />
                             </button>
-                            <button
-                                onClick={() => setConfirming(true)}
-                                className="p-2 rounded-full text-neutral-500 hover:bg-red-50 hover:text-red-600 cursor-pointer"
-                                aria-label="Delete"
-                                title="Delete"
-                            >
+                            <button onClick={() => setConfirming(true)} className={iconBtnDanger} aria-label="Delete" title="Delete">
                                 <Trash2 size={15} />
                             </button>
                         </div>
@@ -470,69 +465,69 @@ const VideoReviewForm = () => {
     }, [reviews, query]);
 
     return (
-        <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-neutral-200">
-                <div>
-                    <h1 className="text-2xl font-normal text-neutral-900">Video Reviews</h1>
-                    <p className="text-sm text-neutral-500 mt-1">
-                        {loading
-                            ? "Loading…"
-                            : `${reviews.length} ${reviews.length === 1 ? "review" : "reviews"} · shown in the client testimonials section`}
-                    </p>
-                </div>
-                <button onClick={() => setEditing({})} className={`${primaryBtn} self-start sm:self-auto`}>
-                    <Plus size={18} />
-                    New review
-                </button>
-            </div>
+        <div>
+            <PageHeader
+                title="Video Reviews"
+                description={
+                    loading
+                        ? "Loading…"
+                        : `${reviews.length} ${reviews.length === 1 ? "review" : "reviews"} · shown in the client testimonials section`
+                }
+                actions={
+                    <button onClick={() => setEditing({})} className={primaryBtn}>
+                        <Plus size={16} />
+                        New review
+                    </button>
+                }
+            />
 
             {/* Search */}
             {reviews.length > 0 && (
-                <div className="relative mt-6 max-w-md">
-                    <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
+                <div className="relative w-full sm:max-w-xs">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
                     <input
                         type="search"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Search by name or role"
-                        className="w-full h-11 pl-11 pr-4 rounded-full bg-neutral-100 text-sm text-neutral-900 placeholder-neutral-500 outline-none border border-transparent focus:bg-white focus:border-neutral-200 focus:shadow-[0_1px_6px_rgba(32,33,36,0.18)] transition"
+                        aria-label="Search video reviews"
+                        className={`${inputClass} pl-9`}
                     />
                 </div>
             )}
 
             {/* Content */}
-            <div className="mt-6">
+            <div className="mt-5">
                 {loading ? (
-                    <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <ul className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <li key={i} className="rounded-xl border border-neutral-200 overflow-hidden">
-                                <div className="aspect-[9/16] bg-neutral-100 animate-pulse" />
+                            <li key={i} className="rounded-lg border border-stone-200 bg-white overflow-hidden">
+                                <Skeleton className="aspect-[9/16] rounded-none" />
                                 <div className="p-3 space-y-2">
-                                    <div className="h-3.5 w-2/3 rounded bg-neutral-100 animate-pulse" />
-                                    <div className="h-3 w-1/2 rounded bg-neutral-100 animate-pulse" />
+                                    <Skeleton className="h-3.5 w-2/3" />
+                                    <Skeleton className="h-3 w-1/2" />
                                 </div>
                             </li>
                         ))}
                     </ul>
                 ) : reviews.length === 0 ? (
-                    <div className="flex flex-col items-center text-center py-20">
-                        <div className="w-14 h-14 rounded-full bg-[#1a73e8]/10 text-[#1a73e8] flex items-center justify-center mb-4">
-                            <Film size={24} />
-                        </div>
-                        <p className="text-base text-neutral-900">No video reviews yet</p>
-                        <p className="text-sm text-neutral-500 mt-1 mb-6">Add your first client video to show it on the site.</p>
-                        <button onClick={() => setEditing({})} className={primaryBtn}>
-                            <Plus size={18} />
-                            New review
-                        </button>
-                    </div>
+                    <EmptyState
+                        icon={Film}
+                        title="No video reviews yet"
+                        description="Add your first client video to show it on the site."
+                        action={
+                            <button onClick={() => setEditing({})} className={primaryBtn}>
+                                <Plus size={16} />
+                                New review
+                            </button>
+                        }
+                    />
                 ) : filtered.length === 0 ? (
-                    <p className="py-16 text-center text-sm text-neutral-500">
+                    <p className="py-16 text-center text-sm text-stone-500 break-words">
                         No reviews match “{query}”.
                     </p>
                 ) : (
-                    <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <ul className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         {filtered.map((review) => (
                             <ReviewCard
                                 key={review._id}

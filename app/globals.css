@@ -331,3 +331,6 @@ html {
   height: 0;
   pointer-events: none;
 }
+
+.blog-editor { overflow-wrap: anywhere; }
+.blog-editor img { max-width: 100%; height: auto; }

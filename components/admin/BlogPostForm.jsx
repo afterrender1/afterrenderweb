@@ -1,16 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import { AlertCircle, CheckCircle2, ImagePlus, Loader2, X } from "lucide-react";
 import DeleteBlogPostModel from "../DeleteBlogPostModel";
+import { Card, PageHeader, inputClass, selectClass, labelClass, primaryBtn, iconBtn } from "./ui";
 
 // Loaded on demand so the editor never ships in a public bundle
 const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
     ssr: false,
-    loading: () => <div className="min-h-[360px] rounded-xl bg-neutral-50 animate-pulse" />,
+    loading: () => <div className="min-h-[360px] rounded-lg bg-stone-100 animate-pulse" />,
 });
-
-const inputClass =
-    "w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#80C1FC] focus:ring-2 focus:ring-[#80C1FC]/30 transition";
 
 const BlogPostForm = () => {
     const [loading, setLoading] = useState(false);
@@ -86,128 +85,143 @@ const BlogPostForm = () => {
     };
 
     return (
-        <div className="max-w-3xl">
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                <h1 className="text-xl font-semibold text-neutral-900">Blogs</h1>
-
-                <div className="flex items-center gap-3">
-                    <DeleteBlogPostModel />
-                    <button
-                        type="submit"
-                        form="blog-form"
-                        disabled={loading}
-                        className="px-5 py-2.5 rounded-full text-sm font-medium bg-neutral-900 text-white hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-not-allowed transition cursor-pointer"
-                    >
-                        {loading ? "Publishing..." : "Publish Insight"}
-                    </button>
-                </div>
-            </div>
+        <div>
+            <PageHeader
+                title="Blogs"
+                description="Write and publish a new story."
+                actions={
+                    <>
+                        <DeleteBlogPostModel />
+                        <button type="submit" form="blog-form" disabled={loading} className={primaryBtn}>
+                            {loading && <Loader2 size={16} className="animate-spin" />}
+                            {loading ? "Publishing..." : "Publish"}
+                        </button>
+                    </>
+                }
+            />
 
             {status.message && (
                 <p
-                    className={`mb-4 px-4 py-3 rounded-xl text-sm border ${
+                    role={status.type === "error" ? "alert" : "status"}
+                    className={`mb-4 flex items-start gap-2 px-3 py-2.5 rounded-md text-sm border ${
                         status.type === "success"
-                            ? "bg-green-50 text-green-700 border-green-200"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : "bg-red-50 text-red-700 border-red-200"
                     }`}
                 >
-                    {status.message}
+                    {status.type === "success" ? (
+                        <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+                    ) : (
+                        <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                    )}
+                    <span className="min-w-0 break-words">{status.message}</span>
                 </p>
             )}
 
-            <form
-                id="blog-form"
-                onSubmit={submitBlog}
-                className={`border border-neutral-200 rounded-2xl overflow-clip transition-opacity ${
-                    loading ? "opacity-50 pointer-events-none" : ""
-                }`}
-            >
-                <div className="relative h-56 sm:h-72 bg-neutral-50 border-b border-neutral-200">
-                    {image ? (
-                        <>
-                            <img src={image} alt="Preview" className="w-full h-full object-cover" />
-                            <button
-                                type="button"
-                                onClick={() => setImage("")}
-                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 text-neutral-700 shadow hover:bg-white cursor-pointer"
-                                aria-label="Remove image"
-                            >
-                                ×
-                            </button>
-                        </>
-                    ) : (
-                        <label className="flex flex-col items-center justify-center h-full cursor-pointer hover:bg-neutral-100 transition-colors">
-                            <svg className="w-8 h-8 text-neutral-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span className="text-xs text-neutral-500 font-medium">Add cover image</span>
-                            <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
-                        </label>
-                    )}
-                </div>
-
-                <div className="p-6 sm:p-8 space-y-6">
-                    <input
-                        type="text"
-                        placeholder="Headline..."
-                        className="w-full text-2xl sm:text-4xl font-bold bg-transparent outline-none text-neutral-900 placeholder-neutral-300 leading-tight"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className={`${inputClass} flex-1 cursor-pointer`}
-                        >
-                            <option value="">Select Category</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Innovation">Innovation</option>
-                            <option value="Design">Design</option>
-                        </select>
-
-                        <div className="flex-1 space-y-3">
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    placeholder="Tags (Press Enter)"
-                                    className={inputClass}
-                                    value={tagInput}
-                                    onChange={(e) => setTagInput(e.target.value)}
-                                    onKeyDown={addTag}
-                                />
+            <Card className={`transition-opacity overflow-clip ${loading ? "opacity-50 pointer-events-none" : ""}`}>
+                <form id="blog-form" onSubmit={submitBlog}>
+                    <div className="relative aspect-[16/7] sm:aspect-[16/6] bg-stone-50 border-b border-stone-200">
+                        {image ? (
+                            <>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={image} alt="Cover preview" className="w-full h-full object-cover" />
                                 <button
                                     type="button"
-                                    onClick={() => addTag()}
-                                    className="absolute right-3 top-3.5 text-[10px] text-neutral-500 hover:text-neutral-900 font-bold uppercase cursor-pointer"
+                                    onClick={() => setImage("")}
+                                    className={`${iconBtn} absolute top-3 right-3 bg-white/90 shadow-xs hover:bg-white`}
+                                    aria-label="Remove image"
+                                    title="Remove image"
                                 >
-                                    Add
+                                    <X size={16} />
                                 </button>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {tags.map((tag, i) => (
-                                    <span
-                                        key={tag}
-                                        className="px-2 py-1 bg-[#80C1FC]/15 text-neutral-700 text-xs rounded-md border border-[#80C1FC]/40 flex items-center gap-2"
-                                    >
-                                        #{tag}
-                                        <button type="button" onClick={() => removeTag(i)} className="hover:text-red-600 cursor-pointer">
-                                            ×
-                                        </button>
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
+                            </>
+                        ) : (
+                            <label className="flex flex-col items-center justify-center gap-2 h-full cursor-pointer hover:bg-stone-100 transition-colors">
+                                <ImagePlus size={22} className="text-stone-400" />
+                                <span className="text-xs text-stone-500 font-medium">Add cover image</span>
+                                <input type="file" className="sr-only" onChange={handleImageChange} accept="image/*" />
+                            </label>
+                        )}
                     </div>
 
-                    <RichTextEditor
-                        value={content}
-                        onChange={setContent}
-                        placeholder="Your narrative begins here..."
-                    />
-                </div>
-            </form>
+                    <div className="p-4 sm:p-6 space-y-5">
+                        <input
+                            type="text"
+                            placeholder="Headline..."
+                            aria-label="Headline"
+                            className="w-full min-w-0 text-xl sm:text-3xl font-semibold tracking-tight bg-transparent outline-none text-stone-900 placeholder-stone-300 leading-tight break-words"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="min-w-0">
+                                <label htmlFor="blog-category" className={labelClass}>Category</label>
+                                <select
+                                    id="blog-category"
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value)}
+                                    className={selectClass}
+                                >
+                                    <option value="">Select Category</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Innovation">Innovation</option>
+                                    <option value="Design">Design</option>
+                                </select>
+                            </div>
+
+                            <div className="min-w-0">
+                                <label htmlFor="blog-tags" className={labelClass}>Tags</label>
+                                <div className="relative">
+                                    <input
+                                        id="blog-tags"
+                                        type="text"
+                                        placeholder="Type a tag, press Enter"
+                                        className={`${inputClass} pr-14`}
+                                        value={tagInput}
+                                        onChange={(e) => setTagInput(e.target.value)}
+                                        onKeyDown={addTag}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => addTag()}
+                                        className="absolute right-1 top-1/2 -translate-y-1/2 h-8 px-2.5 rounded-md text-xs font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 cursor-pointer"
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                                {tags.length > 0 && (
+                                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                                        {tags.map((tag, i) => (
+                                            <span
+                                                key={tag}
+                                                className="max-w-full inline-flex items-center gap-1.5 pl-2 pr-1 py-0.5 bg-stone-100 text-stone-700 text-xs rounded-md border border-stone-200"
+                                            >
+                                                <span className="min-w-0 break-all">#{tag}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeTag(i)}
+                                                    className="size-5 shrink-0 grid place-items-center rounded hover:bg-stone-200 hover:text-red-600 cursor-pointer"
+                                                    aria-label={`Remove tag ${tag}`}
+                                                    title="Remove tag"
+                                                >
+                                                    <X size={12} />
+                                                </button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <RichTextEditor
+                            value={content}
+                            onChange={setContent}
+                            placeholder="Your narrative begins here..."
+                        />
+                    </div>
+                </form>
+            </Card>
         </div>
     );
 };

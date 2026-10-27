@@ -76,7 +76,7 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
     const uploading = progress !== null;
 
     return (
-        <div>
+        <div className="min-w-0">
             <input
                 ref={inputRef}
                 type="file"
@@ -86,9 +86,9 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
             />
 
             {value && !uploading ? (
-                <div className={`group relative ${aspect} rounded-lg overflow-hidden border border-neutral-200 bg-neutral-50`}>
+                <div className={`group relative ${aspect} rounded-lg overflow-hidden border border-stone-200 bg-stone-50`}>
                     {broken ? (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-neutral-400 bg-neutral-50">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-stone-400 bg-stone-50">
                             <AlertCircle size={20} />
                             <p className="text-xs">Image couldn&apos;t be loaded</p>
                         </div>
@@ -101,11 +101,11 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
                             className={`w-full h-full ${contain ? "object-contain" : "object-cover"}`}
                         />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition">
+                    <div className="absolute inset-x-0 bottom-0 flex items-center justify-end gap-1.5 p-2 bg-gradient-to-t from-black/60 to-transparent md:inset-0 md:items-center md:justify-center md:bg-black/40 md:p-0 md:opacity-0 md:group-hover:opacity-100 md:focus-within:opacity-100 transition-opacity">
                         <button
                             type="button"
                             onClick={() => inputRef.current?.click()}
-                            className="h-8 px-3.5 rounded-full text-xs font-medium bg-white text-neutral-900 hover:bg-neutral-100 cursor-pointer"
+                            className="h-8 px-3 rounded-md text-xs font-medium bg-white text-stone-900 hover:bg-stone-100 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/40"
                         >
                             Replace
                         </button>
@@ -115,7 +115,7 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
                                 onChange("");
                                 setBroken(false);
                             }}
-                            className="h-8 px-3.5 rounded-full text-xs font-medium bg-white text-red-600 hover:bg-red-50 cursor-pointer"
+                            className="h-8 px-3 rounded-md text-xs font-medium bg-white text-red-600 hover:bg-red-50 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/40"
                         >
                             Remove
                         </button>
@@ -136,25 +136,25 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
                         setDragging(false);
                         handleFile(e.dataTransfer.files?.[0]);
                     }}
-                    className={`${aspect} w-full flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed text-sm transition cursor-pointer disabled:cursor-wait ${
+                    className={`${aspect} w-full flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed text-sm transition-colors cursor-pointer disabled:cursor-wait ${
                         dragging
-                            ? "border-[#1a73e8] bg-[#1a73e8]/[0.04] text-[#1a73e8]"
-                            : "border-neutral-300 text-neutral-500 hover:border-neutral-400 hover:bg-neutral-50"
+                            ? "border-stone-900 bg-stone-100 text-stone-900"
+                            : "border-stone-300 text-stone-500 hover:border-stone-400 hover:bg-stone-50"
                     }`}
                 >
                     {uploading ? (
                         <>
-                            <Loader2 size={20} className="animate-spin text-[#1a73e8]" />
-                            <span className="text-xs text-neutral-600">Uploading… {progress}%</span>
-                            <span className="w-2/3 max-w-[160px] h-1 rounded-full bg-neutral-200 overflow-hidden">
-                                <span className="block h-full bg-[#1a73e8] transition-all" style={{ width: `${progress}%` }} />
+                            <Loader2 size={20} className="animate-spin text-stone-900" />
+                            <span className="text-xs text-stone-600">Uploading… {progress}%</span>
+                            <span className="w-3/4 max-w-xs h-1 rounded-full bg-stone-200 overflow-hidden">
+                                <span className="block h-full bg-stone-900 transition-all" style={{ width: `${progress}%` }} />
                             </span>
                         </>
                     ) : (
                         <>
                             <UploadCloud size={20} />
                             <span className="text-xs">
-                                <span className="text-[#1a73e8] font-medium">Upload</span> or drag & drop
+                                <span className="text-stone-900 font-medium">Upload</span> or drag & drop
                             </span>
                         </>
                     )}
@@ -162,9 +162,9 @@ const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", c
             )}
 
             {error && (
-                <p className="flex items-start gap-1.5 mt-2 text-xs text-red-600">
+                <p className="flex items-start gap-1.5 mt-2 text-xs text-red-600" role="alert">
                     <AlertCircle size={13} className="mt-px shrink-0" />
-                    {error}
+                    <span className="min-w-0 break-words">{error}</span>
                 </p>
             )}
         </div>

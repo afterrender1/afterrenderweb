@@ -4,7 +4,6 @@ import {
     Plus,
     Pencil,
     Trash2,
-    X,
     Loader2,
     AlertCircle,
     ImageIcon,
@@ -19,7 +18,25 @@ import {
     Settings2,
     Type,
 } from "lucide-react";
-import { inputClass, labelClass, primaryBtn, ghostBtn, Snackbar, Modal, api, friendlyError } from "./ui";
+import {
+    Skeleton,
+    inputClass,
+    labelClass,
+    primaryBtn,
+    secondaryBtn,
+    ghostBtn,
+    iconBtn,
+    iconBtnDanger,
+    Snackbar,
+    Modal,
+    modalPanel,
+    ModalHeader,
+    EmptyState,
+    PageHeader,
+    Badge,
+    api,
+    friendlyError,
+} from "./ui";
 import ImageUpload from "./ImageUpload";
 import AnnouncementStyleEditor, { BarPreview, ColorField } from "./AnnouncementStyleEditor";
 import OfferBadge from "@/components/OfferBadge";
@@ -63,7 +80,7 @@ const Switch = ({ checked, onChange, disabled, label }) => (
         disabled={disabled}
         onClick={() => onChange(!checked)}
         className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-            checked ? "bg-[#1a73e8]" : "bg-neutral-300"
+            checked ? "bg-stone-900" : "bg-stone-300"
         }`}
     >
         <span
@@ -124,7 +141,7 @@ const HeroPreview = ({ event, className = "" }) => {
                             : "rgba(72,162,255,0.5)",
                     }}
                 >
-                    <span className="block w-full h-full rounded-[5px] bg-neutral-800" />
+                    <span className="block w-full h-full rounded-[5px] bg-stone-800" />
                 </span>
             </div>
         </div>
@@ -135,7 +152,7 @@ const HeroPreview = ({ event, className = "" }) => {
 const StatusDot = ({ state }) => (
     <span
         className={`w-2 h-2 rounded-full shrink-0 ${
-            state === "ready" ? "bg-green-500" : state === "missing" ? "bg-amber-500" : "bg-neutral-300"
+            state === "ready" ? "bg-emerald-500" : state === "missing" ? "bg-amber-500" : "bg-stone-300"
         }`}
         title={state === "ready" ? "Ready" : state === "missing" ? "Needs content" : "Off"}
     />
@@ -143,14 +160,14 @@ const StatusDot = ({ state }) => (
 
 // Header of the active tab: title, description, optional on/off switch
 const PanelHeader = ({ title, description, enabled, onToggle }) => (
-    <div className="flex items-start gap-4 pb-5 mb-6 border-b border-neutral-200">
+    <div className="flex items-start gap-3 sm:gap-4 pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-stone-200">
         <div className="flex-1 min-w-0">
-            <h3 className="text-lg text-neutral-900">{title}</h3>
-            {description && <p className="text-sm text-neutral-500 mt-1">{description}</p>}
+            <h3 className="text-base font-semibold text-stone-900">{title}</h3>
+            {description && <p className="text-sm text-stone-500 mt-1 break-words">{description}</p>}
         </div>
         {onToggle && (
             <div className="flex items-center gap-2.5 pt-1 shrink-0">
-                <span className={`text-xs font-medium ${enabled ? "text-[#1a73e8]" : "text-neutral-400"}`}>
+                <span className={`text-xs font-medium ${enabled ? "text-stone-900" : "text-stone-400"}`}>
                     {enabled ? "On" : "Off"}
                 </span>
                 <Switch checked={enabled} onChange={onToggle} label={`Show ${title}`} />
@@ -160,8 +177,8 @@ const PanelHeader = ({ title, description, enabled, onToggle }) => (
 );
 
 const OffNotice = ({ onEnable }) => (
-    <div className="flex flex-col items-center text-center py-12 rounded-xl border border-dashed border-neutral-300">
-        <p className="text-sm text-neutral-500">This element is turned off and won&apos;t show on the site.</p>
+    <div className="flex flex-col items-center text-center px-4 py-10 rounded-lg border border-dashed border-stone-300">
+        <p className="text-sm text-stone-500">This element is turned off and won&apos;t show on the site.</p>
         <button type="button" onClick={onEnable} className={`${ghostBtn} mt-3`}>
             Turn on
         </button>
@@ -170,15 +187,15 @@ const OffNotice = ({ onEnable }) => (
 
 // One hanging-image slot inside the Decorations tab
 const DecorationSlot = ({ title, enabled, onToggle, value, onChange, onBusyChange }) => (
-    <div className={`rounded-xl border p-4 transition-colors ${enabled ? "border-neutral-200" : "border-dashed border-neutral-200 bg-neutral-50"}`}>
+    <div className={`min-w-0 rounded-lg border p-3 sm:p-4 transition-colors ${enabled ? "border-stone-200" : "border-dashed border-stone-200 bg-stone-50"}`}>
         <div className="flex items-center justify-between gap-2 mb-3">
-            <p className={`text-sm font-medium ${enabled ? "text-neutral-800" : "text-neutral-400"}`}>{title}</p>
+            <p className={`text-sm font-medium ${enabled ? "text-stone-800" : "text-stone-400"}`}>{title}</p>
             <Switch checked={enabled} onChange={onToggle} label={`Show ${title}`} />
         </div>
         {enabled ? (
             <ImageUpload value={value} onChange={onChange} onBusyChange={onBusyChange} aspect="aspect-square" contain />
         ) : (
-            <div className="aspect-square flex items-center justify-center text-xs text-neutral-400">Hidden</div>
+            <div className="aspect-square flex items-center justify-center text-xs text-stone-400">Hidden</div>
         )}
     </div>
 );
@@ -211,6 +228,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
     const [uploads, setUploads] = useState(0);
     const [error, setError] = useState("");
     const [styleOpen, setStyleOpen] = useState(false);
+    const [previewOpen, setPreviewOpen] = useState(false);
 
     const set = (field) => (value) => {
         setForm((prev) => ({ ...prev, [field]: value }));
@@ -302,14 +320,14 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                     </div>
 
                     <div
-                        className={`flex items-center gap-3 p-4 rounded-xl border transition-colors ${
-                            form.isActive ? "bg-[#1a73e8]/[0.06] border-[#1a73e8]/30" : "border-neutral-200"
+                        className={`flex items-center gap-3 p-3 sm:p-4 rounded-lg border transition-colors ${
+                            form.isActive ? "bg-stone-100 border-stone-400" : "border-stone-200"
                         }`}
                     >
-                        <Radio size={18} className={form.isActive ? "text-[#1a73e8]" : "text-neutral-400"} />
+                        <Radio size={18} className={form.isActive ? "text-stone-900" : "text-stone-400"} />
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-neutral-900">Live on website</p>
-                            <p className="text-xs text-neutral-500 mt-0.5">Turning this on replaces any other live event.</p>
+                            <p className="text-sm font-medium text-stone-900">Live on website</p>
+                            <p className="text-xs text-stone-500 mt-0.5">Turning this on replaces any other live event.</p>
                         </div>
                         <Switch checked={form.isActive} onChange={set("isActive")} label="Live on website" />
                     </div>
@@ -335,7 +353,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         decorations: (
             <>
                 <PanelHeader title="Hanging decorations" description="Swing gently from the top corners. Transparent PNGs work best." />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <DecorationSlot
                         title="Top left"
                         enabled={form.showTopLeft}
@@ -367,8 +385,8 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                     <div className="space-y-5">
                         <div>
                             <div className="flex items-baseline justify-between mb-1.5">
-                                <label className="text-[13px] font-medium text-neutral-700">Message</label>
-                                <span className="text-[11px] text-neutral-400">{form.announcementText.length}/120</span>
+                                <label className="text-[13px] font-medium text-stone-700">Message</label>
+                                <span className="text-[11px] text-stone-400">{form.announcementText.length}/120</span>
                             </div>
                             <input
                                 type="text"
@@ -381,7 +399,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                         </div>
                         <div>
                             <label className={labelClass}>
-                                Link <span className="text-neutral-400 font-normal">· optional</span>
+                                Link <span className="text-stone-400 font-normal">· optional</span>
                             </label>
                             <input
                                 type="text"
@@ -394,23 +412,23 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
 
                         <BarPreview text={form.announcementText} style={form.announcementStyle} />
 
-                        <div className="rounded-xl border border-neutral-200">
+                        <div className="rounded-lg border border-stone-200">
                             <button
                                 type="button"
                                 onClick={() => setStyleOpen((v) => !v)}
                                 aria-expanded={styleOpen}
-                                className="w-full flex items-center gap-3 px-4 h-12 text-left cursor-pointer hover:bg-neutral-50 rounded-xl"
+                                className="w-full flex items-center gap-3 px-3 sm:px-4 h-12 text-left cursor-pointer hover:bg-stone-50 rounded-lg transition-colors"
                             >
-                                <Palette size={16} className="text-neutral-500" />
-                                <span className="flex-1 text-sm font-medium text-neutral-800">Colors & style</span>
+                                <Palette size={16} className="text-stone-500" />
+                                <span className="flex-1 text-sm font-medium text-stone-800">Colors & style</span>
                                 <span
                                     className="w-5 h-5 rounded-full border border-black/10"
                                     style={{ background: announcementBackground({ ...form.announcementStyle, bgOpacity: 100 }) }}
                                 />
-                                <ChevronDown size={16} className={`text-neutral-500 transition-transform ${styleOpen ? "rotate-180" : ""}`} />
+                                <ChevronDown size={16} className={`text-stone-500 transition-transform ${styleOpen ? "rotate-180" : ""}`} />
                             </button>
                             {styleOpen && (
-                                <div className="px-4 pb-4 pt-4 border-t border-neutral-100">
+                                <div className="px-3 sm:px-4 pb-4 pt-4 border-t border-stone-100">
                                     <AnnouncementStyleEditor value={form.announcementStyle} onChange={set("announcementStyle")} />
                                 </div>
                             )}
@@ -433,8 +451,8 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                     <div className="space-y-5">
                         <div>
                             <div className="flex items-baseline justify-between mb-1.5">
-                                <label className="text-[13px] font-medium text-neutral-700">Badge text</label>
-                                <span className="text-[11px] text-neutral-400">{form.offerText.length}/24</span>
+                                <label className="text-[13px] font-medium text-stone-700">Badge text</label>
+                                <span className="text-[11px] text-stone-400">{form.offerText.length}/24</span>
                             </div>
                             <input
                                 type="text"
@@ -448,8 +466,8 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
 
                         <div>
                             <label className={labelClass}>Real discount on pricing</label>
-                            <div className="flex items-center gap-3">
-                                <div className="relative w-32">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                <div className="relative w-32 shrink-0">
                                     <input
                                         type="number"
                                         min={0}
@@ -460,9 +478,9 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                                         value={form.discountPercent}
                                         onChange={(e) => set("discountPercent")(e.target.value === "" ? "" : Number(e.target.value))}
                                     />
-                                    <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm text-neutral-500">%</span>
+                                    <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm text-stone-500">%</span>
                                 </div>
-                                <p className="text-xs text-neutral-500">
+                                <p className="text-xs text-stone-500 flex-1 min-w-[12rem] break-words">
                                     {Number(form.discountPercent) > 0
                                         ? `Pricing shows prices ${form.discountPercent}% lower, original struck through. e.g. USD 399 → USD ${Math.round(399 * (1 - Number(form.discountPercent) / 100))}`
                                         : "0 = badge only, prices unchanged."}
@@ -477,7 +495,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                         </div>
 
                         <div
-                            className="flex items-center justify-center gap-3 pt-9 pb-7 rounded-xl bg-neutral-900 bg-cover bg-center"
+                            className="flex flex-wrap items-center justify-center gap-3 pt-9 pb-7 px-3 rounded-lg bg-stone-900 bg-cover bg-center overflow-hidden"
                             style={{ backgroundImage: "linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('/images/hb1.png')" }}
                         >
                             <span className="px-5 py-2 rounded-full text-xs font-bold bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]">
@@ -514,7 +532,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                             <ColorField label="Via" value={form.headlineVia} onChange={set("headlineVia")} />
                             <ColorField label="To" value={form.headlineTo} onChange={set("headlineTo")} />
                         </div>
-                        <div className="flex items-center justify-center py-8 rounded-xl bg-neutral-900">
+                        <div className="flex items-center justify-center py-8 px-3 rounded-lg bg-stone-900 text-center">
                             <p className="text-2xl sm:text-3xl font-medium text-white">
                                 Unlimited{" "}
                                 <span
@@ -536,36 +554,24 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
     };
 
     return (
-        <Modal onClose={safeClose} className="w-full sm:max-w-6xl">
-            <form
-                onSubmit={submit}
-                className="w-full h-[94vh] sm:h-[88vh] flex flex-col bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden"
-            >
-                {/* Header */}
-                <div className="flex items-center gap-4 px-6 h-16 border-b border-neutral-200 shrink-0">
-                    <h2 className="flex-1 min-w-0 text-lg text-neutral-900 truncate">
-                        {isEdit ? `Edit “${initial.name}”` : form.name.trim() ? form.name : "New event"}
-                    </h2>
+        <Modal onClose={safeClose} className="sm:max-w-6xl">
+            <form onSubmit={submit} className={`${modalPanel} h-[92dvh] sm:h-[88dvh]`}>
+                <ModalHeader
+                    title={isEdit ? `Edit “${initial.name}”` : form.name.trim() ? form.name : "New event"}
+                    onClose={safeClose}
+                    disabled={busy}
+                >
                     {form.isActive && (
-                        <span className="hidden sm:inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-[#1a73e8]/10 text-[#1a73e8] text-xs font-medium">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8]" /> Live
-                        </span>
+                        <Badge variant="success" className="hidden sm:inline-flex">
+                            <span className="size-1.5 rounded-full bg-emerald-500" /> Live
+                        </Badge>
                     )}
-                    <button
-                        type="button"
-                        onClick={safeClose}
-                        disabled={busy}
-                        className="p-2 -mr-2 rounded-full text-neutral-500 hover:bg-neutral-100 cursor-pointer disabled:opacity-50"
-                        aria-label="Close"
-                    >
-                        <X size={18} />
-                    </button>
-                </div>
+                </ModalHeader>
 
                 {/* Body: tabs · panel · preview */}
-                <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-[200px_minmax(0,1fr)_360px]">
+                <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-[200px_minmax(0,1fr)_340px]">
                     <nav
-                        className="shrink-0 flex lg:flex-col gap-1 overflow-x-auto lg:overflow-y-auto px-3 py-2 lg:py-4 border-b lg:border-b-0 lg:border-r border-neutral-200"
+                        className="shrink-0 flex lg:flex-col gap-1 overflow-x-auto lg:overflow-y-auto snap-x px-3 py-2 lg:py-4 border-b lg:border-b-0 lg:border-r border-stone-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                         aria-label="Event sections"
                     >
                         {TABS.map(({ id, label, icon: Icon }) => {
@@ -576,45 +582,66 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                                     type="button"
                                     onClick={() => setTab(id)}
                                     aria-current={active ? "page" : undefined}
-                                    className={`flex items-center gap-3 h-10 px-3 rounded-full lg:rounded-r-full lg:rounded-l-md text-sm whitespace-nowrap transition-colors cursor-pointer ${
+                                    className={`snap-start shrink-0 flex items-center gap-2.5 h-9 px-3 rounded-md text-sm whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/20 ${
                                         active
-                                            ? "bg-[#1a73e8]/10 text-[#174ea6] font-medium"
-                                            : "text-neutral-700 hover:bg-neutral-100"
+                                            ? "bg-stone-100 text-stone-900 font-medium"
+                                            : "text-stone-600 hover:bg-stone-50"
                                     }`}
                                 >
-                                    <Icon size={16} className={active ? "text-[#1a73e8]" : "text-neutral-500"} />
-                                    <span className="flex-1 text-left">{label}</span>
+                                    <Icon size={16} className={active ? "text-stone-900" : "text-stone-500"} />
+                                    <span className="lg:flex-1 text-left">{label}</span>
                                     <StatusDot state={tabState[id]} />
                                 </button>
                             );
                         })}
                     </nav>
 
-                    <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 py-6">
-                        <div className="max-w-2xl">{panels[tab]}</div>
+                    <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-8 py-5 sm:py-6">
+                        {/* Below lg the side preview is hidden, so it folds into the top of the panel */}
+                        <div className="lg:hidden mb-5 rounded-lg border border-stone-200">
+                            <button
+                                type="button"
+                                onClick={() => setPreviewOpen((v) => !v)}
+                                aria-expanded={previewOpen}
+                                className="w-full flex items-center gap-2 px-3 h-10 text-sm font-medium text-stone-700 cursor-pointer"
+                            >
+                                <span className="flex-1 text-left">Preview</span>
+                                <ChevronDown size={16} className={`text-stone-500 transition-transform ${previewOpen ? "rotate-180" : ""}`} />
+                            </button>
+                            {previewOpen && (
+                                <div className="px-3 pb-3">
+                                    <div className="w-full aspect-video overflow-hidden rounded-md">
+                                        <HeroPreview event={form} className="ring-1 ring-black/5" />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <div className="max-w-2xl min-w-0">{panels[tab]}</div>
                     </div>
 
-                    <aside className="hidden lg:block overflow-y-auto overscroll-contain bg-neutral-50 border-l border-neutral-200 p-6">
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 mb-2">Preview</p>
-                        <HeroPreview event={form} className="rounded-xl shadow-sm ring-1 ring-black/5" />
-                        <p className="text-xs text-neutral-500 mt-3 leading-relaxed">
+                    <aside className="hidden lg:block overflow-y-auto overscroll-contain bg-stone-50 border-l border-stone-200 p-5">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-stone-500 mb-2">Preview</p>
+                        <div className="w-full aspect-video overflow-hidden rounded-lg shadow-xs ring-1 ring-black/5">
+                            <HeroPreview event={form} />
+                        </div>
+                        <p className="text-xs text-stone-500 mt-3 leading-relaxed">
                             Approximate layout. Dots in the menu show what&apos;s{" "}
-                            <span className="text-green-600 font-medium">ready</span>,{" "}
+                            <span className="text-emerald-600 font-medium">ready</span>,{" "}
                             <span className="text-amber-600 font-medium">needs content</span> or off.
                         </p>
                     </aside>
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center gap-3 px-6 py-3.5 border-t border-neutral-200 bg-white shrink-0">
-                    <div className="flex-1 min-w-0 text-sm">
+                {/* Footer: status on its own row on phones, one row from sm up */}
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 px-4 sm:px-6 py-3 border-t border-stone-200 bg-white shrink-0">
+                    <div className="sm:flex-1 min-w-0 text-sm empty:hidden">
                         {error ? (
-                            <p className="flex items-start gap-2 text-red-600">
+                            <p className="flex items-start gap-2 text-red-600" role="alert">
                                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
-                                <span>{error}</span>
+                                <span className="min-w-0 break-words">{error}</span>
                             </p>
                         ) : uploads > 0 ? (
-                            <p className="flex items-center gap-2 text-neutral-500">
+                            <p className="flex items-center gap-2 text-stone-500">
                                 <Loader2 size={14} className="animate-spin" />
                                 Waiting for uploads…
                             </p>
@@ -624,13 +651,15 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                             </p>
                         ) : null}
                     </div>
-                    <button type="button" onClick={safeClose} disabled={busy} className={ghostBtn}>
-                        Cancel
-                    </button>
-                    <button type="submit" disabled={busy} className={primaryBtn}>
-                        {saving && <Loader2 size={16} className="animate-spin" />}
-                        {isEdit ? "Save changes" : form.isActive ? "Publish event" : "Save as draft"}
-                    </button>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:ml-auto [&>button]:w-full sm:[&>button]:w-auto">
+                        <button type="button" onClick={safeClose} disabled={busy} className={ghostBtn}>
+                            Cancel
+                        </button>
+                        <button type="submit" disabled={busy} className={primaryBtn}>
+                            {saving && <Loader2 size={16} className="animate-spin" />}
+                            {isEdit ? "Save changes" : form.isActive ? "Publish event" : "Save as draft"}
+                        </button>
+                    </div>
                 </div>
             </form>
         </Modal>
@@ -669,35 +698,35 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
 
     return (
         <li
-            className={`bg-white rounded-xl overflow-hidden border transition-shadow hover:shadow-[0_1px_3px_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] ${
-                event.isActive ? "border-[#1a73e8] ring-1 ring-[#1a73e8]" : "border-neutral-200"
+            className={`min-w-0 bg-white rounded-lg shadow-xs overflow-hidden border transition-colors hover:border-stone-300 ${
+                event.isActive ? "border-stone-900 ring-1 ring-stone-900" : "border-stone-200"
             }`}
         >
             <div className="relative">
                 <HeroPreview event={event} />
                 {event.isActive && (
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-[#1a73e8] text-white text-[11px] font-medium shadow">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 h-5 px-2 rounded-md bg-stone-900 text-stone-50 text-[11px] font-medium">
+                        <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         Live
                     </span>
                 )}
             </div>
 
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
                 {confirming ? (
                     <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm text-neutral-800 mr-auto">Delete “{event.name}”?</p>
+                        <p className="text-sm text-stone-800 mr-auto min-w-0 break-words">Delete “{event.name}”?</p>
                         <button
                             onClick={() => setConfirming(false)}
                             disabled={deleting}
-                            className="h-8 px-4 rounded-full text-xs font-medium text-neutral-700 border border-neutral-300 hover:bg-neutral-50 cursor-pointer"
+                            className="h-9 px-3 rounded-md text-xs font-medium text-stone-700 border border-stone-200 hover:bg-stone-50 cursor-pointer"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleDelete}
                             disabled={deleting}
-                            className="h-8 px-4 inline-flex items-center gap-1.5 rounded-full text-xs font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
+                            className="h-9 px-3 inline-flex items-center gap-1.5 rounded-md text-xs font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
                         >
                             {deleting && <Loader2 size={12} className="animate-spin" />}
                             Delete
@@ -707,13 +736,13 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
                     <>
                         <div className="flex items-start gap-3">
                             <div className="min-w-0 flex-1">
-                                <p className="text-[15px] font-medium text-neutral-900 truncate">{event.name}</p>
-                                <p className="text-xs text-neutral-500 mt-0.5">
+                                <p className="text-sm font-semibold text-stone-900 truncate" title={event.name}>{event.name}</p>
+                                <p className="text-xs text-stone-500 mt-0.5">
                                     {event.isActive ? "Showing on the homepage" : "Draft · not visible"}
                                 </p>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
-                                {toggling && <Loader2 size={14} className="animate-spin text-neutral-400" />}
+                                {toggling && <Loader2 size={14} className="animate-spin text-stone-400" />}
                                 <Switch
                                     checked={event.isActive}
                                     onChange={handleToggle}
@@ -723,32 +752,20 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2 mt-4">
-                            <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
+                        <div className="flex items-start gap-1 mt-3.5">
+                            <div className="flex flex-wrap gap-1.5 flex-1 min-w-0 pt-1.5">
                                 {elements.length ? (
                                     elements.map((el) => (
-                                        <span key={el} className="px-2 py-0.5 rounded text-[11px] bg-neutral-100 text-neutral-600">
-                                            {el}
-                                        </span>
+                                        <Badge key={el} className="max-w-full truncate">{el}</Badge>
                                     ))
                                 ) : (
-                                    <span className="text-[11px] text-neutral-400">No elements enabled</span>
+                                    <span className="text-[11px] text-stone-400">No elements enabled</span>
                                 )}
                             </div>
-                            <button
-                                onClick={() => onEdit(event)}
-                                className="p-2 rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
-                                aria-label="Edit"
-                                title="Edit"
-                            >
+                            <button onClick={() => onEdit(event)} className={iconBtn} aria-label="Edit" title="Edit">
                                 <Pencil size={15} />
                             </button>
-                            <button
-                                onClick={() => setConfirming(true)}
-                                className="p-2 -mr-2 rounded-full text-neutral-500 hover:bg-red-50 hover:text-red-600 cursor-pointer"
-                                aria-label="Delete"
-                                title="Delete"
-                            >
+                            <button onClick={() => setConfirming(true)} className={`${iconBtnDanger} -mr-1.5`} aria-label="Delete" title="Delete">
                                 <Trash2 size={15} />
                             </button>
                         </div>
@@ -836,29 +853,28 @@ const EventManager = () => {
     const live = events.find((e) => e.isActive);
 
     return (
-        <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-neutral-200">
-                <div>
-                    <h1 className="text-2xl font-normal text-neutral-900">Events</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Seasonal themes for the homepage hero.</p>
-                </div>
-                <button onClick={() => setEditing({})} className={`${primaryBtn} self-start sm:self-auto`}>
-                    <Plus size={18} />
-                    New event
-                </button>
-            </div>
+        <div>
+            <PageHeader
+                title="Events"
+                description="Seasonal themes for the homepage hero."
+                actions={
+                    <button onClick={() => setEditing({})} className={primaryBtn}>
+                        <Plus size={16} />
+                        New event
+                    </button>
+                }
+            />
 
             {/* Live status */}
             {!loading && !loadError && events.length > 0 && (
                 <div
-                    className={`flex items-center gap-3 mt-6 px-4 py-3 rounded-xl text-sm ${
-                        live ? "bg-[#1a73e8]/[0.06] text-[#174ea6]" : "bg-neutral-100 text-neutral-600"
+                    className={`flex items-center gap-3 mb-5 px-3 py-2.5 rounded-lg border text-sm ${
+                        live ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-stone-100 border-stone-200 text-stone-600"
                     }`}
                 >
                     <Radio size={16} className="shrink-0" />
                     {live ? (
-                        <span>
+                        <span className="min-w-0 break-words">
                             <span className="font-medium">{live.name}</span> is live on the homepage.
                         </span>
                     ) : (
@@ -867,47 +883,44 @@ const EventManager = () => {
                 </div>
             )}
 
-            <div className="mt-6">
+            <div>
                 {loading ? (
-                    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <ul className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {Array.from({ length: 3 }).map((_, i) => (
-                            <li key={i} className="rounded-xl border border-neutral-200 overflow-hidden">
-                                <div className="aspect-video bg-neutral-100 animate-pulse" />
+                            <li key={i} className="rounded-lg border border-stone-200 bg-white overflow-hidden">
+                                <Skeleton className="aspect-video rounded-none" />
                                 <div className="p-4 space-y-2">
-                                    <div className="h-4 w-1/2 rounded bg-neutral-100 animate-pulse" />
-                                    <div className="h-3 w-1/3 rounded bg-neutral-100 animate-pulse" />
+                                    <Skeleton className="h-4 w-1/2" />
+                                    <Skeleton className="h-3 w-1/3" />
                                 </div>
                             </li>
                         ))}
                     </ul>
                 ) : loadError ? (
-                    <div className="flex flex-col items-center text-center py-20">
-                        <div className="w-14 h-14 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-4">
-                            <AlertCircle size={24} />
-                        </div>
-                        <p className="text-base text-neutral-900">Couldn&apos;t load events</p>
-                        <p className="text-sm text-neutral-500 mt-1 mb-6">{loadError}</p>
-                        <button onClick={fetchEvents} className={ghostBtn}>
-                            Try again
-                        </button>
-                    </div>
+                    <EmptyState
+                        icon={AlertCircle}
+                        title="Couldn't load events"
+                        description={loadError}
+                        action={
+                            <button onClick={fetchEvents} className={secondaryBtn}>
+                                Try again
+                            </button>
+                        }
+                    />
                 ) : events.length === 0 ? (
-                    <div className="flex flex-col items-center text-center py-20">
-                        <div className="w-14 h-14 rounded-full bg-[#1a73e8]/10 text-[#1a73e8] flex items-center justify-center mb-4">
-                            <PartyPopper size={24} />
-                        </div>
-                        <p className="text-base text-neutral-900">No events yet</p>
-                        <p className="text-sm text-neutral-500 mt-1 mb-6 max-w-sm">
-                            Create a seasonal theme like Halloween — custom background, hanging decorations and an
-                            announcement.
-                        </p>
-                        <button onClick={() => setEditing({})} className={primaryBtn}>
-                            <Plus size={18} />
-                            New event
-                        </button>
-                    </div>
+                    <EmptyState
+                        icon={PartyPopper}
+                        title="No events yet"
+                        description="Create a seasonal theme like Halloween — custom background, hanging decorations and an announcement."
+                        action={
+                            <button onClick={() => setEditing({})} className={primaryBtn}>
+                                <Plus size={16} />
+                                New event
+                            </button>
+                        }
+                    />
                 ) : (
-                    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <ul className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {events.map((event) => (
                             <EventCard
                                 key={event._id}

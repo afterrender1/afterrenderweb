@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ArrowLeftRight, Bookmark, Loader2, X, AlertCircle, Check } from "lucide-react";
-import { inputClass, labelClass, api, friendlyError } from "./ui";
+import { inputClass, labelClass, primaryBtn, ghostBtn, iconBtn, api, friendlyError } from "./ui";
 import AnnouncementTrack, { announcementWrapperStyle } from "@/components/AnnouncementTrack";
 import {
     BUILT_IN_PALETTES,
@@ -32,9 +32,9 @@ export const ColorField = ({ label, value, onChange }) => {
     return (
         <div>
             <label className={labelClass}>{label}</label>
-            <div className="flex items-center h-11 rounded-lg border border-neutral-300 hover:border-neutral-400 focus-within:border-[#1a73e8] focus-within:ring-1 focus-within:ring-[#1a73e8] transition overflow-hidden">
-                <label className="relative w-11 h-full shrink-0 border-r border-neutral-200 cursor-pointer">
-                    <span className="absolute inset-2 rounded-md border border-black/10" style={{ backgroundColor: value }} />
+            <div className="flex items-center h-10 sm:h-9 rounded-md border border-stone-200 bg-white hover:border-stone-300 focus-within:border-stone-400 focus-within:ring-2 focus-within:ring-stone-900/10 transition-colors overflow-hidden">
+                <label className="relative w-10 sm:w-9 h-full shrink-0 border-r border-stone-200 cursor-pointer">
+                    <span className="absolute inset-1.5 rounded border border-black/10" style={{ backgroundColor: value }} />
                     <input
                         type="color"
                         value={value}
@@ -54,7 +54,7 @@ export const ColorField = ({ label, value, onChange }) => {
                         if (isValidHex(hex)) onChange(hex.toUpperCase());
                     }}
                     onBlur={(e) => commit(e.target.value)}
-                    className="flex-1 min-w-0 h-full px-3 text-sm font-mono uppercase text-neutral-900 outline-none bg-white"
+                    className="flex-1 min-w-0 h-full px-3 text-base sm:text-sm font-mono uppercase text-stone-900 outline-none bg-white"
                     aria-label={`${label} hex`}
                 />
             </div>
@@ -65,8 +65,8 @@ export const ColorField = ({ label, value, onChange }) => {
 const Slider = ({ label, value, min, max, unit, onChange }) => (
     <div>
         <div className="flex items-center justify-between mb-1.5">
-            <label className="text-[13px] font-medium text-neutral-700">{label}</label>
-            <span className="text-xs font-mono text-neutral-500">
+            <label className="text-[13px] font-medium text-stone-700">{label}</label>
+            <span className="text-xs font-mono text-stone-500">
                 {value}
                 {unit}
             </span>
@@ -77,7 +77,7 @@ const Slider = ({ label, value, min, max, unit, onChange }) => (
             max={max}
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-full accent-[#1a73e8] cursor-pointer"
+            className="w-full accent-stone-900 cursor-pointer"
         />
     </div>
 );
@@ -88,10 +88,10 @@ const PaletteChip = ({ palette, active, onApply, onDelete, deleting }) => (
         <button
             type="button"
             onClick={() => onApply(palette.style)}
-            className={`flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-full border text-xs transition cursor-pointer ${
+            className={`flex items-center gap-2 h-9 max-w-full pl-1.5 pr-3 rounded-md border text-xs transition-colors cursor-pointer ${
                 active
-                    ? "border-[#1a73e8] bg-[#1a73e8]/[0.06] text-[#174ea6] font-medium"
-                    : "border-neutral-300 text-neutral-700 hover:bg-neutral-50"
+                    ? "border-stone-900 bg-stone-100 text-stone-900 font-medium"
+                    : "border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
             } ${onDelete ? "pr-7" : ""}`}
             title={`Apply “${palette.name}”`}
         >
@@ -108,14 +108,14 @@ const PaletteChip = ({ palette, active, onApply, onDelete, deleting }) => (
                     />
                 )}
             </span>
-            <span className="max-w-[120px] truncate">{palette.name}</span>
+            <span className="max-w-[10rem] truncate" title={palette.name}>{palette.name}</span>
         </button>
         {onDelete && (
             <button
                 type="button"
                 onClick={() => onDelete(palette)}
                 disabled={deleting}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-neutral-400 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+                className="absolute right-1 top-1/2 -translate-y-1/2 size-7 grid place-items-center rounded-md text-stone-400 hover:text-red-600 hover:bg-red-50 cursor-pointer"
                 aria-label={`Delete palette ${palette.name}`}
                 title="Delete palette"
             >
@@ -128,7 +128,7 @@ const PaletteChip = ({ palette, active, onApply, onDelete, deleting }) => (
 /* ---------- Real-size bar preview over the default hero background ---------- */
 export const BarPreview = ({ text, style }) => (
     <div
-        className="rounded-lg overflow-hidden bg-neutral-900 bg-cover bg-center"
+        className="rounded-lg overflow-hidden bg-stone-900 bg-cover bg-center"
         style={{ backgroundImage: "url('/images/hb1.png')" }}
     >
         <div
@@ -209,7 +209,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
             {/* Palettes */}
             <div>
                 <div className="flex items-center justify-between mb-2">
-                    <p className="text-[13px] font-medium text-neutral-700">Palettes</p>
+                    <p className="text-[13px] font-medium text-stone-700">Palettes</p>
                     {!naming && (
                         <button
                             type="button"
@@ -218,7 +218,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
                                 setPaletteError("");
                             }}
                             disabled={alreadySaved}
-                            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#1a73e8] hover:underline disabled:text-neutral-400 disabled:no-underline cursor-pointer disabled:cursor-default"
+                            className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-900 hover:underline disabled:text-stone-400 disabled:no-underline cursor-pointer disabled:cursor-default"
                             title={alreadySaved ? "These colors are already saved" : "Save current colors"}
                         >
                             <Bookmark size={13} />
@@ -247,13 +247,13 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
                                     setNaming(false);
                                 }
                             }}
-                            className={`${inputClass} h-9`}
+                            className={inputClass}
                         />
                         <button
                             type="button"
                             onClick={savePalette}
                             disabled={savingPalette}
-                            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-xs font-medium bg-[#1a73e8] text-white hover:bg-[#1765cc] disabled:opacity-60 cursor-pointer shrink-0"
+                            className={primaryBtn}
                         >
                             {savingPalette && <Loader2 size={12} className="animate-spin" />}
                             Save
@@ -264,7 +264,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
                                 setNaming(false);
                                 setPaletteError("");
                             }}
-                            className="h-9 px-3 rounded-full text-xs font-medium text-neutral-600 hover:bg-neutral-100 cursor-pointer shrink-0"
+                            className={ghostBtn}
                         >
                             Cancel
                         </button>
@@ -286,7 +286,7 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
                         />
                     ))}
                     {loadingPalettes && (
-                        <span className="inline-flex items-center gap-1.5 h-9 px-2 text-xs text-neutral-400">
+                        <span className="inline-flex items-center gap-1.5 h-9 px-2 text-xs text-stone-400">
                             <Loader2 size={12} className="animate-spin" /> Loading saved…
                         </span>
                     )}
@@ -301,23 +301,23 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
             </div>
 
             {/* Colors */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 <ColorField label="Text color" value={style.textColor} onChange={set("textColor")} />
                 <ColorField label="Dot & arrow color" value={style.accentColor} onChange={set("accentColor")} />
             </div>
 
             <div>
                 <label className={labelClass}>Background</label>
-                <div className="inline-flex p-1 rounded-full bg-neutral-100">
+                <div className="inline-flex p-1 rounded-lg bg-stone-100">
                     {["solid", "gradient"].map((type) => (
                         <button
                             key={type}
                             type="button"
                             onClick={() => set("bgType")(type)}
-                            className={`h-8 px-4 rounded-full text-sm capitalize transition cursor-pointer ${
+                            className={`h-8 px-3.5 rounded-md text-sm capitalize transition cursor-pointer ${
                                 style.bgType === type
-                                    ? "bg-white text-neutral-900 font-medium shadow-sm"
-                                    : "text-neutral-600 hover:text-neutral-900"
+                                    ? "bg-white text-stone-900 font-medium shadow-sm"
+                                    : "text-stone-600 hover:text-stone-900"
                             }`}
                         >
                             {type}
@@ -327,21 +327,21 @@ const AnnouncementStyleEditor = ({ value, onChange }) => {
             </div>
 
             {style.bgType === "solid" ? (
-                <div className="sm:w-1/2 sm:pr-2">
+                <div className="sm:w-1/2 sm:pr-2 min-w-0">
                     <ColorField label="Background color" value={style.bgColor} onChange={set("bgColor")} />
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-end gap-2">
                         <ColorField label="From" value={style.gradientFrom} onChange={set("gradientFrom")} />
                         <button
                             type="button"
                             onClick={() => onChange({ ...style, gradientFrom: style.gradientTo, gradientTo: style.gradientFrom })}
-                            className="h-11 w-10 flex items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 cursor-pointer"
+                            className={`${iconBtn} h-10 sm:h-9 w-full sm:w-9`}
                             aria-label="Swap gradient colors"
                             title="Swap"
                         >
-                            <ArrowLeftRight size={16} />
+                            <ArrowLeftRight size={16} className="rotate-90 sm:rotate-0" />
                         </button>
                         <ColorField label="To" value={style.gradientTo} onChange={set("gradientTo")} />
                     </div>
