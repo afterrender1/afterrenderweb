@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileText, Video, PartyPopper, Globe, Lock, Menu, X } from "lucide-react";
 import AdminLogin from "./AdminLogin";
-import { Skeleton } from "./ui";
+import { Skeleton, lockPageScroll } from "./ui";
 
 const NAV_ITEMS = [
     { label: "Blogs", href: "/admin", icon: FileText },
@@ -102,12 +102,11 @@ const AdminShell = ({ children }) => {
     // Scroll lock + Escape while the mobile drawer is open
     useEffect(() => {
         if (!drawerOpen) return;
-        const prev = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        const unlock = lockPageScroll();
         const onKey = (e) => e.key === "Escape" && setDrawerPath(null);
         window.addEventListener("keydown", onKey);
         return () => {
-            document.body.style.overflow = prev;
+            unlock();
             window.removeEventListener("keydown", onKey);
         };
     }, [drawerOpen]);
@@ -126,7 +125,7 @@ const AdminShell = ({ children }) => {
     const current = NAV_ITEMS.find((item) => isActive(pathname, item.href));
 
     return (
-        <div className="min-h-dvh bg-stone-50 md:flex overflow-x-clip">
+        <div className="min-h-dvh bg-stone-50 md:flex">
             {/* md+: icon rail, lg+: full sidebar */}
             <aside className="hidden md:flex md:flex-col md:w-16 lg:w-60 shrink-0 h-dvh sticky top-0 bg-stone-50 border-r border-stone-200 p-3 lg:p-4">
                 <div className="pb-5 md:flex md:justify-center lg:block lg:px-1">

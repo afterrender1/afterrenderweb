@@ -92,21 +92,34 @@ export const Snackbar = ({ toast, onClose }) => {
 export const modalPanel =
     "w-full max-h-[92dvh] sm:max-h-[88dvh] flex flex-col overflow-hidden bg-white rounded-t-xl sm:rounded-xl shadow-xl pb-[env(safe-area-inset-bottom)] sm:pb-0";
 
-export const Modal = ({ onClose, children, className = "" }) => {
-    useEffect(() => {
-        const { body, documentElement } = document;
-        const prevOverflow = body.style.overflow;
-        const prevPadding = body.style.paddingRight;
+// Ref-counted page scroll lock, so stacked dialogs/drawers can never leave the page stuck unscrollable
+let lockCount = 0;
+let savedBody = null;
+export const lockPageScroll = () => {
+    const { body, documentElement } = document;
+    if (lockCount++ === 0) {
+        savedBody = { overflow: body.style.overflow, paddingRight: body.style.paddingRight };
         // Keep layout from jumping when the scrollbar disappears
         const scrollbar = window.innerWidth - documentElement.clientWidth;
         body.style.overflow = "hidden";
         if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+    }
+    return () => {
+        if (--lockCount === 0 && savedBody) {
+            body.style.overflow = savedBody.overflow;
+            body.style.paddingRight = savedBody.paddingRight;
+            savedBody = null;
+        }
+    };
+};
 
+export const Modal = ({ onClose, children, className = "" }) => {
+    useEffect(() => {
+        const unlock = lockPageScroll();
         const onKey = (e) => e.key === "Escape" && onClose();
         window.addEventListener("keydown", onKey);
         return () => {
-            body.style.overflow = prevOverflow;
-            body.style.paddingRight = prevPadding;
+            unlock();
             window.removeEventListener("keydown", onKey);
         };
     }, [onClose]);

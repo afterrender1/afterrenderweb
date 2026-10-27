@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 // The chat widget (and its framer-motion code) isn't needed for first paint, so
 // load it once the page is idle instead of hydrating it with everything else.
 const FloatingChatWidget = dynamic(() => import("./FloatingChatWidget"), { ssr: false });
 
 export default function LazyFloatingChat() {
+  const pathname = usePathname();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -28,5 +30,8 @@ export default function LazyFloatingChat() {
     };
   }, []);
 
+  // Not mounted on /admin at all: the widget's auto-open timer would otherwise lock page scroll
+  // on mobile with nothing visible to close it. Unmounting also releases a lock carried over from the site.
+  if (pathname?.startsWith("/admin")) return null;
   return ready ? <FloatingChatWidget /> : null;
 }
