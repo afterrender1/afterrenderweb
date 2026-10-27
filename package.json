@@ -22,8 +22,8 @@
     "lucide-react": "^0.552.0",
     "mongoose": "^9.1.0",
     "motion": "^12.23.24",
-    "next": "^16.0.7",
-    "nodemailer": "^9.0.6",
+    "next": "^16.4.3",
+    "nodemailer": "^10.1.4",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-markdown": "^10.1.0",
@@ -35,7 +35,18 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "16.0.1",
+    "eslint-config-next": "^16.4.3",
     "tailwindcss": "^4"
+  },
+  "overrides": {
+    "sharp": "^0.35.5",
+    "zod": "^4.6.6",
+    "source-map-js": "^1.2.2",
+    "@humanfs/node": "^0.16.8",
+    "brace-expansion@^1": "^1.1.21",
+    "brace-expansion@^2": "^2.1.7"
+  },
+  "allowScripts": {
+    "unrs-resolver@1.11.1": true
   }
 }
