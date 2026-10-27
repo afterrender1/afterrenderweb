@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/app/lib/db";
 import VideoReview from "@/app/models/VideoReview";
 import { ADMIN_COOKIE, isValidSessionToken } from "@/app/lib/adminAuth";
@@ -26,6 +27,8 @@ export async function POST(req) {
             poster: poster || "",
             fit: fit === "contain" ? "contain" : "cover",
         });
+
+        revalidatePath("/website");
 
         return NextResponse.json({ success: true, review }, { status: 201 });
     } catch (err) {

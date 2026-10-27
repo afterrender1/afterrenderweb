@@ -125,8 +125,8 @@ const FAQItem = ({ q, a, isOpen, onToggle }) => (
   </div>
 );
 
-// `portfolio` is rendered between the process and FAQ sections
-const WebsiteSections = ({ portfolio = null }) => {
+// `portfolio` and `testimonials` are rendered, in that order, between the process and FAQ sections
+const WebsiteSections = ({ portfolio = null, testimonials = null }) => {
   const [openFaq, setOpenFaq] = useState(0);
 
   return (
@@ -166,6 +166,8 @@ const WebsiteSections = ({ portfolio = null }) => {
       </section>
 
       {portfolio}
+
+      {testimonials}
 
       {/* FAQ */}
       <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">

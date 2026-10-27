@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import dbConnect from "@/app/lib/db";
 import VideoReview from "@/app/models/VideoReview";
@@ -36,6 +37,7 @@ export async function PUT(req, { params }) {
             { new: true, runValidators: true }
         );
         if (!review) return notFound();
+        revalidatePath("/website");
 
         return NextResponse.json({ success: true, review });
     } catch (err) {
@@ -54,6 +56,7 @@ export async function DELETE(req, { params }) {
         await dbConnect();
         const review = await VideoReview.findByIdAndDelete(id);
         if (!review) return notFound();
+        revalidatePath("/website");
 
         return NextResponse.json({ success: true });
     } catch (err) {
