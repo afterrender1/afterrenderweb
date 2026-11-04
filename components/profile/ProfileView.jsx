@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { CreditCard, LogOut, ShieldCheck, UserRound } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { Avatar } from "@/components/auth/ui";
+import { useConfirm } from "./shared";
 import ProfileTab from "./ProfileTab";
 import SecurityTab from "./SecurityTab";
 import PurchasesTab from "./PurchasesTab";
@@ -59,15 +60,28 @@ export default function ProfileView({ initialUser, initialSessionId, initialTab 
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const handleSignOut = async () => {
-        setSigningOut(true);
-        await authClient.signOut().catch(() => {});
-        router.replace("/");
-        router.refresh();
-    };
+    const { ask, dialog } = useConfirm();
+
+    const handleSignOut = () =>
+        ask({
+            title: "Sign out?",
+            description: "You'll need to log in again to access your account.",
+            confirmLabel: "Sign out",
+            action: async () => {
+                setSigningOut(true);
+                const { error } = await authClient.signOut().catch((err) => ({ error: err }));
+                if (error) {
+                    setSigningOut(false);
+                    return "Couldn't sign you out. Please try again.";
+                }
+                router.replace("/");
+                router.refresh();
+            },
+        });
 
     return (
         <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+            {dialog}
             {/* Sidebar (desktop) / top bar (mobile) */}
             <aside className="lg:sticky lg:top-28 lg:self-start">
                 <div className="flex items-center gap-3 px-1 lg:px-2">

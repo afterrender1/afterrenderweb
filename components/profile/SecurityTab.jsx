@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Laptop, Smartphone } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { GoogleIcon, authErrorMessage, oauthErrorMessage } from "@/components/auth/ui";
-import { Badge, Button, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime } from "./shared";
+import { Badge, Button, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime, useConfirm } from "./shared";
 
 const MIN_PASSWORD = 8;
 
@@ -114,13 +114,21 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
         }
     };
 
-    const disconnect = async () => {
+    const { ask, dialog, busy: disconnecting } = useConfirm();
+
+    const confirmDisconnect = () => {
         setError("");
-        setBusy(true);
-        const { error: err } = await authClient.unlinkAccount({ providerId: "google" });
-        setBusy(false);
-        if (err) return setError(authErrorMessage(err, "Could not disconnect Google."));
-        onAccountsChange();
+        ask({
+            title: "Disconnect Google?",
+            description: "You won't be able to log in with Google anymore. You can still log in with your email and password.",
+            confirmLabel: "Disconnect",
+            destructive: true,
+            action: async () => {
+                const { error: err } = await authClient.unlinkAccount({ providerId: "google" });
+                if (err) return authErrorMessage(err, "Could not disconnect Google.");
+                onAccountsChange();
+            },
+        });
     };
 
     return (
@@ -129,7 +137,7 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
             action={
                 hasGoogle ? (
                     canDisconnect && (
-                        <Button onClick={disconnect} loading={busy}>
+                        <Button onClick={confirmDisconnect} loading={disconnecting}>
                             Disconnect
                         </Button>
                     )
@@ -141,6 +149,7 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
             }
             below={error ? <Message>{error}</Message> : null}
         >
+            {dialog}
             <span className="inline-flex items-center gap-2">
                 <GoogleIcon size={16} />
                 {hasGoogle ? "Connected" : <span className="text-zinc-500">Not connected</span>}
@@ -166,9 +175,7 @@ const fetchSessions = async () => {
 
 const Devices = ({ currentSessionId }) => {
     const { data, error: loadError, mutate } = useSWR("auth:sessions", fetchSessions, { revalidateOnFocus: false });
-    const [actionError, setActionError] = useState("");
-    const [busyToken, setBusyToken] = useState(null);
-    const [revokingAll, setRevokingAll] = useState(false);
+    const { ask, dialog } = useConfirm();
 
     const sessions = useMemo(() => {
         if (loadError) return [];
@@ -182,25 +189,33 @@ const Devices = ({ currentSessionId }) => {
 
     const others = sessions?.filter((s) => s.id !== currentSessionId) ?? [];
 
-    const revoke = async (token) => {
-        setActionError("");
-        setBusyToken(token);
-        const { error } = await authClient.revokeSession({ token });
-        setBusyToken(null);
-        if (error) return setActionError(authErrorMessage(error, "Could not sign out that device."));
-        mutate();
-    };
+    const confirmRevoke = (session) =>
+        ask({
+            title: "Sign out this device?",
+            description: `${describeDevice(session.userAgent).label} will be signed out within a few minutes.`,
+            confirmLabel: "Sign out device",
+            destructive: true,
+            action: async () => {
+                const { error } = await authClient.revokeSession({ token: session.token });
+                if (error) return authErrorMessage(error, "Could not sign out that device.");
+                mutate();
+            },
+        });
 
-    const revokeOthers = async () => {
-        setActionError("");
-        setRevokingAll(true);
-        const { error } = await authClient.revokeOtherSessions();
-        setRevokingAll(false);
-        if (error) return setActionError(authErrorMessage(error, "Could not sign out other devices."));
-        mutate();
-    };
+    const confirmRevokeOthers = () =>
+        ask({
+            title: "Sign out all other devices?",
+            description: "Every device except this one will be signed out within a few minutes.",
+            confirmLabel: "Sign out all",
+            destructive: true,
+            action: async () => {
+                const { error } = await authClient.revokeOtherSessions();
+                if (error) return authErrorMessage(error, "Could not sign out other devices.");
+                mutate();
+            },
+        });
 
-    const errorText = actionError || (loadError ? "Couldn't load your devices." : "");
+    const errorText = loadError ? "Couldn't load your devices." : "";
 
     return (
         <Section
@@ -211,7 +226,7 @@ const Devices = ({ currentSessionId }) => {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <Message>{errorText}</Message>
                         {others.length > 0 && (
-                            <Button variant="danger" onClick={revokeOthers} loading={revokingAll} className="ml-auto">
+                            <Button variant="danger" onClick={confirmRevokeOthers} className="ml-auto">
                                 Sign out all other devices
                             </Button>
                         )}
@@ -219,6 +234,7 @@ const Devices = ({ currentSessionId }) => {
                 ) : null
             }
         >
+            {dialog}
             {sessions === null ? (
                 <div className="px-5 py-4 sm:px-6">
                     <Spinner />
@@ -244,7 +260,7 @@ const Devices = ({ currentSessionId }) => {
                                 </p>
                             </div>
                             {!current && s.token && (
-                                <Button variant="ghost" onClick={() => revoke(s.token)} loading={busyToken === s.token} disabled={revokingAll}>
+                                <Button variant="ghost" onClick={() => confirmRevoke(s)}>
                                     Sign out
                                 </Button>
                             )}

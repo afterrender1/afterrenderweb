@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Camera, Loader2, Trash2 } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { AVATAR_MAX_MB } from "@/app/lib/avatar";
 import { Avatar, authErrorMessage } from "@/components/auth/ui";
-import { Badge, Button, Input, Message, PageHeader, Row, Section, formatDate } from "./shared";
+import { Badge, Button, DotsMenu, Input, Message, PageHeader, Row, Section, formatDate, useConfirm } from "./shared";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
@@ -45,8 +45,8 @@ const uploadAvatarToCloudinary = async (file, onProgress) => {
 const PhotoRow = ({ user }) => {
     const inputRef = useRef(null);
     const [progress, setProgress] = useState(null);
-    const [removing, setRemoving] = useState(false);
     const [msg, setMsg] = useState({ type: "error", text: "" });
+    const { ask, dialog, busy: removing } = useConfirm();
     const uploading = progress !== null;
 
     const handleFile = async (file) => {
@@ -69,36 +69,45 @@ const PhotoRow = ({ user }) => {
         }
     };
 
-    const handleRemove = async () => {
-        setMsg({ type: "error", text: "" });
-        setRemoving(true);
+    const removePhoto = async () => {
         const { error } = await authClient.updateUser({ image: null });
-        if (error) {
-            setRemoving(false);
-            return setMsg({ type: "error", text: authErrorMessage(error, "Could not remove your photo.") });
-        }
+        if (error) return authErrorMessage(error, "Could not remove your photo.");
+        // Best effort: delete the file itself from Cloudinary.
         await fetch("/api/user/avatar", { method: "DELETE" }).catch(() => {});
-        setRemoving(false);
         setMsg({ type: "success", text: "Photo removed." });
+    };
+
+    const confirmRemove = () => {
+        setMsg({ type: "error", text: "" });
+        ask({
+            title: "Remove profile photo?",
+            description: "Your photo will be deleted and your initials will be shown instead.",
+            confirmLabel: "Remove photo",
+            destructive: true,
+            action: removePhoto,
+        });
     };
 
     return (
         <Row
             label="Photo"
             action={
-                <>
-                    <Button onClick={() => inputRef.current?.click()} disabled={uploading || removing}>
-                        {user.image ? "Change" : "Upload"}
-                    </Button>
-                    {user.image && (
-                        <Button variant="ghost" onClick={handleRemove} loading={removing} disabled={uploading}>
-                            Remove
-                        </Button>
-                    )}
-                </>
+                <DotsMenu
+                    label="Photo options"
+                    disabled={uploading || removing}
+                    items={[
+                        {
+                            label: user.image ? "Change photo" : "Upload photo",
+                            icon: Camera,
+                            onSelect: () => inputRef.current?.click(),
+                        },
+                        user.image && { label: "Remove photo", icon: Trash2, destructive: true, onSelect: confirmRemove },
+                    ]}
+                />
             }
             below={msg.text ? <Message type={msg.type}>{msg.text}</Message> : null}
         >
+            {dialog}
             <input
                 ref={inputRef}
                 type="file"
