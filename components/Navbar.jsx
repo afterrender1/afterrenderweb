@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Urbanist } from "@/app/lib/fonts";
+import NavbarAuth from "@/components/NavbarAuth";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -29,7 +30,13 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
     pathname === "/website" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
-    pathname === "/terms-conditions";
+    pathname === "/terms-conditions" ||
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
+    pathname === "/verify-email" ||
+    pathname === "/profile";
 
   const currentLogo =
     logo || "/logos/arlogo.png";
@@ -156,7 +163,8 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
+            <NavbarAuth variant="desktop" isLight={isPricing} />
             <Link
               target="_blank"
               href="https://calendly.com/afterrenderagency/new-meeting"
@@ -277,8 +285,9 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                     </div>
                   </div>
 
-                  {/* Book a Call Button */}
-                  <div className="pt-4 mt-6">
+                  {/* Account + Book a Call */}
+                  <div className="pt-4 mt-6 space-y-3">
+                    <NavbarAuth variant="mobile" onNavigate={closeMobileMenu} />
                     <Link
                       href="https://calendly.com/afterrenderagency/new-meeting"
                       target="_blank"
