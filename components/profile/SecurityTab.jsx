@@ -2,39 +2,29 @@
 
 import React, { useMemo, useState } from "react";
 import useSWR from "swr";
-import { Laptop, Loader2, Smartphone } from "lucide-react";
+import { Laptop, Smartphone } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
-import {
-    Alert,
-    GoogleIcon,
-    PasswordField,
-    PrimaryButton,
-    SecondaryButton,
-    authErrorMessage,
-    oauthErrorMessage,
-} from "@/components/auth/ui";
-import { Badge, Panel, formatDateTime } from "./shared";
+import { GoogleIcon, authErrorMessage, oauthErrorMessage } from "@/components/auth/ui";
+import { Badge, Button, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime } from "./shared";
 
 const MIN_PASSWORD = 8;
 
 /* ---------- Password ---------- */
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ onDone, onCancel }) => {
     const [current, setCurrent] = useState("");
     const [next, setNext] = useState("");
     const [confirm, setConfirm] = useState("");
     const [signOutOthers, setSignOutOthers] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
         if (next.length < MIN_PASSWORD) return setError(`New password must be at least ${MIN_PASSWORD} characters.`);
         if (next !== confirm) return setError("New passwords don't match.");
-        if (next === current) return setError("New password must be different from your current one.");
+        if (next === current) return setError("New password must be different from the current one.");
 
         setSaving(true);
         const { error: err } = await authClient.changePassword({
@@ -44,100 +34,69 @@ const ChangePasswordForm = () => {
         });
         setSaving(false);
         if (err) return setError(authErrorMessage(err, "Could not change your password."));
-        setCurrent("");
-        setNext("");
-        setConfirm("");
-        setSuccess(signOutOthers ? "Password changed. You've been signed out on all other devices." : "Password changed.");
+        onDone(signOutOthers ? "Password changed. Other devices were signed out." : "Password changed.");
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
-            <PasswordField
-                label="Current password"
-                name="current-password"
-                autoComplete="current-password"
-                required
-                maxLength={128}
-                value={current}
-                onChange={(e) => setCurrent(e.target.value)}
-            />
-            <PasswordField
-                label="New password"
-                name="new-password"
-                autoComplete="new-password"
-                required
-                minLength={MIN_PASSWORD}
-                maxLength={128}
-                value={next}
-                onChange={(e) => setNext(e.target.value)}
-                placeholder="At least 8 characters"
-            />
-            <PasswordField
-                label="Confirm new password"
-                name="confirm-password"
-                autoComplete="new-password"
-                required
-                minLength={MIN_PASSWORD}
-                maxLength={128}
-                value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
-            />
-            <label className="flex items-center gap-2.5 text-sm text-[#425466] cursor-pointer select-none">
-                <input
-                    type="checkbox"
-                    checked={signOutOthers}
-                    onChange={(e) => setSignOutOthers(e.target.checked)}
-                    className="w-4 h-4 accent-[#48A2FF]"
-                />
-                Sign out of all other devices
+        <form onSubmit={handleSubmit} className="max-w-sm space-y-3">
+            <div>
+                <Label htmlFor="pw-current">Current password</Label>
+                <Input id="pw-current" type="password" autoComplete="current-password" required maxLength={128} value={current} onChange={(e) => setCurrent(e.target.value)} />
+            </div>
+            <div>
+                <Label htmlFor="pw-new">New password</Label>
+                <Input id="pw-new" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={next} onChange={(e) => setNext(e.target.value)} placeholder="At least 8 characters" />
+            </div>
+            <div>
+                <Label htmlFor="pw-confirm">Confirm new password</Label>
+                <Input id="pw-confirm" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+            </div>
+            <label className="flex cursor-pointer select-none items-center gap-2 text-sm text-zinc-600">
+                <input type="checkbox" checked={signOutOthers} onChange={(e) => setSignOutOthers(e.target.checked)} className="h-4 w-4 accent-zinc-900" />
+                Sign out of other devices
             </label>
-            <Alert type="error">{error}</Alert>
-            <Alert type="success">{success}</Alert>
-            <PrimaryButton type="submit" loading={saving} className="sm:w-auto sm:px-8">
-                Change password
-            </PrimaryButton>
+            <Message>{error}</Message>
+            <div className="flex gap-2 pt-1">
+                <Button type="submit" variant="primary" loading={saving}>
+                    Update password
+                </Button>
+                <Button type="button" variant="ghost" onClick={onCancel}>
+                    Cancel
+                </Button>
+            </div>
         </form>
     );
 };
 
-const SetPasswordByEmail = ({ email }) => {
-    const [sending, setSending] = useState(false);
-    const [error, setError] = useState("");
-    const [sent, setSent] = useState(false);
-
-    const handleSend = async () => {
-        setError("");
-        setSending(true);
-        const { error: err } = await authClient.requestPasswordReset({ email, redirectTo: "/reset-password" });
-        setSending(false);
-        if (err) return setError(authErrorMessage(err));
-        setSent(true);
-    };
-
+const PasswordRow = () => {
+    const [open, setOpen] = useState(false);
+    const [success, setSuccess] = useState("");
     return (
-        <div className="space-y-4 max-w-lg">
-            <p className="text-sm text-[#425466] leading-relaxed">
-                You sign in with Google. If you&apos;d also like to log in with your email and a password, we&apos;ll email you a
-                secure link to create one.
-            </p>
-            {sent ? (
-                <Alert type="success">
-                    Check <span className="font-semibold break-all">{email}</span> for a link to set your password. It expires in 1
-                    hour.
-                </Alert>
-            ) : (
-                <SecondaryButton type="button" onClick={handleSend} loading={sending}>
-                    Email me a link to set a password
-                </SecondaryButton>
-            )}
-            <Alert type="error">{error}</Alert>
-        </div>
+        <Row
+            label="Password"
+            action={!open && <Button onClick={() => { setSuccess(""); setOpen(true); }}>Change</Button>}
+            below={
+                open ? (
+                    <ChangePasswordForm
+                        onCancel={() => setOpen(false)}
+                        onDone={(text) => {
+                            setOpen(false);
+                            setSuccess(text);
+                        }}
+                    />
+                ) : success ? (
+                    <Message type="success">{success}</Message>
+                ) : null
+            }
+        >
+            <span className="tracking-widest text-zinc-400">••••••••</span>
+        </Row>
     );
 };
 
-/* ---------- Connected accounts ---------- */
+/* ---------- Google ---------- */
 
-const ConnectedAccounts = ({ hasGoogle, hasPassword, onAccountsChange, linkError }) => {
+const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) => {
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(oauthErrorMessage(linkError));
 
@@ -149,7 +108,6 @@ const ConnectedAccounts = ({ hasGoogle, hasPassword, onAccountsChange, linkError
             callbackURL: "/profile?tab=security",
             errorCallbackURL: "/profile?tab=security",
         });
-        // On success the browser is redirected to Google.
         if (err) {
             setBusy(false);
             setError(authErrorMessage(err, "Could not connect Google."));
@@ -166,71 +124,38 @@ const ConnectedAccounts = ({ hasGoogle, hasPassword, onAccountsChange, linkError
     };
 
     return (
-        <Panel title="Connected accounts" description="Use these to log in to AfterRender in one click.">
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-black/[0.06] p-4">
-                <div className="flex items-center gap-3">
-                    <span className="w-10 h-10 rounded-xl bg-[#f6f9fc] flex items-center justify-center">
-                        <GoogleIcon size={20} />
-                    </span>
-                    <div>
-                        <p className="text-sm font-semibold text-[#0A2540]">Google</p>
-                        <p className="text-xs text-[#8898aa]">{hasGoogle ? "Connected" : "Not connected"}</p>
-                    </div>
-                </div>
-                {hasGoogle ? (
-                    hasPassword ? (
-                        <SecondaryButton type="button" onClick={disconnect} loading={busy}>
+        <Row
+            label="Google"
+            action={
+                hasGoogle ? (
+                    canDisconnect && (
+                        <Button onClick={disconnect} loading={busy}>
                             Disconnect
-                        </SecondaryButton>
-                    ) : (
-                        <Badge tone="success">Main sign-in method</Badge>
+                        </Button>
                     )
                 ) : (
-                    <SecondaryButton type="button" onClick={connect} loading={busy}>
+                    <Button onClick={connect} loading={busy}>
                         Connect
-                    </SecondaryButton>
-                )}
-            </div>
-            {!hasGoogle && (
-                <p className="mt-3 text-xs text-[#8898aa]">The Google account must use the same email as your AfterRender account.</p>
-            )}
-            {error && (
-                <div className="mt-4">
-                    <Alert type="error">{error}</Alert>
-                </div>
-            )}
-        </Panel>
+                    </Button>
+                )
+            }
+            below={error ? <Message>{error}</Message> : null}
+        >
+            <span className="inline-flex items-center gap-2">
+                <GoogleIcon size={16} />
+                {hasGoogle ? "Connected" : <span className="text-zinc-500">Not connected</span>}
+            </span>
+        </Row>
     );
 };
 
-/* ---------- Sessions ---------- */
+/* ---------- Devices ---------- */
 
 const describeDevice = (userAgent = "") => {
     const ua = String(userAgent);
-    const browser = /Edg\//.test(ua)
-        ? "Edge"
-        : /OPR\/|Opera/.test(ua)
-          ? "Opera"
-          : /Chrome\//.test(ua)
-            ? "Chrome"
-            : /Firefox\//.test(ua)
-              ? "Firefox"
-              : /Safari\//.test(ua)
-                ? "Safari"
-                : "Browser";
-    const os = /Windows/.test(ua)
-        ? "Windows"
-        : /iPhone|iPad|iPod/.test(ua)
-          ? "iOS"
-          : /Android/.test(ua)
-            ? "Android"
-            : /Mac OS X|Macintosh/.test(ua)
-              ? "macOS"
-              : /Linux/.test(ua)
-                ? "Linux"
-                : "Unknown device";
-    const mobile = /Mobile|Android|iPhone|iPad/.test(ua);
-    return { label: `${browser} on ${os}`, mobile };
+    const browser = /Edg\//.test(ua) ? "Edge" : /OPR\/|Opera/.test(ua) ? "Opera" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Browser";
+    const os = /Windows/.test(ua) ? "Windows" : /iPhone|iPad|iPod/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac OS X|Macintosh/.test(ua) ? "macOS" : /Linux/.test(ua) ? "Linux" : "Unknown";
+    return { label: `${browser} on ${os}`, mobile: /Mobile|Android|iPhone|iPad/.test(ua) };
 };
 
 const fetchSessions = async () => {
@@ -239,13 +164,12 @@ const fetchSessions = async () => {
     return Array.isArray(data) ? data : [];
 };
 
-const ActiveSessions = ({ currentSessionId }) => {
+const Devices = ({ currentSessionId }) => {
     const { data, error: loadError, mutate } = useSWR("auth:sessions", fetchSessions, { revalidateOnFocus: false });
     const [actionError, setActionError] = useState("");
     const [busyToken, setBusyToken] = useState(null);
     const [revokingAll, setRevokingAll] = useState(false);
 
-    // Current device first, then most recently active. null = loading.
     const sessions = useMemo(() => {
         if (loadError) return [];
         if (!data) return null;
@@ -256,129 +180,112 @@ const ActiveSessions = ({ currentSessionId }) => {
         });
     }, [data, loadError, currentSessionId]);
 
-    const error = actionError || (loadError ? "Couldn't load your devices." : "");
+    const others = sessions?.filter((s) => s.id !== currentSessionId) ?? [];
 
     const revoke = async (token) => {
         setActionError("");
         setBusyToken(token);
-        const { error: err } = await authClient.revokeSession({ token });
+        const { error } = await authClient.revokeSession({ token });
         setBusyToken(null);
-        if (err) return setActionError(authErrorMessage(err, "Could not sign out that device."));
+        if (error) return setActionError(authErrorMessage(error, "Could not sign out that device."));
         mutate();
     };
 
     const revokeOthers = async () => {
         setActionError("");
         setRevokingAll(true);
-        const { error: err } = await authClient.revokeOtherSessions();
+        const { error } = await authClient.revokeOtherSessions();
         setRevokingAll(false);
-        if (err) return setActionError(authErrorMessage(err, "Could not sign out other devices."));
+        if (error) return setActionError(authErrorMessage(error, "Could not sign out other devices."));
         mutate();
     };
 
-    const others = sessions?.filter((s) => s.id !== currentSessionId) ?? [];
+    const errorText = actionError || (loadError ? "Couldn't load your devices." : "");
 
     return (
-        <Panel
-            title="Where you're logged in"
-            description="Signed out devices may stay logged in for up to 5 more minutes."
-            action={
-                others.length > 0 && (
-                    <SecondaryButton type="button" onClick={revokeOthers} loading={revokingAll}>
-                        Sign out all other devices
-                    </SecondaryButton>
-                )
+        <Section
+            title="Your devices"
+            description="Where you're currently logged in."
+            footer={
+                others.length > 0 || errorText ? (
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <Message>{errorText}</Message>
+                        {others.length > 0 && (
+                            <Button variant="danger" onClick={revokeOthers} loading={revokingAll} className="ml-auto">
+                                Sign out all other devices
+                            </Button>
+                        )}
+                    </div>
+                ) : null
             }
         >
             {sessions === null ? (
-                <div className="flex items-center gap-2 text-sm text-[#8898aa]">
-                    <Loader2 size={16} className="animate-spin" /> Loading devices…
+                <div className="px-5 py-4 sm:px-6">
+                    <Spinner />
                 </div>
             ) : (
-                <ul className="divide-y divide-black/[0.05]">
-                    {sessions.map((s) => {
-                        const { label, mobile } = describeDevice(s.userAgent);
-                        const current = s.id === currentSessionId;
-                        const Icon = mobile ? Smartphone : Laptop;
-                        return (
-                            <li key={s.id} className="flex flex-wrap items-center justify-between gap-3 py-3.5">
-                                <div className="flex items-center gap-3 min-w-0">
-                                    <span className="w-10 h-10 rounded-xl bg-[#f6f9fc] text-[#425466] flex items-center justify-center shrink-0">
-                                        <Icon size={18} />
-                                    </span>
-                                    <div className="min-w-0">
-                                        <p className="text-sm font-semibold text-[#0A2540] flex flex-wrap items-center gap-2">
-                                            {label}
-                                            {current && <Badge tone="info">This device</Badge>}
-                                        </p>
-                                        <p className="text-xs text-[#8898aa] break-all">
-                                            {s.ipAddress ? `${s.ipAddress} · ` : ""}Last active {formatDateTime(s.updatedAt)}
-                                        </p>
-                                    </div>
-                                </div>
-                                {!current && s.token && (
-                                    <SecondaryButton
-                                        type="button"
-                                        onClick={() => revoke(s.token)}
-                                        loading={busyToken === s.token}
-                                        disabled={revokingAll}
-                                    >
-                                        Sign out
-                                    </SecondaryButton>
-                                )}
-                            </li>
-                        );
-                    })}
-                </ul>
+                sessions.map((s) => {
+                    const { label, mobile } = describeDevice(s.userAgent);
+                    const current = s.id === currentSessionId;
+                    const Icon = mobile ? Smartphone : Laptop;
+                    return (
+                        <div key={s.id} className="flex items-center gap-3 px-5 py-3.5 sm:px-6">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600">
+                                <Icon size={17} />
+                            </span>
+                            <div className="min-w-0 flex-1">
+                                <p className="flex flex-wrap items-center gap-2 text-sm text-zinc-900">
+                                    {label}
+                                    {current && <Badge tone="success">This device</Badge>}
+                                </p>
+                                <p className="truncate text-xs text-zinc-500">
+                                    {current ? "Active now" : `Last active ${formatDateTime(s.updatedAt)}`}
+                                    {s.ipAddress ? ` · ${s.ipAddress}` : ""}
+                                </p>
+                            </div>
+                            {!current && s.token && (
+                                <Button variant="ghost" onClick={() => revoke(s.token)} loading={busyToken === s.token} disabled={revokingAll}>
+                                    Sign out
+                                </Button>
+                            )}
+                        </div>
+                    );
+                })
             )}
-            {error && (
-                <div className="mt-4">
-                    <Alert type="error">{error}</Alert>
-                </div>
-            )}
-        </Panel>
+        </Section>
     );
 };
 
 /* ---------- Tab ---------- */
 
-export default function SecurityTab({
-    user,
-    currentSessionId,
-    accounts,
-    hasPassword,
-    hasGoogle,
-    googleEnabled,
-    linkError,
-    onAccountsChange,
-}) {
+export default function SecurityTab({ currentSessionId, accounts, hasPassword, hasGoogle, googleEnabled, linkError, onAccountsChange }) {
+    const showGoogle = googleEnabled || hasGoogle;
+
     return (
-        <div className="space-y-6">
-            <Panel
-                title={hasPassword || accounts === null ? "Change password" : "Set a password"}
-                description={hasPassword ? "Use at least 8 characters. Avoid passwords you use on other sites." : undefined}
-            >
-                {accounts === null ? (
-                    <div className="flex items-center gap-2 text-sm text-[#8898aa]">
-                        <Loader2 size={16} className="animate-spin" /> Loading…
-                    </div>
-                ) : hasPassword ? (
-                    <ChangePasswordForm />
-                ) : (
-                    <SetPasswordByEmail email={user.email} />
-                )}
-            </Panel>
-
-            {(googleEnabled || hasGoogle) && accounts !== null && (
-                <ConnectedAccounts
-                    hasGoogle={hasGoogle}
-                    hasPassword={hasPassword}
-                    onAccountsChange={onAccountsChange}
-                    linkError={linkError}
-                />
-            )}
-
-            <ActiveSessions currentSessionId={currentSessionId} />
-        </div>
+        <>
+            <PageHeader title="Security" description="Manage how you sign in and where you're logged in." />
+            <div className="space-y-6">
+                <Section title="Sign-in methods">
+                    {accounts === null ? (
+                        <div className="px-5 py-4 sm:px-6">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <>
+                            {showGoogle && (
+                                <GoogleRow
+                                    hasGoogle={hasGoogle}
+                                    canDisconnect={hasPassword}
+                                    onAccountsChange={onAccountsChange}
+                                    linkError={linkError}
+                                />
+                            )}
+                            {hasPassword && <PasswordRow />}
+                        </>
+                    )}
+                </Section>
+                <Devices currentSessionId={currentSessionId} />
+            </div>
+        </>
     );
 }

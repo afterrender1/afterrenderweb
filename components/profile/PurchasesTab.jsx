@@ -2,42 +2,43 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Receipt } from "lucide-react";
-import { Panel } from "./shared";
+import { Receipt } from "lucide-react";
+import { Badge, PageHeader, Row, Section } from "./shared";
 
-// Purchase history. Stripe payments will be listed here (plan, amount, status, date, invoice)
-// once Stripe is connected; until then every account starts empty.
+// Billing: current plan + payment history. Filled from Stripe once it's connected.
 export default function PurchasesTab({ purchases = [] }) {
     return (
-        <div className="space-y-6">
-            <Panel title="Current plan" description="Your active AfterRender subscription.">
-                <div className="rounded-xl border border-dashed border-black/10 bg-[#f6f9fc] p-5 flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                        <p className="text-sm font-semibold text-[#0A2540]">No active plan</p>
-                        <p className="mt-0.5 text-sm text-[#425466]">Choose a plan to get started with AfterRender.</p>
-                    </div>
-                    <Link
-                        href="/pricing"
-                        className="inline-flex items-center gap-2 h-10 px-5 rounded-xl font-bold text-sm text-[#0A2540] bg-linear-to-r from-[#48A2FF] to-[#C9E4FF] shadow-md hover:brightness-105"
+        <>
+            <PageHeader title="Billing" description="Your plan and payment history." />
+            <div className="space-y-6">
+                <Section title="Plan">
+                    <Row
+                        label="Current plan"
+                        action={
+                            <Link
+                                href="/pricing"
+                                className="inline-flex h-9 items-center rounded-md bg-zinc-900 px-3.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+                            >
+                                View plans
+                            </Link>
+                        }
                     >
-                        View plans <ArrowRight size={16} />
-                    </Link>
-                </div>
-            </Panel>
+                        <Badge>No active plan</Badge>
+                    </Row>
+                </Section>
 
-            <Panel title="Purchase history" description="Every payment you make, with date and status.">
-                {purchases.length === 0 ? (
-                    <div className="flex flex-col items-center text-center py-10">
-                        <span className="w-14 h-14 rounded-full bg-[#48A2FF]/10 text-[#48A2FF] flex items-center justify-center">
-                            <Receipt size={24} />
-                        </span>
-                        <p className="mt-4 text-sm font-semibold text-[#0A2540]">No purchases yet</p>
-                        <p className="mt-1 text-sm text-[#425466] max-w-sm">
-                            When you buy a plan, your payments and invoices will show up here.
-                        </p>
-                    </div>
-                ) : null}
-            </Panel>
-        </div>
+                <Section title="Payment history">
+                    {purchases.length === 0 && (
+                        <div className="flex flex-col items-center px-6 py-12 text-center">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-500">
+                                <Receipt size={18} />
+                            </span>
+                            <p className="mt-3 text-sm font-medium text-zinc-900">No payments yet</p>
+                            <p className="mt-1 max-w-xs text-sm text-zinc-500">Your payments and invoices will appear here after you buy a plan.</p>
+                        </div>
+                    )}
+                </Section>
+            </div>
+        </>
     );
 }

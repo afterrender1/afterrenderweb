@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
-import { PROFILE_TAB_IDS } from "@/components/profile/tabs";
+import { resolveProfileTab } from "@/components/profile/tabs";
 import { getServerSession } from "@/app/lib/session";
 import { isGoogleAuthEnabled } from "@/app/lib/auth";
 
@@ -16,16 +16,16 @@ export default async function ProfilePage({ searchParams }) {
 
     const params = await searchParams;
     const requestedTab = typeof params?.tab === "string" ? params.tab : "";
-    const initialTab = PROFILE_TAB_IDS.includes(requestedTab) ? requestedTab : "overview";
+    const initialTab = resolveProfileTab(requestedTab);
     // Set when connecting Google fails (redirected back with ?error=...).
     const linkError = typeof params?.error === "string" ? params.error : "";
 
     const { user } = session;
 
     return (
-        <main className="min-h-screen bg-[#FAFAFA] text-[#0A2540]">
+        <main className="min-h-screen bg-zinc-50 text-zinc-900">
             <Navbar />
-            <div className="px-4 sm:px-6 pt-28 sm:pt-32 pb-20">
+            <div className="px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20">
                 <ProfileView
                     initialUser={{
                         id: user.id,
