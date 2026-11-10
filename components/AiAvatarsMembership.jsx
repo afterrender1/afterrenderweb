@@ -32,8 +32,6 @@ const features = [
 
 const FeatureCheck = () => (
   <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <rect x="1.5" y="1.5" width="21" height="21" rx="7" fill="#EFF7FF" />
-    <rect x="1.5" y="1.5" width="21" height="21" rx="7" stroke="#C9E2F8" />
     <path d="M7.5 12.1 10.5 15.1 16.5 8.9" stroke="#1762A0" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
@@ -91,9 +89,9 @@ export default function AiAvatarsMembership() {
               </div>
 
               <div className="my-7 sm:my-8">
-                <p className="mb-3 text-xl font-semibold text-slate-300 sm:text-2xl">
+                <p className="mb-2 text-lg font-medium text-slate-400">
                   <span className="sr-only">Regular price </span>
-                  <del className="inline-block whitespace-nowrap leading-none line-through decoration-slate-400 decoration-2">$999</del>
+                  <del className="decoration-slate-400 decoration-2">$999</del>
                 </p>
                 <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                   <span className="text-[56px] font-semibold leading-none tracking-[-0.05em] sm:text-[64px]">$499</span>
