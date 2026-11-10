@@ -11,7 +11,20 @@ export default async function sitemap() {
     const baseUrl =
         process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    const staticPages = ["", "/pricing", "/our-work", "/blogs", "/apply"];
+    // Public pages only; authentication, account, and admin routes stay out of the sitemap.
+    const staticPages = [
+        "",
+        "/pricing",
+        "/website",
+        "/our-work",
+        "/about-us",
+        "/blogs",
+        "/apply",
+        "/applynow",
+        "/privacy-policy",
+        "/refund-policy",
+        "/terms-conditions",
+    ];
 
     return [
         // Static pages
