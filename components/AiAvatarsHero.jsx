@@ -21,14 +21,10 @@ const playfair = Playfair_Display({
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
 
-// Hero video: paste any YouTube link or embed URL here
-// (e.g. https://www.youtube.com/embed/VIDEO_ID or https://youtu.be/VIDEO_ID)
-const HERO_VIDEO_URL = "https://www.youtube.com/embed/aqz-KE-bpKQ";
+const HERO_VIDEO_URL = "https://res.cloudinary.com/dlurrugno/video/upload/v1794320901/ai-avatars-hero-video-com_hs5yek.mp4";
 
 const trustPoints = ["Looks & sounds like you", "Any language, any niche", "No camera needed"];
 
-// Logo cloud under the video (cleaned, transparent copies in /public/images/ai-avatars-images).
-// Heights differ per logo so they look the same visual size.
 const toolLogos = [
   { src: "/images/ai-avatars-images/heygen.webp", alt: "HeyGen", width: 565, height: 168, className: "h-8 sm:h-10" },
   { src: "/images/ai-avatars-images/synthesia.webp", alt: "Synthesia", width: 989, height: 168, className: "h-6 sm:h-8" },
@@ -43,9 +39,6 @@ const toolLogos = [
   },
 ];
 
-// Same look as the pricing hero, but animated with pure CSS (no animation library),
-// so it shows instantly and stays light on low-end phones.
-// `plansId` is the section "See Plans" scrolls to.
 const AiAvatarsHero = ({ backgroundUrl = "", plansId = "plans" }) => {
   return (
     <section
@@ -53,19 +46,15 @@ const AiAvatarsHero = ({ backgroundUrl = "", plansId = "plans" }) => {
     >
       {backgroundUrl ? (
         <>
-          {/* Live event background (admin → Events) takes over the animated one */}
           <EventHeroBackdrop url={backgroundUrl} />
           <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
         </>
       ) : (
-        // Animated halftone background behind the title, buttons and video; fades into the
-        // page color at the bottom so the logo cloud below sits on plain #FAFAFA
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-0 -z-20 h-[760px] sm:h-[900px] lg:h-[980px] mask-b-from-45% mask-b-to-100%"
         >
-          {/* Site palette: brand blue + deep brand blue on the page background.
-              (The shader adds colors as light, so a very dark color2 only makes it paler.) */}
+          
           <HalftoneBloom background="#FAFAFA" color1="#48A2FF" color2="#1a73e8" />
         </div>
       )}

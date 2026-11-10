@@ -12,19 +12,36 @@ const getYouTubeId = (url = "") => {
   return match ? match[1] : "";
 };
 
-// Lightweight YouTube player: shows only the thumbnail and a play button, and loads the
-// real (heavy) YouTube iframe on click, so the page stays fast on low-end phones.
-const AiAvatarsVideo = ({ url, title = "AI Avatars video" }) => {
-  const videoId = getYouTubeId(url);
+// Direct files use the native video player. YouTube loads its iframe only on click.
+const AiAvatarsVideo = ({ url, title = "AI Avatars video", poster }) => {
+  const source = typeof url === "string" ? url.trim() : "";
+  const videoId = getYouTubeId(source);
   const [playing, setPlaying] = useState(false);
   const [thumb, setThumb] = useState("maxresdefault");
 
-  if (!videoId) return null;
+  if (!source) return null;
 
   return (
     <div className="relative w-full rounded-2xl sm:rounded-[22px] bg-white p-1.5 sm:p-2 border border-zinc-200 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_50px_-20px_rgba(15,23,42,0.28)]">
       <div className="relative aspect-video w-full overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-900">
-        {playing ? (
+        {!videoId ? (
+          <video
+            key={source}
+            src={source}
+            poster={poster}
+            autoPlay
+            controls
+            playsInline
+            controlsList="nodownload"
+            loop
+            muted
+            preload="metadata"
+            aria-label={title}
+            className="absolute inset-0 h-full w-full bg-black object-contain"
+          >
+            Your browser does not support video playback. <a href={source}>Open video</a>.
+          </video>
+        ) : playing ? (
           <iframe
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`}
             title={title}
