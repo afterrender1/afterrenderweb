@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import AiAvatarsHero from "@/components/AiAvatarsHero";
+import AiAvatarsMembership from "@/components/AiAvatarsMembership";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import Footer from "@/components/Footer";
 import React from "react";
@@ -26,11 +27,7 @@ const AiAvatarsPage = async () => {
       <Navbar />
       <AiAvatarsHero backgroundUrl={event?.backgroundUrl} plansId="plans" />
 
-      {/* "See Plans" in the hero scrolls here. Add the AI Avatars plan inside this section.
-          scroll-mt keeps the fixed navbar from covering the top of the plan. */}
-      <section id="plans" className="scroll-mt-24">
-        {/* Plan goes here */}
-      </section>
+      <AiAvatarsMembership />
 
       <PricingTestimonials />
       <Footer />
