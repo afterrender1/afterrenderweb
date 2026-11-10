@@ -2,8 +2,11 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, PhoneCall } from "lucide-react";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import Image from "next/image";
 import EventHeroBackdrop from "./EventHeroBackdrop";
 import AiAvatarsVideo from "./AiAvatarsVideo";
+import LogoCloud from "@/components/ui/logo-cloud-15";
+import HalftoneBloom from "@/components/ui/halftone-bloom";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,18 +27,48 @@ const HERO_VIDEO_URL = "https://www.youtube.com/embed/aqz-KE-bpKQ";
 
 const trustPoints = ["Looks & sounds like you", "Any language, any niche", "No camera needed"];
 
+// Logo cloud under the video (cleaned, transparent copies in /public/images/ai-avatars-images).
+// Heights differ per logo so they look the same visual size.
+const toolLogos = [
+  { src: "/images/ai-avatars-images/heygen.webp", alt: "HeyGen", width: 565, height: 168, className: "h-8 sm:h-10" },
+  { src: "/images/ai-avatars-images/synthesia.webp", alt: "Synthesia", width: 989, height: 168, className: "h-6 sm:h-8" },
+  {
+    src: "/images/ai-avatars-images/higgsfield.webp",
+    alt: "",
+    width: 187,
+    height: 168,
+    className: "h-7 sm:h-9",
+    // The Higgsfield image is only the symbol, so the name is written next to it
+    label: "Higgsfield",
+  },
+];
+
 // Same look as the pricing hero, but animated with pure CSS (no animation library),
 // so it shows instantly and stays light on low-end phones.
 // `plansId` is the section "See Plans" scrolls to.
 const AiAvatarsHero = ({ backgroundUrl = "", plansId = "plans" }) => {
   return (
     <section
-      className={`${jakarta.className} relative ${backgroundUrl ? "isolate" : ""} bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center`}
+      className={`${jakarta.className} relative isolate bg-[#FAFAFA] text-black pt-32 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col items-center`}
     >
-      <EventHeroBackdrop url={backgroundUrl} />
-
-      {/* Background Soft Mesh Glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
+      {backgroundUrl ? (
+        <>
+          {/* Live event background (admin → Events) takes over the animated one */}
+          <EventHeroBackdrop url={backgroundUrl} />
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-gradient-to-b from-[#eaf4ff]/50 via-[#f5f8ff]/25 to-transparent blur-3xl pointer-events-none -z-10" />
+        </>
+      ) : (
+        // Animated halftone background behind the title, buttons and video; fades into the
+        // page color at the bottom so the logo cloud below sits on plain #FAFAFA
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 -z-20 h-[760px] sm:h-[900px] lg:h-[980px] mask-b-from-45% mask-b-to-100%"
+        >
+          {/* Site palette: brand blue + deep brand blue on the page background.
+              (The shader adds colors as light, so a very dark color2 only makes it paler.) */}
+          <HalftoneBloom background="#FAFAFA" color1="#48A2FF" color2="#1a73e8" />
+        </div>
+      )}
 
       {/* Floating Badges */}
       <div className="w-full max-w-3xl relative">
@@ -100,6 +133,35 @@ const AiAvatarsHero = ({ backgroundUrl = "", plansId = "plans" }) => {
       {/* Hero Video */}
       <div className="animate-hero-fade-up [animation-delay:0.3s] relative z-10 w-full max-w-4xl mx-auto mt-10 sm:mt-14">
         <AiAvatarsVideo url={HERO_VIDEO_URL} title="AI Avatars by AfterRender" />
+      </div>
+
+      {/* Tools Logo Cloud */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto mt-14 sm:mt-20">
+        <LogoCloud
+          title={
+            <>
+              Powered by <span className="max-sm:hidden">the world&apos;s </span>top AI avatar tools
+            </>
+          }
+        >
+          {toolLogos.map(({ src, alt, width, height, className, label }) => (
+            <div key={src} className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+              <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className={`${className} w-auto select-none`}
+                draggable={false}
+              />
+              {label && (
+                <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#0a0a0a] whitespace-nowrap">
+                  {label}
+                </span>
+              )}
+            </div>
+          ))}
+        </LogoCloud>
       </div>
     </section>
   );
