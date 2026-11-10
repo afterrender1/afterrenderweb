@@ -21,6 +21,7 @@ const Footer = ({ theme }) => {
     pathname === "/about-us" ||
     pathname === "/real-estate" ||
     pathname === "/website" ||
+    pathname === "/ai-avatars" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
     pathname === "/terms-conditions";

@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ArrowLeft } from "lucide-react";
+import { Menu, X, ArrowLeft, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Urbanist } from "@/app/lib/fonts";
+import ServicesDropdown, { SERVICES } from "./ServicesDropdown";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
     pathname === "/about-us" ||
     pathname === "/real-estate" ||
     pathname === "/website" ||
+    pathname === "/ai-avatars" ||
     pathname === "/privacy-policy" ||
     pathname === "/refund-policy" ||
     pathname === "/terms-conditions";
@@ -39,6 +41,9 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
     setMobileMenuOpen(false);
     setOpenMenu(null);
   };
+
+  // Mobile drawer: "Services" expands its links inline
+  const mobileServicesOpen = openMenu === "services";
 
   // Scroll to #contact on page navigation if hash exists
   useEffect(() => {
@@ -123,16 +128,9 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
             >
               Pricing
             </Link>
-            <Link
-              href="/website"
-              className={`transition-colors ${
-                isPricing
-                  ? "text-black hover:text-[#59B7FF]"
-                  : "hover:text-[#59B7FF]"
-              }`}
-            >
-              Website
-            </Link>
+            <ServicesDropdown
+              triggerClassName={isPricing ? "text-black hover:text-[#59B7FF]" : "hover:text-[#59B7FF]"}
+            />
             <Link
               href="/about-us"
               className={`transition-colors ${
@@ -252,13 +250,54 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                         Pricing
                       </Link>
 
-                      <Link
-                        href="/website"
-                        onClick={closeMobileMenu}
-                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
-                      >
-                        Website
-                      </Link>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => toggleMenu("services")}
+                          aria-expanded={mobileServicesOpen}
+                          aria-controls="mobile-services"
+                          className="flex w-full items-center justify-between py-2.5 text-left text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl cursor-pointer"
+                        >
+                          <span>Services</span>
+                          <ChevronDown
+                            size={20}
+                            className={`opacity-70 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`}
+                          />
+                        </button>
+
+                        {/* Expands with a grid-rows transition (no height measuring, no JS animation) */}
+                        <div
+                          id="mobile-services"
+                          inert={!mobileServicesOpen}
+                          className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none ${
+                            mobileServicesOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                          }`}
+                        >
+                          <div className="overflow-hidden">
+                            <div className="ml-1 mb-1 flex flex-col border-l border-white/15 pl-4">
+                              {SERVICES.map(({ href, title, icon: Icon, badge }) => (
+                                <Link
+                                  key={href}
+                                  href={href}
+                                  onClick={closeMobileMenu}
+                                  aria-current={pathname === href ? "page" : undefined}
+                                  className={`flex items-center gap-2.5 py-2 text-base font-medium transition-colors ${
+                                    pathname === href ? "text-[#59B7FF]" : "text-gray-200 hover:text-[#59B7FF]"
+                                  }`}
+                                >
+                                  <Icon size={17} className="opacity-80" />
+                                  <span>{title}</span>
+                                  {badge && (
+                                    <span className="rounded-full bg-[#59B7FF]/15 px-1.5 py-px text-[10px] font-semibold text-[#8ccbff]">
+                                      {badge}
+                                    </span>
+                                  )}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                       <Link
                         href="/about-us"
@@ -293,7 +332,6 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
               </div>
         </>
       </nav>
-
     </>
 
   );
