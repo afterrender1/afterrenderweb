@@ -23,9 +23,9 @@ export default async function ProfilePage({ searchParams }) {
     const { user } = session;
 
     return (
-        <main className="min-h-screen bg-zinc-50 text-zinc-900">
+        <main className="min-h-screen bg-[#FAFAFA] text-gray-900">
             <Navbar />
-            <div className="px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20">
+            <div className="px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-24">
                 <ProfileView
                     initialUser={{
                         id: user.id,

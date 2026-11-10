@@ -32,6 +32,7 @@ export default function LazyFloatingChat() {
 
   // Not mounted on /admin at all: the widget's auto-open timer would otherwise lock page scroll
   // on mobile with nothing visible to close it. Unmounting also releases a lock carried over from the site.
-  if (pathname?.startsWith("/admin")) return null;
+  // Same for /profile: a sales chat opening over someone's account settings (full-screen on phones) gets in the way.
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/profile")) return null;
   return ready ? <FloatingChatWidget /> : null;
 }

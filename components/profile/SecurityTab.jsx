@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Laptop, Smartphone } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { GoogleIcon, authErrorMessage, oauthErrorMessage } from "@/components/auth/ui";
-import { Badge, Button, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime, useConfirm } from "./shared";
+import { Button, Expand, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime, useConfirm } from "./shared";
 
 const MIN_PASSWORD = 8;
 
@@ -38,10 +38,10 @@ const ChangePasswordForm = ({ onDone, onCancel }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-sm space-y-3">
+        <form onSubmit={handleSubmit} className="max-w-sm space-y-3.5 pb-1 pt-1 sm:pt-0">
             <div>
                 <Label htmlFor="pw-current">Current password</Label>
-                <Input id="pw-current" type="password" autoComplete="current-password" required maxLength={128} value={current} onChange={(e) => setCurrent(e.target.value)} />
+                <Input id="pw-current" type="password" autoComplete="current-password" autoFocus required maxLength={128} value={current} onChange={(e) => setCurrent(e.target.value)} />
             </div>
             <div>
                 <Label htmlFor="pw-new">New password</Label>
@@ -51,16 +51,16 @@ const ChangePasswordForm = ({ onDone, onCancel }) => {
                 <Label htmlFor="pw-confirm">Confirm new password</Label>
                 <Input id="pw-confirm" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={confirm} onChange={(e) => setConfirm(e.target.value)} />
             </div>
-            <label className="flex cursor-pointer select-none items-center gap-2 text-sm text-zinc-600">
-                <input type="checkbox" checked={signOutOthers} onChange={(e) => setSignOutOthers(e.target.checked)} className="h-4 w-4 accent-zinc-900" />
-                Sign out of other devices
+            <label className="flex cursor-pointer select-none items-center gap-2.5 text-[13px] text-gray-600">
+                <input type="checkbox" checked={signOutOthers} onChange={(e) => setSignOutOthers(e.target.checked)} className="h-4 w-4 accent-gray-950" />
+                Sign out of my other devices
             </label>
             <Message>{error}</Message>
-            <div className="flex gap-2 pt-1">
+            <div className="flex gap-2 pt-0.5">
                 <Button type="submit" variant="primary" loading={saving}>
                     Update password
                 </Button>
-                <Button type="button" variant="ghost" onClick={onCancel}>
+                <Button variant="ghost" onClick={onCancel} disabled={saving}>
                     Cancel
                 </Button>
             </div>
@@ -74,9 +74,23 @@ const PasswordRow = () => {
     return (
         <Row
             label="Password"
-            action={!open && <Button onClick={() => { setSuccess(""); setOpen(true); }}>Change</Button>}
-            below={
-                open ? (
+            action={
+                !open && (
+                    <Button
+                        onClick={() => {
+                            setSuccess("");
+                            setOpen(true);
+                        }}
+                    >
+                        Change
+                    </Button>
+                )
+            }
+            top={open}
+            below={!open && success ? <Message type="success">{success}</Message> : null}
+        >
+            {open ? (
+                <Expand>
                     <ChangePasswordForm
                         onCancel={() => setOpen(false)}
                         onDone={(text) => {
@@ -84,12 +98,12 @@ const PasswordRow = () => {
                             setSuccess(text);
                         }}
                     />
-                ) : success ? (
-                    <Message type="success">{success}</Message>
-                ) : null
-            }
-        >
-            <span className="tracking-widest text-zinc-400">••••••••</span>
+                </Expand>
+            ) : (
+                <span aria-label="Hidden password" className="tracking-[0.2em] text-gray-400">
+                    ••••••••
+                </span>
+            )}
         </Row>
     );
 };
@@ -97,30 +111,30 @@ const PasswordRow = () => {
 /* ---------- Google ---------- */
 
 const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) => {
-    const [busy, setBusy] = useState(false);
+    const [connecting, setConnecting] = useState(false);
     const [error, setError] = useState(oauthErrorMessage(linkError));
+    const { ask, dialog } = useConfirm();
 
     const connect = async () => {
         setError("");
-        setBusy(true);
+        setConnecting(true);
         const { error: err } = await authClient.linkSocial({
             provider: "google",
             callbackURL: "/profile?tab=security",
             errorCallbackURL: "/profile?tab=security",
         });
+        // On success the browser goes to Google.
         if (err) {
-            setBusy(false);
+            setConnecting(false);
             setError(authErrorMessage(err, "Could not connect Google."));
         }
     };
-
-    const { ask, dialog, busy: disconnecting } = useConfirm();
 
     const confirmDisconnect = () => {
         setError("");
         ask({
             title: "Disconnect Google?",
-            description: "You won't be able to log in with Google anymore. You can still log in with your email and password.",
+            description: "You won't be able to log in with Google anymore. Your email and password will still work.",
             confirmLabel: "Disconnect",
             destructive: true,
             action: async () => {
@@ -136,13 +150,9 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
             label="Google"
             action={
                 hasGoogle ? (
-                    canDisconnect && (
-                        <Button onClick={confirmDisconnect} loading={disconnecting}>
-                            Disconnect
-                        </Button>
-                    )
+                    canDisconnect && <Button onClick={confirmDisconnect}>Disconnect</Button>
                 ) : (
-                    <Button onClick={connect} loading={busy}>
+                    <Button onClick={connect} loading={connecting}>
                         Connect
                     </Button>
                 )
@@ -152,7 +162,7 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
             {dialog}
             <span className="inline-flex items-center gap-2">
                 <GoogleIcon size={16} />
-                {hasGoogle ? "Connected" : <span className="text-zinc-500">Not connected</span>}
+                {hasGoogle ? "Connected" : <span className="font-normal text-gray-500">Not connected</span>}
             </span>
         </Row>
     );
@@ -163,8 +173,8 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
 const describeDevice = (userAgent = "") => {
     const ua = String(userAgent);
     const browser = /Edg\//.test(ua) ? "Edge" : /OPR\/|Opera/.test(ua) ? "Opera" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Browser";
-    const os = /Windows/.test(ua) ? "Windows" : /iPhone|iPad|iPod/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac OS X|Macintosh/.test(ua) ? "macOS" : /Linux/.test(ua) ? "Linux" : "Unknown";
-    return { label: `${browser} on ${os}`, mobile: /Mobile|Android|iPhone|iPad/.test(ua) };
+    const os = /Windows/.test(ua) ? "Windows" : /iPhone|iPad|iPod/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Mac OS X|Macintosh/.test(ua) ? "macOS" : /Linux/.test(ua) ? "Linux" : "";
+    return { label: os ? `${browser} on ${os}` : browser, mobile: /Mobile|Android|iPhone|iPad/.test(ua) };
 };
 
 const fetchSessions = async () => {
@@ -177,6 +187,7 @@ const Devices = ({ currentSessionId }) => {
     const { data, error: loadError, mutate } = useSWR("auth:sessions", fetchSessions, { revalidateOnFocus: false });
     const { ask, dialog } = useConfirm();
 
+    // This device first, then most recently active. null = loading.
     const sessions = useMemo(() => {
         if (loadError) return [];
         if (!data) return null;
@@ -215,21 +226,16 @@ const Devices = ({ currentSessionId }) => {
             },
         });
 
-    const errorText = loadError ? "Couldn't load your devices." : "";
-
     return (
         <Section
-            title="Your devices"
-            description="Where you're currently logged in."
+            title="Devices"
+            description="Where you're logged in right now."
             footer={
-                others.length > 0 || errorText ? (
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <Message>{errorText}</Message>
-                        {others.length > 0 && (
-                            <Button variant="danger" onClick={confirmRevokeOthers} className="ml-auto">
-                                Sign out all other devices
-                            </Button>
-                        )}
+                others.length > 0 ? (
+                    <div className="flex justify-end">
+                        <Button variant="ghost" onClick={confirmRevokeOthers} className="text-red-600 hover:bg-red-50 hover:text-red-700">
+                            Sign out all other devices
+                        </Button>
                     </div>
                 ) : null
             }
@@ -239,24 +245,31 @@ const Devices = ({ currentSessionId }) => {
                 <div className="px-5 py-4 sm:px-6">
                     <Spinner />
                 </div>
+            ) : loadError ? (
+                <div className="px-5 py-4 sm:px-6">
+                    <Message>Couldn&apos;t load your devices. Refresh the page to try again.</Message>
+                </div>
             ) : (
                 sessions.map((s) => {
                     const { label, mobile } = describeDevice(s.userAgent);
                     const current = s.id === currentSessionId;
                     const Icon = mobile ? Smartphone : Laptop;
                     return (
-                        <div key={s.id} className="flex items-center gap-3 px-5 py-3.5 sm:px-6">
-                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600">
+                        <div key={s.id} className="flex items-center gap-3.5 px-5 py-4 sm:px-6">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700">
                                 <Icon size={17} />
                             </span>
                             <div className="min-w-0 flex-1">
-                                <p className="flex flex-wrap items-center gap-2 text-sm text-zinc-900">
+                                <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-gray-900">
                                     {label}
-                                    {current && <Badge tone="success">This device</Badge>}
+                                    {current && (
+                                        <span className="rounded-full bg-gray-950 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#CEFF00]">
+                                            This device
+                                        </span>
+                                    )}
                                 </p>
-                                <p className="truncate text-xs text-zinc-500">
+                                <p className="mt-0.5 truncate text-[13px] text-gray-500">
                                     {current ? "Active now" : `Last active ${formatDateTime(s.updatedAt)}`}
-                                    {s.ipAddress ? ` · ${s.ipAddress}` : ""}
                                 </p>
                             </div>
                             {!current && s.token && (
@@ -279,8 +292,8 @@ export default function SecurityTab({ currentSessionId, accounts, hasPassword, h
 
     return (
         <>
-            <PageHeader title="Security" description="Manage how you sign in and where you're logged in." />
-            <div className="space-y-6">
+            <PageHeader title="Sign-in &" accent="security." description="How you log in, and where you're logged in." />
+            <div className="space-y-8">
                 <Section title="Sign-in methods">
                     {accounts === null ? (
                         <div className="px-5 py-4 sm:px-6">
