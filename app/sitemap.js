@@ -5,10 +5,8 @@ import Blog from "@/app/models/Post";
 export default async function sitemap() {
     await dbConnect();
 
-    const blogs = await Blog.find(
-        { published: true },
-        { slug: 1, createdAt: 1 }
-    ).lean();
+    // All saved posts are public, matching GET /api/blog (there is no draft/published field).
+    const blogs = await Blog.find({}, { slug: 1, createdAt: 1 }).lean();
 
     const baseUrl =
         process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
