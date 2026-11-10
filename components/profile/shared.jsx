@@ -101,6 +101,20 @@ export const Button = ({ variant = "outline", loading, disabled, className = "",
     </button>
 );
 
+export const SettingsButton = ({ variant = "outline", loading, disabled, children, type = "button", ...props }) => {
+    const style = variant === "primary"
+        ? "border-gray-950 bg-gray-950 text-white hover:bg-gray-800"
+        : variant === "ghost"
+            ? "border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-950"
+            : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-950";
+    return (
+        <button type={type} disabled={disabled || loading} className={`inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${style}`} {...props}>
+            {loading && <Loader2 size={14} className="animate-spin" aria-hidden="true" />}
+            {children}
+        </button>
+    );
+};
+
 export const Input = ({ className = "", ...props }) => (
     <input
         className={`h-10 w-full rounded-xl border border-gray-300/90 bg-white px-3.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#48A2FF] focus:ring-4 focus:ring-[#48A2FF]/15 ${className}`}

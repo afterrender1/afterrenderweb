@@ -1,13 +1,46 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useId, useMemo, useState } from "react";
 import useSWR from "swr";
-import { Laptop, Smartphone } from "lucide-react";
+import { Check, KeyRound, Laptop, Smartphone } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { GoogleIcon, authErrorMessage, oauthErrorMessage } from "@/components/auth/ui";
-import { Button, Expand, Input, Label, Message, PageHeader, Row, Section, Spinner, formatDateTime, useConfirm } from "./shared";
+import { SettingsButton as Button, Expand, Input, Label, Message, Spinner, formatDateTime, useConfirm } from "./shared";
 
 const MIN_PASSWORD = 8;
+
+const SecuritySection = ({ title, description, children, footer }) => {
+    const titleId = useId();
+    return (
+        <section data-reveal aria-labelledby={titleId} className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+            <div className="border-b border-gray-200 px-5 py-5 sm:px-6">
+                <h2 id={titleId} className="text-[15px] font-semibold text-gray-950">{title}</h2>
+                <p className="mt-1 text-[13px] leading-5 text-gray-500">{description}</p>
+            </div>
+            <div className="divide-y divide-gray-100">{children}</div>
+            {footer && <div className="border-t border-gray-200 px-5 py-3 sm:px-6">{footer}</div>}
+        </section>
+    );
+};
+
+const MethodRow = ({ icon, title, description, status, action, children }) => (
+    <div className="px-5 py-5 sm:px-6">
+        <div className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 sm:grid-cols-[40px_minmax(0,1fr)_auto]">
+            <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600">
+                {icon}
+            </span>
+            <div className="min-w-0">
+                <h3 className="text-sm font-medium text-gray-950">{title}</h3>
+                <p className="mt-1 text-[13px] leading-5 text-gray-500">{description}</p>
+            </div>
+            {(status || action) && <div className="col-start-2 flex flex-wrap items-center gap-3 sm:col-start-auto">
+                {status}
+                {action}
+            </div>}
+        </div>
+        {children && <div className="mt-4 sm:pl-14">{children}</div>}
+    </div>
+);
 
 /* ---------- Password ---------- */
 
@@ -41,15 +74,15 @@ const ChangePasswordForm = ({ onDone, onCancel }) => {
         <form onSubmit={handleSubmit} className="max-w-sm space-y-3.5 pb-1 pt-1 sm:pt-0">
             <div>
                 <Label htmlFor="pw-current">Current password</Label>
-                <Input id="pw-current" type="password" autoComplete="current-password" autoFocus required maxLength={128} value={current} onChange={(e) => setCurrent(e.target.value)} />
+                <Input id="pw-current" className="rounded-md!" type="password" autoComplete="current-password" autoFocus required maxLength={128} value={current} onChange={(e) => setCurrent(e.target.value)} />
             </div>
             <div>
                 <Label htmlFor="pw-new">New password</Label>
-                <Input id="pw-new" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={next} onChange={(e) => setNext(e.target.value)} placeholder="At least 8 characters" />
+                <Input id="pw-new" className="rounded-md!" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={next} onChange={(e) => setNext(e.target.value)} placeholder="At least 8 characters" />
             </div>
             <div>
                 <Label htmlFor="pw-confirm">Confirm new password</Label>
-                <Input id="pw-confirm" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+                <Input id="pw-confirm" className="rounded-md!" type="password" autoComplete="new-password" required minLength={MIN_PASSWORD} maxLength={128} value={confirm} onChange={(e) => setConfirm(e.target.value)} />
             </div>
             <label className="flex cursor-pointer select-none items-center gap-2.5 text-[13px] text-gray-600">
                 <input type="checkbox" checked={signOutOthers} onChange={(e) => setSignOutOthers(e.target.checked)} className="h-4 w-4 accent-gray-950" />
@@ -72,8 +105,10 @@ const PasswordRow = () => {
     const [open, setOpen] = useState(false);
     const [success, setSuccess] = useState("");
     return (
-        <Row
-            label="Password"
+        <MethodRow
+            icon={<KeyRound size={18} strokeWidth={1.75} />}
+            title="Password"
+            description="Use your email and password to sign in."
             action={
                 !open && (
                     <Button
@@ -82,12 +117,10 @@ const PasswordRow = () => {
                             setOpen(true);
                         }}
                     >
-                        Change
+                        Change password
                     </Button>
                 )
             }
-            top={open}
-            below={!open && success ? <Message type="success">{success}</Message> : null}
         >
             {open ? (
                 <Expand>
@@ -99,12 +132,8 @@ const PasswordRow = () => {
                         }}
                     />
                 </Expand>
-            ) : (
-                <span aria-label="Hidden password" className="tracking-[0.2em] text-gray-400">
-                    ••••••••
-                </span>
-            )}
-        </Row>
+            ) : success ? <Message type="success">{success}</Message> : null}
+        </MethodRow>
     );
 };
 
@@ -146,25 +175,31 @@ const GoogleRow = ({ hasGoogle, canDisconnect, onAccountsChange, linkError }) =>
     };
 
     return (
-        <Row
-            label="Google"
-            action={
-                hasGoogle ? (
-                    canDisconnect && <Button onClick={confirmDisconnect}>Disconnect</Button>
-                ) : (
-                    <Button onClick={connect} loading={connecting}>
-                        Connect
-                    </Button>
-                )
-            }
-            below={error ? <Message>{error}</Message> : null}
-        >
+        <>
             {dialog}
-            <span className="inline-flex items-center gap-2">
-                <GoogleIcon size={16} />
-                {hasGoogle ? "Connected" : <span className="font-normal text-gray-500">Not connected</span>}
-            </span>
-        </Row>
+            <MethodRow
+                icon={<GoogleIcon size={19} />}
+                title="Google"
+                description="Sign in with your Google account."
+                status={hasGoogle ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                        <Check size={14} className="text-emerald-600" aria-hidden="true" />
+                        Connected
+                    </span>
+                ) : null}
+                action={
+                    hasGoogle ? (
+                        canDisconnect && <Button onClick={confirmDisconnect}>Disconnect</Button>
+                    ) : (
+                        <Button onClick={connect} loading={connecting}>
+                            Connect
+                        </Button>
+                    )
+                }
+            >
+                {error ? <Message>{error}</Message> : null}
+            </MethodRow>
+        </>
     );
 };
 
@@ -227,13 +262,13 @@ const Devices = ({ currentSessionId }) => {
         });
 
     return (
-        <Section
+        <SecuritySection
             title="Devices"
             description="Where you're logged in right now."
             footer={
                 others.length > 0 ? (
-                    <div className="flex justify-end">
-                        <Button variant="ghost" onClick={confirmRevokeOthers} className="text-red-600 hover:bg-red-50 hover:text-red-700">
+                    <div className="flex sm:justify-end">
+                        <Button onClick={confirmRevokeOthers}>
                             Sign out all other devices
                         </Button>
                     </div>
@@ -242,46 +277,52 @@ const Devices = ({ currentSessionId }) => {
         >
             {dialog}
             {sessions === null ? (
-                <div className="px-5 py-4 sm:px-6">
-                    <Spinner />
+                <div role="status" className="px-5 py-6 sm:px-6">
+                    <Spinner label="Loading devices…" />
                 </div>
             ) : loadError ? (
-                <div className="px-5 py-4 sm:px-6">
-                    <Message>Couldn&apos;t load your devices. Refresh the page to try again.</Message>
+                <div className="flex flex-wrap items-center gap-3 px-5 py-5 sm:px-6">
+                    <Message>Couldn&apos;t load your devices.</Message>
+                    <Button onClick={() => mutate()}>Try again</Button>
                 </div>
+            ) : sessions.length === 0 ? (
+                <p className="px-5 py-6 text-[13px] text-gray-500 sm:px-6">No active devices to show.</p>
             ) : (
                 sessions.map((s) => {
                     const { label, mobile } = describeDevice(s.userAgent);
                     const current = s.id === currentSessionId;
                     const Icon = mobile ? Smartphone : Laptop;
                     return (
-                        <div key={s.id} className="flex items-center gap-3.5 px-5 py-4 sm:px-6">
-                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700">
-                                <Icon size={17} />
+                        <div key={s.id} className="grid grid-cols-[40px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 px-5 py-5 sm:grid-cols-[40px_minmax(0,1fr)_auto] sm:px-6">
+                            <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-gray-600">
+                                <Icon size={19} strokeWidth={1.75} />
                             </span>
-                            <div className="min-w-0 flex-1">
-                                <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-gray-900">
-                                    {label}
+                            <div className="min-w-0">
+                                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                                    <h3 className="text-sm font-medium text-gray-950">{label}</h3>
                                     {current && (
-                                        <span className="rounded-full bg-gray-950 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#CEFF00]">
+                                        <span className="shrink-0 rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 text-[11px] leading-4 text-gray-600">
                                             This device
                                         </span>
                                     )}
-                                </p>
-                                <p className="mt-0.5 truncate text-[13px] text-gray-500">
+                                </div>
+                                <p className="mt-1 flex items-center gap-1.5 text-[13px] leading-5 text-gray-500">
+                                    {current && <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600" />}
                                     {current ? "Active now" : `Last active ${formatDateTime(s.updatedAt)}`}
                                 </p>
                             </div>
                             {!current && s.token && (
-                                <Button variant="ghost" onClick={() => confirmRevoke(s)}>
-                                    Sign out
-                                </Button>
+                                <div className="col-start-2 sm:col-start-auto">
+                                    <Button aria-label={`Sign out ${label}`} onClick={() => confirmRevoke(s)}>
+                                        Sign out
+                                    </Button>
+                                </div>
                             )}
                         </div>
                     );
                 })
             )}
-        </Section>
+        </SecuritySection>
     );
 };
 
@@ -292,12 +333,15 @@ export default function SecurityTab({ currentSessionId, accounts, hasPassword, h
 
     return (
         <>
-            <PageHeader title="Sign-in &" accent="security." description="How you log in, and where you're logged in." />
-            <div className="space-y-8">
-                <Section title="Sign-in methods">
+            <header data-reveal className="mb-7 sm:mb-8">
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-950 sm:text-[28px]">Sign-in &amp; security</h1>
+                <p className="mt-2 text-sm leading-6 text-gray-500">Manage how you sign in and the devices you use.</p>
+            </header>
+            <div className="space-y-6">
+                <SecuritySection title="Sign-in methods" description="Manage the ways you sign in to your account.">
                     {accounts === null ? (
-                        <div className="px-5 py-4 sm:px-6">
-                            <Spinner />
+                        <div role="status" className="px-5 py-6 sm:px-6">
+                            <Spinner label="Loading sign-in methods…" />
                         </div>
                     ) : (
                         <>
@@ -312,7 +356,7 @@ export default function SecurityTab({ currentSessionId, accounts, hasPassword, h
                             {hasPassword && <PasswordRow />}
                         </>
                     )}
-                </Section>
+                </SecuritySection>
                 <Devices currentSessionId={currentSessionId} />
             </div>
         </>

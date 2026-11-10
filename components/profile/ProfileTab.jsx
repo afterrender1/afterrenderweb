@@ -5,10 +5,20 @@ import { Camera, Trash2 } from "lucide-react";
 import { authClient } from "@/app/lib/auth-client";
 import { AVATAR_MAX_MB } from "@/app/lib/avatar";
 import { Avatar, authErrorMessage } from "@/components/auth/ui";
-import { Button, DotsMenu, Input, Message, PageHeader, Row, Section, formatDate, useConfirm } from "./shared";
+import { SettingsButton as Button, Input, Message, formatDate, useConfirm } from "./shared";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 const AVATAR_SIZE = 64;
+
+const ProfileRow = ({ label, children, action, editing = false }) => (
+    <div className={`grid gap-x-6 gap-y-2 px-5 py-5 sm:grid-cols-[136px_minmax(0,1fr)] sm:px-6 ${editing ? "items-start" : "items-center"}`}>
+        <dt className={`text-[13px] text-gray-500 ${editing ? "sm:pt-2.5" : ""}`}>{label}</dt>
+        <dd className="flex min-w-0 items-center gap-4">
+            <div className="min-w-0 flex-1 text-sm leading-6 text-gray-950">{children}</div>
+            {action}
+        </dd>
+    </div>
+);
 
 // 1) our server signs the upload, 2) the browser sends the file straight to Cloudinary.
 const uploadAvatarToCloudinary = async (file, onProgress) => {
@@ -138,35 +148,39 @@ const PhotoBlock = ({ user }) => {
     };
 
     return (
-        <div className="flex items-center gap-4 px-5 py-5 sm:px-6">
+        <div className="grid grid-cols-[64px_minmax(0,1fr)] items-center gap-x-4 gap-y-4 border-b border-gray-200 px-5 py-6 sm:grid-cols-[64px_minmax(0,1fr)_auto] sm:px-6">
             {dialog}
             <input
                 ref={inputRef}
                 type="file"
                 accept={ACCEPTED_TYPES.join(",")}
+                aria-label="Upload profile photo"
                 className="hidden"
                 onChange={(e) => handleFile(e.target.files?.[0])}
             />
             <AvatarWithProgress user={user} progress={progress} />
             <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-gray-950">Profile photo</p>
+                <h2 className="text-sm font-medium text-gray-950">Profile photo</h2>
                 <p
-                    role={notice ? "status" : undefined}
-                    className={`mt-0.5 text-[13px] ${
+                    role={notice?.type === "error" ? "alert" : "status"}
+                    className={`mt-1 text-[13px] leading-5 ${
                         uploading || !notice ? "text-gray-500" : notice.type === "error" ? "text-red-600" : "text-emerald-600"
                     }`}
                 >
                     {uploading ? `Uploading… ${progress}%` : notice ? notice.text : `JPG, PNG or WEBP, up to ${AVATAR_MAX_MB} MB`}
                 </p>
             </div>
-            <DotsMenu
-                label="Photo options"
-                disabled={uploading || removing}
-                items={[
-                    { label: user.image ? "Change photo" : "Upload photo", icon: Camera, onSelect: () => inputRef.current?.click() },
-                    user.image && { label: "Remove photo", icon: Trash2, destructive: true, onSelect: confirmRemove },
-                ]}
-            />
+            <div className="col-span-2 flex flex-wrap items-center gap-2 sm:col-span-1">
+                <Button disabled={uploading || removing} onClick={() => inputRef.current?.click()}>
+                    <Camera size={14} aria-hidden="true" />
+                    {user.image ? "Change photo" : "Upload photo"}
+                </Button>
+                {user.image && (
+                    <Button variant="ghost" disabled={uploading || removing} onClick={confirmRemove} aria-label="Remove profile photo">
+                        <Trash2 size={15} aria-hidden="true" />
+                    </Button>
+                )}
+            </div>
         </div>
     );
 };
@@ -198,15 +212,15 @@ const NameRow = ({ user }) => {
 
     if (!editing) {
         return (
-            <Row label="Name" action={<Button onClick={startEditing}>Edit</Button>}>
+            <ProfileRow label="Name" action={<Button onClick={startEditing} aria-label="Edit name">Edit</Button>}>
                 {user.name}
-            </Row>
+            </ProfileRow>
         );
     }
 
     return (
-        <Row label="Name">
-            <form onSubmit={save} className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+        <ProfileRow label="Name" editing>
+            <form onSubmit={save} className="flex flex-wrap items-center gap-2.5">
                 <Input
                     autoFocus
                     aria-label="Full name"
@@ -215,7 +229,7 @@ const NameRow = ({ user }) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
-                    className="sm:max-w-64"
+                    className="rounded-md! sm:max-w-64"
                 />
                 <div className="flex gap-2">
                     <Button type="submit" variant="primary" loading={saving}>
@@ -231,22 +245,27 @@ const NameRow = ({ user }) => {
                     <Message>{error}</Message>
                 </div>
             )}
-        </Row>
+        </ProfileRow>
     );
 };
 
 export default function ProfileTab({ user }) {
     return (
         <>
-            <PageHeader title="Your" accent="profile." description="How you appear across AfterRender." />
-            <Section>
+            <header data-reveal className="mb-7 sm:mb-8">
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-950 sm:text-[28px]">Your profile</h1>
+                <p className="mt-2 text-sm leading-6 text-gray-500">How you appear across AfterRender.</p>
+            </header>
+            <section data-reveal aria-label="Profile information" className="overflow-hidden rounded-xl border border-gray-200 bg-white">
                 <PhotoBlock user={user} />
-                <NameRow user={user} />
-                <Row label="Email">
-                    <span className="break-all">{user.email}</span>
-                </Row>
-                <Row label="Member since">{formatDate(user.createdAt)}</Row>
-            </Section>
+                <dl className="divide-y divide-gray-100">
+                    <NameRow user={user} />
+                    <ProfileRow label="Email">
+                        <span className="break-all">{user.email}</span>
+                    </ProfileRow>
+                    <ProfileRow label="Member since">{formatDate(user.createdAt)}</ProfileRow>
+                </dl>
+            </section>
         </>
     );
 }
