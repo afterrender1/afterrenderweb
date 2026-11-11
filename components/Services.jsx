@@ -119,10 +119,8 @@ export default function Services() {
           </h2>
         </div>
 
-        {/* ==========================================
-            SERVICES CARDS LIST (COMPACT, SLEEK & CLIENT CONVERTING)
-            ========================================== */}
-        <div className="space-y-4 sm:space-y-5">
+        {/* Services list */}
+        <div className="border-t border-white/10">
           {servicesList.map((item) => {
             const isPlaying = playingVideoId === item.id;
             const embedSrc = getYouTubeEmbedUrl(item.videoUrl);
@@ -130,124 +128,80 @@ export default function Services() {
             return (
               <div
                 key={item.id}
-                className="group relative bg-[#0C1017]/95 backdrop-blur-xl border border-white/[0.08] hover:border-[#48A2FF]/35 rounded-2xl sm:rounded-[22px] overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.55)] hover:shadow-[0_20px_50px_rgba(72,162,255,0.12)] transition-all duration-300"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-center py-8 sm:py-10 border-b border-white/10"
               >
-                {/* Subtle top specular accent highlight */}
-                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none group-hover:via-[#48A2FF]/40 transition-colors duration-500" />
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-                  {/* Media / Video Column (Zero Padding: Flushed to edges) */}
-                  <div
-                    className={`lg:col-span-6 w-full relative p-0 overflow-hidden ${
-                      item.isMediaLeft ? "lg:order-1" : "lg:order-2"
-                    }`}
-                  >
-                    <div className="relative w-full h-full min-h-[200px] sm:min-h-[240px] lg:min-h-[270px] bg-black/90 group/media">
-                      {isPlaying ? (
-                        <div className="relative w-full h-full min-h-[200px] sm:min-h-[240px] lg:min-h-[270px]">
-                          <iframe
-                            src={embedSrc}
-                            title={item.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full absolute inset-0 object-cover"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setPlayingVideoId(null)}
-                            className="absolute top-2.5 right-2.5 z-30 p-1.5 rounded-full bg-black/80 hover:bg-black text-white hover:text-[#48A2FF] transition-colors cursor-pointer border border-white/20"
-                            aria-label="Close video"
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div
-                          className="relative w-full h-full min-h-[200px] sm:min-h-[240px] lg:min-h-[270px] cursor-pointer"
-                          onClick={() => setPlayingVideoId(item.id)}
+                {/* Video */}
+                <div className={`lg:col-span-6 ${item.isMediaLeft ? "lg:order-1" : "lg:order-2"}`}>
+                  <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-black">
+                    {isPlaying ? (
+                      <>
+                        <iframe
+                          src={embedSrc}
+                          title={item.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="absolute inset-0 w-full h-full"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setPlayingVideoId(null)}
+                          className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-black/80 text-white hover:text-[#48A2FF] transition-colors cursor-pointer"
+                          aria-label="Close video"
                         >
-                          {/* Thumbnail / Poster */}
-                          <Image
-                            src={item.posterUrl}
-                            alt={item.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            className="object-cover transition-transform duration-700 ease-out group-hover/media:scale-105"
-                          />
-
-                          {/* Ambient vignette */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent group-hover/media:from-black/40 transition-colors duration-300" />
-
-                          {/* Center Play Button with glow */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="relative flex items-center justify-center">
-                              <div className="absolute inset-0 rounded-full bg-[#48A2FF]/30 blur-md opacity-0 group-hover/media:opacity-100 transition-opacity duration-300" />
-                              <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/65 backdrop-blur-md border border-white/25 flex items-center justify-center text-white shadow-2xl group-hover/media:scale-110 group-hover/media:bg-[#48A2FF] group-hover/media:border-[#48A2FF] transition-all duration-300">
-                                <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white ml-0.5" />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Watch Preview Badge */}
-                          <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[10.5px] sm:text-[11px] text-gray-300 font-medium flex items-center gap-1.5 pointer-events-none group-hover/media:border-[#48A2FF]/40 group-hover/media:text-white transition-colors duration-300">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#48A2FF] animate-pulse" />
-                            <span>Watch Preview</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Content Column (Sleek, Balanced Padding) */}
-                  <div
-                    className={`lg:col-span-6 flex flex-col justify-center p-5 sm:p-6 lg:p-7 xl:p-8 ${
-                      item.isMediaLeft ? "lg:order-2" : "lg:order-1"
-                    }`}
-                  >
-                    {/* Step / Number */}
-                    <span className="text-[11px] sm:text-xs font-mono tracking-[0.3em] text-gray-400 font-bold mb-1.5 sm:mb-2 block">
-                      {item.number || item.id}
-                    </span>
-
-                    {/* Title */}
-                    <h3
-                      className={`${urbanist.className} text-lg sm:text-xl lg:text-[22px] font-bold text-white tracking-tight mb-2 sm:mb-2.5 leading-snug group-hover:text-white transition-colors`}
-                    >
-                      {item.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-gray-300/80 text-xs sm:text-[13px] sm:leading-relaxed mb-3.5 sm:mb-4 max-w-lg font-normal">
-                      {item.description}
-                    </p>
-
-                    {/* Deliverable / Outcome Badges for Prospective Clients */}
-                    {item.tags && item.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-4 sm:mb-5">
-                        {item.tags.map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-flex items-center text-[10.5px] sm:text-[11px] font-medium text-gray-300/90 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.5 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Explore Link */}
-                    <div>
-                      <Link
-                        href={item.link || "/our-work"}
-                        className="inline-flex items-center gap-1.5 text-xs sm:text-[12.5px] font-bold tracking-[0.18em] uppercase text-gray-300 hover:text-[#48A2FF] group/link transition-colors cursor-pointer"
+                          <X size={16} />
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setPlayingVideoId(item.id)}
+                        className="group absolute inset-0 w-full h-full cursor-pointer"
+                        aria-label={`Play video: ${item.title}`}
                       >
-                        <span>EXPLORE</span>
-                        <span className="text-sm font-bold group-hover/link:translate-x-1.5 transition-transform duration-200">
-                          →
+                        <Image
+                          src={item.posterUrl}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                        <span className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors" />
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white text-black group-hover:scale-105 transition-transform">
+                            <Play className="h-5 w-5 fill-black ml-0.5" />
+                          </span>
                         </span>
-                      </Link>
-                    </div>
+                      </button>
+                    )}
                   </div>
+                </div>
+
+                {/* Text */}
+                <div className={`lg:col-span-6 ${item.isMediaLeft ? "lg:order-2" : "lg:order-1"}`}>
+                  <span className="block text-sm font-semibold text-[#48A2FF] mb-2">
+                    {item.id}
+                  </span>
+
+                  <h3
+                    className={`${urbanist.className} text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug mb-3`}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <p className="text-gray-300 text-[15px] leading-relaxed mb-4 max-w-xl">
+                    {item.description}
+                  </p>
+
+                  {item.tags && item.tags.length > 0 && (
+                    <p className="text-sm text-gray-500 mb-5">{item.tags.join(" · ")}</p>
+                  )}
+
+                  <Link
+                    href={item.link || "/our-work"}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-white underline underline-offset-4 decoration-white/30 hover:decoration-[#48A2FF] hover:text-[#48A2FF] transition-colors"
+                  >
+                    See our work <span aria-hidden="true">→</span>
+                  </Link>
                 </div>
               </div>
             );
