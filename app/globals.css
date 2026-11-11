@@ -111,6 +111,17 @@ html {
   scrollbar-color: #48a2ff #0a1a2f;
 }
 
+/* Hide the scrollbar but keep scrolling working (used by the carousels) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* Testimonial Infinite Scroll */
 @keyframes testimonialScroll {
   0% {
