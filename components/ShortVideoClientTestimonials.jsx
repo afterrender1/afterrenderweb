@@ -35,24 +35,59 @@ function getYouTubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 }
 
-const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
-  return (
+// Card sizes shared by the real card and its skeleton so nothing jumps when data arrives
+const CARD_SIZE = "w-[168px] sm:w-[200px] md:w-[230px] aspect-[9/16] rounded-xl shrink-0";
+
+const SkeletonCard = ({ isLight = false }) => (
+  <div
+    aria-hidden="true"
+    className={`${CARD_SIZE} relative overflow-hidden animate-pulse ${
+      isLight ? "bg-black/[0.07]" : "bg-white/[0.07]"
+    }`}
+  >
+    {/* play button placeholder */}
     <div
+      className={`absolute left-1/2 top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full ${
+        isLight ? "bg-black/[0.08]" : "bg-white/10"
+      }`}
+    />
+    {/* name + role placeholders */}
+    <div className="absolute inset-x-0 bottom-0 space-y-2 p-4">
+      <div className={`h-3 w-3/5 rounded ${isLight ? "bg-black/10" : "bg-white/10"}`} />
+      <div className={`h-2.5 w-2/5 rounded ${isLight ? "bg-black/[0.07]" : "bg-white/[0.07]"}`} />
+    </div>
+  </div>
+);
+
+const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
+  const [posterLoaded, setPosterLoaded] = useState(false);
+
+  return (
+    <button
+      type="button"
       onClick={() => onOpenModal(index)}
-      className={`relative w-[190px] sm:w-[220px] md:w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shrink-0 group cursor-pointer select-none [transform:translateZ(0)] transition-all duration-300 hover:-translate-y-1 ${
-        isLight
-          ? "bg-white ring-1 ring-black/10 shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.14)]"
-          : "bg-[#0C1017] ring-1 ring-white/10 hover:ring-white/25"
+      aria-label={`Play video${item.clientName?.trim() ? ` from ${item.clientName}` : ""}`}
+      className={`${CARD_SIZE} relative overflow-hidden group cursor-pointer select-none text-left ${
+        isLight ? "bg-gray-200" : "bg-[#12161d]"
       }`}
     >
+      {/* Skeleton shown until the poster has loaded */}
+      {item.poster && !posterLoaded && (
+        <div
+          aria-hidden="true"
+          className={`absolute inset-0 animate-pulse ${isLight ? "bg-black/[0.07]" : "bg-white/[0.07]"}`}
+        />
+      )}
+
       {/* Poster Image or preview */}
       {item.poster ? (
         <Image
           src={item.poster}
-          alt={item.clientName}
+          alt=""
           fill
-          sizes="(max-width: 640px) 190px, (max-width: 768px) 220px, 240px"
-          className="object-cover"
+          sizes="(max-width: 640px) 168px, (max-width: 768px) 200px, 230px"
+          onLoad={() => setPosterLoaded(true)}
+          className={`object-cover transition-opacity duration-300 ${posterLoaded ? "opacity-100" : "opacity-0"}`}
         />
       ) : (
         <video
@@ -67,26 +102,26 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
       )}
 
       {/* Play button */}
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm text-black flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
-          <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-black ml-0.5" />
-        </div>
-      </div>
+      <span className="absolute inset-0 flex items-center justify-center z-10">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
+          <Play className="h-4 w-4 fill-black ml-0.5" />
+        </span>
+      </span>
 
       {/* Name & role */}
-      <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-12 bg-gradient-to-t from-black/75 to-transparent z-10 pointer-events-none">
-        {item.clientName?.trim() ? (
-          <h4 className="text-sm sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
-            {item.clientName}
-          </h4>
-        ) : null}
-        {item.role?.trim() ? (
-          <p className="mt-0.5 text-[11px] sm:text-xs text-white/70 line-clamp-1">
-            {item.role}
-          </p>
-        ) : null}
-      </div>
-    </div>
+      {(item.clientName?.trim() || item.role?.trim()) && (
+        <span className="absolute inset-x-0 bottom-0 z-10 block px-3.5 pb-3.5 pt-10 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
+          {item.clientName?.trim() ? (
+            <span className="block text-sm font-semibold text-white leading-tight line-clamp-1">
+              {item.clientName}
+            </span>
+          ) : null}
+          {item.role?.trim() ? (
+            <span className="mt-0.5 block text-xs text-white/70 line-clamp-1">{item.role}</span>
+          ) : null}
+        </span>
+      )}
+    </button>
   );
 };
 
@@ -94,6 +129,7 @@ const emptySubscribe = () => () => {};
 
 const ShortVideoClientTestimonials = ({ isLight = false }) => {
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeModalIndex, setActiveModalIndex] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
@@ -104,6 +140,11 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     () => false
   );
   const scrollContainerRef = useRef(null);
+  const firstTrackRef = useRef(null);
+  const touchingRef = useRef(false);
+  const hoverRef = useRef(false);
+  const pausedUntilRef = useRef(0);
+  const modalOpenRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -112,7 +153,10 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
       .then((data) => {
         if (!cancelled && data.success) setVideos(data.reviews);
       })
-      .catch((err) => console.error("Failed to load video reviews", err));
+      .catch((err) => console.error("Failed to load video reviews", err))
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
     return () => {
       cancelled = true;
     };
@@ -188,8 +232,14 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     );
   };
 
+  // Pause auto-scroll for a moment after the visitor interacts (arrows, wheel, swipe momentum)
+  const pauseAutoScroll = (ms = 2500) => {
+    pausedUntilRef.current = performance.now() + ms;
+  };
+
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
+      pauseAutoScroll();
       const scrollAmount = direction === "left" ? -280 : 280;
       scrollContainerRef.current.scrollBy({
         left: scrollAmount,
@@ -198,10 +248,64 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     }
   };
 
+  modalOpenRef.current = activeModalIndex !== null;
+
+  // Carousel: auto-scrolls on its own, but is a real scroll container, so it can also be
+  // swiped with a thumb or dragged/wheeled. Three identical tracks let it loop in both directions.
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    const track = firstTrackRef.current;
+    if (loading || !el || !track) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const SPEED = 45; // px per second
+    let raf;
+    let last = performance.now();
+    let pos = track.offsetWidth; // start on the middle copy
+    el.scrollLeft = pos;
+
+    const tick = (now) => {
+      const dt = Math.min(now - last, 64) / 1000;
+      last = now;
+      const w = track.offsetWidth;
+
+      const paused =
+        touchingRef.current ||
+        hoverRef.current ||
+        modalOpenRef.current ||
+        now < pausedUntilRef.current ||
+        reduceMotion;
+
+      if (paused) {
+        pos = el.scrollLeft; // follow the user
+      } else {
+        pos += SPEED * dt;
+        el.scrollLeft = pos;
+      }
+
+      // Jump a full copy to stay in the middle, invisible because the copies are identical
+      if (w > 0 && !touchingRef.current) {
+        if (el.scrollLeft >= 2 * w) {
+          pos = el.scrollLeft - w;
+          el.scrollLeft = pos;
+        } else if (el.scrollLeft < w * 0.5) {
+          pos = el.scrollLeft + w;
+          el.scrollLeft = pos;
+        }
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [loading, videos.length]);
+
   const activeVideo =
     activeModalIndex !== null ? videos[activeModalIndex] : null;
 
-  if (videos.length === 0) return null;
+  // Nothing to show once loading has finished with no results
+  if (!loading && videos.length === 0) return null;
 
   return (
     <section
@@ -221,32 +325,16 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
       }
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Tag & Divider Line */}
-        <div className="flex items-center gap-3 mb-6">
-          <div
-            className={`flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase ${
-              isLight ? "text-black" : "text-gray-400"
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full inline-block ${
-                isLight
-                  ? "bg-[#48A2FF] shadow-[0_0_8px_rgba(72,162,255,0.6)]"
-                  : "bg-[#CEFF00] shadow-[0_0_8px_#CEFF00]"
-              }`}
-            />
-            <span>TESTIMONIALS</span>
-          </div>
-          <div
-            className={`flex-1 h-[1px] ${
-              isLight ? "bg-gray-300" : "bg-white/10"
-            }`}
-          />
-        </div>
-
         {/* Section Header with Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-14">
+        <div className="flex items-end justify-between gap-6 mb-8 sm:mb-12">
           <div className="max-w-2xl">
+            <p
+              className={`mb-2 text-xs font-semibold tracking-[0.2em] uppercase ${
+                isLight ? "text-gray-500" : "text-gray-400"
+              }`}
+            >
+              Testimonials
+            </p>
             <h2
               className={`text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.15] ${
                 isLight ? "text-black" : "text-white"
@@ -256,147 +344,114 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
               <span
                 className={`${playfair.className} italic font-normal ${
                   isLight ? "text-black" : "text-[#F4EBD9]"
-                } block sm:inline`}
+                }`}
               >
                 Real Clients.
               </span>
             </h2>
             <p
-              className={`mt-3.5 text-xs sm:text-sm md:text-[14.5px] leading-relaxed font-semibold ${
-                isLight ? "text-black" : "text-gray-400"
+              className={`mt-3 text-sm sm:text-base leading-relaxed ${
+                isLight ? "text-gray-600" : "text-gray-400"
               }`}
             >
               Hear directly from creators, founders, and brands who transformed their reach with AfterRender.
             </p>
           </div>
 
-          {/* Navigation Arrow Buttons */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => handleScroll("left")}
-              aria-label="Previous testimonials"
-              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group ${
-                isLight
-                  ? "bg-white hover:bg-gray-100 border-gray-300 text-black shadow-xs"
-                  : "bg-white/10 hover:bg-white/20 border-white/15 text-white"
-              }`}
-            >
-              <ChevronLeft
-                className={`w-5 h-5 transition-colors ${
-                  isLight
-                    ? "text-black group-hover:scale-110"
-                    : "text-gray-300 group-hover:text-white"
-                }`}
-              />
-            </button>
-            <button
-              type="button"
-              onClick={() => handleScroll("right")}
-              aria-label="Next testimonials"
-              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer backdrop-blur-md group ${
-                isLight
-                  ? "bg-white hover:bg-gray-100 border-gray-300 text-black shadow-xs"
-                  : "bg-white/10 hover:bg-white/20 border-white/15 text-white"
-              }`}
-            >
-              <ChevronRight
-                className={`w-5 h-5 transition-colors ${
-                  isLight
-                    ? "text-black group-hover:scale-110"
-                    : "text-gray-300 group-hover:text-white"
-                }`}
-              />
-            </button>
-          </div>
+          {/* Arrow buttons: desktop only, the carousel runs by itself on mobile */}
+          {!loading && (
+            <div className="hidden sm:flex items-center gap-2 shrink-0">
+              {[
+                { dir: "left", label: "Previous testimonials", Icon: ChevronLeft },
+                { dir: "right", label: "Next testimonials", Icon: ChevronRight },
+              ].map(({ dir, label, Icon }) => (
+                <button
+                  key={dir}
+                  type="button"
+                  onClick={() => handleScroll(dir)}
+                  aria-label={label}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+                    isLight
+                      ? "border-gray-300 text-black hover:bg-gray-100"
+                      : "border-white/20 text-white hover:bg-white/10"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Seamless Infinite Running Carousel Track */}
-      <div className="relative w-full overflow-hidden">
-        {/* Soft edge blur gradient masks */}
-        <div
-          className={`pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r ${
-            isLight
-              ? "from-[#FAFAFA] via-[#FAFAFA]/80"
-              : "from-black via-black/80"
-          } to-transparent z-20`}
-        />
-        <div
-          className={`pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l ${
-            isLight
-              ? "from-[#FAFAFA] via-[#FAFAFA]/80"
-              : "from-black via-black/80"
-          } to-transparent z-20`}
-        />
-
-        {/* Scrollable / Animated Marquee Track */}
-        <div
-          ref={scrollContainerRef}
-          className="w-full overflow-x-hidden no-scrollbar"
-        >
+      {loading ? (
+        /* Skeleton row: same card size and gaps as the real carousel, so the layout doesn't shift */
+        <div className="w-full overflow-hidden" aria-busy="true" aria-label="Loading testimonials">
+          <div className="flex gap-4 sm:gap-6 px-4 sm:px-6 lg:px-8 w-max min-w-full lg:justify-center">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <SkeletonCard key={i} isLight={isLight} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        /* Infinite running carousel */
+        <div className="relative w-full overflow-hidden">
+          {/* Edge fades */}
           <div
-            className="flex w-max hover:[&>*]:[animation-play-state:paused]"
-            style={{
-              animationPlayState: activeModalIndex !== null ? "paused" : "running",
+            className={`pointer-events-none absolute left-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-r ${
+              isLight ? "from-[#FAFAFA]" : "from-black"
+            } to-transparent z-20`}
+          />
+          <div
+            className={`pointer-events-none absolute right-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-l ${
+              isLight ? "from-[#FAFAFA]" : "from-black"
+            } to-transparent z-20`}
+          />
+
+          <div
+            ref={scrollContainerRef}
+            className="w-full overflow-x-auto no-scrollbar"
+            onTouchStart={() => {
+              touchingRef.current = true;
+            }}
+            onTouchEnd={() => {
+              touchingRef.current = false;
+              pauseAutoScroll(3000); // let the swipe momentum finish
+            }}
+            onTouchCancel={() => {
+              touchingRef.current = false;
+              pauseAutoScroll(3000);
+            }}
+            onWheel={() => pauseAutoScroll()}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") hoverRef.current = true;
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") hoverRef.current = false;
             }}
           >
-            {/* Track 1 (1 to 7) */}
-            <div
-              style={{
-                animationPlayState: activeModalIndex !== null ? "paused" : "running",
-              }}
-              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
-            >
-              {videos.map((videoItem, index) => (
-                <VideoCard
-                  key={`t1-${videoItem._id}`}
-                  item={videoItem}
-                  index={index}
-                  onOpenModal={openModal}
-                  isLight={isLight}
-                />
-              ))}
-            </div>
-
-            {/* Track 2 (1 to 7) */}
-            <div
-              style={{
-                animationPlayState: activeModalIndex !== null ? "paused" : "running",
-              }}
-              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
-            >
-              {videos.map((videoItem, index) => (
-                <VideoCard
-                  key={`t2-${videoItem._id}`}
-                  item={videoItem}
-                  index={index}
-                  onOpenModal={openModal}
-                  isLight={isLight}
-                />
-              ))}
-            </div>
-
-            {/* Track 3 (1 to 7) */}
-            <div
-              style={{
-                animationPlayState: activeModalIndex !== null ? "paused" : "running",
-              }}
-              className="flex gap-5 sm:gap-7 shrink-0 pr-5 sm:pr-7 animate-marquee-track will-change-transform"
-            >
-              {videos.map((videoItem, index) => (
-                <VideoCard
-                  key={`t3-${videoItem._id}`}
-                  item={videoItem}
-                  index={index}
-                  onOpenModal={openModal}
-                  isLight={isLight}
-                />
+            <div className="flex w-max">
+              {["t1", "t2", "t3"].map((track, trackIndex) => (
+                <div
+                  key={track}
+                  ref={trackIndex === 0 ? firstTrackRef : undefined}
+                  className="flex gap-4 sm:gap-6 shrink-0 pr-4 sm:pr-6"
+                >
+                  {videos.map((videoItem, index) => (
+                    <VideoCard
+                      key={`${track}-${videoItem._id}`}
+                      item={videoItem}
+                      index={index}
+                      onOpenModal={openModal}
+                      isLight={isLight}
+                    />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Big Video Popup Modal with Blurred Background */}
       {isMounted &&
