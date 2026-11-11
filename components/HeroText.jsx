@@ -175,7 +175,7 @@ const HeroBackground = ({ url }) => {
       fill
       priority
       sizes="100vw"
-      className="object-contain"
+      className="object-contain object-top md:object-center"
     />
   );
 };
