@@ -4,18 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  MessageSquare,
-  X,
-  Send,
-  User,
-  Phone,
-  Mail,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Sparkles,
-} from "lucide-react";
+import { MessageSquare, X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 const AUTO_OPEN_MS = 9000;
 
@@ -214,16 +203,16 @@ export default function FloatingChatWidget() {
         <AnimatePresence>
           {!isOpen && showTooltip && (
             <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.25 }}
               onClick={() => {
                 userInteracted.current = true;
                 setIsOpen(true);
                 setShowTooltip(false);
               }}
-              className="mb-3 max-w-[240px] cursor-pointer bg-[#0c121e]/95 backdrop-blur-md border border-[#48A2FF]/30 text-white text-xs px-3.5 py-2.5 rounded-2xl shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_20px_rgba(72,162,255,0.2)] flex items-center gap-2.5 group hover:border-[#48A2FF] transition-all"
+              className="mb-3 max-w-[240px] cursor-pointer bg-[#0d1117] border border-white/15 text-white text-xs px-3.5 py-2.5 rounded-lg shadow-lg flex items-center gap-2.5 hover:border-white/30 transition-colors"
             >
             
               <div className="flex-1">
@@ -231,7 +220,7 @@ export default function FloatingChatWidget() {
                   Have a question?
                 </p>
                 <p className="text-[11px] text-gray-400">
-                  Chat with a representative
+                  Chat with us
                 </p>
               </div>
               <button
@@ -259,21 +248,19 @@ export default function FloatingChatWidget() {
             setIsOpen((prev) => !prev);
             setShowTooltip(false);
           }}
-          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           aria-label={isOpen ? "Close chat" : "Open chat with representative"}
-          className={`relative w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#48A2FF] focus:ring-offset-2 focus:ring-offset-[#070B11] ${
+          className={`relative w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-200 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
             isOpen
               ? "bg-[#1E293B] text-white border border-white/20 hover:bg-[#334155]"
-              : "bg-gradient-to-r from-[#48A2FF] via-[#2F80ED] to-[#0052D4] text-white shadow-[0_0_25px_rgba(72,162,255,0.5)] hover:shadow-[0_0_35px_rgba(72,162,255,0.7)]"
+              : "bg-[#59B7FF] text-[#0A2540] hover:bg-[#7cc6ff]"
           }`}
         >
-          {/* Animated Status Dot */}
           {!isOpen && (
-            <span className="absolute top-0 right-0 flex h-3.5 w-3.5 -mt-0.5 -mr-0.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-[#0B0F17]"></span>
-            </span>
+            <span
+              aria-hidden="true"
+              className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-[#22c55e] border-2 border-white"
+            />
           )}
 
           <AnimatePresence mode="wait">
@@ -295,7 +282,7 @@ export default function FloatingChatWidget() {
                 exit={{ scale: 0.5, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <MessageSquare size={24} className="fill-white/10" />
+                <MessageSquare size={24} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -323,192 +310,111 @@ export default function FloatingChatWidget() {
         {isOpen && (
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, y: 24, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.95 }}
-            transition={{ type: "spring", damping: 25, stiffness: 320 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] max-h-[85vh] flex flex-col rounded-2xl bg-[#090E17]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.85),0_0_40px_rgba(72,162,255,0.18)] overflow-hidden overscroll-contain"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[380px] max-h-[85vh] flex flex-col rounded-xl bg-[#0d1117] border border-white/10 shadow-2xl overflow-hidden overscroll-contain"
             style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
-            {/* Top Accent Gradient Bar */}
-            <div className="h-1 w-full bg-gradient-to-r from-[#48A2FF] via-[#7EC0FF] to-[#C9E4FF]" />
-
-            {/* Modal Header */}
-            <div className="p-4 sm:p-5 pb-3 border-b border-white/10 relative bg-white/[0.02]">
+            {/* Header */}
+            <div className="relative flex items-center gap-3 px-5 py-4 border-b border-white/10">
+              <Image
+                src="/images/logos/logoxar.png"
+                alt="AfterRender"
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain"
+              />
+              <div className="flex-1 pr-6">
+                <h2 className="text-white text-base font-semibold leading-tight">Have a question?</h2>
+                <p className="text-gray-400 text-xs mt-0.5">A representative will get back to you.</p>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+                className="absolute top-3 right-3 text-gray-400 hover:text-white p-1.5 transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X size={18} />
               </button>
-
-              <div className="flex items-start gap-3.5">
-                {/* Avatar with Live Indicator */}
-                <div className="relative shrink-0">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#48A2FF]/60 shadow-[0_0_15px_rgba(72,162,255,0.3)] bg-[#0B1528] flex items-center justify-center p-1.5">
-                    <Image
-                      src="/images/logos/logoxar.png"
-                      alt="AfterRender Representative"
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  {/* Status Indicator */}
-                  <span className="absolute bottom-0 right-0 flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-[#090E17]"></span>
-                  </span>
-                </div>
-
-                {/* Header Text */}
-                <div className="flex-1 pr-6">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-white text-base sm:text-lg font-bold tracking-tight">
-                      Have a question?
-                    </h2>
-                    
-                  </div>
-                  <p className="text-gray-400 text-xs mt-1 leading-snug">
-                    Enter your question below and a representative will get right
-                    back to you.
-                  </p>
-                </div>
-              </div>
             </div>
 
-            {/* Modal Body / Scrollable Area */}
-            <div className="p-4 sm:p-5 overflow-y-auto max-h-[calc(85vh-140px)] space-y-4 overscroll-contain touch-pan-y">
+            {/* Body */}
+            <div className="px-5 py-4 overflow-y-auto overscroll-contain touch-pan-y">
               {status.type === "success" ? (
-                /* Success Confirmation State */
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="py-6 px-4 text-center space-y-3"
-                >
-                  <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_25px_rgba(16,185,129,0.3)]">
-                    <CheckCircle2 size={32} />
-                  </div>
-                  <h3 className="text-white font-semibold text-base sm:text-lg">
-                    Question Received!
-                  </h3>
-                  <p className="text-gray-300 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto">
-                    {status.message}
-                  </p>
-                  <p className="text-gray-400 text-[11px]">
-                    We usually respond within 15–30 minutes during business hours.
-                  </p>
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={resetForm}
-                      className="px-4 py-2 text-xs font-medium text-white bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 transition-colors"
-                    >
-                      Ask another question
-                    </button>
-                  </div>
-                </motion.div>
+                <div className="py-6 text-center">
+                  <CheckCircle2 size={36} className="mx-auto text-emerald-400" />
+                  <h3 className="mt-3 text-white font-semibold text-base">Message sent</h3>
+                  <p className="mt-1.5 text-gray-300 text-sm leading-relaxed">{status.message}</p>
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                    className="mt-4 text-sm font-medium text-[#59B7FF] hover:underline cursor-pointer"
+                  >
+                    Send another message
+                  </button>
+                </div>
               ) : (
-                /* Form State */
-                <form onSubmit={handleSubmit} className="space-y-3.5">
-                  {/* Error Notification */}
+                <form onSubmit={handleSubmit} className="space-y-3">
                   {status.type === "error" && (
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
-                      <AlertCircle size={15} className="shrink-0 text-red-400" />
+                    <div className="flex items-center gap-2 rounded-md bg-red-500/10 border border-red-500/30 px-3 py-2 text-red-300 text-xs">
+                      <AlertCircle size={15} className="shrink-0" />
                       <p className="flex-1 leading-tight">{status.message}</p>
                     </div>
                   )}
 
-                  {/* Name Input */}
                   <div>
-                    <label
-                      htmlFor="chat-name"
-                      className="block text-gray-300 text-xs font-medium mb-1"
-                    >
-                      Name <span className="text-[#48A2FF]">*</span>
+                    <label htmlFor="chat-name" className="block text-gray-300 text-xs mb-1">
+                      Name
                     </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <User size={15} />
-                      </div>
-                      <input
-                        id="chat-name"
-                        type="text"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Your full name"
-                        className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#48A2FF] focus:ring-1 focus:ring-[#48A2FF] transition-all"
-                      />
-                    </div>
+                    <input
+                      id="chat-name"
+                      type="text"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your name"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                    />
                   </div>
 
-                  {/* Phone & Email Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {/* Phone Input */}
-                    <div>
-                      <label
-                        htmlFor="chat-phone"
-                        className="block text-gray-300 text-xs font-medium mb-1"
-                      >
-                        Phone <span className="text-gray-500 text-[11px] font-normal">(optional)</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                          <Phone size={15} />
-                        </div>
-                        <input
-                          id="chat-phone"
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          placeholder="+1 (555) 000-0000"
-                          className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#48A2FF] focus:ring-1 focus:ring-[#48A2FF] transition-all"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email Input */}
-                    <div>
-                      <label
-                        htmlFor="chat-email"
-                        className="block text-gray-300 text-xs font-medium mb-1"
-                      >
-                        E-mail <span className="text-[#48A2FF]">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                          <Mail size={15} />
-                        </div>
-                        <input
-                          id="chat-email"
-                          type="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="you@email.com"
-                          className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-9 pr-3 py-2.5 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#48A2FF] focus:ring-1 focus:ring-[#48A2FF] transition-all"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Question / Message */}
                   <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label
-                        htmlFor="chat-message"
-                        className="block text-gray-300 text-xs font-medium"
-                      >
-                        How can we help? <span className="text-[#48A2FF]">*</span>
-                      </label>
-                
-                    </div>
+                    <label htmlFor="chat-email" className="block text-gray-300 text-xs mb-1">
+                      Email
+                    </label>
+                    <input
+                      id="chat-email"
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="you@email.com"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="chat-phone" className="block text-gray-300 text-xs mb-1">
+                      Phone <span className="text-gray-500">(optional)</span>
+                    </label>
+                    <input
+                      id="chat-phone"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+1 555 000 0000"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="chat-message" className="block text-gray-300 text-xs mb-1">
+                      Message
+                    </label>
                     <textarea
                       id="chat-message"
                       name="message"
@@ -516,38 +422,29 @@ export default function FloatingChatWidget() {
                       required
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Enter your question here..."
-                      className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#48A2FF] focus:ring-1 focus:ring-[#48A2FF] transition-all resize-none"
+                      placeholder="How can we help?"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors resize-none"
                     />
                   </div>
 
-                  {/* Disclaimer / Consent note */}
-                  <p className="text-[11px] text-gray-400 leading-normal bg-white/[0.02] border border-white/5 rounded-lg p-2">
-                    By submitting you agree to receive SMS or e-mails for the
-                    provided channel. Rates may be applied.
-                  </p>
-
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-4 rounded-xl text-white font-medium text-xs sm:text-sm bg-gradient-to-r from-[#48A2FF] via-[#2F80ED] to-[#0052D4] hover:from-[#5cb0ff] hover:to-[#0066ee] shadow-[0_0_20px_rgba(72,162,255,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group active:scale-[0.99]"
+                    className="w-full py-2.5 rounded-md text-sm font-semibold text-[#0A2540] bg-[#59B7FF] hover:bg-[#7cc6ff] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <>
-                        <Loader2 size={16} className="animate-spin text-white" />
-                        <span>Sending message...</span>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Sending...</span>
                       </>
                     ) : (
-                      <>
-                        <span>Send Message</span>
-                        <Send
-                          size={15}
-                          className="group-hover:translate-x-0.5 transition-transform"
-                        />
-                      </>
+                      "Send Message"
                     )}
                   </button>
+
+                  <p className="text-[11px] text-gray-500 leading-snug">
+                    By sending, you agree to be contacted by SMS or email. Rates may apply.
+                  </p>
                 </form>
               )}
             </div>
