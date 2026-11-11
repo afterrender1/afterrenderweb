@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, ArrowLeft, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -41,6 +41,20 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
     setMobileMenuOpen(false);
     setOpenMenu(null);
   };
+
+  // Lock background scroll while the mobile drawer is open
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const html = document.documentElement;
+    const prevHtml = html.style.overflow;
+    const prevBody = document.body.style.overflow;
+    html.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, [mobileMenuOpen]);
 
   // Mobile drawer: "Services" expands its links inline
   const mobileServicesOpen = openMenu === "services";
@@ -195,7 +209,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
               <div
                 inert={!mobileMenuOpen}
                 aria-hidden={!mobileMenuOpen}
-                className={`lg:hidden fixed top-0 right-0 h-screen w-full sm:w-80 overflow-y-auto z-50 flex flex-col justify-between text-white shadow-2xl bg-[#080B10] will-change-transform transition-[translate,visibility] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`lg:hidden fixed top-0 right-0 h-dvh w-full max-w-sm sm:w-80 overflow-y-auto overscroll-contain z-50 flex flex-col justify-between text-white shadow-2xl bg-[#080B10] will-change-transform transition-[translate,visibility] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   mobileMenuOpen ? "translate-x-0 visible" : "translate-x-full invisible"
                 }`}
               >
@@ -207,56 +221,47 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                 <div className="absolute inset-0 bg-black/65 pointer-events-none" />
 
                 {/* Drawer Content */}
-                <div className="relative z-10 flex flex-col h-full pt-6 pb-8 px-6 justify-between">
+                <div className="relative z-10 flex min-h-full flex-col justify-between gap-8 px-6 pt-5 pb-8">
                   <div>
-                    {/* Top Bar: Back & Cancel Header */}
-                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/15">
+                    <div className="flex items-center justify-between pb-6">
+                      <Link href="/" onClick={closeMobileMenu} aria-label="AfterRender home">
+                        <Image src={currentLogo} alt="AfterRender" width={140} height={35} className="h-8 w-auto" />
+                      </Link>
                       <button
                         type="button"
                         onClick={closeMobileMenu}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-gray-200 hover:text-white bg-white/10 hover:bg-white/20 active:scale-95 px-3 py-1.5 rounded-full transition-all cursor-pointer"
-                        aria-label="Back / Cancel"
+                        className="p-2 -mr-2 text-white hover:text-[#59B7FF] transition-colors cursor-pointer"
+                        aria-label="Close menu"
                       >
-                        <ArrowLeft size={14} />
-                        <span>Back</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-1 text-xs font-medium text-gray-300 hover:text-white px-2.5 py-1 rounded-md hover:bg-white/10 transition-colors cursor-pointer"
-                        aria-label="Cancel / Close"
-                      >
-                        <X size={18} />
-                        <span>Cancel</span>
+                        <X size={28} />
                       </button>
                     </div>
 
-                    {/* Navigation Links (Old Theme) */}
-                    <div className="flex flex-col space-y-1 mt-1">
-                      <Link
-                        href="/our-work"
-                        onClick={closeMobileMenu}
-                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
-                      >
-                        Our Work
-                      </Link>
+                    <div className="flex flex-col">
+                      {[
+                        { href: "/our-work", label: "Our Work" },
+                        { href: "/pricing", label: "Pricing" },
+                      ].map(({ href, label }) => (
+                        <Link
+                          key={href}
+                          href={href}
+                          onClick={closeMobileMenu}
+                          aria-current={pathname === href ? "page" : undefined}
+                          className={`border-b border-white/10 py-4 text-xl font-semibold transition-colors ${
+                            pathname === href ? "text-[#59B7FF]" : "text-white hover:text-[#59B7FF]"
+                          }`}
+                        >
+                          {label}
+                        </Link>
+                      ))}
 
-                      <Link
-                        href="/pricing"
-                        onClick={closeMobileMenu}
-                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
-                      >
-                        Pricing
-                      </Link>
-
-                      <div>
+                      <div className="border-b border-white/10">
                         <button
                           type="button"
                           onClick={() => toggleMenu("services")}
                           aria-expanded={mobileServicesOpen}
                           aria-controls="mobile-services"
-                          className="flex w-full items-center justify-between py-2.5 text-left text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl cursor-pointer"
+                          className="flex w-full items-center justify-between py-4 text-left text-xl font-semibold text-white hover:text-[#59B7FF] transition-colors cursor-pointer"
                         >
                           <span>Services</span>
                           <ChevronDown
@@ -274,20 +279,20 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                           }`}
                         >
                           <div className="overflow-hidden">
-                            <div className="ml-1 mb-1 flex flex-col border-l border-white/15 pl-4">
+                            <div className="flex flex-col gap-3 pb-4">
                               {SERVICES.map(({ href, title, image, badge }) => (
                                 <Link
                                   key={href}
                                   href={href}
                                   onClick={closeMobileMenu}
                                   aria-current={pathname === href ? "page" : undefined}
-                                  className={`flex items-center gap-2.5 py-2 text-base font-medium transition-colors ${
+                                  className={`flex items-center gap-3 text-base font-medium transition-colors ${
                                     pathname === href ? "text-[#59B7FF]" : "text-gray-200 hover:text-[#59B7FF]"
                                   }`}
                                 >
-                                  <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md bg-white/10">
+                                  <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md bg-white/10">
                                     {image && (
-                                      <Image src={image} alt={title} fill sizes="28px" className="object-cover" />
+                                      <Image src={image} alt={title} fill sizes="36px" className="object-cover" />
                                     )}
                                   </span>
                                   <span>{title}</span>
@@ -306,32 +311,32 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                       <Link
                         href="/about-us"
                         onClick={closeMobileMenu}
-                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                        aria-current={pathname === "/about-us" ? "page" : undefined}
+                        className={`border-b border-white/10 py-4 text-xl font-semibold transition-colors ${
+                          pathname === "/about-us" ? "text-[#59B7FF]" : "text-white hover:text-[#59B7FF]"
+                        }`}
                       >
                         About Us
                       </Link>
                       <Link
                         href="/#contact"
                         onClick={handleContactClick}
-                        className="py-2.5 text-white hover:text-[#59B7FF] transition-colors font-semibold text-lg sm:text-xl"
+                        className="border-b border-white/10 py-4 text-xl font-semibold text-white hover:text-[#59B7FF] transition-colors"
                       >
                         Contact
                       </Link>
                     </div>
                   </div>
 
-                  {/* Book a Call Button */}
-                  <div className="pt-4 mt-6">
-                    <Link
-                      href="https://calendly.com/afterrenderagency/new-meeting"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={closeMobileMenu}
-                      className="block text-center font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]"
-                    >
-                      Book a Call
-                    </Link>
-                  </div>
+                  <Link
+                    href="https://calendly.com/afterrenderagency/new-meeting"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={closeMobileMenu}
+                    className="block text-center font-bold text-base px-6 py-3.5 rounded-lg shadow-lg hover:brightness-105 active:scale-[0.98] transition-all duration-200 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540]"
+                  >
+                    Book a Call
+                  </Link>
                 </div>
               </div>
         </>
