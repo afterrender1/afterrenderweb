@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
-import { Video, Palette, Sparkles, Layers, ArrowRight, Check, Zap, Flame, MonitorPlay } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -20,7 +19,6 @@ const playfair = Playfair_Display({
 const capabilities = [
   {
     number: "01",
-    icon: Video,
     tag: "Video Production",
     title: "High-Retention Video Editing",
     description:
@@ -34,7 +32,6 @@ const capabilities = [
   },
   {
     number: "02",
-    icon: Palette,
     tag: "Graphic Design",
     title: "High-CTR Visuals & Brand Design",
     description:
@@ -48,7 +45,6 @@ const capabilities = [
   },
   {
     number: "03",
-    icon: Sparkles,
     tag: "Next-Gen Workflows",
     title: "AI-Powered Creative Speed",
     description:
@@ -62,7 +58,6 @@ const capabilities = [
   },
   {
     number: "04",
-    icon: Layers,
     tag: "Unlimited Model",
     title: "All-in-One Creative Partner",
     description:
@@ -95,149 +90,81 @@ const scopeChips = [
 export default function WhatWeDo() {
   return (
     <section
-      className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-16 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden`}
+      className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden`}
     >
       <div className="max-w-6xl mx-auto">
-        {/* Section Header Line: • WHAT WE DO */}
-        <div className="flex items-center gap-3 pb-8 sm:pb-12 border-b border-gray-200/80 mb-10 sm:mb-14">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#48A2FF] inline-block shadow-xs shrink-0" />
-          <span className="text-xs sm:text-[13px] font-bold tracking-[0.2em] uppercase text-gray-500">
-            WHAT WE DO
-          </span>
-        </div>
-
-        {/* Section Header Titles */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div className="max-w-2xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] tracking-tight leading-[1.15]"
-            >
+            <p className="mb-2 text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">
+              What We Do
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] tracking-tight leading-[1.15]">
               <span>Transforming Ideas into a Scalable </span>
-              <span
-                className={`${playfair.className} italic font-normal text-[#1a1a1a] block sm:inline`}
-              >
+              <span className={`${playfair.className} italic font-normal text-[#1a1a1a]`}>
                 Growth Engine
               </span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.08 }}
-              className="mt-4 text-[#555555] text-xs sm:text-sm md:text-[15px] leading-relaxed font-normal"
-            >
+            </h2>
+            <p className="mt-4 text-[#555555] text-sm sm:text-base leading-relaxed">
               From viral short-form clips to full-scale YouTube channel management
               and high-converting advertising assets, here is how AfterRender
               powers creators, modern founders, and ambitious brands.
-            </motion.p>
+            </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="shrink-0"
+          <Link
+            href="/our-work"
+            className="group inline-flex items-center gap-2 self-start lg:self-auto shrink-0 text-sm font-semibold text-[#0A2540] underline underline-offset-4 decoration-[#0A2540]/30 hover:decoration-[#48A2FF] transition-colors"
           >
-            <Link
-              href="/our-work"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0A2540] bg-white border border-gray-200 px-5 py-2.5 rounded-full shadow-2xs hover:border-gray-300 hover:scale-105 active:scale-95 transition-all"
+            Explore Our Portfolio
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+
+        {/* Services: plain rows, stacked on mobile, three columns on desktop */}
+        <div className="border-t border-gray-300">
+          {capabilities.map((cap) => (
+            <article
+              key={cap.number}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-x-10 gap-y-4 py-7 sm:py-9 border-b border-gray-300"
             >
-              <span>Explore Our Portfolio</span>
-              <ArrowRight className="w-4 h-4 text-[#48A2FF]" />
-            </Link>
-          </motion.div>
+              <div className="lg:col-span-3 flex lg:flex-col items-baseline lg:items-start gap-3 lg:gap-1">
+                <span className="text-sm font-semibold text-[#48A2FF]">{cap.number}</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  {cap.tag}
+                </span>
+              </div>
+
+              <div className="lg:col-span-5">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight mb-2.5">
+                  {cap.title}
+                </h3>
+                <p className="text-sm sm:text-[15px] text-[#555555] leading-relaxed">
+                  {cap.description}
+                </p>
+              </div>
+
+              <ul className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-x-6 gap-y-1.5 text-sm text-gray-800 lg:pt-1">
+                {cap.deliverables.map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <span aria-hidden="true" className="text-[#48A2FF]">–</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
         </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-14">
-          {capabilities.map((cap, idx) => {
-            const Icon = cap.icon;
-            return (
-              <motion.div
-                key={cap.number}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: idx * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="group relative bg-white rounded-3xl p-7 sm:p-9 border border-gray-200/90 hover:border-[#48A2FF]/60 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_45px_rgba(72,162,255,0.12)] transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Top Bar with Number & Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      {/* Icon Box with signature Book a Call gradient */}
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] flex items-center justify-center shadow-[0_6px_18px_rgba(72,162,255,0.28)] group-hover:scale-105 group-hover:shadow-[0_8px_24px_rgba(72,162,255,0.4)] transition-all duration-300">
-                        <Icon className="w-6 h-6 text-[#0A2540] stroke-[2.2]" />
-                      </div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#F0F6FF] text-[#0A2540] border border-[#D5E6F8]">
-                        {cap.tag}
-                      </span>
-                    </div>
-
-                    <span className="text-2xl font-black text-gray-200 group-hover:text-[#48A2FF]/80 transition-colors font-mono">
-                      {cap.number}
-                    </span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight mb-3">
-                    {cap.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm md:text-[14px] text-[#555555] leading-relaxed mb-6 font-normal">
-                    {cap.description}
-                  </p>
-                </div>
-
-                {/* Deliverables List */}
-                <div className="pt-5 border-t border-gray-100">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-3">
-                    Key Deliverables
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {cap.deliverables.map((item, dIdx) => (
-                      <div key={dIdx} className="flex items-center gap-2 text-xs text-gray-700 font-medium">
-                        <div className="w-4 h-4 rounded-full bg-[#EBF4FF] text-[#0A2540] flex items-center justify-center shrink-0">
-                          <Check className="w-2.5 h-2.5 text-[#0A2540] stroke-[3]" />
-                        </div>
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Deliverables Scope Tag Cloud Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] text-center"
-        >
-          <div className="text-xs sm:text-[13px] font-bold uppercase tracking-widest text-gray-500 mb-4">
+        {/* Scope */}
+        <div className="mt-10 sm:mt-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3">
             Everything Your Brand Needs Under One Roof
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-            {scopeChips.map((chip, i) => (
-              <span
-                key={i}
-                className="text-xs sm:text-[13px] font-semibold text-gray-800 bg-[#F4F4F5] hover:bg-gradient-to-r hover:from-[#48A2FF] hover:to-[#C9E4FF] hover:text-[#0A2540] px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-default"
-              >
-                {chip}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+          </p>
+          <p className="text-base sm:text-lg leading-relaxed text-gray-800">
+            {scopeChips.join(" · ")}
+          </p>
+        </div>
       </div>
     </section>
   );
