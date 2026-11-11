@@ -91,7 +91,12 @@ const testimonials = [
   },
 ];
 
-const PricingTestimonials = () => {
+const PricingTestimonials = ({
+  eyebrow = "Testimonial",
+  titleMain = "Success Stories ",
+  titleItalic = "from the Creative Frontline.",
+  subtitle = "From startups to global teams, our creative process fuels success stories built on strategy, design, and seamless execution.",
+}) => {
   const scrollRef = useRef(null);
   const firstTrackRef = useRef(null);
   const touchingRef = useRef(false);
@@ -167,17 +172,16 @@ const PricingTestimonials = () => {
         <div className="mb-8 sm:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
             <p className="mb-2 text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">
-              Testimonial
+              {eyebrow}
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-[1.15]">
-              <span>Success Stories </span>
+              <span>{titleMain}</span>
               <span className={`${playfair.className} italic font-normal text-gray-900`}>
-                from the Creative Frontline.
+                {titleItalic}
               </span>
             </h2>
             <p className="mt-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-              From startups to global teams, our creative process fuels success
-              stories built on strategy, design, and seamless execution.
+              {subtitle}
             </p>
           </div>
 

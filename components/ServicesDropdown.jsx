@@ -22,6 +22,13 @@ export const SERVICES = [
        image: "/images/ai-avatars-images/website.webp",
 
   },
+  {
+    href: "/pricing",
+    title: "Video Editing",
+    description: "Pro editing for reels, YouTube and ads, delivered fast.",
+          image: "/images/ai-avatars-images/video-edit.webp",
+
+  },
 ];
 
 // Desktop "Services" dropdown. CSS transitions only (opacity/transform), no animation

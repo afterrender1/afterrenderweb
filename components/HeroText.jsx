@@ -104,7 +104,8 @@ const Typewriter = ({ gradient = null }) => {
 // Gently swinging decoration that hangs from just below the navbar.
 // CSS animation (rotate/translate) runs on the compositor, not the JS thread.
 const HangingImage = ({ src, side, belowBar }) => (
-  // eslint-disable-next-line @next/next/no-img-element
+  <Link href="/pricing" aria-label="View pricing" tabIndex={-1}>
+  {/* eslint-disable-next-line @next/next/no-img-element */}
   <img
     src={cloudinaryImage(src, { width: 448 })}
     srcSet={cloudinarySrcSet(src, [192, 288, 448])}
@@ -114,13 +115,14 @@ const HangingImage = ({ src, side, belowBar }) => (
     draggable={false}
     decoding="async"
     fetchPriority="low"
-    className={`pointer-events-none select-none absolute ${belowBar ? "top-[96px] sm:top-[114px]" : NAV_OFFSET} z-[5] h-auto w-24 sm:w-36 md:w-44 lg:w-56 ${
+    className={`cursor-pointer select-none absolute ${belowBar ? "top-[96px] sm:top-[114px]" : NAV_OFFSET} z-[5] h-auto w-24 sm:w-36 md:w-44 lg:w-56 ${
       side === "left" ? "left-0 sm:left-4 animate-hang" : "right-0 sm:right-4 animate-hang-reverse"
     }`}
     onError={(e) => {
       e.currentTarget.style.display = "none";
     }}
   />
+  </Link>
 );
 
 // Full-width strip under the navbar with continuously scrolling text.

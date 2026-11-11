@@ -65,7 +65,16 @@ export default function AiAvatarsMembership() {
           </p>
         </div>
 
-        <div className="grid rounded-[28px] border border-gray-200 bg-white p-2 shadow-[0_12px_48px_-24px_rgba(10,37,64,0.2)] lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="relative grid rounded-[28px] border border-gray-200 bg-white p-2 shadow-[0_12px_48px_-24px_rgba(10,37,64,0.2)] lg:grid-cols-[0.85fr_1.15fr]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/ai-avatars-images/50-off.webp"
+            alt="50% off"
+            width={1536}
+            height={1024}
+            draggable={false}
+            className="pointer-events-none absolute -left-5 -top-9 z-20 h-auto w-32 select-none drop-shadow-lg sm:-left-8 sm:-top-12 sm:w-44"
+          />
           <div className="relative isolate overflow-hidden rounded-[21px] bg-[#07111F] text-white">
             <div className="pointer-events-none absolute inset-0 -z-20">
               <SatinCrescentBloom />

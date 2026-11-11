@@ -29,7 +29,12 @@ const AiAvatarsPage = async () => {
 
       <AiAvatarsMembership />
 
-      <PricingTestimonials />
+      <PricingTestimonials
+        eyebrow="Testimonials"
+        titleMain="Stories from "
+        titleItalic="Real Clients."
+        subtitle="Creators and brands share what it is like to work with AfterRender."
+      />
       <Footer />
     </main>
   );
