@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import AiAvatarsHero from "@/components/AiAvatarsHero";
 import AiAvatarsMembership from "@/components/AiAvatarsMembership";
+import ShortVideoClientTestimonials from "@/components/ShortVideoClientTestimonials";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import Footer from "@/components/Footer";
 import React from "react";
@@ -28,6 +29,8 @@ const AiAvatarsPage = async () => {
       <AiAvatarsHero backgroundUrl={event?.backgroundUrl} plansId="plans" />
 
       <AiAvatarsMembership />
+
+      <ShortVideoClientTestimonials isLight={true} />
 
       <PricingTestimonials
         eyebrow="Testimonials"
