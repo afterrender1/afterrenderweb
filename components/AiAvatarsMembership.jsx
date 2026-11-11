@@ -98,9 +98,9 @@ export default function AiAvatarsMembership() {
               </div>
 
               <div className="my-7 sm:my-8">
-                <p className="mb-2 text-lg font-medium text-slate-400">
+                <p className="mb-2 text-xl font-semibold text-slate-300 sm:text-2xl">
                   <span className="sr-only">Regular price </span>
-                  <del className="decoration-slate-400 decoration-2">$999</del>
+                  <del className="decoration-[#FF3B3B] decoration-[3px] [text-decoration-skip-ink:none]">$999</del>
                 </p>
                 <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
                   <span className="text-[56px] font-semibold leading-none tracking-[-0.05em] sm:text-[64px]">$499</span>
