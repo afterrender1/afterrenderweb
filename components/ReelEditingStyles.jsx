@@ -44,36 +44,72 @@ const styles = [
   },
 ];
 
+const StyleCard = ({ item, onOpen }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(item)}
+      aria-label={`Play ${item.title} ${item.version}`}
+      className="group relative shrink-0 snap-center w-[70vw] max-w-[280px] sm:w-auto sm:max-w-none aspect-[9/16] rounded-xl overflow-hidden bg-gray-200 cursor-pointer text-left"
+    >
+      {!loaded && <span aria-hidden="true" className="absolute inset-0 animate-pulse bg-black/[0.07]" />}
+      <Image
+        src={item.posterUrl}
+        alt=""
+        fill
+        sizes="(max-width: 640px) 70vw, 260px"
+        onLoad={() => setLoaded(true)}
+        className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+      />
+      <span className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
+          <Play className="h-5 w-5 fill-black ml-0.5" />
+        </span>
+      </span>
+
+      <span className="absolute inset-x-0 bottom-0 block px-4 pb-4 pt-12 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
+        <span className="block text-xs font-semibold uppercase tracking-wide text-[#7cc0ff]">
+          {item.version}
+        </span>
+        <span className="block text-base font-semibold text-white leading-tight">{item.title}</span>
+      </span>
+    </button>
+  );
+};
+
 const ReelEditingStyles = () => {
   const [selected, setSelected] = useState(null);
 
+  // Lock page scroll and allow Esc to close while the video popup is open
   useEffect(() => {
     if (!selected) return;
-    const onKeyDown = (e) => e.key === "Escape" && setSelected(null);
+    const html = document.documentElement;
+    const prevHtml = html.style.overflow;
+    const prevBody = document.body.style.overflow;
+    html.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
+    const onKeyDown = (e) => e.key === "Escape" && setSelected(null);
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = "";
+      html.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [selected]);
 
   return (
     <section
-      className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-14 sm:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden`}
+      className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-14 sm:py-20 overflow-hidden`}
     >
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10 sm:mb-14"
-        >
-          <div className="flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#48A2FF] inline-block" />
-            <span>Editing Styles</span>
-          </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <p className="mb-2 text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">
+            Editing Styles
+          </p>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-[1.15]">
             <span>Take Your Pick From Our 3 </span>
@@ -82,47 +118,17 @@ const ReelEditingStyles = () => {
             </span>
           </h2>
 
-          <p className="mt-4 mx-auto max-w-2xl text-gray-600 text-sm sm:text-[15px] leading-relaxed font-medium">
+          <p className="mt-4 mx-auto max-w-2xl text-gray-600 text-sm sm:text-base leading-relaxed">
             Choose your vibe and we&apos;ll bring your content to life. With our pro team on the
             job for less than $8 a day, you&apos;ll be the talk of the town, without lifting a
             finger.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {styles.map((item, index) => (
-            <motion.button
-              key={item.id}
-              type="button"
-              onClick={() => setSelected(item)}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              aria-label={`Play ${item.title} ${item.version}`}
-              className="group relative shrink-0 w-[68%] sm:w-auto snap-center aspect-[9/16] rounded-2xl overflow-hidden bg-gray-950 border border-gray-200/80 shadow-[0_6px_20px_rgba(0,0,0,0.08)] hover:border-[#48A2FF]/50 hover:shadow-[0_12px_32px_rgba(72,162,255,0.2)] transition-all duration-300 hover:-translate-y-1 cursor-pointer text-left"
-            >
-              <Image
-                src={item.posterUrl}
-                alt={`${item.title} ${item.version}`}
-                fill
-                sizes="(max-width: 640px) 68vw, 260px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] flex items-center justify-center shadow-[0_4px_16px_rgba(72,162,255,0.45)] group-hover:scale-110 transition-transform duration-300">
-                  <Play className="w-5 h-5 fill-[#0A2540] text-[#0A2540] ml-0.5" />
-                </div>
-              </div>
-
-              <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-12 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#48A2FF]">
-                  {item.version}
-                </span>
-                <p className="text-white text-base font-bold leading-tight">{item.title}</p>
-              </div>
-            </motion.button>
+        {/* Mobile: swipeable row with the next card peeking in. Tablet and up: 3-column grid. */}
+        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 scroll-px-4 pb-1 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible">
+          {styles.map((item) => (
+            <StyleCard key={item.id} item={item} onOpen={setSelected} />
           ))}
         </div>
       </div>
@@ -133,21 +139,23 @@ const ReelEditingStyles = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 overscroll-contain"
             onClick={() => setSelected(null)}
           >
             <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.92, opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-sm max-h-[90vh] aspect-[9/16] bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/15"
+              // Fit a 9:16 box inside the screen: never wider than 24rem, never taller than 90% of the viewport
+              style={{ width: "min(100%, 24rem, calc(90dvh * 9 / 16))" }}
+              className="relative aspect-[9/16] bg-black rounded-xl overflow-hidden"
             >
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="absolute top-3 right-3 z-30 p-2.5 rounded-full bg-black/70 hover:bg-black text-white hover:text-[#48A2FF] transition-colors cursor-pointer border border-white/20 backdrop-blur-md"
+                className="absolute top-3 right-3 z-30 p-2 rounded-full bg-black/70 hover:bg-black text-white transition-colors cursor-pointer"
                 aria-label="Close video player"
               >
                 <X size={20} />
