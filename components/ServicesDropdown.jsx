@@ -2,8 +2,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Sparkles, Globe } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 // Add new services here; they show up in the navbar "Services" dropdown (desktop + mobile drawer)
 export const SERVICES = [
@@ -11,14 +12,15 @@ export const SERVICES = [
     href: "/ai-avatars",
     title: "AI Avatars",
     description: "Your digital twin makes videos for you, no camera needed.",
-    icon: Sparkles,
+    image: "/images/ai-avatars-images/ai-avatar.webp",
     badge: "New",
   },
   {
     href: "/website",
     title: "Website",
     description: "Fast, custom and SEO-ready websites that win clients.",
-    icon: Globe,
+       image: "/images/ai-avatars-images/website.webp",
+
   },
 ];
 
@@ -78,7 +80,7 @@ export default function ServicesDropdown({ triggerClassName = "" }) {
         }`}
       >
         <ul>
-          {SERVICES.map(({ href, title, description, icon: Icon, badge }) => {
+          {SERVICES.map(({ href, title, description, image, badge }) => {
             const active = pathname === href;
             return (
               <li key={href}>
@@ -90,8 +92,10 @@ export default function ServicesDropdown({ triggerClassName = "" }) {
                     active ? "bg-zinc-100" : "hover:bg-zinc-100"
                   }`}
                 >
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-700 shadow-2xs">
-                    <Icon size={17} strokeWidth={2} />
+                  <span className="relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-zinc-200 bg-zinc-50">
+                    {image && (
+                      <Image src={image} alt={title} fill sizes="36px" className="object-cover" />
+                    )}
                   </span>
                   <span className="min-w-0">
                     <span className="flex items-center gap-2 text-sm font-semibold leading-tight">

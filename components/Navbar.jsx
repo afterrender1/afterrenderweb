@@ -275,7 +275,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                         >
                           <div className="overflow-hidden">
                             <div className="ml-1 mb-1 flex flex-col border-l border-white/15 pl-4">
-                              {SERVICES.map(({ href, title, icon: Icon, badge }) => (
+                              {SERVICES.map(({ href, title, image, badge }) => (
                                 <Link
                                   key={href}
                                   href={href}
@@ -285,7 +285,11 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                                     pathname === href ? "text-[#59B7FF]" : "text-gray-200 hover:text-[#59B7FF]"
                                   }`}
                                 >
-                                  <Icon size={17} className="opacity-80" />
+                                  <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md bg-white/10">
+                                    {image && (
+                                      <Image src={image} alt={title} fill sizes="28px" className="object-cover" />
+                                    )}
+                                  </span>
                                   <span>{title}</span>
                                   {badge && (
                                     <span className="rounded-full bg-[#59B7FF]/15 px-1.5 py-px text-[10px] font-semibold text-[#8ccbff]">
