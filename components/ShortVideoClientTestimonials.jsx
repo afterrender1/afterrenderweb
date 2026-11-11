@@ -143,7 +143,8 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
   const firstTrackRef = useRef(null);
   const touchingRef = useRef(false);
   const hoverRef = useRef(false);
-  const pausedUntilRef = useRef(0);
+  const pausedRef = useRef(false);
+  const pauseTimerRef = useRef(null);
   const modalOpenRef = useRef(false);
 
   useEffect(() => {
@@ -234,7 +235,11 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
 
   // Pause auto-scroll for a moment after the visitor interacts (arrows, wheel, swipe momentum)
   const pauseAutoScroll = (ms = 2500) => {
-    pausedUntilRef.current = performance.now() + ms;
+    pausedRef.current = true;
+    clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, ms);
   };
 
   const handleScroll = (direction) => {
@@ -248,7 +253,9 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     }
   };
 
-  modalOpenRef.current = activeModalIndex !== null;
+  useEffect(() => {
+    modalOpenRef.current = activeModalIndex !== null;
+  }, [activeModalIndex]);
 
   // Carousel: auto-scrolls on its own, but is a real scroll container, so it can also be
   // swiped with a thumb or dragged/wheeled. Three identical tracks let it loop in both directions.
@@ -260,12 +267,12 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const SPEED = 45; // px per second
     let raf;
-    let last = performance.now();
+    let last = 0;
     let pos = track.offsetWidth; // start on the middle copy
     el.scrollLeft = pos;
 
     const tick = (now) => {
-      const dt = Math.min(now - last, 64) / 1000;
+      const dt = last ? Math.min(now - last, 64) / 1000 : 0;
       last = now;
       const w = track.offsetWidth;
 
@@ -273,7 +280,7 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
         touchingRef.current ||
         hoverRef.current ||
         modalOpenRef.current ||
-        now < pausedUntilRef.current ||
+        pausedRef.current ||
         reduceMotion;
 
       if (paused) {
@@ -298,7 +305,10 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(pauseTimerRef.current);
+    };
   }, [loading, videos.length]);
 
   const activeVideo =

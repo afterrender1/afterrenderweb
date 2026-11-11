@@ -155,10 +155,13 @@ const WhatWeCreateCarosel = () => {
   const firstTrackRef = useRef(null);
   const touchingRef = useRef(false);
   const hoverRef = useRef(false);
-  const pausedUntilRef = useRef(0);
+  const pausedRef = useRef(false);
+  const pauseTimerRef = useRef(null);
   const playingRef = useRef(false);
 
-  playingRef.current = currentPlayingKey !== null;
+  useEffect(() => {
+    playingRef.current = currentPlayingKey !== null;
+  }, [currentPlayingKey]);
 
   const handleTogglePlay = (uniqueKey) => {
     setCurrentPlayingKey((prev) => (prev === uniqueKey ? null : uniqueKey));
@@ -166,7 +169,11 @@ const WhatWeCreateCarosel = () => {
 
   // Pause auto-scroll briefly after the visitor interacts (arrows, wheel, swipe momentum)
   const pauseAutoScroll = (ms = 2500) => {
-    pausedUntilRef.current = performance.now() + ms;
+    pausedRef.current = true;
+    clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, ms);
   };
 
   const handleScroll = (direction) => {
@@ -190,12 +197,12 @@ const WhatWeCreateCarosel = () => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const SPEED = 45; // px per second
     let raf;
-    let last = performance.now();
+    let last = 0;
     let pos = track.offsetWidth; // start on the middle copy
     el.scrollLeft = pos;
 
     const tick = (now) => {
-      const dt = Math.min(now - last, 64) / 1000;
+      const dt = last ? Math.min(now - last, 64) / 1000 : 0;
       last = now;
       const w = track.offsetWidth;
 
@@ -203,7 +210,7 @@ const WhatWeCreateCarosel = () => {
         touchingRef.current ||
         hoverRef.current ||
         playingRef.current ||
-        now < pausedUntilRef.current ||
+        pausedRef.current ||
         reduceMotion;
 
       if (paused) {
@@ -228,7 +235,10 @@ const WhatWeCreateCarosel = () => {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(pauseTimerRef.current);
+    };
   }, []);
 
   return (

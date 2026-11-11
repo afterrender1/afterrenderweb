@@ -707,19 +707,67 @@ export const videosItems = [
   },
 ];
 
+function VideoThumb({ video, onOpen }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={() => video.videoUrl && onOpen(video)}
+      aria-label={`Play video: ${video.title}`}
+      className="group block w-full text-left cursor-pointer self-start"
+    >
+      <span
+        className={`relative block w-full ${
+          video.aspect || (video.isVertical ? "aspect-[9/16]" : "aspect-[16/9]")
+        } overflow-hidden rounded-lg bg-gray-200`}
+      >
+        {!loaded && <span aria-hidden="true" className="absolute inset-0 animate-pulse bg-black/[0.07]" />}
+        <Image
+          src={video.posterUrl}
+          alt=""
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          onLoad={() => setLoaded(true)}
+          className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+        />
+        <span className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
+            <Play className="h-4 w-4 fill-black ml-0.5" />
+          </span>
+        </span>
+      </span>
+      <span className="mt-2 block text-[13px] font-medium text-gray-700 line-clamp-1">{video.title}</span>
+    </button>
+  );
+}
+
 export default function CollectionPortfolio() {
-  const [activeTab, setActiveTab] = useState("videos");
+  const [activeTab] = useState("videos");
   const [activeCategory, setActiveCategory] = useState("Long form edits");
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    if (tab === "graphics") {
-      setActiveCategory("Ad creatives");
-    } else {
-      setActiveCategory("Long form edits");
-    }
-  };
+  // Lock page scroll and allow Esc to close while the video popup is open
+  useEffect(() => {
+    if (!selectedVideo) return;
+    const html = document.documentElement;
+    const prevHtml = html.style.overflow;
+    const prevBody = document.body.style.overflow;
+    html.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setSelectedVideo(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      html.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedVideo]);
 
   const currentCategories =
     activeTab === "graphics" ? graphicsCategories : videosCategories;
@@ -735,43 +783,7 @@ export default function CollectionPortfolio() {
   const shortVideos = filteredVideos.filter((v) => v.isVertical);
 
   const renderVideoCard = (video) => (
-    <div
-      key={video.id}
-      className="group relative self-start h-fit rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-gray-200/80 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:border-[#48A2FF]/50 hover:shadow-[0_10px_28px_rgba(72,162,255,0.18)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-      onClick={() => {
-        if (video.videoUrl) {
-          setSelectedVideo(video);
-        }
-      }}
-    >
-      <div
-        className={`relative w-full ${
-          video.aspect || (video.isVertical ? "aspect-[9/16]" : "aspect-[16/9]")
-        } overflow-hidden bg-gray-950`}
-      >
-        <Image
-          src={video.posterUrl}
-          alt={video.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-
-        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-300" />
-
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] flex items-center justify-center shadow-[0_4px_16px_rgba(72,162,255,0.45)] group-hover:scale-115 active:scale-95 transition-all duration-300">
-            <Play className="w-4 h-4 fill-[#0A2540] text-[#0A2540] ml-0.5" />
-          </div>
-        </div>
-
-        <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <p className="text-white text-xs sm:text-[13px] font-bold line-clamp-1">
-            {video.title}
-          </p>
-        </div>
-      </div>
-    </div>
+    <VideoThumb key={video.id} video={video} onOpen={setSelectedVideo} />
   );
 
   const filteredGraphics = graphicsItems.filter(
@@ -783,103 +795,51 @@ export default function CollectionPortfolio() {
       id="portfolio"
       className={`${jakarta.className} relative w-full bg-[#FAFAFA] text-black pt-12 sm:pt-16 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-20`}
     >
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#48A2FF]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-1/2 right-10 w-96 h-96 bg-[#C9E4FF]/30 rounded-full blur-3xl pointer-events-none -z-10" />
-
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">
-          <span className="w-2 h-2 rounded-full bg-[#48A2FF] inline-block animate-pulse" />
-          <span>PORTFOLIO</span>
-        </div>
-
-        <div className="w-full h-[1px] bg-gray-200/80 mb-8" />
-
-        <div className="mb-10 sm:mb-12">
+        <div className="mb-8 sm:mb-10">
+          <p className="mb-2 text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">
+            Portfolio
+          </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight">
             <span>Featured </span>
-            <span
-              className={`${playfair.className} italic font-normal text-gray-900`}
-            >
+            <span className={`${playfair.className} italic font-normal text-gray-900`}>
               Projects
             </span>
           </h2>
-          <p className="mt-2.5 text-gray-600 text-xs sm:text-sm md:text-[14.5px] max-w-xl font-medium">
+          <p className="mt-3 text-gray-600 text-sm sm:text-base max-w-xl">
             A curated look at standout creations across industries and formats.
           </p>
         </div>
 
-        <div className="flex justify-center mb-10 sm:mb-14">
-          <div className="bg-[#EFEFEF] p-1 rounded-full flex items-center shadow-inner border border-gray-200/70">
-            <button
-              type="button"
-              onClick={() => handleTabChange("videos")}
-              className={`relative px-6 sm:px-7 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
-                activeTab === "videos"
-                  ? "text-[#0A2540] font-bold"
-                  : "text-gray-500 hover:text-gray-800"
-              }`}
-            >
-              {activeTab === "videos" && (
-                <motion.div
-                  layoutId="collectionActiveTab"
-                  transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                  className="absolute inset-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full shadow-[0_2px_10px_rgba(72,162,255,0.35)]"
-                />
-              )}
-              <span className="relative z-10">Videos</span>
-            </button>
-
-            {/* <button
-              type="button"
-              onClick={() => handleTabChange("graphics")}
-              className={`relative px-6 sm:px-7 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
-                activeTab === "graphics"
-                  ? "text-[#0A2540] font-bold"
-                  : "text-gray-500 hover:text-gray-800"
-              }`}
-            >
-              {activeTab === "graphics" && (
-                <motion.div
-                  layoutId="collectionActiveTab"
-                  transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                  className="absolute inset-0 bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] rounded-full shadow-[0_2px_10px_rgba(72,162,255,0.35)]"
-                />
-              )}
-              <span className="relative z-10">Graphics</span>
-            </button> */}
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row items-start gap-8 sm:gap-10">
-          <aside className="w-full lg:w-64 shrink-0 bg-white border border-gray-200/90 rounded-2xl p-5 sm:p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] sticky top-24">
-            <h3 className="text-gray-950 font-bold text-lg sm:text-xl tracking-tight mb-6 pb-1 border-b-2 border-black inline-block">
+        <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-12">
+          {/* Categories: swipeable chips on mobile, plain list on desktop */}
+          <nav aria-label="Work categories" className="w-full lg:w-56 shrink-0 lg:sticky lg:top-24 min-w-0">
+            <h3 className="hidden lg:block mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">
               Our Work
             </h3>
 
-            <ul className="space-y-1.5">
-              {currentCategories.map((category, index) => {
+            <ul className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto lg:overflow-visible no-scrollbar -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 pb-1 lg:pb-0 lg:border-l lg:border-gray-200">
+              {currentCategories.map((category) => {
                 const isActive = activeCategory === category;
                 return (
-                  <li key={index}>
+                  <li key={category} className="shrink-0">
                     <button
                       type="button"
                       onClick={() => setActiveCategory(category)}
-                      className={`text-left w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-200 cursor-pointer flex items-center justify-between ${
+                      aria-pressed={isActive}
+                      className={`whitespace-nowrap cursor-pointer text-sm transition-colors rounded-full px-4 py-2 border lg:rounded-none lg:border-0 lg:border-l-2 lg:-ml-px lg:px-4 lg:py-2.5 lg:text-left lg:w-full ${
                         isActive
-                          ? "bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] font-bold shadow-[0_2px_10px_rgba(72,162,255,0.25)]"
-                          : "text-gray-600 hover:text-black hover:bg-gray-100/80 font-medium"
+                          ? "bg-gray-950 text-white border-gray-950 font-semibold lg:bg-transparent lg:text-gray-950 lg:border-gray-950"
+                          : "bg-white text-gray-700 border-gray-300 hover:text-black lg:bg-transparent lg:border-transparent lg:text-gray-500 lg:hover:border-gray-400"
                       }`}
                     >
-                      <span className="line-clamp-1">{category}</span>
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#0A2540] inline-block shrink-0 ml-1.5" />
-                      )}
+                      {category}
                     </button>
                   </li>
                 );
               })}
             </ul>
-          </aside>
+          </nav>
 
     
           <main className="flex-1 w-full min-w-0">
@@ -896,55 +856,33 @@ export default function CollectionPortfolio() {
                   hasMixedVideos ? (
                     <div className="space-y-10">
                       <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <span className="w-2 h-2 rounded-full bg-[#48A2FF]" />
-                          <h4 className="text-gray-950 text-sm sm:text-base font-bold tracking-tight">
-                            Long Form
-                          </h4>
-                          <span className="text-xs text-gray-600 font-semibold px-2 py-0.5 rounded-full bg-gray-100">
-                            {longVideos.length}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                        <h4 className="mb-4 text-base font-semibold text-gray-950">Long form <span className="text-gray-400 font-normal">({longVideos.length})</span></h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-6">
                           {longVideos.map(renderVideoCard)}
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-gray-200/80">
-                        <div className="flex items-center gap-2 mb-4 mt-6">
-                          <span className="w-2 h-2 rounded-full bg-[#48A2FF]" />
-                          <h4 className="text-gray-950 text-sm sm:text-base font-bold tracking-tight">
-                            Shorts
-                          </h4>
-                          <span className="text-xs text-gray-600 font-semibold px-2 py-0.5 rounded-full bg-gray-100">
-                            {shortVideos.length}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                      <div className="pt-2 border-t border-gray-200">
+                        <h4 className="mb-4 mt-8 text-base font-semibold text-gray-950">Shorts <span className="text-gray-400 font-normal">({shortVideos.length})</span></h4>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-5">
                           {shortVideos.map(renderVideoCard)}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-5">
                       {filteredVideos.map(renderVideoCard)}
                     </div>
                   )
                 ) : (
-                  <div className="w-full py-16 sm:py-20 px-6 rounded-2xl bg-white border border-gray-200/80 shadow-xs flex flex-col items-center justify-center text-center">
-                    <div className="w-14 h-14 rounded-full bg-[#48A2FF]/10 text-[#48A2FF] flex items-center justify-center mb-4">
-                      <Video className="w-6 h-6" />
-                    </div>
+                  <div className="w-full py-16 sm:py-20 px-6 rounded-lg border border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
+                    <Video className="w-6 h-6 text-gray-400 mb-3" />
                     <h3 className="text-gray-950 text-lg sm:text-xl font-bold mb-1.5">
                       {activeCategory}
                     </h3>
                     <p className="text-gray-500 text-xs sm:text-sm max-w-md mb-5 font-medium">
                       No videos uploaded yet in this category. Content will be added here soon.
                     </p>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-1.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
-                      <span className="w-2 h-2 rounded-full bg-[#48A2FF] animate-pulse" />
-                      Videos Coming Soon
-                    </span>
                   </div>
                 )}
               </motion.div>
@@ -1008,7 +946,7 @@ export default function CollectionPortfolio() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 overscroll-contain"
             onClick={() => setSelectedVideo(null)}
           >
             <motion.div
@@ -1019,14 +957,14 @@ export default function CollectionPortfolio() {
               onClick={(e) => e.stopPropagation()}
               className={`relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/15 ${
                 selectedVideo.isVertical
-                  ? "w-full max-w-sm aspect-[9/16]"
+                  ? "w-full max-w-sm aspect-[9/16] max-h-[90dvh]"
                   : "w-full max-w-4xl aspect-video"
               }`}
             >
               <button
                 type="button"
                 onClick={() => setSelectedVideo(null)}
-                className="absolute top-3 right-3 z-30 p-2.5 rounded-full bg-black/70 hover:bg-black text-white hover:text-[#48A2FF] transition-all duration-200 cursor-pointer border border-white/20 backdrop-blur-md shadow-lg"
+                className="absolute top-3 right-3 z-30 p-2 rounded-full bg-black/70 hover:bg-black text-white transition-colors cursor-pointer"
                 aria-label="Close video player"
               >
                 <X size={20} />
