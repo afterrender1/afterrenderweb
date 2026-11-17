@@ -1,177 +1,263 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Poppins, Inter } from "@/app/lib/fonts";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import Navbar from "./Navbar";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Poppins, Inter } from "@/app/lib/fonts";
 import { getCachedBlogs } from "@/app/lib/blogCache";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 const inter = Inter({ subsets: ["latin"] });
 
-const AllBlogs = () => {
-    const [blogs, setBlogs] = useState([]);
-    const [filteredBlogs, setFilteredBlogs] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState("All");
-    const router = useRouter();
+// Preferred tab order; any other category that has posts is listed after these
+const CATEGORY_ORDER = ["Design", "Technology", "Innovation", "Development"];
 
-    const categories = ["All", "Innovation", "Technology", "Development", "Design"];
+// Plain text from either an html post or an old markdown post (no #, **, ---, links syntax)
+const toPlainText = (content) =>
+    String(content || "")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, " ") // markdown images
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // markdown links -> text
+        .replace(/^\s{0,3}(#{1,6}|>|[-*+]|\d+\.)\s+/gm, "") // headings, quotes, list markers
+        .replace(/^\s*([-*_]\s*){3,}$/gm, " ") // horizontal rules
+        .replace(/(\*\*|__|\*|_|`|~~)/g, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, " ")
+        .trim();
+
+const readMinutes = (text) => Math.max(1, Math.round(text.split(" ").filter(Boolean).length / 200));
+
+const formatDate = (value) => {
+    const d = new Date(value);
+    return Number.isNaN(d.getTime())
+        ? ""
+        : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+};
+
+// Adds the derived fields the cards need once, instead of on every render
+const preparePost = (blog) => {
+    const text = toPlainText(blog.content);
+    return {
+        id: blog._id,
+        slug: blog.slug,
+        title: blog.title,
+        image: blog.image,
+        category: blog.category?.trim() || "General",
+        date: formatDate(blog.createdAt),
+        excerpt: blog.excerpt?.trim() || text,
+        minutes: readMinutes(text),
+    };
+};
+
+const Meta = ({ post }) => (
+    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500">
+        <span className="font-medium text-[#7cc0ff]">{post.category}</span>
+        <span aria-hidden="true">·</span>
+        {post.date && (
+            <>
+                <time>{post.date}</time>
+                <span aria-hidden="true">·</span>
+            </>
+        )}
+        <span>{post.minutes} min read</span>
+    </p>
+);
+
+const Cover = ({ post, sizes, priority = false }) =>
+    post.image ? (
+        <Image
+            src={post.image}
+            alt=""
+            fill
+            sizes={sizes}
+            priority={priority}
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+    ) : (
+        <div className="absolute inset-0 grid place-items-center bg-zinc-900">
+            <Image src="/logos/logoxar.png" alt="" width={40} height={40} className="opacity-30" />
+        </div>
+    );
+
+const FeaturedPost = ({ post }) => (
+    <Link
+        href={`/blog/${post.slug}`}
+        className="group grid md:grid-cols-[1.15fr_1fr] gap-5 md:gap-8 items-center rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#48A2FF]/60 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a0a0a]"
+    >
+        <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-zinc-900">
+            <Cover post={post} sizes="(min-width: 1024px) 620px, (min-width: 768px) 55vw, 100vw" priority />
+        </div>
+        <div className="min-w-0">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">Latest post</p>
+            <h2 className={`${poppins.className} text-2xl sm:text-3xl font-semibold leading-snug text-white group-hover:text-[#9fd0ff] transition-colors`}>
+                {post.title}
+            </h2>
+            <p className="mt-3 text-[15px] leading-relaxed text-zinc-400 line-clamp-3">{post.excerpt}</p>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <Meta post={post} />
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white">
+                    Read article
+                    <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+            </div>
+        </div>
+    </Link>
+);
+
+const PostCard = ({ post }) => (
+    <Link
+        href={`/blog/${post.slug}`}
+        className="group flex flex-col min-w-0 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-[#48A2FF]/60 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a0a0a]"
+    >
+        <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-zinc-900">
+            <Cover post={post} sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" />
+        </div>
+        <div className="pt-4 flex flex-col flex-1">
+            <Meta post={post} />
+            <h3 className={`${poppins.className} mt-2 text-lg font-semibold leading-snug text-white group-hover:text-[#9fd0ff] transition-colors`}>
+                {post.title}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-400 line-clamp-3">{post.excerpt}</p>
+            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-200">
+                Read article
+                <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            </span>
+        </div>
+    </Link>
+);
+
+const CardSkeleton = () => (
+    <div className="animate-pulse">
+        <div className="aspect-video rounded-xl bg-white/5" />
+        <div className="mt-4 h-3 w-1/3 rounded bg-white/5" />
+        <div className="mt-3 h-5 w-5/6 rounded bg-white/5" />
+        <div className="mt-2 h-4 w-full rounded bg-white/5" />
+        <div className="mt-1.5 h-4 w-2/3 rounded bg-white/5" />
+    </div>
+);
+
+const AllBlogs = () => {
+    const [blogs, setBlogs] = useState(null); // null = loading
+    const [failed, setFailed] = useState(false);
+    const [activeCategory, setActiveCategory] = useState("All");
 
     useEffect(() => {
-        const fetchBlogs = async () => {
-            const data = await getCachedBlogs(); // use cache
-            setBlogs(data);
-            setFilteredBlogs(data);
-            setLoading(false);
+        let cancelled = false;
+        getCachedBlogs()
+            .then((data) => {
+                if (!cancelled) setBlogs(Array.isArray(data) ? data : []);
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setFailed(true);
+                    setBlogs([]);
+                }
+            });
+        return () => {
+            cancelled = true;
         };
-        fetchBlogs();
     }, []);
 
-    useEffect(() => {
-        if (activeCategory === "All") {
-            setFilteredBlogs(blogs);
-        } else {
-            setFilteredBlogs(blogs.filter((b) => b.category === activeCategory));
-        }
-    }, [activeCategory, blogs]);
+    // Newest first, whatever order the API returns
+    const posts = useMemo(
+        () =>
+            (blogs || [])
+                .filter((b) => b?.slug && b?.title)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map(preparePost),
+        [blogs]
+    );
+
+    // Only categories that actually have posts, with their counts
+    const categories = useMemo(() => {
+        const counts = new Map();
+        posts.forEach((p) => counts.set(p.category, (counts.get(p.category) || 0) + 1));
+        const known = CATEGORY_ORDER.filter((c) => counts.has(c));
+        const others = [...counts.keys()].filter((c) => !CATEGORY_ORDER.includes(c)).sort();
+        return [{ name: "All", count: posts.length }, ...[...known, ...others].map((name) => ({ name, count: counts.get(name) }))];
+    }, [posts]);
+
+    const visible = activeCategory === "All" ? posts : posts.filter((p) => p.category === activeCategory);
+    // The newest post gets the large slot only on the unfiltered view
+    const featured = activeCategory === "All" ? visible[0] : null;
+    const rest = featured ? visible.slice(1) : visible;
+    const loading = blogs === null;
 
     return (
-        <main
-            className={`min-h-screen bg-[#050505] text-white ${inter.className} selection:bg-white selection:text-black`}
-        >
-            {/* Background Layer */}
-            <div className="fixed inset-0 z-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#1e1b4b,transparent)] opacity-40" />
-                <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20" />
-            </div>
-
-            <div className="relative z-10">
-                <Navbar />
-
-                {/* --- HERO SECTION --- */}
-                <header className="pt-48 pb-20 px-6">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <motion.span
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-xs font-bold tracking-[0.3em] uppercase text-indigo-500 mb-4 block"
-                        >
-                            Our Perspectives
-                        </motion.span>
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className={`text-6xl md:text-8xl font-medium tracking-tight mb-8 ${poppins.className}`}
-                        >
-                            The <span className="text-gray-500">Journal.</span>
-                        </motion.h1>
-
-                        {/* Category Tabs */}
-                        <div className="flex flex-wrap justify-center gap-2 mt-12">
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setActiveCategory(cat)}
-                                    className={`px-5 py-2 rounded-full text-[13px] transition-all duration-300 border ${activeCategory === cat
-                                        ? "bg-white text-black border-white"
-                                        : "bg-transparent border-white/10 text-gray-500 hover:border-white/40"
-                                        }`}
-                                >
-                                    {cat}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+        <main className={`min-h-screen bg-[#0a0a0a] text-white ${inter.className}`}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-20 sm:pb-28">
+                {/* Header */}
+                <header className="max-w-2xl">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">Blog</p>
+                    <h1 className={`${poppins.className} mt-3 text-4xl sm:text-5xl font-semibold tracking-tight`}>The Journal</h1>
+                    <p className="mt-3 text-[15px] sm:text-base leading-relaxed text-zinc-400">
+                        Ideas, guides and case studies on video, design and marketing from the AfterRender team.
+                    </p>
                 </header>
 
-                {/* --- BLOG GRID --- */}
-                <section className="container mx-auto px-6 pb-32">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {loading ? (
-                            Array(6)
-                                .fill(0)
-                                .map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="h-[450px] bg-white/5 rounded-3xl animate-pulse"
-                                    />
-                                ))
-                        ) : (
-                            <AnimatePresence mode="popLayout">
-                                {filteredBlogs.map((blog, index) => (
-                                    <motion.article
-                                        key={blog._id}
-                                        layout
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                                        onClick={() => router.push(`/blog/${blog.slug}`)}
-                                        className="group cursor-pointer"
-                                    >
-                                        <div className="relative h-[450px] w-full rounded-4xl overflow-hidden border border-white/10 bg-white/5 transition-all duration-500 group-hover:border-white/20 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                                            {blog.image && (
-                                                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 mb-20 shadow-2xl group">
-                                                    <Image
-                                                        src={blog.image}
-                                                        alt={blog.title}
-                                                        fill
-                                                        className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                                        priority
-                                                    />
-                                                </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
-                                            <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                                                <div className="mb-4">
-                                                    <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-widest rounded-full">
-                                                        {blog.category}
-                                                    </span>
-                                                </div>
+                {/* Category filter */}
+                {posts.length > 0 && (
+                    <nav aria-label="Filter by category" className="mt-8 sm:mt-10 border-b border-white/10">
+                        <ul className="-mb-px flex gap-5 sm:gap-7 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                            {categories.map(({ name, count }) => {
+                                const active = activeCategory === name;
+                                return (
+                                    <li key={name} className="shrink-0">
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveCategory(name)}
+                                            aria-pressed={active}
+                                            className={`flex items-center gap-1.5 pb-3 text-sm border-b-2 transition-colors cursor-pointer outline-none focus-visible:text-white ${
+                                                active
+                                                    ? "border-[#48A2FF] text-white font-medium"
+                                                    : "border-transparent text-zinc-500 hover:text-zinc-200"
+                                            }`}
+                                        >
+                                            {name}
+                                            <span className={`text-xs tabular-nums ${active ? "text-zinc-400" : "text-zinc-600"}`}>{count}</span>
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </nav>
+                )}
 
-                                                <h3 className="text-2xl font-semibold mb-3 leading-tight group-hover:text-indigo-300 transition-colors">
-                                                    {blog.title}
-                                                </h3>
-
-                                                <p className="text-gray-400 text-sm line-clamp-2 mb-6 font-light">
-                                                    {blog.excerpt || String(blog.content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}
-                                                </p>
-
-                                                <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                                                    <div className="flex items-center gap-2 text-xs">
-                                                        <div className="relative w-6 h-6">
-                                                            <Image src="/logos/logoxar.png" alt="Logo" fill className="object-contain" />
-                                                        </div>
-                                                        <span className="text-gray-400 font-medium">
-                                                            AfterRender • {new Date(blog.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                                                        </span>
-                                                    </div>
-
-                                                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <svg
-                                                            width="12"
-                                                            height="12"
-                                                            viewBox="0 0 15 15"
-                                                            fill="none"
-                                                            className="text-white"
-                                                        >
-                                                            <path
-                                                                d="M8.14645 3.14645L12.8536 7.14645L8.14645 11.1464"
-                                                                stroke="currentColor"
-                                                                strokeWidth="2"
-                                                            />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </motion.article>
-                                ))}
-                            </AnimatePresence>
-                        )}
-                    </div>
+                {/* Posts */}
+                <section className="mt-10 sm:mt-12" aria-live="polite">
+                    {loading ? (
+                        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+                            {Array.from({ length: 3 }).map((_, i) => (
+                                <CardSkeleton key={i} />
+                            ))}
+                        </div>
+                    ) : failed ? (
+                        <p className="py-16 text-center text-sm text-zinc-400">
+                            Couldn&apos;t load the posts right now. Please refresh the page to try again.
+                        </p>
+                    ) : visible.length === 0 ? (
+                        <p className="py-16 text-center text-sm text-zinc-400">No posts here yet. Check back soon.</p>
+                    ) : (
+                        <>
+                            {featured && <FeaturedPost post={featured} />}
+                            {rest.length > 0 && (
+                                <div
+                                    className={`grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 ${
+                                        featured ? "mt-12 sm:mt-16 pt-12 sm:pt-16 border-t border-white/10" : ""
+                                    }`}
+                                >
+                                    {rest.map((post) => (
+                                        <PostCard key={post.id} post={post} />
+                                    ))}
+                                </div>
+                            )}
+                        </>
+                    )}
                 </section>
             </div>
         </main>
