@@ -195,86 +195,78 @@ const WebsiteHero = ({ backgroundUrl = "", showcase = [] }) => {
         transition={{ duration: 0.5, delay: 0.15 }}
         className="relative w-full max-w-[440px] mx-auto lg:mx-0 lg:justify-self-end"
       >
-        <div className="rounded-2xl bg-white border border-zinc-200 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-16px_rgba(15,23,42,0.18)] overflow-hidden">
+        <div className="rounded-xl bg-white border border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.12)]">
           {/* Plan + price */}
-          <div className="p-5 sm:p-7">
-            <p className="text-[13px] font-medium text-[#1a73e8]">Website package</p>
-            <h2 className="mt-1 text-xl sm:text-[22px] font-semibold tracking-tight text-zinc-950 leading-tight">
+          <div className="p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-3 text-xs sm:text-[12.5px]">
+              <span className="font-semibold text-[#1a73e8]">Website package</span>
+              <span className="flex items-center gap-1 text-zinc-500">
+                <Clock size={12} />
+                5–7 day delivery
+              </span>
+            </div>
+            <h2 className="mt-1 sm:mt-1.5 text-[17px] sm:text-xl font-semibold tracking-tight text-zinc-950">
               Landing Page Website
             </h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-500">
+            <p className="mt-1 text-[13px] sm:text-[13.5px] leading-snug sm:leading-relaxed text-zinc-500">
               Everything a new business needs to look professional online and start getting enquiries.
             </p>
 
-            <div className="mt-6 flex items-end justify-between gap-4">
-              <div className="min-w-0">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-[44px] sm:text-5xl font-semibold tracking-[-0.03em] text-zinc-950 leading-none">
-                    $300
-                  </span>
-                  <span className="text-sm text-zinc-500">USD</span>
-                </div>
-                <p className="mt-2 text-[13px] text-zinc-500">One-time payment · no monthly fees</p>
-              </div>
-              <div className="shrink-0 text-right">
-                <del className="block text-sm text-zinc-400">
-                  <span className="sr-only">Regular price </span>$400
-                </del>
-                <span className="mt-1 inline-block rounded-md bg-emerald-50 px-1.5 py-0.5 text-[12px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/15">
-                  Save $100
-                </span>
-              </div>
+            <div className="mt-4 sm:mt-5 flex items-baseline flex-wrap gap-x-2 gap-y-1">
+              <span className="text-[32px] sm:text-4xl font-semibold tracking-tight text-zinc-950 leading-none">$300</span>
+              <span className="text-sm text-zinc-500">USD</span>
+              <del className="text-sm text-zinc-400">
+                <span className="sr-only">Regular price </span>$400
+              </del>
+              <span className="text-[12.5px] font-medium text-emerald-700">Save $100</span>
             </div>
+            <p className="mt-1 sm:mt-1.5 text-xs sm:text-[12.5px] text-zinc-500">One-time payment, no monthly fees</p>
 
-            <div className="mt-6 grid gap-2.5">
+            <div className="mt-4 sm:mt-5 grid grid-cols-[1.4fr_1fr] gap-2 text-[13px] sm:text-sm">
               <Link
                 href={CALENDLY_URL}
                 target="_blank"
-                className="group inline-flex items-center justify-center gap-2 h-11 rounded-lg bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] hover:brightness-105 text-[#0A2540] text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40 focus-visible:ring-offset-2"
+                className="group inline-flex items-center justify-center gap-1.5 h-10 rounded-lg bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] hover:brightness-105 text-[#0A2540] font-bold whitespace-nowrap shadow-sm hover:shadow-md transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40 focus-visible:ring-offset-2"
               >
                 Book a free call
-                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href={WHATSAPP_URL}
                 target="_blank"
-                className="inline-flex items-center justify-center h-11 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-900 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40"
+                className="inline-flex items-center justify-center h-10 rounded-lg border border-[#48A2FF]/40 bg-white hover:bg-[#F3F9FF] text-[#0A2540] font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8]/40"
               >
-                Chat on WhatsApp
+                WhatsApp us
               </Link>
             </div>
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-[12.5px] text-zinc-500">
-              <Clock size={13} />
-              Delivered in 5–7 days
-            </p>
           </div>
 
           {/* What's included */}
-          <div className="border-t border-zinc-200 p-5 sm:p-7">
-            <p className="text-[13px] font-semibold text-zinc-950">4 custom pages</p>
-            <dl className="mt-3 rounded-lg border border-zinc-200 divide-y divide-zinc-100">
+          <div className="border-t border-zinc-100 px-4 sm:px-6 py-4 sm:py-5">
+            <p className="text-xs sm:text-[12.5px] font-medium text-zinc-500">4 custom pages</p>
+            <dl className="mt-2 sm:mt-2.5 grid grid-cols-2 gap-x-3 sm:gap-x-4 gap-y-2.5 sm:gap-y-3">
               {pages.map(({ label, note }) => (
-                <div key={label} className="flex items-baseline justify-between gap-4 px-3.5 py-2.5">
-                  <dt className="text-sm font-medium text-zinc-900">{label}</dt>
-                  <dd className="text-[13px] text-zinc-500 text-right">{note}</dd>
+                <div key={label} className="min-w-0">
+                  <dt className="text-[13px] sm:text-[13.5px] font-medium text-zinc-900">{label}</dt>
+                  <dd className="text-[11.5px] sm:text-xs text-zinc-500 leading-snug">{note}</dd>
                 </div>
               ))}
             </dl>
 
-            <p className="mt-6 text-[13px] font-semibold text-zinc-950">Included on every page</p>
-            <ul className="mt-3 grid gap-2.5">
+            <p className="mt-4 sm:mt-5 text-xs sm:text-[12.5px] font-medium text-zinc-500">Included on every page</p>
+            <ul className="mt-2 sm:mt-2.5 grid grid-cols-2 gap-x-3 sm:gap-x-4 gap-y-1.5 sm:gap-y-2">
               {features.map((text) => (
-                <li key={text} className="flex items-start gap-2.5 text-sm text-zinc-700">
-                  <Check size={16} strokeWidth={2.25} className="mt-0.5 shrink-0 text-[#1a73e8]" />
+                <li key={text} className="flex items-start gap-1.5 sm:gap-2 text-[12px] sm:text-[13px] leading-snug text-zinc-700">
+                  <Check size={14} strokeWidth={2.5} className="mt-0.5 shrink-0 text-[#2f8cf5]" />
                   {text}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="border-t border-zinc-200 bg-zinc-50 px-5 sm:px-7 py-3.5 text-[13px] text-zinc-600">
+          <div className="border-t border-zinc-100 bg-[#F7FBFF] rounded-b-xl px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-[12.5px] text-zinc-500">
             Need more pages or e-commerce?{" "}
-            <Link href={CALENDLY_URL} target="_blank" className="font-medium text-[#1a73e8] hover:underline">
+            <Link href={CALENDLY_URL} target="_blank" className="font-semibold text-[#1a73e8] hover:underline underline-offset-2">
               Get a custom quote
             </Link>
           </div>
