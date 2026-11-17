@@ -101,14 +101,17 @@ const WebsiteVideoTestimonials = ({ reviews = [] }) => {
             text="Real words from founders and brands we've built websites for."
           />
           <div className="-mx-4 px-4 sm:mx-auto sm:px-0 sm:max-w-[900px] flex sm:grid sm:grid-cols-3 gap-4 lg:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 sm:pb-0">
-            {reviews.map((item) => (
-              <ReviewCard
-                key={item.id}
-                item={item}
-                isPlaying={activeId === item.id}
-                onPlay={() => setActiveId(item.id)}
-              />
-            ))}
+            {reviews.map((item, index) => {
+              const id = item.id ?? `${item.videoUrl}-${index}`;
+              return (
+                <ReviewCard
+                  key={id}
+                  item={item}
+                  isPlaying={activeId === id}
+                  onPlay={() => setActiveId(id)}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
