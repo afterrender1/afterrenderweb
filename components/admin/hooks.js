@@ -7,6 +7,7 @@ export const KEYS = {
     events: "/api/events",
     palettes: "/api/palettes",
     blogs: "/api/blog",
+    dashboard: "/api/admin/dashboard",
 };
 
 // Updates one list inside the cached response ({ success, <field> }) without refetching
@@ -24,5 +25,7 @@ export const useVideoReviews = (options) => useList(KEYS.reviews, "reviews", opt
 export const usePortfolio = (options) => useList(KEYS.portfolio, "items", options);
 export const useEvents = () => useList(KEYS.events, "events");
 export const usePalettes = () => useList(KEYS.palettes, "palettes");
+// Whole dashboard payload; refetched on focus like the other admin lists
+export const useDashboard = () => useSWR(KEYS.dashboard);
 // Only fetched while the manage modal is open
 export const useBlogs = (enabled) => useList(enabled ? KEYS.blogs : null, "blogs");

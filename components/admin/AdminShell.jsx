@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Video, PartyPopper, Globe, Lock, Menu, X } from "lucide-react";
+import { LayoutDashboard, FileText, Video, PartyPopper, Globe, Lock, Menu, X } from "lucide-react";
 import AdminLogin from "./AdminLogin";
 import { SWRConfig } from "swr";
 import { Skeleton, lockPageScroll, fetcher } from "./ui";
 
 const NAV_ITEMS = [
+    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Blogs", href: "/admin", icon: FileText },
     { label: "Video Reviews", href: "/admin/video-reviews", icon: Video },
     { label: "Events", href: "/admin/events", icon: PartyPopper },
