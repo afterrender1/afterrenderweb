@@ -128,7 +128,7 @@ const HangingImage = ({ src, side, belowBar }) => (
 // Full-width strip under the navbar with continuously scrolling text.
 // Colors / gradient come from the event's announcementStyle (set in admin).
 const AnnouncementBar = ({ text, link, style }) => {
-  const className = `announcement-bar absolute inset-x-0 ${NAV_OFFSET} z-[6] flex overflow-hidden h-9 border-y border-white/10 text-xs sm:text-sm font-medium`;
+  const className = `announcement-bar absolute inset-x-0 top-[68px] sm:top-[78px] z-[6] flex overflow-hidden h-7 sm:h-9 border-y border-white/10 text-[10px] sm:text-sm font-medium`;
   const wrapperStyle = announcementWrapperStyle(style);
   const content = <AnnouncementTrack text={text} style={style} showArrow={Boolean(link)} />;
 
