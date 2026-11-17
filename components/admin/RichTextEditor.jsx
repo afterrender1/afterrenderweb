@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle, Color } from "@tiptap/extension-text-style";
@@ -33,7 +34,9 @@ import {
   Undo2,
 } from "lucide-react";
 
-const TEXT_COLORS = ["#000000", "#374151", "#48A2FF", "#2563EB", "#16A34A", "#DC2626", "#F59E0B", "#9333EA"];
+// The public blog page is near-black (#0a0a0a) while the editor is white, so these are
+// mid-tone colors that stay readable on both. Very dark colors would vanish on the site.
+const TEXT_COLORS = ["#48A2FF", "#3B82F6", "#16A34A", "#EF4444", "#F97316", "#EAB308", "#A855F7", "#EC4899"];
 const HIGHLIGHT_COLORS = ["#FEF08A", "#BBF7D0", "#BFDBFE", "#FBCFE8", "#FED7AA", "#E9D5FF", "#FECACA", "#E5E7EB"];
 
 const SAFE_LINK = /^(https?:\/\/|mailto:|#)/i;
@@ -57,8 +60,13 @@ const ToolButton = ({ onClick, active = false, disabled = false, label, children
 
 const Divider = () => <span className="w-px h-5 bg-stone-200 mx-1 shrink-0" />;
 
-// Swatch popover used for both text color and highlight
-const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
+const POPOVER_W = 176; // w-44
+const POPOVER_H = 150;
+
+// Swatch popover used for both text color and highlight.
+// Rendered into <body>: the toolbar's backdrop-blur would otherwise become the containing block of
+// this `fixed` element, and the card/modal `overflow` would clip it.
+const ColorPicker = ({ label, icon, colors, activeColor, onPick, onCustom, onClear, note }) => {
   const [pos, setPos] = useState(null);
   const ref = useRef(null);
   const open = pos !== null;
@@ -66,8 +74,10 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
   const toggle = () => {
     if (open) return setPos(null);
     const rect = ref.current.getBoundingClientRect();
-    // 11rem popover; keep it inside the viewport
-    setPos({ top: rect.bottom + 4, left: Math.max(8, Math.min(rect.left, window.innerWidth - 184)) });
+    // Below the button, or above it when there's no room; always inside the viewport
+    const below = rect.bottom + 4;
+    const top = below + POPOVER_H > window.innerHeight && rect.top - 4 - POPOVER_H > 0 ? rect.top - 4 - POPOVER_H : below;
+    setPos({ top, left: Math.max(8, Math.min(rect.left, window.innerWidth - POPOVER_W - 8)) });
   };
 
   useEffect(() => {
@@ -95,9 +105,11 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
       <ToolButton label={label} active={open || !!activeColor} onClick={toggle}>
         {icon}
       </ToolButton>
-      {open && (
+      {open && createPortal(
         <div
           data-color-popover
+          role="dialog"
+          aria-label={label}
           style={{ top: pos.top, left: pos.left }}
           className="fixed z-[80] w-44 p-2.5 rounded-lg bg-white border border-stone-200 shadow-xl"
         >
@@ -120,13 +132,16 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
             ))}
           </div>
           <div className="mt-2.5 flex items-center justify-between gap-2">
-            <input
-              type="color"
-              aria-label={`Custom ${label.toLowerCase()}`}
-              value={/^#[0-9a-f]{6}$/i.test(activeColor || "") ? activeColor : colors[0]}
-              onChange={(e) => onPick(e.target.value)}
-              className="w-8 h-7 p-0 border border-stone-200 rounded cursor-pointer bg-white"
-            />
+            <label className="flex items-center gap-1.5 text-[11px] font-medium text-stone-500 cursor-pointer">
+              <input
+                type="color"
+                aria-label={`Custom ${label.toLowerCase()}`}
+                value={/^#[0-9a-f]{6}$/i.test(activeColor || "") ? activeColor : colors[0]}
+                onChange={(e) => onCustom(e.target.value)}
+                className="w-8 h-7 p-0 border border-stone-200 rounded cursor-pointer bg-white"
+              />
+              Custom
+            </label>
             <button
               type="button"
               onMouseDown={(e) => e.preventDefault()}
@@ -139,13 +154,15 @@ const ColorPicker = ({ label, icon, colors, activeColor, onPick, onClear }) => {
               Remove
             </button>
           </div>
-        </div>
+          {note && <p className="mt-2 text-[10.5px] leading-snug text-stone-400">{note}</p>}
+        </div>,
+        document.body
       )}
     </div>
   );
 };
 
-const Toolbar = ({ editor }) => {
+const Toolbar = ({ editor, stickyClass }) => {
   // v3 doesn't re-render on every transaction, so read only what the toolbar needs
   const s = useEditorState({
     editor,
@@ -192,7 +209,7 @@ const Toolbar = ({ editor }) => {
   const c = () => editor.chain().focus();
 
   return (
-    <div className="sticky top-0 z-20 flex flex-nowrap sm:flex-wrap items-center gap-0.5 p-1.5 sm:p-2 overflow-x-auto sm:overflow-visible bg-stone-50/95 backdrop-blur border-b border-stone-200 rounded-t-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className={`sticky ${stickyClass} z-20 flex flex-nowrap sm:flex-wrap items-center gap-0.5 p-1.5 sm:p-2 overflow-x-auto sm:overflow-visible bg-stone-50/95 backdrop-blur border-b border-stone-200 rounded-t-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}>
       <ToolButton label="Undo" disabled={!s.canUndo} onClick={() => c().undo().run()}><Undo2 size={16} /></ToolButton>
       <ToolButton label="Redo" disabled={!s.canRedo} onClick={() => c().redo().run()}><Redo2 size={16} /></ToolButton>
       <Divider />
@@ -213,14 +230,18 @@ const Toolbar = ({ editor }) => {
         colors={TEXT_COLORS}
         activeColor={s.color}
         onPick={(col) => c().setColor(col).run()}
+        // No focus(): the native color dialog stays open while dragging; commands still use the saved selection
+        onCustom={(col) => editor.chain().setColor(col).run()}
         onClear={() => c().unsetColor().run()}
+        note="The blog page is dark, so avoid very dark colors."
       />
       <ColorPicker
         label="Highlight"
-        icon={<Highlighter size={16} />}
+        icon={<Highlighter size={16} style={s.highlight ? { color: s.highlight } : undefined} />}
         colors={HIGHLIGHT_COLORS}
         activeColor={s.highlight}
         onPick={(col) => c().setHighlight({ color: col }).run()}
+        onCustom={(col) => editor.chain().setHighlight({ color: col }).run()}
         onClear={() => c().unsetHighlight().run()}
       />
       <Divider />
@@ -235,12 +256,14 @@ const Toolbar = ({ editor }) => {
       <Divider />
       <ToolButton label="Add link" active={s.link} onClick={setLink}><Link2 size={16} /></ToolButton>
       <ToolButton label="Remove link" disabled={!s.link} onClick={() => c().extendMarkRange("link").unsetLink().run()}><Link2Off size={16} /></ToolButton>
-      <ToolButton label="Clear formatting" onClick={() => c().unsetAllMarks().clearNodes().run()}><RemoveFormatting size={16} /></ToolButton>
+      <ToolButton label="Clear formatting" onClick={() => c().unsetAllMarks().clearNodes().unsetTextAlign().run()}><RemoveFormatting size={16} /></ToolButton>
     </div>
   );
 };
 
-const RichTextEditor = ({ value, onChange, placeholder = "Start writing..." }) => {
+// `stickyClass`: where the toolbar sticks while scrolling. On the full page it must clear the
+// admin's mobile top bar (h-14); inside a modal it sticks to the modal's own scroll area.
+const RichTextEditor = ({ value, onChange, placeholder = "Start writing...", stickyClass = "top-0" }) => {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -278,7 +301,7 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing..." }) =
 
   return (
     <div className="min-w-0 border border-stone-200 rounded-lg bg-white focus-within:border-stone-400 focus-within:ring-2 focus-within:ring-stone-900/10 transition-colors">
-      {editor && <Toolbar editor={editor} />}
+      {editor && <Toolbar editor={editor} stickyClass={stickyClass} />}
       <div className="px-3 sm:px-5 min-w-0">
         <EditorContent editor={editor} />
       </div>

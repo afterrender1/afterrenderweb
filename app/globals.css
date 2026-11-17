@@ -348,6 +348,9 @@ html {
 .blog-content pre code { background: none; padding: 0; }
 .blog-content hr { border: 0; border-top: 1px solid #27272a; margin: 2.5em 0; }
 .blog-content mark { border-radius: 0.25rem; padding: 0 0.2em; color: #111; }
+/* Text color from the editor is a <span style="color:…"> wrapped around bold/links/etc.,
+   so those must inherit it instead of using their own default color */
+.blog-content span[style*="color"] :is(strong, b, em, i, u, s, a, code, mark) { color: inherit; }
 
 /* Admin editor sits on a white card, so flip the dark-page colors */
 .blog-editor h1,
