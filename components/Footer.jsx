@@ -27,7 +27,7 @@ const Footer = ({ theme }) => {
     pathname === "/terms-conditions";
 
   const [currentYear, setCurrentYear] = useState(null);
-  const [form, setForm] = useState({ email: "" });
+  const [form, setForm] = useState({ name: "", email: "" });
   const [messageSent, setMessageSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,23 +38,34 @@ const Footer = ({ theme }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    if (loading) return;
+
+    const name = form.name.trim();
+    const email = form.email.trim();
     setMessageSent(false);
+    if (!name || !email) {
+      setError("Please enter your name and email.");
+      setTimeout(() => setError(""), 3000);
+      return;
+    }
+
+    setLoading(true);
     setError("");
 
     try {
       const res = await fetch("/api/footer-send-mail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ name, email }),
       });
 
       if (res.ok) {
-        setForm({ email: "" });
+        setForm({ name: "", email: "" });
         setMessageSent(true);
         setTimeout(() => setMessageSent(false), 3000);
       } else {
-        setError("Failed to send message. Please try again later.");
+        const data = await res.json().catch(() => null);
+        setError(data?.message || "Failed to send message. Please try again later.");
         setTimeout(() => setError(""), 3000);
       }
     } catch (error) {
@@ -260,23 +271,47 @@ const Footer = ({ theme }) => {
               isLight ? "text-gray-600" : "text-[#9FC8F1]"
             }`}
           >
-            Enter your email below — our team will get back to you with a
-            personalized quote.
+            Enter your name and email below — our team will get back to you
+            with a personalized quote.
           </p>
 
           <form
             onSubmit={handleSubmit}
-            className={`flex flex-col sm:flex-row items-center rounded-2xl p-1.5 backdrop-blur-lg shadow-sm transition-all duration-300 w-full ${
+            className={`flex flex-col rounded-2xl p-1.5 backdrop-blur-lg shadow-sm transition-all duration-300 w-full ${
               isLight
                 ? "bg-white border border-gray-300/80 shadow-2xs hover:border-gray-400"
                 : "bg-white/10 border border-[#48A2FF]/30 hover:shadow-[#48A2FF]/40"
             }`}
           >
+            <input
+              required
+              type="text"
+              name="name"
+              autoComplete="name"
+              maxLength={100}
+              aria-label="Your name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              className={`w-full bg-transparent text-xs sm:text-sm px-3.5 py-2.5 outline-none rounded-xl transition-all duration-300 ${
+                isLight
+                  ? "text-gray-900 placeholder:text-gray-400 focus:bg-gray-50/50"
+                  : "text-white placeholder-[#9FC8F1] focus:ring-2 focus:ring-[#48A2FF] focus:bg-white/5"
+              }`}
+            />
+            <div
+              aria-hidden="true"
+              className={`mx-3.5 my-1 h-px ${isLight ? "bg-gray-200" : "bg-[#48A2FF]/20"}`}
+            />
+            <div className="flex flex-col sm:flex-row items-center w-full">
             <div className="flex-1 w-full">
               <input
                 required
                 type="email"
                 name="email"
+                autoComplete="email"
+                maxLength={200}
+                aria-label="Your email"
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
@@ -295,6 +330,7 @@ const Footer = ({ theme }) => {
             >
               {loading ? "Sending..." : "Get Quote"}
             </button>
+            </div>
           </form>
 
           {messageSent && (
