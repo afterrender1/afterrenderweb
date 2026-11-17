@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import dbConnect from "@/app/lib/db";
 import Blog from "@/app/models/Post";
@@ -20,6 +21,9 @@ export async function DELETE(req, { params }) {
         if (!deletedBlog) {
             return NextResponse.json({ success: false, error: "Blog not found" }, { status: 404 });
         }
+
+        // The post page is cached; drop it so the deleted post stops showing right away
+        if (deletedBlog.slug) revalidatePath(`/blog/${deletedBlog.slug}`);
 
         return NextResponse.json({ success: true, message: "Blog deleted successfully!", deletedBlog }, { status: 200 });
     } catch (error) {

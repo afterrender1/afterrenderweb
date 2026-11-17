@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/app/lib/db";
 import cloudinary from "@/app/lib/cloudinary";
 import Blog from "@/app/models/Post";
@@ -71,6 +72,10 @@ export async function PUT(req, { params }) {
             },
             { new: true }
         );
+
+        // The post page is cached; refresh it (and the old URL if the title, and so the slug, changed)
+        revalidatePath(`/blog/${updatedSlug}`);
+        if (existingBlog.slug && existingBlog.slug !== updatedSlug) revalidatePath(`/blog/${existingBlog.slug}`);
 
         return NextResponse.json({
             success: true,

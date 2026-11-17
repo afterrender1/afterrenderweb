@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Poppins, Inter } from "@/app/lib/fonts";
 import { getCachedBlogs } from "@/app/lib/blogCache";
+import { toPlainText, readMinutes } from "@/app/lib/plainText";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 const inter = Inter({ subsets: ["latin"] });
@@ -12,25 +13,6 @@ const inter = Inter({ subsets: ["latin"] });
 // Preferred tab order; any other category that has posts is listed after these
 const CATEGORY_ORDER = ["Design", "Technology", "Innovation", "Development"];
 
-// Plain text from either an html post or an old markdown post (no #, **, ---, links syntax)
-const toPlainText = (content) =>
-    String(content || "")
-        .replace(/<[^>]+>/g, " ")
-        .replace(/!\[[^\]]*\]\([^)]*\)/g, " ") // markdown images
-        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // markdown links -> text
-        .replace(/^\s{0,3}(#{1,6}|>|[-*+]|\d+\.)\s+/gm, "") // headings, quotes, list markers
-        .replace(/^\s*([-*_]\s*){3,}$/gm, " ") // horizontal rules
-        .replace(/(\*\*|__|\*|_|`|~~)/g, "")
-        .replace(/&nbsp;/g, " ")
-        .replace(/&amp;/g, "&")
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'")
-        .replace(/\s+/g, " ")
-        .trim();
-
-const readMinutes = (text) => Math.max(1, Math.round(text.split(" ").filter(Boolean).length / 200));
 
 const formatDate = (value) => {
     const d = new Date(value);
