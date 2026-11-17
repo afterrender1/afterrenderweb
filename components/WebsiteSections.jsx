@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -18,6 +18,9 @@ const playfair = Playfair_Display({
 });
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
+const WHATSAPP_URL = `https://wa.me/923235100033?text=${encodeURIComponent(
+  "Hi! I'd like a plan and quote for my website."
+)}`;
 
 const processSteps = [
   {
@@ -194,23 +197,36 @@ const WebsiteSections = ({ portfolio = null, testimonials = null }) => {
 
       {/* CTA */}
       <section className="py-10 sm:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto rounded-[24px] sm:rounded-[28px] bg-gradient-to-r from-[#48A2FF] via-[#75B8FF] to-[#C9E4FF] px-5 sm:px-10 py-10 sm:py-16 text-center shadow-[0_20px_50px_rgba(72,162,255,0.3)]">
-          <h2 className="text-[clamp(1.75rem,3.6vw+0.9rem,3rem)] font-extrabold tracking-tight text-[#0A2540] leading-[1.15]">
-            Ready For A Website{" "}
-            <span className={`${playfair.className} italic font-normal block sm:inline`}>
-              That Works?
-            </span>
-          </h2>
-          <p className="mt-3 sm:mt-3.5 text-black/75 text-[13.5px] sm:text-sm md:text-[15px] font-medium max-w-md sm:max-w-xl mx-auto leading-relaxed">
-            Book a free 15-minute call and get a plan and quote for your website.
-          </p>
-          <Link
-            href={CALENDLY_URL}
-            target="_blank"
-            className="inline-flex w-full sm:w-auto justify-center mt-6 sm:mt-7 bg-black hover:bg-neutral-900 active:scale-[0.98] text-white font-bold text-sm py-3.5 sm:py-3 px-8 rounded-full transition-all duration-200 shadow-md"
-          >
-            Book a Free Call
-          </Link>
+        <div className="max-w-6xl mx-auto rounded-2xl sm:rounded-3xl bg-[#0A2540] px-5 py-8 sm:px-10 sm:py-12 lg:px-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-12">
+          <div className="max-w-xl">
+            <h2 className="text-[clamp(1.6rem,2.6vw+0.9rem,2.5rem)] font-extrabold tracking-tight text-white leading-[1.15]">
+              Ready For A Website{" "}
+              <span className={`${playfair.className} italic font-normal text-[#9FCFFF]`}>
+                That Works?
+              </span>
+            </h2>
+            <p className="mt-2.5 sm:mt-3 text-white/65 text-[13.5px] sm:text-sm md:text-[15px] font-medium leading-relaxed">
+              Book a free 15-minute call and get a plan and quote for your website.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <Link
+              href={CALENDLY_URL}
+              target="_blank"
+              className="group inline-flex items-center justify-center gap-1.5 h-11 px-6 rounded-lg bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] hover:brightness-105 text-[#0A2540] text-sm font-bold whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A2540]"
+            >
+              Book a Free Call
+              <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+            <Link
+              href={WHATSAPP_URL}
+              target="_blank"
+              className="inline-flex items-center justify-center h-11 px-6 rounded-lg border border-white/20 hover:border-white/40 hover:bg-white/5 text-white text-sm font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              WhatsApp us
+            </Link>
+          </div>
         </div>
       </section>
     </div>
