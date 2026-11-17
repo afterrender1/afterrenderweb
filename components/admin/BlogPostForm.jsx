@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { AlertCircle, CheckCircle2, ImagePlus, Loader2, X } from "lucide-react";
+import { AlertCircle, CheckCircle2, Crop, ImagePlus, Loader2, RefreshCw, X } from "lucide-react";
 import { mutate as globalMutate } from "swr";
 import DeleteBlogPostModel from "../DeleteBlogPostModel";
 import { KEYS } from "./hooks";
@@ -13,6 +13,11 @@ const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
     loading: () => <div className="min-h-[360px] rounded-lg bg-stone-100 animate-pulse" />,
 });
 
+// Only loaded when an image is picked
+const ImageCropModal = dynamic(() => import("./ImageCropModal"), { ssr: false });
+
+const MAX_IMAGE_MB = 15;
+
 const BlogPostForm = () => {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ type: "", message: "" });
@@ -22,14 +27,67 @@ const BlogPostForm = () => {
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState([]);
     const [tagInput, setTagInput] = useState("");
+    // `image` is the cropped JPEG (data URL) that gets published; `source` is the original file
+    // (object URL), kept so the crop can be redone without quality loss.
     const [image, setImage] = useState("");
+    const [source, setSource] = useState("");
+    // "new" = cropping a freshly picked file, "edit" = re-cropping the current one
+    const [cropMode, setCropMode] = useState(null);
+
+    const sourceRef = useRef("");
+    const replaceInputRef = useRef(null);
+
+    const setSourceUrl = (url) => {
+        if (sourceRef.current) URL.revokeObjectURL(sourceRef.current);
+        sourceRef.current = url;
+        setSource(url);
+    };
+
+    // Free the original file's memory when leaving the page
+    useEffect(() => () => {
+        if (sourceRef.current) URL.revokeObjectURL(sourceRef.current);
+    }, []);
+
+    // Picked files wait in `pending` until the crop is applied, so cancelling keeps the current image
+    const [pending, setPending] = useState("");
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
+        const file = e.target.files?.[0];
+        e.target.value = ""; // lets the same file be picked again
         if (!file) return;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => setImage(reader.result);
+        if (!file.type.startsWith("image/")) {
+            setStatus({ type: "error", message: "Please choose an image file (PNG, JPG, WEBP or GIF)." });
+            return;
+        }
+        if (file.size > MAX_IMAGE_MB * 1024 * 1024) {
+            setStatus({ type: "error", message: `Image is too large — max ${MAX_IMAGE_MB} MB.` });
+            return;
+        }
+        setStatus({ type: "", message: "" });
+        setPending(URL.createObjectURL(file));
+        setCropMode("new");
+    };
+
+    const cropSrc = cropMode === "new" ? pending : source;
+
+    const applyCrop = (dataUrl) => {
+        if (cropMode === "new") {
+            setSourceUrl(pending);
+            setPending("");
+        }
+        setImage(dataUrl);
+        setCropMode(null);
+    };
+
+    const cancelCrop = () => {
+        if (cropMode === "new" && pending) URL.revokeObjectURL(pending);
+        setPending("");
+        setCropMode(null);
+    };
+
+    const removeImage = () => {
+        setSourceUrl("");
+        setImage("");
     };
 
     const addTag = (e) => {
@@ -79,7 +137,7 @@ const BlogPostForm = () => {
             setTitle("");
             setContent("");
             setTags([]);
-            setImage("");
+            removeImage();
             setCategory("");
         } catch (err) {
             setStatus({ type: "error", message: err.message || "Something went wrong." });
@@ -127,17 +185,47 @@ const BlogPostForm = () => {
                     <div className="relative aspect-[16/7] sm:aspect-[16/6] bg-stone-50 border-b border-stone-200">
                         {image ? (
                             <>
+                                {/* Contain: shows the whole cropped image exactly as it will be saved */}
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={image} alt="Cover preview" className="w-full h-full object-cover" />
-                                <button
-                                    type="button"
-                                    onClick={() => setImage("")}
-                                    className={`${iconBtn} absolute top-3 right-3 bg-white/90 shadow-xs hover:bg-white`}
-                                    aria-label="Remove image"
-                                    title="Remove image"
-                                >
-                                    <X size={16} />
-                                </button>
+                                <img src={image} alt="Cover preview" className="w-full h-full object-contain bg-stone-100" />
+                                <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                                    <button
+                                        type="button"
+                                        onClick={() => setCropMode("edit")}
+                                        disabled={!source}
+                                        className="inline-flex items-center gap-1.5 h-9 px-3 rounded-md bg-white/90 hover:bg-white shadow-xs text-xs font-medium text-stone-900 cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/20"
+                                    >
+                                        <Crop size={14} />
+                                        Crop
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => replaceInputRef.current?.click()}
+                                        className={`${iconBtn} bg-white/90 shadow-xs hover:bg-white`}
+                                        aria-label="Replace image"
+                                        title="Replace image"
+                                    >
+                                        <RefreshCw size={15} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={removeImage}
+                                        className={`${iconBtn} bg-white/90 shadow-xs hover:bg-white`}
+                                        aria-label="Remove image"
+                                        title="Remove image"
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                                <input
+                                    ref={replaceInputRef}
+                                    type="file"
+                                    className="sr-only"
+                                    tabIndex={-1}
+                                    aria-hidden="true"
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                />
                             </>
                         ) : (
                             <label className="flex flex-col items-center justify-center gap-2 h-full cursor-pointer hover:bg-stone-100 transition-colors">
@@ -226,6 +314,16 @@ const BlogPostForm = () => {
                     </div>
                 </form>
             </Card>
+
+            {cropMode && cropSrc && (
+                <ImageCropModal
+                    key={cropSrc}
+                    src={cropSrc}
+                    title={cropMode === "new" ? "Crop cover image" : "Re-crop cover image"}
+                    onApply={applyCrop}
+                    onCancel={cancelCrop}
+                />
+            )}
         </div>
     );
 };
