@@ -31,7 +31,7 @@ const features = [
 ];
 
 const FeatureCheck = () => (
-  <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" className="shrink-0">
+  <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" className="h-4 w-4 shrink-0 sm:h-[22px] sm:w-[22px]">
     <path d="M7.5 12.1 10.5 15.1 16.5 8.9" stroke="#1762A0" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
@@ -65,7 +65,7 @@ export default function AiAvatarsMembership() {
           </p>
         </div>
 
-        <div className="relative grid rounded-[28px] border border-gray-200 bg-white p-2 shadow-[0_12px_48px_-24px_rgba(10,37,64,0.2)] lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="relative grid rounded-[22px] sm:rounded-[28px] border border-gray-200 bg-white p-1.5 sm:p-2 shadow-[0_12px_48px_-24px_rgba(10,37,64,0.2)] lg:grid-cols-[0.85fr_1.15fr]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/ai-avatars-images/50-off.webp"
@@ -73,15 +73,15 @@ export default function AiAvatarsMembership() {
             width={1536}
             height={1024}
             draggable={false}
-            className="pointer-events-none absolute -left-5 -top-9 z-20 h-auto w-32 select-none drop-shadow-lg sm:-left-8 sm:-top-12 sm:w-44"
+            className="pointer-events-none absolute -left-3 -top-7 z-20 h-auto w-24 select-none drop-shadow-lg sm:-left-8 sm:-top-12 sm:w-44"
           />
-          <div className="relative isolate overflow-hidden rounded-[21px] bg-[#07111F] text-white">
+          <div className="relative isolate overflow-hidden rounded-[17px] sm:rounded-[21px] bg-[#07111F] text-white">
             <div className="pointer-events-none absolute inset-0 -z-20">
               <SatinCrescentBloom />
             </div>
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-b from-[#07111F]/70 via-[#07111F]/80 to-[#07111F]/60" />
 
-            <div className="flex h-full flex-col p-6 sm:p-8 xl:p-10">
+            <div className="flex h-full flex-col p-5 sm:p-8 xl:p-10">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="text-[11px] font-semibold tracking-[0.04em] text-blue-100/80">AfterRender</span>
                 <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-medium text-blue-50">
@@ -89,24 +89,24 @@ export default function AiAvatarsMembership() {
                 </span>
               </div>
 
-              <div className="mt-8 sm:mt-10">
-                <h3 className="text-[28px] font-semibold tracking-tight sm:text-[32px]">AI CREATOR</h3>
-                <p className="mt-2 max-w-xs text-[13px] leading-6 text-slate-300">
+              <div className="mt-5 sm:mt-10">
+                <h3 className="text-2xl font-semibold tracking-tight sm:text-[32px]">AI CREATOR</h3>
+                <p className="mt-1.5 max-w-xs text-[13px] leading-5 sm:mt-2 sm:leading-6 text-slate-300">
                   Your own AI avatar. A month of content.
                   More time for your business.
                 </p>
               </div>
 
-              <div className="my-7 sm:my-8">
-                <p className="mb-2 text-xl font-semibold text-slate-300 sm:text-2xl">
+              <div className="my-5 sm:my-8">
+                <p className="mb-1 text-lg font-semibold text-slate-300 sm:mb-2 sm:text-2xl">
                   <span className="sr-only">Regular price </span>
                   <del className="decoration-[#FF3B3B] decoration-[3px] [text-decoration-skip-ink:none]">$999</del>
                 </p>
                 <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                  <span className="text-[56px] font-semibold leading-none tracking-[-0.05em] sm:text-[64px]">$499</span>
+                  <span className="text-[44px] font-semibold leading-none tracking-[-0.05em] sm:text-[64px]">$499</span>
                   <span className="text-[13px] font-medium text-slate-300">USD / month</span>
                 </div>
-                <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/15 pt-4 text-[13px]">
+                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/15 pt-3 text-[13px] sm:mt-5 sm:pt-4">
                   <span className="font-medium text-white">10 videos every month</span>
                   <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-500" />
                   <span className="text-slate-300">No setup fees</span>
@@ -119,35 +119,35 @@ export default function AiAvatarsMembership() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Subscribe to AI Lab"
-                  className="group inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#0A2540] transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#48A2FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07111F]"
+                  className="group inline-flex min-h-11 sm:min-h-12 w-full items-center justify-center gap-2.5 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#0A2540] transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#48A2FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07111F]"
                 >
                   Subscribe
                   <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </Link>
-                <p className="mt-3 text-center text-[11px] leading-5 text-slate-300">Pause or cancel anytime.</p>
+                <p className="mt-2 sm:mt-3 text-center text-[11px] leading-5 text-slate-300">Pause or cancel anytime.</p>
               </div>
             </div>
           </div>
 
-          <div className="px-4 py-7 sm:p-8 xl:p-10">
-            <h4 className="text-xl font-semibold tracking-tight text-gray-950 sm:text-[22px]">Everything for your next video.</h4>
-            <p className="mt-2 max-w-sm text-[13px] leading-6 text-gray-500">
+          <div className="px-3 py-4 sm:p-8 xl:p-10">
+            <h4 className="text-base font-semibold tracking-tight text-gray-950 sm:text-[22px]">Everything for your next video.</h4>
+            <p className="mt-1 max-w-sm text-xs leading-[18px] text-gray-500 sm:mt-2 sm:text-[13px] sm:leading-6">
               From your custom avatar to the final edit, our team takes care of the production.
             </p>
 
-            <ul className="mt-7 space-y-4 border-b border-gray-100 pb-7">
+            <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 border-b border-gray-100 pb-3 sm:mt-7 sm:block sm:space-y-4 sm:pb-7">
               {features.slice(0, 2).map((feature) => (
-                <li key={feature} className="flex items-center gap-3 text-sm font-medium leading-6 text-gray-900">
+                <li key={feature} className="flex min-w-0 items-start gap-1.5 text-xs font-medium leading-5 text-gray-900 sm:items-center sm:gap-3 sm:text-sm sm:leading-6">
                   <FeatureCheck />
                   {feature}
                 </li>
               ))}
             </ul>
 
-            <p className="mb-4 mt-6 text-xs font-medium text-gray-500">Also included in your membership</p>
-            <ul className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+            <p className="mb-1.5 mt-2.5 text-[11px] font-medium text-gray-500 sm:mb-4 sm:mt-6 sm:text-xs">Also included in your membership</p>
+            <ul className="grid grid-cols-2 gap-x-2 gap-y-1.5 sm:gap-x-5 sm:gap-y-4">
               {features.slice(2).map((feature) => (
-                <li key={feature} className="flex items-start gap-2.5 text-[13px] leading-[22px] text-gray-600">
+                <li key={feature} className="flex min-w-0 items-start gap-1 text-[11.5px] leading-4 text-gray-600 sm:gap-2.5 sm:text-[13px] sm:leading-[22px]">
                   <FeatureCheck />
                   {feature}
                 </li>
