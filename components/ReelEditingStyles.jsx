@@ -52,30 +52,30 @@ const StyleCard = ({ item, onOpen }) => {
       type="button"
       onClick={() => onOpen(item)}
       aria-label={`Play ${item.title} ${item.version}`}
-      className="group relative shrink-0 snap-center w-[70vw] max-w-[280px] sm:w-auto sm:max-w-none aspect-[9/16] rounded-xl overflow-hidden bg-gray-200 cursor-pointer text-left"
+      className="group relative shrink-0 snap-start w-[44vw] max-w-[180px] sm:w-auto sm:max-w-none aspect-[9/16] rounded-xl overflow-hidden bg-gray-200 cursor-pointer text-left"
     >
       {!loaded && <span aria-hidden="true" className="absolute inset-0 animate-pulse bg-black/[0.07]" />}
       <Image
         src={item.posterUrl}
         alt=""
         fill
-        sizes="(max-width: 640px) 70vw, 260px"
+        sizes="(max-width: 640px) 44vw, 260px"
         onLoad={() => setLoaded(true)}
         className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
       />
       <span className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
 
       <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
-          <Play className="h-5 w-5 fill-black ml-0.5" />
+        <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
+          <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-black ml-0.5" />
         </span>
       </span>
 
-      <span className="absolute inset-x-0 bottom-0 block px-4 pb-4 pt-12 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
-        <span className="block text-xs font-semibold uppercase tracking-wide text-[#7cc0ff]">
+      <span className="absolute inset-x-0 bottom-0 block px-3 pb-3 pt-10 sm:px-4 sm:pb-4 sm:pt-12 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
+        <span className="block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-[#7cc0ff]">
           {item.version}
         </span>
-        <span className="block text-base font-semibold text-white leading-tight">{item.title}</span>
+        <span className="block text-sm sm:text-base font-semibold text-white leading-tight">{item.title}</span>
       </span>
     </button>
   );
