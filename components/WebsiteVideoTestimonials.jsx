@@ -11,7 +11,7 @@ const ReviewCard = ({ item, isPlaying, onPlay }) => {
   const name = item.clientName?.trim() || item.role;
 
   return (
-    <div className="relative w-[190px] sm:w-auto shrink-0 snap-center aspect-[9/16] rounded-2xl sm:rounded-3xl overflow-hidden bg-white ring-1 ring-black/10 shadow-[0_10px_30px_rgba(0,0,0,0.06)] md:hover:-translate-y-1 transition-transform duration-300">
+    <div className="relative w-[150px] min-[400px]:w-[165px] sm:w-auto shrink-0 snap-start aspect-[9/16] rounded-xl sm:rounded-3xl overflow-hidden bg-white ring-1 ring-black/10 shadow-[0_10px_30px_rgba(0,0,0,0.06)] md:hover:-translate-y-1 transition-transform duration-300">
       {isPlaying ? (
         isYouTubeUrl(item.videoUrl) ? (
           <iframe
@@ -46,7 +46,7 @@ const ReviewCard = ({ item, isPlaying, onPlay }) => {
               src={cloudinaryImage(item.poster, { width: 600 })}
               alt={`${name}, video review`}
               fill
-              sizes="(max-width: 640px) 190px, 300px"
+              sizes="(max-width: 640px) 165px, 300px"
               className="object-cover"
               unoptimized
             />
@@ -61,19 +61,19 @@ const ReviewCard = ({ item, isPlaying, onPlay }) => {
           )}
 
           <span className="absolute inset-0 flex items-center justify-center">
-            <span className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm text-black flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
-              <Play className="w-5 h-5 fill-black ml-0.5" />
+            <span className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/90 backdrop-blur-sm text-black flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-black ml-0.5" />
             </span>
           </span>
 
-          <span className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-12 bg-gradient-to-t from-black/75 to-transparent pointer-events-none">
+          <span className="absolute inset-x-0 bottom-0 px-3 pb-3 pt-10 sm:px-4 sm:pb-4 sm:pt-12 bg-gradient-to-t from-black/75 to-transparent pointer-events-none">
             {item.clientName?.trim() ? (
-              <span className="block text-sm sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
+              <span className="block text-[13px] sm:text-[15px] font-bold text-white leading-tight line-clamp-1">
                 {item.clientName}
               </span>
             ) : null}
             {item.role?.trim() ? (
-              <span className="mt-0.5 block text-[11px] sm:text-xs text-white/70 line-clamp-1">
+              <span className="mt-0.5 block text-[10px] sm:text-xs text-white/70 line-clamp-1">
                 {item.role}
               </span>
             ) : null}
@@ -92,7 +92,7 @@ const WebsiteVideoTestimonials = ({ reviews = [] }) => {
 
   return (
     <div className="defer-render">
-      <section className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-10 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <SectionTag label="Testimonials" />
           <SectionHeader
@@ -100,7 +100,7 @@ const WebsiteVideoTestimonials = ({ reviews = [] }) => {
             italic="Our Clients"
             text="Real words from founders and brands we've built websites for."
           />
-          <div className="-mx-4 px-4 sm:mx-auto sm:px-0 sm:max-w-[900px] flex sm:grid sm:grid-cols-3 gap-4 lg:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 sm:pb-0">
+          <div className="no-scrollbar -mx-4 px-4 scroll-px-4 sm:mx-auto sm:px-0 sm:max-w-[900px] flex sm:grid sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0">
             {reviews.map((item, index) => {
               const id = item.id ?? `${item.videoUrl}-${index}`;
               return (
