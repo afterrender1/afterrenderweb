@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { X, Inbox } from "lucide-react";
 
 /* ---------- Design tokens: stone palette, compact controls ----------
@@ -113,16 +113,33 @@ export const lockPageScroll = () => {
     };
 };
 
+// Open dialogs in the order they opened; only the top one reacts to Escape
+const modalStack = [];
+
 export const Modal = ({ onClose, children, className = "" }) => {
+    const onCloseRef = useRef(onClose);
     useEffect(() => {
+        onCloseRef.current = onClose;
+    }, [onClose]);
+
+    useEffect(() => {
+        const token = {};
+        modalStack.push(token);
         const unlock = lockPageScroll();
-        const onKey = (e) => e.key === "Escape" && onClose();
+        const onKey = (e) => {
+            if (e.key !== "Escape" || modalStack[modalStack.length - 1] !== token) return;
+            // Stops the dialog underneath from also closing on this same key press
+            e.stopImmediatePropagation();
+            onCloseRef.current();
+        };
         window.addEventListener("keydown", onKey);
         return () => {
             unlock();
             window.removeEventListener("keydown", onKey);
+            const i = modalStack.indexOf(token);
+            if (i !== -1) modalStack.splice(i, 1);
         };
-    }, [onClose]);
+    }, []);
 
     return (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-6" role="dialog" aria-modal="true">

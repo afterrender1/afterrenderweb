@@ -10,7 +10,7 @@ const MAX_OUTPUT_SIDE = 1920;
 const MAX_CANVAS_PIXELS = 16_000_000;
 
 const ASPECTS = [
-    { label: "16:9", value: 16 / 9 },
+    { label: "16:9", value: 16 / 9, site: true },
     { label: "4:3", value: 4 / 3 },
     { label: "1:1", value: 1 },
     { label: "Original", value: "original" },
@@ -71,17 +71,24 @@ export const cropImage = async (src, crop, rotation = 0) => {
 
 /* ---------- Crop dialog ----------
    `src`: object/data URL of the original image. `onApply(dataUrl)` gets the cropped JPEG. */
-const ImageCropModal = ({ src, onApply, onCancel, title = "Crop image" }) => {
+const ImageCropModal = ({
+    src,
+    onApply,
+    onCancel,
+    title = "Crop image",
+    aspects = ASPECTS,
+    hint = "Drag to position · scroll or pinch to zoom. Blog covers show at 16:9 on the site.",
+}) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [rotation, setRotation] = useState(0);
-    const [aspectKey, setAspectKey] = useState(ASPECTS[0].label);
+    const [aspectKey, setAspectKey] = useState(aspects[0].label);
     const [originalAspect, setOriginalAspect] = useState(16 / 9);
     const [areaPixels, setAreaPixels] = useState(null);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
 
-    const selected = ASPECTS.find((a) => a.label === aspectKey);
+    const selected = aspects.find((a) => a.label === aspectKey) || aspects[0];
     const aspect = selected.value === "original" ? originalAspect : selected.value;
 
     const onCropComplete = useCallback((_, pixels) => setAreaPixels(pixels), []);
@@ -139,7 +146,7 @@ const ImageCropModal = ({ src, onApply, onCancel, title = "Crop image" }) => {
 
                     <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Aspect ratio">
                         <span className="text-xs font-medium text-stone-500 mr-1">Ratio</span>
-                        {ASPECTS.map((a) => (
+                        {aspects.map((a) => (
                             <button
                                 key={a.label}
                                 type="button"
@@ -152,7 +159,7 @@ const ImageCropModal = ({ src, onApply, onCancel, title = "Crop image" }) => {
                                 }`}
                             >
                                 {a.label}
-                                {a.label === "16:9" && <span className="ml-1 opacity-60">(site)</span>}
+                                {a.site && <span className="ml-1 opacity-60">(site)</span>}
                             </button>
                         ))}
                     </div>
@@ -183,7 +190,7 @@ const ImageCropModal = ({ src, onApply, onCancel, title = "Crop image" }) => {
                         </button>
                     </div>
 
-                    <p className="text-xs text-stone-500">Drag to position · scroll or pinch to zoom. Blog covers show at 16:9 on the site.</p>
+                    <p className="text-xs text-stone-500">{hint}</p>
                     {error && (
                         <p className="text-xs text-red-600" role="alert">
                             {error}

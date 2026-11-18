@@ -5,11 +5,12 @@ import { api, friendlyError } from "./ui";
 
 const MAX_UPLOAD_MB = 10;
 
-// Signed direct upload: the server signs, the browser sends the file straight to Cloudinary
-export const uploadToCloudinary = async (file, onProgress, folder = "events") => {
+// Signed direct upload: the server signs, the browser sends the file straight to Cloudinary.
+// Resolves with Cloudinary's full response (secure_url, width, height, ...).
+export const uploadFileToCloudinary = async (file, { onProgress, folder = "events", resourceType = "image", eager } = {}) => {
     const sig = await api("/api/admin/upload-signature", {
         method: "POST",
-        body: JSON.stringify({ folder }),
+        body: JSON.stringify(eager ? { folder, eager } : { folder }),
     });
 
     const body = new FormData();
@@ -18,11 +19,15 @@ export const uploadToCloudinary = async (file, onProgress, folder = "events") =>
     body.append("timestamp", sig.timestamp);
     body.append("signature", sig.signature);
     body.append("folder", sig.folder);
+    if (sig.eager) {
+        body.append("eager", sig.eager);
+        body.append("eager_async", "true");
+    }
 
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", `https://api.cloudinary.com/v1_1/${sig.cloudName}/image/upload`);
-        xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
+        xhr.open("POST", `https://api.cloudinary.com/v1_1/${sig.cloudName}/${resourceType}/upload`);
+        xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.(Math.round((e.loaded / e.total) * 100));
         xhr.onload = () => {
             let data = null;
             try {
@@ -30,13 +35,16 @@ export const uploadToCloudinary = async (file, onProgress, folder = "events") =>
             } catch {
                 /* handled below */
             }
-            if (xhr.status >= 200 && xhr.status < 300 && data?.secure_url) resolve(data.secure_url);
+            if (xhr.status >= 200 && xhr.status < 300 && data?.secure_url) resolve(data);
             else reject(new Error(data?.error?.message || `Upload failed (${xhr.status})`));
         };
         xhr.onerror = () => reject(new Error("Upload failed — check your connection."));
         xhr.send(body);
     });
 };
+
+export const uploadToCloudinary = async (file, onProgress, folder = "events") =>
+    (await uploadFileToCloudinary(file, { onProgress, folder })).secure_url;
 
 /* ---------- Image upload field ---------- */
 const ImageUpload = ({ value, onChange, onBusyChange, aspect = "aspect-video", contain = false, folder = "events" }) => {
