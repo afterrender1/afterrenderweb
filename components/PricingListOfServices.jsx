@@ -157,27 +157,27 @@ const PricingListOfServices = () => {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="bg-white rounded-[24px] border border-gray-200/90 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] p-5 sm:p-6 md:p-8"
+          className="bg-white rounded-[24px] border border-gray-200/90 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] p-4 sm:p-6 md:p-8"
         >
           {/* Header */}
-          <h3 className="text-base sm:text-lg font-extrabold text-gray-950 mb-5 flex items-center gap-1.5 tracking-tight">
+          <h3 className="text-base sm:text-lg font-extrabold text-gray-950 mb-4 sm:mb-5 flex items-center gap-1.5 tracking-tight">
             <span className="text-gray-900">•</span>
             <span>List of services</span>
           </h3>
 
           {/* 2-Column Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-2.5 sm:gap-y-3">
+          <div className="grid grid-cols-2 gap-x-3 sm:gap-x-8 md:gap-x-12">
             {/* Left Column */}
-            <div className="space-y-2.5 sm:space-y-3">
+            <div className="min-w-0 space-y-2 sm:space-y-3">
               {leftColumn.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2.5">
-                  <span className="shrink-0 w-4 h-4 rounded-full bg-black flex items-center justify-center shadow-2xs">
+                <div key={idx} className="flex items-start sm:items-center gap-1.5 sm:gap-2.5">
+                  <span className="shrink-0 w-3.5 h-3.5 sm:w-4 sm:h-4 mt-px sm:mt-0 rounded-full bg-black flex items-center justify-center shadow-2xs">
                     <Check
-                      className="w-2.5 h-2.5 text-[#CEFF00] stroke-[3]"
+                      className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#CEFF00] stroke-[3]"
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="text-xs sm:text-[13px] font-medium text-gray-800 tracking-tight leading-tight">
+                  <span className="min-w-0 break-words text-[11.5px] sm:text-[13px] font-medium text-gray-800 tracking-tight leading-snug sm:leading-tight">
                     {item}
                   </span>
                 </div>
@@ -185,16 +185,16 @@ const PricingListOfServices = () => {
             </div>
 
             {/* Right Column */}
-            <div className="space-y-2.5 sm:space-y-3">
+            <div className="min-w-0 space-y-2 sm:space-y-3">
               {rightColumn.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2.5">
-                  <span className="shrink-0 w-4 h-4 rounded-full bg-black flex items-center justify-center shadow-2xs">
+                <div key={idx} className="flex items-start sm:items-center gap-1.5 sm:gap-2.5">
+                  <span className="shrink-0 w-3.5 h-3.5 sm:w-4 sm:h-4 mt-px sm:mt-0 rounded-full bg-black flex items-center justify-center shadow-2xs">
                     <Check
-                      className="w-2.5 h-2.5 text-[#CEFF00] stroke-[3]"
+                      className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#CEFF00] stroke-[3]"
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="text-xs sm:text-[13px] font-medium text-gray-800 tracking-tight leading-tight">
+                  <span className="min-w-0 break-words text-[11.5px] sm:text-[13px] font-medium text-gray-800 tracking-tight leading-snug sm:leading-tight">
                     {item}
                   </span>
                 </div>
