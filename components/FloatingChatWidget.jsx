@@ -314,20 +314,20 @@ export default function FloatingChatWidget() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[380px] max-h-[85vh] flex flex-col rounded-xl bg-[#0d1117] border border-white/10 shadow-2xl overflow-hidden overscroll-contain"
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-none sm:w-[380px] max-h-[75dvh] sm:max-h-[85vh] flex flex-col rounded-xl bg-[#0d1117] border border-white/10 shadow-2xl overflow-hidden overscroll-contain"
             style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
             {/* Header */}
-            <div className="relative flex items-center gap-3 px-5 py-4 border-b border-white/10">
+            <div className="relative flex items-center gap-2.5 sm:gap-3 px-4 py-3 sm:px-5 sm:py-4 border-b border-white/10">
               <Image
                 src="/images/logos/logoxar.png"
                 alt="AfterRender"
                 width={36}
                 height={36}
-                className="h-9 w-9 object-contain"
+                className="h-8 w-8 sm:h-9 sm:w-9 object-contain"
               />
               <div className="flex-1 pr-6">
-                <h2 className="text-white text-base font-semibold leading-tight">Have a question?</h2>
+                <h2 className="text-white text-[15px] sm:text-base font-semibold leading-tight">Have a question?</h2>
                 <p className="text-gray-400 text-xs mt-0.5">A representative will get back to you.</p>
               </div>
               <button
@@ -341,7 +341,7 @@ export default function FloatingChatWidget() {
             </div>
 
             {/* Body */}
-            <div className="px-5 py-4 overflow-y-auto overscroll-contain touch-pan-y">
+            <div className="px-4 py-3 sm:px-5 sm:py-4 overflow-y-auto overscroll-contain touch-pan-y">
               {status.type === "success" ? (
                 <div className="py-6 text-center">
                   <CheckCircle2 size={36} className="mx-auto text-emerald-400" />
@@ -356,7 +356,7 @@ export default function FloatingChatWidget() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-3">
+                <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
                   {status.type === "error" && (
                     <div className="flex items-center gap-2 rounded-md bg-red-500/10 border border-red-500/30 px-3 py-2 text-red-300 text-xs">
                       <AlertCircle size={15} className="shrink-0" />
@@ -376,7 +376,7 @@ export default function FloatingChatWidget() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Your name"
-                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2 sm:py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
                     />
                   </div>
 
@@ -392,7 +392,7 @@ export default function FloatingChatWidget() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="you@email.com"
-                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2 sm:py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
                     />
                   </div>
 
@@ -407,7 +407,7 @@ export default function FloatingChatWidget() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+1 555 000 0000"
-                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2 sm:py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors"
                     />
                   </div>
 
@@ -423,14 +423,14 @@ export default function FloatingChatWidget() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="How can we help?"
-                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors resize-none"
+                      className="w-full bg-transparent border border-white/15 rounded-md px-3 py-2 sm:py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#59B7FF] transition-colors resize-none h-[72px] sm:h-auto"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-2.5 rounded-md text-sm font-semibold text-[#0A2540] bg-[#59B7FF] hover:bg-[#7cc6ff] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full py-2 sm:py-2.5 rounded-md text-sm font-semibold text-[#0A2540] bg-[#59B7FF] hover:bg-[#7cc6ff] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <>
