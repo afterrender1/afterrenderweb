@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Repeat, Zap } from "lucide-react";
 
 // Add new services here; they show up in the navbar "Services" dropdown (desktop + mobile drawer)
 export const SERVICES = [
@@ -31,14 +31,35 @@ export const SERVICES = [
   },
 ];
 
-// Desktop "Services" dropdown. CSS transitions only (opacity/transform), no animation
-// library and no blur, so it stays light on low-end devices.
-export default function ServicesDropdown({ triggerClassName = "" }) {
+// Navbar "Pricing" dropdown (desktop + mobile drawer). Items use an `icon` instead of an image.
+export const PRICING_LINKS = [
+  {
+    href: "/pricing",
+    title: "AfterRender Subscription",
+    description: "Unlimited edits for one monthly price.",
+    icon: Repeat,
+  },
+  {
+    href: "/pricing/on-demand",
+    title: "AfterRender On Demand",
+    description: "Pay per project, no subscription.",
+    icon: Zap,
+  },
+];
+
+// Desktop navbar dropdown ("Services" by default, also used for "Pricing"). CSS transitions
+// only (opacity/transform), no animation library and no blur, so it stays light on low-end devices.
+export default function ServicesDropdown({
+  triggerClassName = "",
+  label = "Services",
+  items = SERVICES,
+  menuId = "services-dropdown",
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
-  const isServicePage = SERVICES.some((service) => service.href === pathname);
+  const isServicePage = items.some((item) => item.href === pathname);
 
   // Close on outside click and on Esc
   useEffect(() => {
@@ -66,12 +87,12 @@ export default function ServicesDropdown({ triggerClassName = "" }) {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open}
-        aria-controls="services-dropdown"
+        aria-controls={menuId}
         className={`inline-flex items-center gap-1 transition-colors cursor-pointer outline-none ${
           isServicePage ? "text-[#59B7FF]" : triggerClassName
         }`}
       >
-        Services
+        {label}
         <ChevronDown
           size={15}
           strokeWidth={2.4}
@@ -80,14 +101,14 @@ export default function ServicesDropdown({ triggerClassName = "" }) {
       </button>
 
       <div
-        id="services-dropdown"
+        id={menuId}
         inert={!open}
         className={`absolute left-1/2 top-full mt-4 w-[320px] -translate-x-1/2 origin-top rounded-xl border border-zinc-200 bg-white p-1.5 text-zinc-950 shadow-[0_10px_38px_-10px_rgba(15,23,42,0.25),0_10px_20px_-15px_rgba(15,23,42,0.2)] transition-[opacity,scale,translate,visibility] duration-150 ease-out motion-reduce:transition-none ${
           open ? "visible opacity-100 scale-100 translate-y-0" : "invisible opacity-0 scale-[0.97] -translate-y-1"
         }`}
       >
         <ul>
-          {SERVICES.map(({ href, title, description, image, badge }) => {
+          {items.map(({ href, title, description, image, icon: Icon, badge }) => {
             const active = pathname === href;
             return (
               <li key={href}>
@@ -103,6 +124,7 @@ export default function ServicesDropdown({ triggerClassName = "" }) {
                     {image && (
                       <Image src={image} alt={title} fill sizes="36px" className="object-cover" />
                     )}
+                    {!image && Icon && <Icon size={17} strokeWidth={2.2} className="text-[#1a73e8]" aria-hidden="true" />}
                   </span>
                   <span className="min-w-0">
                     <span className="flex items-center gap-2 text-sm font-semibold leading-tight">

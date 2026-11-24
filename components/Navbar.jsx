@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Urbanist } from "@/app/lib/fonts";
-import ServicesDropdown, { SERVICES } from "./ServicesDropdown";
+import ServicesDropdown, { SERVICES, PRICING_LINKS } from "./ServicesDropdown";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -24,6 +24,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
   const pathname = usePathname();
   const isPricing =
     pathname === "/pricing" ||
+    pathname === "/pricing/on-demand" ||
     pathname === "/our-work" ||
     pathname === "/about-us" ||
     pathname === "/real-estate" ||
@@ -56,8 +57,9 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
     };
   }, [mobileMenuOpen]);
 
-  // Mobile drawer: "Services" expands its links inline
+  // Mobile drawer: "Pricing" and "Services" expand their links inline
   const mobileServicesOpen = openMenu === "services";
+  const mobilePricingOpen = openMenu === "pricing";
 
   // Scroll to #contact on page navigation if hash exists
   useEffect(() => {
@@ -132,16 +134,12 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
               Our Work
             </Link>
 
-            <Link
-              href="/pricing"
-              className={`transition-colors ${
-                isPricing
-                  ? "text-black hover:text-[#59B7FF]"
-                  : "hover:text-[#59B7FF]"
-              }`}
-            >
-              Pricing
-            </Link>
+            <ServicesDropdown
+              label="Pricing"
+              items={PRICING_LINKS}
+              menuId="pricing-dropdown"
+              triggerClassName={isPricing ? "text-black hover:text-[#59B7FF]" : "hover:text-[#59B7FF]"}
+            />
             <ServicesDropdown
               triggerClassName={isPricing ? "text-black hover:text-[#59B7FF]" : "hover:text-[#59B7FF]"}
             />
@@ -238,22 +236,61 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                     </div>
 
                     <div className="flex flex-col">
-                      {[
-                        { href: "/our-work", label: "Our Work" },
-                        { href: "/pricing", label: "Pricing" },
-                      ].map(({ href, label }) => (
-                        <Link
-                          key={href}
-                          href={href}
-                          onClick={closeMobileMenu}
-                          aria-current={pathname === href ? "page" : undefined}
-                          className={`border-b border-white/10 py-4 text-xl font-semibold transition-colors ${
-                            pathname === href ? "text-[#59B7FF]" : "text-white hover:text-[#59B7FF]"
+                      <Link
+                        href="/our-work"
+                        onClick={closeMobileMenu}
+                        aria-current={pathname === "/our-work" ? "page" : undefined}
+                        className={`border-b border-white/10 py-4 text-xl font-semibold transition-colors ${
+                          pathname === "/our-work" ? "text-[#59B7FF]" : "text-white hover:text-[#59B7FF]"
+                        }`}
+                      >
+                        Our Work
+                      </Link>
+
+                      <div className="border-b border-white/10">
+                        <button
+                          type="button"
+                          onClick={() => toggleMenu("pricing")}
+                          aria-expanded={mobilePricingOpen}
+                          aria-controls="mobile-pricing"
+                          className="flex w-full items-center justify-between py-4 text-left text-xl font-semibold text-white hover:text-[#59B7FF] transition-colors cursor-pointer"
+                        >
+                          <span>Pricing</span>
+                          <ChevronDown
+                            size={20}
+                            className={`opacity-70 transition-transform duration-200 ${mobilePricingOpen ? "rotate-180" : ""}`}
+                          />
+                        </button>
+
+                        <div
+                          id="mobile-pricing"
+                          inert={!mobilePricingOpen}
+                          className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none ${
+                            mobilePricingOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                           }`}
                         >
-                          {label}
-                        </Link>
-                      ))}
+                          <div className="overflow-hidden">
+                            <div className="flex flex-col gap-3 pb-4">
+                              {PRICING_LINKS.map(({ href, title, icon: Icon }) => (
+                                <Link
+                                  key={href}
+                                  href={href}
+                                  onClick={closeMobileMenu}
+                                  aria-current={pathname === href ? "page" : undefined}
+                                  className={`flex items-center gap-3 text-base font-medium transition-colors ${
+                                    pathname === href ? "text-[#59B7FF]" : "text-gray-200 hover:text-[#59B7FF]"
+                                  }`}
+                                >
+                                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white/10">
+                                    <Icon size={17} strokeWidth={2.2} className="text-[#8ccbff]" aria-hidden="true" />
+                                  </span>
+                                  <span>{title}</span>
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                       <div className="border-b border-white/10">
                         <button
