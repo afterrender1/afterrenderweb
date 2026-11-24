@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import LoopVideo from "./LoopVideo";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -50,55 +51,6 @@ const reels = [
   },
 ];
 
-// Muted, looping, inline autoplay. The source is attached only when the card comes near
-// the viewport (so it doesn't compete with the hero), and it pauses while off screen.
-function LoopVideo({ id, label }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    // React doesn't reliably render the `muted` attribute; browsers only autoplay muted video
-    video.muted = true;
-    video.defaultMuted = true;
-
-    // Source is set here (not as a prop) so nothing downloads before it's needed
-    const start = () => {
-      if (!video.getAttribute("src")) video.src = videoSrc(id);
-      video.play()?.catch(() => {}); // blocked (e.g. low-power mode): the poster stays
-    };
-
-    if (typeof IntersectionObserver === "undefined") {
-      start();
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? start() : video.pause()),
-      { rootMargin: "300px 0px" }
-    );
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, [id]);
-
-  return (
-    <video
-      ref={ref}
-      poster={posterSrc(id)}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      disablePictureInPicture
-      disableRemotePlayback
-      controlsList="nodownload"
-      onContextMenu={(e) => e.preventDefault()}
-      aria-label={`${label} reel`}
-      className="absolute inset-0 h-full w-full object-cover"
-    />
-  );
-}
-
 const ReelEditingStyles = () => {
   return (
     <section
@@ -111,7 +63,7 @@ const ReelEditingStyles = () => {
           </p>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-[1.15]">
-            <span>Take Your Pick From Our 3 </span>
+            <span>Take Your Pick From Our 4 </span>
             <span className={`${playfair.className} italic font-normal text-gray-900`}>
               Reel Editing Styles
             </span>
@@ -131,7 +83,12 @@ const ReelEditingStyles = () => {
               key={reel.id}
               className={`relative aspect-[9/16] min-w-0 overflow-hidden rounded-2xl sm:rounded-[18px] bg-gray-200 shadow-[0_1px_2px_rgba(16,24,40,0.06),0_16px_36px_-16px_rgba(16,24,40,0.3)] ${reel.layout}`}
             >
-              <LoopVideo id={reel.id} label={reel.label} />
+              <LoopVideo
+                src={videoSrc(reel.id)}
+                poster={posterSrc(reel.id)}
+                label={`${reel.label} reel`}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
           ))}
         </div>
