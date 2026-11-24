@@ -33,6 +33,7 @@ export async function PATCH(req, { params }) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/pricing/on-demand");
         revalidatePath("/website");
         revalidatePath("/ai-avatars");
         revalidatePath("/our-work");
@@ -56,6 +57,7 @@ export async function DELETE(req, { params }) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/pricing/on-demand");
         revalidatePath("/website");
         revalidatePath("/ai-avatars");
         revalidatePath("/our-work");

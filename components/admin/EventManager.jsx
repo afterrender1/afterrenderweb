@@ -49,6 +49,7 @@ import { DEFAULT_ANNOUNCEMENT_STYLE, announcementBackground, withStyleDefaults }
 import {
     BILLING_PERIODS,
     PLAN_TIERS,
+    ON_DEMAND_PACKAGES,
     DEFAULT_PRICES,
     MAX_PRICE,
     isValidPrice,
@@ -603,7 +604,7 @@ const EventDialog = ({ initial, initialTab = "general", onClose, onSaved }) => {
             <>
                 <PanelHeader
                     title="Plan prices"
-                    description="Monthly price (USD) of each plan on the pricing page, for every billing tab. When off, the default prices show."
+                    description="Subscription plan prices (per billing tab) on /pricing and On Demand package prices on /pricing/on-demand, in USD. When off, the default prices show."
                     enabled={form.showPricing}
                     onToggle={set("showPricing")}
                 />
@@ -645,6 +646,39 @@ const EventDialog = ({ initial, initialTab = "general", onClose, onSaved }) => {
                                 </div>
                             </div>
                         ))}
+
+                        <div className="rounded-lg border border-stone-200 p-3 sm:p-4">
+                            <p className="text-sm font-semibold text-stone-900">On Demand packages</p>
+                            <p className="text-xs text-stone-500 mt-0.5 mb-3">Pre-paid package prices (USD) on /pricing/on-demand.</p>
+                            <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
+                                {ON_DEMAND_PACKAGES.map(({ id, title }) => {
+                                    const value = form.pricing.packages[id];
+                                    const invalid = !isValidPrice(value);
+                                    return (
+                                        <div key={id} className="min-w-0">
+                                            <label htmlFor={`price-package-${id}`} className={labelClass}>
+                                                {title}
+                                            </label>
+                                            <div className="relative">
+                                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-stone-500">$</span>
+                                                <input
+                                                    id={`price-package-${id}`}
+                                                    type="number"
+                                                    min={1}
+                                                    max={MAX_PRICE}
+                                                    step={1}
+                                                    inputMode="numeric"
+                                                    aria-invalid={invalid}
+                                                    className={`${inputClass} pl-7 ${invalid ? "border-red-300 hover:border-red-400 focus:border-red-400" : ""}`}
+                                                    value={value}
+                                                    onChange={setPrice("packages", id)}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
 
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                             <button

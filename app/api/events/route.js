@@ -36,6 +36,7 @@ export async function POST(req) {
 
         revalidatePath("/");
         revalidatePath("/pricing");
+        revalidatePath("/pricing/on-demand");
         revalidatePath("/website");
         revalidatePath("/ai-avatars");
         revalidatePath("/our-work");

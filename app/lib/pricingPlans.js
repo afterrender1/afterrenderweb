@@ -1,5 +1,5 @@
-// Plan prices for /pricing. Shared by the server (getActiveEvent), the admin event
-// editor and the pricing page. Pure, no DB imports.
+// Prices for /pricing (subscription plans) and /pricing/on-demand (pre-paid packages).
+// Shared by the server (getActiveEvent), the admin event editor and both pages. Pure, no DB imports.
 // Only the prices are editable from admin (Events → Pricing); plan text lives in PricingHero.
 
 export const BILLING_PERIODS = [
@@ -14,11 +14,22 @@ export const PLAN_TIERS = [
     { id: "ultra", name: "Ultra" },
 ];
 
-// Monthly price (USD) per plan for each billing period
+// On Demand pre-paid packages (shown in this order). `kind` picks the card icon.
+export const ON_DEMAND_PACKAGES = [
+    { id: "short5", title: "5x Short Form", description: "5 short-form video edits", kind: "short" },
+    { id: "realEstate5", title: "5x Real Estate", description: "5 real estate video edits", kind: "realEstate" },
+    { id: "youtube2", title: "2x YouTube Video", description: "2 YouTube video edits", kind: "youtube" },
+    { id: "short10", title: "10x Short Form", description: "10 short-form video edits", kind: "short" },
+    { id: "realEstate10", title: "10x Real Estate", description: "10 real estate video edits", kind: "realEstate" },
+    { id: "youtube4", title: "4x YouTube Video", description: "4 YouTube video edits", kind: "youtube" },
+];
+
+// Monthly price (USD) per plan for each billing period, plus the package prices (USD)
 export const DEFAULT_PRICES = {
     basic: { monthly: 699, quarterly: 629, semiAnnual: 559 },
     plus: { monthly: 1199, quarterly: 1079, semiAnnual: 959 },
     ultra: { monthly: 2099, quarterly: 1889, semiAnnual: 1679 },
+    packages: { short5: 325, realEstate5: 500, youtube2: 300, short10: 650, realEstate10: 1000, youtube4: 600 },
 };
 
 export const MAX_PRICE = 100000;
@@ -27,7 +38,8 @@ export const isValidPrice = (value) => Number.isInteger(value) && value >= 1 && 
 
 const toNumber = (raw) => (raw === "" || raw === null || raw === undefined ? NaN : Number(raw));
 
-// Strict (used when saving): every plan × period must be a whole dollar amount
+// Strict (used when saving): every plan × period (and every package) must be a whole dollar amount.
+// Prices saved before packages existed have no `packages`: those get the default package prices.
 export const parsePricing = (input) => {
     if (!input || typeof input !== "object") return { error: "Invalid plan prices" };
 
@@ -42,6 +54,18 @@ export const parsePricing = (input) => {
             pricing[plan][period] = value;
         }
     }
+
+    pricing.packages = {};
+    const packages = input.packages;
+    for (const { id, title } of ON_DEMAND_PACKAGES) {
+        if (packages === undefined || packages === null) {
+            pricing.packages[id] = DEFAULT_PRICES.packages[id];
+            continue;
+        }
+        const value = toNumber(packages[id]);
+        if (!isValidPrice(value)) return { error: `${title} price must be a whole number from 1 to ${MAX_PRICE}` };
+        pricing.packages[id] = value;
+    }
     return { pricing };
 };
 
@@ -55,6 +79,11 @@ export const withPricingDefaults = (input) => {
             const value = toNumber(input?.[plan]?.[period]);
             pricing[plan][period] = isValidPrice(value) ? value : DEFAULT_PRICES[plan][period];
         }
+    }
+    pricing.packages = {};
+    for (const { id } of ON_DEMAND_PACKAGES) {
+        const value = toNumber(input?.packages?.[id]);
+        pricing.packages[id] = isValidPrice(value) ? value : DEFAULT_PRICES.packages[id];
     }
     return pricing;
 };

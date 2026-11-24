@@ -437,3 +437,16 @@ html {
     display: none;
   }
 }
+
+/* Price placeholder on dark cards (On Demand packages) */
+.price-shimmer.price-shimmer-dark {
+  background-color: #2c2c30;
+  background-image: linear-gradient(
+    135deg,
+    #2c2c30 0%,
+    #2c2c30 36%,
+    #4a4a50 50%,
+    #2c2c30 64%,
+    #2c2c30 100%
+  );
+}

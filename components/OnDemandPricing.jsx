@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, Zap } from "lucide-react";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import OnDemandTicker from "./OnDemandTicker";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,13 +17,45 @@ const playfair = Playfair_Display({
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
 
-// Placeholder for /pricing/on-demand until the real On Demand plans are added.
-// Self-contained (no data, no client JS), so it can be replaced or extended freely.
+// Hero for /pricing/on-demand (On Demand plans can be added below it later).
+// Background videos come from OnDemandTicker.
 export default function OnDemandPricing() {
   return (
     <section
-      className={`${jakarta.className} relative min-h-[80vh] bg-[#FAFAFA] text-black pt-32 sm:pt-40 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex items-center`}
+      className={`${jakarta.className} relative isolate min-h-[680px] sm:min-h-[780px] bg-[#FAFAFA] text-black pt-28 sm:pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden flex items-center`}
     >
+      {/* Background: long + short form videos drifting in two arcs. Starts below the fixed
+          navbar (~60px phones, ~80px sm+) and fades out at its top and bottom edges, so cards
+          never slide behind the navbar or get cut off where the hero ends. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-[72px] sm:top-[84px] bottom-0 -z-20"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0, black 56px, black calc(100% - 140px), transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0, black 56px, black calc(100% - 140px), transparent 100%)",
+        }}
+      >
+        <OnDemandTicker />
+      </div>
+      {/* Soft light behind the text so it stays readable over the videos (wider on phones,
+          where the text spans the full width) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 sm:hidden"
+        style={{
+          background:
+            "radial-gradient(ellipse 95% 34% at 50% 50%, rgba(250,250,250,0.97) 0%, rgba(250,250,250,0.88) 55%, rgba(250,250,250,0) 85%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 hidden sm:block"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 42% at 50% 52%, rgba(250,250,250,0.96) 0%, rgba(250,250,250,0.82) 45%, rgba(250,250,250,0) 78%)",
+        }}
+      />
+
       <div className="relative w-full max-w-2xl mx-auto text-center">
         <span className="inline-flex items-center gap-1.5 h-7 px-3 rounded-full bg-white border border-gray-200 text-xs font-semibold text-gray-700 shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
           <Zap className="w-3.5 h-3.5 text-[#1a73e8]" strokeWidth={2.4} aria-hidden="true" />
@@ -35,8 +68,7 @@ export default function OnDemandPricing() {
         </h1>
 
         <p className="mt-4 mx-auto max-w-xl text-sm sm:text-base leading-relaxed text-gray-600">
-          On demand pricing is coming soon. Need a one-off edit right now? Book a quick call and
-          we&apos;ll quote your project.
+          Get high quality video edited without the commitment of a monthly subscription.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
