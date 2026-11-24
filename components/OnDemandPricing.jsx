@@ -27,15 +27,17 @@ export default function OnDemandPricing() {
       {/* Background: long + short form videos drifting in two arcs. Starts below the fixed
           navbar (~60px phones, ~80px sm+) and fades out at its top and bottom edges, so cards
           never slide behind the navbar or get cut off where the hero ends. */}
+      {/* Fades are static overlays in the page color, not CSS masks: a mask over moving cards
+          forces a full repaint every frame, which made the page laggy. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-[72px] sm:top-[84px] bottom-0 -z-20"
-        style={{
-          maskImage: "linear-gradient(to bottom, transparent 0, black 56px, black calc(100% - 140px), transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0, black 56px, black calc(100% - 140px), transparent 100%)",
-        }}
+        className="pointer-events-none absolute inset-x-0 top-[72px] sm:top-[84px] bottom-0 -z-20 overflow-hidden"
       >
         <OnDemandTicker />
+        <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-[#FAFAFA] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#FAFAFA] to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-[#FAFAFA] to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-[12%] bg-gradient-to-l from-[#FAFAFA] to-transparent" />
       </div>
       {/* Soft light behind the text so it stays readable over the videos (wider on phones,
           where the text spans the full width) */}
@@ -82,10 +84,10 @@ export default function OnDemandPricing() {
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
           <Link
-            href="/pricing"
+            href="#packages"
             className="inline-flex items-center justify-center h-12 px-6 rounded-full bg-white border border-gray-200 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50 hover:border-gray-300"
           >
-            See Subscription Plans
+            See Packages
           </Link>
         </div>
       </div>

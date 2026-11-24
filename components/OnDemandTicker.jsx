@@ -3,8 +3,8 @@
 // Hero background for /pricing/on-demand: two arced rows of video cards drifting in opposite
 // directions (an "eye" shape). Adapted from Originkit's Eye Gallery to play videos:
 // top row = long form (landscape), bottom row = short form (portrait).
-// Fast + light: tiny 6-second Cloudinary clips (~20–130 KB, no audio), only cards that are
-// on screen play, everything pauses while the hero is scrolled away, and nothing renders
+// Fast + light: tiny 6-second, 15 fps Cloudinary clips (~30–120 KB, no audio), only cards in the middle of the screen
+// play, everything pauses while the hero is scrolled away, and nothing renders
 // until the container is measured (no hydration mismatch, no wasted downloads).
 
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -13,8 +13,8 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : use
 
 const CLOUDINARY_VIDEO = "https://res.cloudinary.com/dlurrugno/video/upload";
 const CLIP = {
-  long: { video: "du_6,q_auto:low,w_320,c_limit,vc_h264,ac_none", poster: "so_0,w_320,c_limit,q_auto" },
-  short: { video: "du_6,q_auto:low,w_200,c_limit,vc_h264,ac_none", poster: "so_0,w_200,c_limit,q_auto" },
+  long: { video: "du_6,fps_15,q_auto:low,w_320,c_limit,vc_h264,ac_none", poster: "so_0,w_320,c_limit,q_auto" },
+  short: { video: "du_6,fps_15,q_auto:low,w_200,c_limit,vc_h264,ac_none", poster: "so_0,w_200,c_limit,q_auto" },
 };
 
 // All from Our Work
@@ -54,13 +54,16 @@ const GAP = 28;
 const ROW_GAP = 170;
 const ARC = 0.63; // how far the rows bow apart in the middle (0–1)
 const PX_PER_SECOND = 56;
-const EDGE_FADE = 12; // % faded at the left/right edges
-const CARD_SHADOW = "0 18px 42px rgba(22, 24, 29, 0.14)";
+const PLAY_ZONE = 0.12; // cards whose centre is in the outer 12% (under the edge fade) don't play
+// Kept small: big blurred shadows on ~20 moving layers are costly to composite
+const CARD_SHADOW = "0 8px 20px rgba(22, 24, 29, 0.12)";
 
 function TickerRow({ row, side, width, height, scale, running, still }) {
   const cardRefs = useRef([]);
   const videoRefs = useRef([]);
   const shown = useRef([]);
+  // Distance travelled so far, kept across pauses so the row resumes instead of jumping back
+  const travelRef = useRef(0);
 
   const cardW = row.width * scale;
   const cardH = row.height * scale;
@@ -84,7 +87,8 @@ function TickerRow({ row, side, width, height, scale, running, still }) {
     const x = wrapped - outside;
     const y = baseline + bow * amplitude * Math.sin(Math.PI * progress) - cardH / 2;
     const visible = x > -cardW * 1.25 && x < width + cardW * 0.25;
-    return { x, y, visible, z: Math.round(dirSign * x) + 100000 };
+    // Stacking order only changes when a card moves a whole slot, so z rarely changes
+    return { x, y, visible, z: Math.floor((dirSign * x) / step) + 1000 };
   };
 
   useEffect(() => {
@@ -108,18 +112,32 @@ function TickerRow({ row, side, width, height, scale, running, still }) {
 
     const sign = row.direction === "left" ? -1 : 1;
     const start = performance.now();
+    const startTravel = travelRef.current;
+    // Last written values: only touch opacity / z-index when they actually change
+    const lastOpacity = [];
+    const lastZ = [];
     let frame = 0;
 
     const tick = (now) => {
-      const travel = still ? 0 : ((now - start) / 1000) * PX_PER_SECOND * scale * sign;
+      const travel = still ? startTravel : startTravel + ((now - start) / 1000) * PX_PER_SECOND * scale * sign;
+      travelRef.current = travel;
       for (let i = 0; i < count; i++) {
         const el = cardRefs.current[i];
         if (!el) continue;
         const { x, y, visible, z } = placeAt(i, travel);
-        el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-        el.style.opacity = visible ? "1" : "0";
-        el.style.zIndex = String(z);
-        setVisible(i, visible);
+        el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+        const opacity = visible ? "1" : "0";
+        if (lastOpacity[i] !== opacity) {
+          el.style.opacity = opacity;
+          lastOpacity[i] = opacity;
+        }
+        if (lastZ[i] !== z) {
+          el.style.zIndex = String(z);
+          lastZ[i] = z;
+        }
+        // Only cards in the middle play; the faded edge ones hold their frame (less decoding)
+        const center = x + cardW / 2;
+        setVisible(i, visible && center > width * PLAY_ZONE && center < width * (1 - PLAY_ZONE));
       }
       if (running && !still) frame = requestAnimationFrame(tick);
     };
@@ -225,14 +243,13 @@ export default function OnDemandTicker({ className = "" }) {
   }, []);
 
   const scale = size ? Math.max(0.62, Math.min(1.2, size.width / 1200)) : 1;
-  const fadeMask = `linear-gradient(to right, transparent 0%, black ${EDGE_FADE}%, black ${100 - EDGE_FADE}%, transparent 100%)`;
 
   return (
     <div
       ref={containerRef}
       aria-hidden="true"
       className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500 ${size ? "opacity-100" : "opacity-0"} ${className}`}
-      style={{ isolation: "isolate", maskImage: fadeMask, WebkitMaskImage: fadeMask }}
+      style={{ isolation: "isolate" }}
     >
       {size && (
         <>

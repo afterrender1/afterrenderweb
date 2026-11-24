@@ -54,12 +54,14 @@ export default function ServicesDropdown({
   label = "Services",
   items = SERVICES,
   menuId = "services-dropdown",
+  // Pages that shouldn't light up this trigger (e.g. /pricing belongs to the Pricing menu)
+  ignoreActive = [],
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
-  const isServicePage = items.some((item) => item.href === pathname);
+  const isServicePage = !ignoreActive.includes(pathname) && items.some((item) => item.href === pathname);
 
   // Close on outside click and on Esc
   useEffect(() => {

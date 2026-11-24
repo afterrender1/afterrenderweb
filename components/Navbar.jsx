@@ -141,6 +141,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
               triggerClassName={isPricing ? "text-black hover:text-[#59B7FF]" : "hover:text-[#59B7FF]"}
             />
             <ServicesDropdown
+              ignoreActive={PRICING_LINKS.map((link) => link.href)}
               triggerClassName={isPricing ? "text-black hover:text-[#59B7FF]" : "hover:text-[#59B7FF]"}
             />
             <Link

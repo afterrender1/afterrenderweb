@@ -33,7 +33,7 @@ export default function OnDemandPricingPage() {
       <ShortVideoClientTestimonials isLight={true} />
       <PricingBenefits />
       <PricingFAQ />
-      <Footer />
+      <Footer theme="light" />
     </main>
   );
 }

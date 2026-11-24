@@ -52,7 +52,7 @@ function PackagePrice({ eventPromise, id, dark }) {
 
 export default function OnDemandPackages({ eventPromise = null }) {
   return (
-    <section id="packages" className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-14 sm:py-20 px-4 sm:px-6 lg:px-8`}>
+    <section id="packages" className={`${jakarta.className} scroll-mt-16 relative bg-[#FAFAFA] text-black py-14 sm:py-20 px-4 sm:px-6 lg:px-8`}>
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-950 leading-[1.15]">
