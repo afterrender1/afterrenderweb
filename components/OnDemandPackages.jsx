@@ -86,7 +86,7 @@ export default function OnDemandPackages({ eventPromise = null }) {
                     {title}
                   </h3>
                   {id === POPULAR && (
-                    <span className="shrink-0 rounded-full bg-[#CEFF00] px-2 py-0.5 text-[10px] font-bold tracking-[0.06em] text-black">
+                    <span className="shrink-0 rounded-full bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] px-2 py-0.5 text-[10px] font-bold tracking-[0.06em] text-[#0A2540]">
                       POPULAR
                     </span>
                   )}
@@ -106,7 +106,7 @@ export default function OnDemandPackages({ eventPromise = null }) {
                   rel="noopener noreferrer"
                   className={`mt-3 flex items-center justify-center h-10 rounded-[10px] text-sm font-semibold transition-colors active:scale-[0.98] ${
                     dark
-                      ? "bg-[#CEFF00] text-black hover:bg-[#BFEF00]"
+                      ? "bg-gradient-to-r from-[#48A2FF] to-[#C9E4FF] text-[#0A2540] hover:brightness-105"
                       : "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
                   }`}
                 >
