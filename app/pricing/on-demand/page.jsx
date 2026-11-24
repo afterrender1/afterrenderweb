@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import OnDemandPricing from "@/components/OnDemandPricing";
 import OnDemandPackages from "@/components/OnDemandPackages";
+import CollectionPortfolio from "@/components/CollectionPortfolio";
 import { getActiveEvent } from "@/app/lib/heroEvents";
 import PricingTestimonials from "@/components/PricingTestimonials";
 import ShortVideoClientTestimonials from "@/components/ShortVideoClientTestimonials";
@@ -29,6 +30,7 @@ export default function OnDemandPricingPage() {
       <Navbar />
       <OnDemandPricing />
       <OnDemandPackages eventPromise={eventPromise} />
+      <CollectionPortfolio />
       <PricingTestimonials />
       <ShortVideoClientTestimonials isLight={true} />
       <PricingBenefits />
