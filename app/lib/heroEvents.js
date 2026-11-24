@@ -1,4 +1,5 @@
 import { resolveDiscount } from "@/app/lib/offer";
+import { parsePricing, withPricingDefaults } from "@/app/lib/pricingPlans";
 import { DEFAULT_ANNOUNCEMENT_STYLE, isValidHex, parseAnnouncementStyle, withStyleDefaults } from "@/app/lib/announcementStyle";
 
 const STRING_FIELDS = [
@@ -16,7 +17,7 @@ const STRING_FIELDS = [
     "headlineVia",
     "headlineTo",
 ];
-const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement", "showOffer", "showHeadlineColors"];
+const BOOL_FIELDS = ["isActive", "showBackground", "showTopLeft", "showTopRight", "showAnnouncement", "showOffer", "showHeadlineColors", "showPricing"];
 const COLOR_FIELDS = ["offerButtonColor", "offerButtonTextColor", "offerBadgeColor", "headlineFrom", "headlineVia", "headlineTo"];
 
 export const EVENT_DEFAULTS = {
@@ -42,6 +43,7 @@ export const EVENT_DEFAULTS = {
     headlineFrom: "#48A2FF",
     headlineVia: "#7EC0FF",
     headlineTo: "#C9E4FF",
+    showPricing: false,
 };
 
 const isHttpUrl = (value) => {
@@ -85,6 +87,12 @@ export const parseEventInput = (body, { partial = false } = {}) => {
     }
     if (data.offerText && data.offerText.length > 24) return { error: "Offer text must be 24 characters or less" };
 
+    if (body.pricing !== undefined) {
+        const { pricing, error } = parsePricing(body.pricing);
+        if (error) return { error };
+        data.pricing = pricing;
+    }
+
     for (const key of ["backgroundUrl", "topLeftUrl", "topRightUrl"]) {
         if (data[key] && !isHttpUrl(data[key])) return { error: "Images must be valid URLs" };
     }
@@ -102,6 +110,7 @@ export const validateComplete = (event) => {
     if (event.showTopRight && !event.topRightUrl) return "Upload the top-right image or turn it off";
     if (event.showAnnouncement && !event.announcementText) return "Add announcement text or turn it off";
     if (event.showOffer && !event.offerText) return "Add offer text (e.g. 20% OFF) or turn the offer off";
+    if (event.showPricing && parsePricing(event.pricing).error) return "Set every plan price or turn custom pricing off";
     return null;
 };
 
@@ -141,6 +150,8 @@ export async function getActiveEvent() {
             announcementStyle: withStyleDefaults(event.announcementStyle),
             offer: event.showOffer && event.offerText ? offerFor(event) : null,
             headlineGradient: event.showHeadlineColors ? headlineFor(event) : null,
+            // Custom plan prices for /pricing; null = default prices
+            prices: event.showPricing ? withPricingDefaults(event.pricing) : null,
         };
     } catch (err) {
         console.error("Failed to load active hero event:", err);

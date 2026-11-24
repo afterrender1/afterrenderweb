@@ -17,6 +17,8 @@ import {
     ChevronDown,
     Settings2,
     Type,
+    DollarSign,
+    RotateCcw,
 } from "lucide-react";
 import {
     Skeleton,
@@ -44,7 +46,15 @@ import OfferBadge from "@/components/OfferBadge";
 import { resolveDiscount } from "@/app/lib/offer";
 import AnnouncementTrack, { announcementWrapperStyle } from "@/components/AnnouncementTrack";
 import { DEFAULT_ANNOUNCEMENT_STYLE, announcementBackground, withStyleDefaults } from "@/app/lib/announcementStyle";
-
+import {
+    BILLING_PERIODS,
+    PLAN_TIERS,
+    DEFAULT_PRICES,
+    MAX_PRICE,
+    isValidPrice,
+    parsePricing,
+    withPricingDefaults,
+} from "@/app/lib/pricingPlans";
 
 const emptyEvent = {
     name: "",
@@ -69,6 +79,20 @@ const emptyEvent = {
     headlineFrom: "#48A2FF",
     headlineVia: "#7EC0FF",
     headlineTo: "#C9E4FF",
+    showPricing: false,
+    pricing: DEFAULT_PRICES,
+};
+
+// "Basic theme": only changes the plan prices on /pricing, every hero element off
+const BASIC_THEME = {
+    name: "Basic",
+    showBackground: false,
+    showTopLeft: false,
+    showTopRight: false,
+    showAnnouncement: false,
+    showOffer: false,
+    showHeadlineColors: false,
+    showPricing: true,
 };
 
 /* ---------- Switch ---------- */
@@ -177,9 +201,9 @@ const PanelHeader = ({ title, description, enabled, onToggle }) => (
     </div>
 );
 
-const OffNotice = ({ onEnable }) => (
+const OffNotice = ({ onEnable, message = "This element is turned off and won't show on the site." }) => (
     <div className="flex flex-col items-center text-center px-4 py-10 rounded-lg border border-dashed border-stone-300">
-        <p className="text-sm text-stone-500">This element is turned off and won&apos;t show on the site.</p>
+        <p className="text-sm text-stone-500">{message}</p>
         <button type="button" onClick={onEnable} className={`${ghostBtn} mt-3`}>
             Turn on
         </button>
@@ -210,10 +234,11 @@ const TABS = [
     { id: "announcement", label: "Announcement", icon: Megaphone },
     { id: "offer", label: "Offer", icon: BadgePercent },
     { id: "headline", label: "Headline", icon: Type },
+    { id: "pricing", label: "Pricing", icon: DollarSign },
 ];
 
 /* ---------- Add / edit dialog ---------- */
-const EventDialog = ({ initial, onClose, onSaved }) => {
+const EventDialog = ({ initial, initialTab = "general", onClose, onSaved }) => {
     const isEdit = Boolean(initial?._id);
     const [form, setForm] = useState(() => {
         const base = { ...emptyEvent };
@@ -222,9 +247,11 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         base.announcementStyle = withStyleDefaults(base.announcementStyle);
         // Same discount the site applies (older events: taken from the badge text)
         if (initial?._id) base.discountPercent = resolveDiscount(initial);
+        // Events saved before pricing existed have no prices yet: start from the defaults
+        base.pricing = withPricingDefaults(initial?.pricing);
         return base;
     });
-    const [tab, setTab] = useState("general");
+    const [tab, setTab] = useState(initialTab);
     const [saving, setSaving] = useState(false);
     const [uploads, setUploads] = useState(0);
     const [error, setError] = useState("");
@@ -235,6 +262,18 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         setForm((prev) => ({ ...prev, [field]: value }));
         setError("");
     };
+    const setPrice = (plan, period) => (e) => {
+        const raw = e.target.value;
+        setForm((prev) => ({
+            ...prev,
+            pricing: { ...prev.pricing, [plan]: { ...prev.pricing[plan], [period]: raw === "" ? "" : Number(raw) } },
+        }));
+        setError("");
+    };
+    const pricingError = parsePricing(form.pricing).error;
+    // Basic monthly price the site would show, for the discount example in the Offer tab
+    const examplePrice =
+        form.showPricing && isValidPrice(form.pricing.basic.monthly) ? form.pricing.basic.monthly : DEFAULT_PRICES.basic.monthly;
     const onBusyChange = useCallback((busy) => setUploads((n) => n + (busy ? 1 : -1)), []);
 
     const busyRef = useRef(false);
@@ -257,6 +296,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         announcement: elementState(form.showAnnouncement, form.announcementText.trim()),
         offer: elementState(form.showOffer, form.offerText.trim()),
         headline: elementState(form.showHeadlineColors, true),
+        pricing: elementState(form.showPricing, !pricingError),
     };
     const missing = Object.values(tabState).filter((s) => s === "missing").length;
 
@@ -276,6 +316,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         if (form.showOffer && (!Number.isInteger(pct) || pct < 0 || pct > 90)) {
             return ["offer", "Discount must be a whole number from 0 to 90."];
         }
+        if (form.showPricing && pricingError) return ["pricing", `${pricingError}.`];
         return null;
     };
 
@@ -290,9 +331,15 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
         setSaving(true);
         setError("");
         try {
+            // Prices are only sent (and validated) while custom pricing is on
+            const { pricing, ...rest } = form;
             const data = await api(isEdit ? `/api/events/${initial._id}` : "/api/events", {
                 method: isEdit ? "PATCH" : "POST",
-                body: JSON.stringify({ ...form, discountPercent: Number(form.discountPercent) }),
+                body: JSON.stringify({
+                    ...rest,
+                    discountPercent: Number(form.discountPercent),
+                    ...(form.showPricing ? { pricing } : {}),
+                }),
             });
             onSaved(data.event, isEdit);
         } catch (err) {
@@ -483,7 +530,7 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                                 </div>
                                 <p className="text-xs text-stone-500 flex-1 min-w-[12rem] break-words">
                                     {Number(form.discountPercent) > 0
-                                        ? `Pricing shows prices ${form.discountPercent}% lower, original struck through. e.g. USD 399 → USD ${Math.round(399 * (1 - Number(form.discountPercent) / 100))}`
+                                        ? `Pricing shows prices ${form.discountPercent}% lower, original struck through. e.g. Basic $${examplePrice} → $${Math.round(examplePrice * (1 - Number(form.discountPercent) / 100))}`
                                         : "0 = badge only, prices unchanged."}
                                 </p>
                             </div>
@@ -549,6 +596,77 @@ const EventDialog = ({ initial, onClose, onSaved }) => {
                     </div>
                 ) : (
                     <OffNotice onEnable={() => set("showHeadlineColors")(true)} />
+                )}
+            </>
+        ),
+        pricing: (
+            <>
+                <PanelHeader
+                    title="Plan prices"
+                    description="Monthly price (USD) of each plan on the pricing page, for every billing tab. When off, the default prices show."
+                    enabled={form.showPricing}
+                    onToggle={set("showPricing")}
+                />
+                {form.showPricing ? (
+                    <div className="space-y-4">
+                        {PLAN_TIERS.map(({ id: plan, name }) => (
+                            <div key={plan} className="rounded-lg border border-stone-200 p-3 sm:p-4">
+                                <p className="text-sm font-semibold text-stone-900 mb-3">
+                                    {name} <span className="text-[11px] font-medium tracking-wider text-stone-400">UNLIMITED</span>
+                                </p>
+                                <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
+                                    {BILLING_PERIODS.map(({ id: period, label, billedText }) => {
+                                        const value = form.pricing[plan][period];
+                                        const invalid = !isValidPrice(value);
+                                        return (
+                                            <div key={period} className="min-w-0">
+                                                <label htmlFor={`price-${plan}-${period}`} className={labelClass}>
+                                                    {label}
+                                                </label>
+                                                <div className="relative">
+                                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-stone-500">$</span>
+                                                    <input
+                                                        id={`price-${plan}-${period}`}
+                                                        type="number"
+                                                        min={1}
+                                                        max={MAX_PRICE}
+                                                        step={1}
+                                                        inputMode="numeric"
+                                                        aria-invalid={invalid}
+                                                        className={`${inputClass} pl-7 ${invalid ? "border-red-300 hover:border-red-400 focus:border-red-400" : ""}`}
+                                                        value={value}
+                                                        onChange={setPrice(plan, period)}
+                                                    />
+                                                </div>
+                                                <p className="text-[11px] text-stone-400 mt-1 break-words">{billedText}</p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                            <button
+                                type="button"
+                                onClick={() => set("pricing")(withPricingDefaults(DEFAULT_PRICES))}
+                                className={secondaryBtn}
+                            >
+                                <RotateCcw size={14} />
+                                Reset to default prices
+                            </button>
+                            {form.showOffer && Number(form.discountPercent) > 0 && (
+                                <p className="text-xs text-stone-500 flex-1 min-w-[12rem] break-words">
+                                    The Offer tab&apos;s {form.discountPercent}% discount is applied on top of these prices.
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                ) : (
+                    <OffNotice
+                        onEnable={() => set("showPricing")(true)}
+                        message="Custom prices are off. The pricing page shows the default prices."
+                    />
                 )}
             </>
         ),
@@ -680,6 +798,7 @@ const EventCard = ({ event, onEdit, onDelete, onToggleLive }) => {
         event.showAnnouncement && "Announcement",
         event.showOffer && `Offer · ${event.offerText}`,
         event.showHeadlineColors && "Headline",
+        event.showPricing && "Pricing",
     ].filter(Boolean);
 
     const handleDelete = async () => {
@@ -844,12 +963,18 @@ const EventManager = () => {
         <div>
             <PageHeader
                 title="Events"
-                description="Seasonal themes for the homepage hero."
+                description="Seasonal themes for the homepage hero and plan prices on the pricing page."
                 actions={
-                    <button onClick={() => setEditing({})} className={primaryBtn}>
-                        <Plus size={16} />
-                        New event
-                    </button>
+                    <>
+                        <button onClick={() => setEditing(BASIC_THEME)} className={secondaryBtn}>
+                            <DollarSign size={16} />
+                            Basic theme
+                        </button>
+                        <button onClick={() => setEditing({})} className={primaryBtn}>
+                            <Plus size={16} />
+                            New event
+                        </button>
+                    </>
                 }
             />
 
@@ -899,12 +1024,18 @@ const EventManager = () => {
                     <EmptyState
                         icon={PartyPopper}
                         title="No events yet"
-                        description="Create a seasonal theme like Halloween — custom background, hanging decorations and an announcement."
+                        description="Create a seasonal theme like Halloween — custom background, hanging decorations and an announcement — or a Basic theme that only changes the plan prices."
                         action={
-                            <button onClick={() => setEditing({})} className={primaryBtn}>
-                                <Plus size={16} />
-                                New event
-                            </button>
+                            <div className="flex flex-wrap justify-center gap-2">
+                                <button onClick={() => setEditing(BASIC_THEME)} className={secondaryBtn}>
+                                    <DollarSign size={16} />
+                                    Basic theme
+                                </button>
+                                <button onClick={() => setEditing({})} className={primaryBtn}>
+                                    <Plus size={16} />
+                                    New event
+                                </button>
+                            </div>
                         }
                     />
                 ) : (
@@ -922,7 +1053,14 @@ const EventManager = () => {
                 )}
             </div>
 
-            {editing && <EventDialog initial={editing} onClose={closeDialog} onSaved={handleSaved} />}
+            {editing && (
+                <EventDialog
+                    initial={editing}
+                    initialTab={editing === BASIC_THEME ? "pricing" : "general"}
+                    onClose={closeDialog}
+                    onSaved={handleSaved}
+                />
+            )}
             <Snackbar toast={toast} onClose={closeToast} />
         </div>
     );

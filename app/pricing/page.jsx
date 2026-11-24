@@ -19,14 +19,16 @@ export const metadata = {
     "Unlimited Creatives with One Subscription. Choose the perfect video editing and graphic design package tailored for your business growth.",
 };
 
-const PricingPage = async () => {
-  // Live event's offer badge (null when no event/offer -> page unchanged)
-  const event = await getActiveEvent();
+const PricingPage = () => {
+  // Live event (plan prices, offer, background). Deliberately NOT awaited: the page and the
+  // plan cards render at once and only the prices wait (shimmer) until it resolves.
+  // getActiveEvent never rejects; null = default prices.
+  const eventPromise = getActiveEvent();
 
   return (
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
       <Navbar />
-      <PricingHero offer={event?.offer} backgroundUrl={event?.backgroundUrl} />
+      <PricingHero eventPromise={eventPromise} />
       <ReelEditingStyles />
       <PricingListOfServices />
       <PricingBenefits />

@@ -376,3 +376,64 @@ html {
 
 .blog-editor { overflow-wrap: anywhere; }
 .blog-editor img { max-width: 100%; height: auto; }
+
+/* ---------- Pricing (components/PricingHero.jsx) ---------- */
+
+/* The live event background sits at -z-30, so the section needs its own stacking context,
+   but only while a background is shown (same as before streaming). */
+.pricing-hero:has(> [data-event-backdrop]) {
+  isolation: isolate;
+}
+
+/* Price placeholder: a soft light sweep from the top-left corner to the bottom-right */
+@keyframes priceShimmer {
+  from { background-position: 100% 100%; }
+  to { background-position: 0% 0%; }
+}
+.price-shimmer {
+  background-color: #e8eaef;
+  background-image: linear-gradient(
+    135deg,
+    #e8eaef 0%,
+    #e8eaef 36%,
+    #ffffff 50%,
+    #e8eaef 64%,
+    #e8eaef 100%
+  );
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  animation: priceShimmer 1.4s ease-in-out infinite;
+}
+
+/* "Get started": a skewed light band sweeps across every few seconds (Hostinger style) */
+@keyframes btnShine {
+  0% { transform: translateX(-130%) skewX(-20deg); }
+  45%, 100% { transform: translateX(330%) skewX(-20deg); }
+}
+.btn-shine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  z-index: -1;
+  pointer-events: none;
+  transform: translateX(-130%) skewX(-20deg);
+  animation: btnShine 3.2s ease-in-out infinite;
+}
+.btn-shine-light {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+}
+.btn-shine-tint {
+  background: linear-gradient(90deg, transparent, rgba(95, 111, 211, 0.26), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-shimmer {
+    animation: none;
+  }
+  .btn-shine {
+    animation: none;
+    display: none;
+  }
+}

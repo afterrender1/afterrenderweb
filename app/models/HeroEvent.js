@@ -30,6 +30,11 @@ const HeroEventSchema = new mongoose.Schema(
         offerBadgeColor: { type: String, trim: true, default: "#EF4444" },
         discountPercent: { type: Number, min: 0, max: 90, default: 20 },
 
+        // Plan prices on /pricing ({ basic|plus|ultra: { monthly, quarterly, semiAnnual } });
+        // validated by app/lib/pricingPlans.js. Off = default prices.
+        showPricing: { type: Boolean, default: false },
+        pricing: { type: mongoose.Schema.Types.Mixed, default: undefined },
+
         // Gradient for the changing typewriter word after "Unlimited"
         showHeadlineColors: { type: Boolean, default: false },
         headlineFrom: { type: String, trim: true, default: "#48A2FF" },
