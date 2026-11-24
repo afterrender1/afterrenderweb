@@ -1,9 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { Play, X } from "lucide-react";
+import React, { useEffect, useRef } from "react";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -17,95 +14,97 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-const styles = [
+// Light versions straight from Cloudinary so the reels start almost instantly:
+// 360px wide, low quality, H.264 (plays everywhere), audio stripped (they play muted).
+// ~0.6–1.4 MB each instead of the 30–80 MB originals.
+const CLOUDINARY_VIDEO = "https://res.cloudinary.com/dlurrugno/video/upload";
+const LIGHT_VIDEO = "q_auto:low,w_360,c_limit,vc_h264,ac_none";
+const videoSrc = (id) => `${CLOUDINARY_VIDEO}/${LIGHT_VIDEO}/${id}.mp4`;
+// First frame as a ~20 KB poster, shown until the video is playing
+const posterSrc = (id) => `${CLOUDINARY_VIDEO}/so_0,w_360,c_limit,q_auto/${id}.jpg`;
+
+// Staggered layout like the reference: mixed card sizes, some dropped lower.
+// Phones: 2×2 grid with the right column shifted down. sm+: one row; widths and
+// top offsets are % of the row width so the composition scales with the screen.
+const reels = [
   {
-    id: "short-v1",
-    version: "V1",
-    title: "Short Form",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788183664/Adam_reel-1_phvxsx.mp4",
-    posterUrl: "/images/video-tn/one.png",
+    id: "v1788183664/Adam_reel-1_phvxsx",
+    label: "Short Form V1",
+    layout: "sm:w-[23.3%]",
   },
   {
-    id: "short-v2",
-    version: "V2",
-    title: "Short Form",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1788183792/Matt_Short_03_jjo3qx.mp4",
-    posterUrl: "/images/video-tn/two.png",
+    id: "v1788183792/Matt_Short_03_jjo3qx",
+    label: "Short Form V2",
+    layout: "translate-y-10 sm:translate-y-0 sm:w-[21.5%] sm:mt-[7.8%]",
   },
   {
-    id: "montage-v1",
-    version: "V1",
-    title: "Montage",
-    videoUrl:
-      "https://res.cloudinary.com/dlurrugno/video/upload/v1789481156/Reel_04_c8woob.mp4",
-    posterUrl: "/images/montageposters/montage-poster3.png",
+    id: "v1789481156/Reel_04_c8woob",
+    label: "Montage",
+    layout: "sm:w-[23.7%]",
+  },
+  // From Our Work (What We Create → Motion Graphics & B-Roll)
+  {
+    id: "v1788184449/Reel-1_pxvgud",
+    label: "Motion Graphics & B-Roll",
+    layout: "translate-y-10 sm:translate-y-0 sm:w-[25.2%] sm:mt-[3.2%]",
   },
 ];
 
-const StyleCard = ({ item, onOpen }) => {
-  const [loaded, setLoaded] = useState(false);
+// Muted, looping, inline autoplay. The source is attached only when the card comes near
+// the viewport (so it doesn't compete with the hero), and it pauses while off screen.
+function LoopVideo({ id, label }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    // React doesn't reliably render the `muted` attribute; browsers only autoplay muted video
+    video.muted = true;
+    video.defaultMuted = true;
+
+    // Source is set here (not as a prop) so nothing downloads before it's needed
+    const start = () => {
+      if (!video.getAttribute("src")) video.src = videoSrc(id);
+      video.play()?.catch(() => {}); // blocked (e.g. low-power mode): the poster stays
+    };
+
+    if (typeof IntersectionObserver === "undefined") {
+      start();
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : video.pause()),
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [id]);
 
   return (
-    <button
-      type="button"
-      onClick={() => onOpen(item)}
-      aria-label={`Play ${item.title} ${item.version}`}
-      className="group relative shrink-0 snap-start w-[44vw] max-w-[180px] sm:w-auto sm:max-w-none aspect-[9/16] rounded-xl overflow-hidden bg-gray-200 cursor-pointer text-left"
-    >
-      {!loaded && <span aria-hidden="true" className="absolute inset-0 animate-pulse bg-black/[0.07]" />}
-      <Image
-        src={item.posterUrl}
-        alt=""
-        fill
-        sizes="(max-width: 640px) 44vw, 260px"
-        onLoad={() => setLoaded(true)}
-        className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
-      />
-      <span className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-
-      <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-black transition-transform duration-200 group-hover:scale-105">
-          <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-black ml-0.5" />
-        </span>
-      </span>
-
-      <span className="absolute inset-x-0 bottom-0 block px-3 pb-3 pt-10 sm:px-4 sm:pb-4 sm:pt-12 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
-        <span className="block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-[#7cc0ff]">
-          {item.version}
-        </span>
-        <span className="block text-sm sm:text-base font-semibold text-white leading-tight">{item.title}</span>
-      </span>
-    </button>
+    <video
+      ref={ref}
+      poster={posterSrc(id)}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      disablePictureInPicture
+      disableRemotePlayback
+      controlsList="nodownload"
+      onContextMenu={(e) => e.preventDefault()}
+      aria-label={`${label} reel`}
+      className="absolute inset-0 h-full w-full object-cover"
+    />
   );
-};
+}
 
 const ReelEditingStyles = () => {
-  const [selected, setSelected] = useState(null);
-
-  // Lock page scroll and allow Esc to close while the video popup is open
-  useEffect(() => {
-    if (!selected) return;
-    const html = document.documentElement;
-    const prevHtml = html.style.overflow;
-    const prevBody = document.body.style.overflow;
-    html.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (e) => e.key === "Escape" && setSelected(null);
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      html.style.overflow = prevHtml;
-      document.body.style.overflow = prevBody;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [selected]);
-
   return (
     <section
       className={`${jakarta.className} relative bg-[#FAFAFA] text-black py-14 sm:py-20 overflow-hidden`}
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <p className="mb-2 text-xs font-semibold tracking-[0.2em] uppercase text-gray-500">
             Editing Styles
@@ -125,57 +124,18 @@ const ReelEditingStyles = () => {
           </p>
         </div>
 
-        {/* Mobile: swipeable row with the next card peeking in. Tablet and up: 3-column grid. */}
-        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 scroll-px-4 pb-1 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible">
-          {styles.map((item) => (
-            <StyleCard key={item.id} item={item} onOpen={setSelected} />
+        {/* Phones: 2×2 (pb leaves room for the shifted right column). sm+: staggered row. */}
+        <div className="grid grid-cols-2 gap-3 pb-10 sm:pb-0 sm:flex sm:items-start sm:justify-center sm:gap-[2.1%]">
+          {reels.map((reel) => (
+            <div
+              key={reel.id}
+              className={`relative aspect-[9/16] min-w-0 overflow-hidden rounded-2xl sm:rounded-[18px] bg-gray-200 shadow-[0_1px_2px_rgba(16,24,40,0.06),0_16px_36px_-16px_rgba(16,24,40,0.3)] ${reel.layout}`}
+            >
+              <LoopVideo id={reel.id} label={reel.label} />
+            </div>
           ))}
         </div>
       </div>
-
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 overscroll-contain"
-            onClick={() => setSelected(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={(e) => e.stopPropagation()}
-              // Fit a 9:16 box inside the screen: never wider than 24rem, never taller than 90% of the viewport
-              style={{ width: "min(100%, 24rem, calc(90dvh * 9 / 16))" }}
-              className="relative aspect-[9/16] bg-black rounded-xl overflow-hidden"
-            >
-              <button
-                type="button"
-                onClick={() => setSelected(null)}
-                className="absolute top-3 right-3 z-30 p-2 rounded-full bg-black/70 hover:bg-black text-white transition-colors cursor-pointer"
-                aria-label="Close video player"
-              >
-                <X size={20} />
-              </button>
-
-              <video
-                key={selected.videoUrl}
-                src={selected.videoUrl}
-                autoPlay
-                controls
-                controlsList="nodownload"
-                disablePictureInPicture
-                onContextMenu={(e) => e.preventDefault()}
-                playsInline
-                className="w-full h-full object-contain bg-black"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
