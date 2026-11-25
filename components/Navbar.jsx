@@ -272,7 +272,7 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                         >
                           <div className="overflow-hidden">
                             <div className="flex flex-col gap-3 pb-4">
-                              {PRICING_LINKS.map(({ href, title, icon: Icon }) => (
+                              {PRICING_LINKS.map(({ href, title, image, imageClassName = "", imageSizes = "36px" }) => (
                                 <Link
                                   key={href}
                                   href={href}
@@ -282,8 +282,10 @@ export default function Navbar({ hideHiring = false, logo = null } = {}) {
                                     pathname === href ? "text-[#59B7FF]" : "text-gray-200 hover:text-[#59B7FF]"
                                   }`}
                                 >
-                                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white/10">
-                                    <Icon size={17} strokeWidth={2.2} className="text-[#8ccbff]" aria-hidden="true" />
+                                  <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md bg-white/10">
+                                    {image && (
+                                      <Image src={image} alt="" fill sizes={imageSizes} className={`object-cover ${imageClassName}`} />
+                                    )}
                                   </span>
                                   <span>{title}</span>
                                 </Link>
