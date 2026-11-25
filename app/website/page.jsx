@@ -9,6 +9,17 @@ import React from "react";
 import { getPortfolioItems } from "@/app/lib/portfolio";
 import { getActiveEvent } from "@/app/lib/heroEvents";
 import { getVideoReviewsByIds } from "@/app/lib/videoReviews";
+import JsonLd from "@/components/JsonLd";
+import { WEBSITE_FAQS } from "@/app/lib/faqData";
+import {
+  KEYWORDS,
+  pageMetadata,
+  jsonLdGraph,
+  webPageJsonLd,
+  serviceJsonLd,
+  breadcrumbJsonLd,
+  faqJsonLd,
+} from "@/app/lib/seo";
 
 // Portfolio and event changes revalidate this page immediately; this is just a safety net
 export const revalidate = 600;
@@ -28,11 +39,16 @@ const WEBSITE_REVIEW_IDS = [
 // Matches "Halloween", "Haloween", "halloween 2026" etc. in the event name
 const isHalloweenEvent = (event) => /hal+o+w+e+n/i.test(event?.name || "");
 
-export const metadata = {
-  title: "Website Design & Development",
-  description:
-    "Custom, fast and SEO-ready websites that convert visitors into clients. Landing pages, business websites, e-commerce stores and more by AfterRender.",
-};
+const TITLE = "Website Design & Development in the USA";
+const DESCRIPTION =
+  "Custom, fast and SEO-ready websites that convert visitors into clients. Landing pages, business websites, e-commerce stores and more by AfterRender.";
+
+export const metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/website",
+  keywords: [...KEYWORDS.website, "web design California", "WordPress website development", "Shopify website design"],
+});
 
 const WebsitePage = async () => {
   const [portfolio, event, reviews] = await Promise.all([
@@ -43,6 +59,22 @@ const WebsitePage = async () => {
 
   return (
     <main className="min-h-screen bg-[#FAFAFA] text-black pb-8">
+      <JsonLd
+        data={jsonLdGraph(
+          webPageJsonLd({ path: "/website", name: TITLE, description: DESCRIPTION }),
+          serviceJsonLd({
+            name: "Website Design & Development",
+            serviceType: "Website design and development",
+            description: DESCRIPTION,
+            path: "/website",
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Website Design", path: "/website" },
+          ]),
+          faqJsonLd(WEBSITE_FAQS, "/website")
+        )}
+      />
       {isHalloweenEvent(event) && <WebsiteIntroVideo src={HALLOWEEN_INTRO_URL} mobileSrc={HALLOWEEN_INTRO_MOBILE_URL} />}
       <Navbar />
       <WebsiteHero

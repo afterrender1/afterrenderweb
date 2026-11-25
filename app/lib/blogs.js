@@ -58,3 +58,40 @@ export const getRecentBlogs = cache(async (excludeSlug, limit = 3) => {
         return [];
     }
 });
+
+// Every post for the /blogs list, newest first, rendered on the server so the post links and
+// titles are in the HTML (crawlers used to get an empty list). Light objects only: the full
+// content isn't sent, just a plain-text lead for the excerpt and the read time.
+// Returns null (not []) when the database can't be reached, so the list can retry in the browser.
+export const getBlogList = cache(async () => {
+    try {
+        const { default: dbConnect } = await import("@/app/lib/db");
+        const { default: Blog } = await import("@/app/models/Post");
+        const { toPlainText, readMinutes } = await import("@/app/lib/plainText");
+        await dbConnect();
+        const docs = await Blog.find()
+            .sort({ createdAt: -1 })
+            .select("title slug image category excerpt content createdAt updatedAt")
+            .lean();
+        return docs
+            .filter((d) => d.slug && d.title)
+            .map((d) => {
+                const text = toPlainText(d.content);
+                return {
+                    _id: String(d._id),
+                    slug: d.slug,
+                    title: d.title,
+                    image: d.image || "",
+                    category: d.category || "",
+                    excerpt: d.excerpt || "",
+                    plainText: text.slice(0, 400),
+                    minutes: readMinutes(text),
+                    createdAt: d.createdAt ? new Date(d.createdAt).toISOString() : "",
+                    updatedAt: d.updatedAt ? new Date(d.updatedAt).toISOString() : "",
+                };
+            });
+    } catch (err) {
+        console.error("Failed to load blog list:", err);
+        return null;
+    }
+});

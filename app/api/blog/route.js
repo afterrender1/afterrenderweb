@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/app/lib/db";
 import cloudinary from "@/app/lib/cloudinary";
 import Blog from "@/app/models/Post"
@@ -57,6 +58,10 @@ export async function POST(req) {
             image: imageUrl, // DB mein URL jayega
             author: author || "Admin",
         });
+
+        // The blog list and the sitemap are cached; show the new post right away
+        revalidatePath("/blogs");
+        revalidatePath("/sitemap.xml");
 
         return NextResponse.json({ success: true, blog: newBlog });
     } catch (err) {

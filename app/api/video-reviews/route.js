@@ -29,6 +29,8 @@ export async function POST(req) {
         });
 
         revalidatePath("/website");
+        // The testimonials strip is server-rendered on these pages too
+        ["/", "/pricing", "/pricing/on-demand", "/ai-avatars"].forEach((path) => revalidatePath(path));
 
         return NextResponse.json({ success: true, review }, { status: 201 });
     } catch (err) {

@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { ChevronDown, ArrowRight } from "lucide-react";
+import { GENERAL_FAQS } from "@/app/lib/faqData";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -25,6 +25,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
     >
       <button
         type="button"
+        aria-expanded={isOpen}
         className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer gap-4"
       >
         <span className="text-gray-900 font-semibold text-sm sm:text-[15px] leading-snug">
@@ -39,20 +40,19 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         </div>
       </button>
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-          >
-            <div className="px-5 sm:px-6 pb-5 text-gray-600 text-xs sm:text-[13.5px] leading-relaxed border-t border-gray-100/80 pt-3">
-              {answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* The answer is always in the HTML (crawlers and FAQ structured data need it); closed it
+          collapses to zero height with a grid-rows transition instead of being removed */}
+      <div
+        className={`grid transition-[grid-template-rows,opacity] duration-[250ms] ease-in-out motion-reduce:transition-none ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-5 sm:px-6 pb-5 text-gray-600 text-xs sm:text-[13.5px] leading-relaxed border-t border-gray-100/80 pt-3">
+            {answer}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -61,49 +61,14 @@ const PricingFAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
-  const faqs = [
-    {
-      question: "Did you help scale a social media presence to 100K+?",
-      answer:
-        "Yes, we have. We successfully helped two of our clients TMG and Regenerative Farmers of America, grow their social media accounts to over 100,000 followers.",
-    },
-    {
-      question: "Do you work with coaches and business owners?",
-      answer:
-        "Yes, we do. We mainly work with coaches and business owners, and we help hundreds of them with their daily tasks. Our services are designed to support their business growth and make their work easier.",
-    },
-    {
-      question: "Can you create a SaaS video for me?",
-      answer:
-        "Yes, we can. We just need your brand guidelines and a short meeting to understand your product and goals. After that, we will handle everything from idea to final video.",
-    },
-    {
-      question: "What do I have to do from my side?",
-      answer:
-        "Minimal work from your end. You provide the brand voice, approve strategies, and show up for recording sessions (if applicable). We handle everything else—scripting, editing, posting, optimization, and reporting. It's designed to be completely done-for-you.",
-    },
-    {
-      question: "How do you guys have an LTV of 2+ years with clients?",
-      answer:
-        "Simple—we deliver results consistently. Our clients stick with us because they see real ROI month after month. We focus on building long-term growth systems, not quick wins. Plus, our team becomes an extension of your business, deeply understanding your brand and audience over time.",
-    },
-    {
-      question: "What is your pricing structure?",
-      answer:
-        "Our pricing is customized based on your specific needs and goals. We offer flexible packages for both one-time projects and ongoing retainers. Schedule a call with us to discuss a plan that works for your business.",
-    },
-    {
-      question: "What differentiates you from other agencies?",
-      answer:
-        "We don't just create content—we build growth systems. With AI-powered workflows, proven frameworks, and a team that understands what actually drives results, we're operating 1-2 years ahead of traditional agencies. Plus, we only work with clients we know we can deliver massive value for.",
-    },
-  ];
+  const faqs = GENERAL_FAQS;
 
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const displayedFaqs = showAll ? faqs : faqs.slice(0, 5);
+  // All questions are rendered (so they're all in the HTML); past the first 5 they stay hidden until "Show more"
+  const VISIBLE_COUNT = 5;
 
   return (
     <section
@@ -158,20 +123,22 @@ const PricingFAQ = () => {
 
           {/* Right Column: Accordion Questions */}
           <div className="lg:col-span-7 flex flex-col">
-            <div className="space-y-3.5">
-              {displayedFaqs.map((faq, index) => (
-                <FAQItem
-                  key={index}
-                  question={faq.question}
-                  answer={faq.answer}
-                  isOpen={openIndex === index}
-                  onClick={() => handleToggle(index)}
-                />
+            {/* gap (not space-y) so the hidden questions don't leave a margin behind */}
+            <div className="flex flex-col gap-3.5">
+              {faqs.map((faq, index) => (
+                <div key={index} hidden={!showAll && index >= VISIBLE_COUNT}>
+                  <FAQItem
+                    question={faq.question}
+                    answer={faq.answer}
+                    isOpen={openIndex === index}
+                    onClick={() => handleToggle(index)}
+                  />
+                </div>
               ))}
             </div>
 
             {/* Show more button */}
-            {faqs.length > 5 && (
+            {faqs.length > VISIBLE_COUNT && (
               <div className="flex justify-end mt-4">
                 <button
                   type="button"

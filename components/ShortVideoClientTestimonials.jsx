@@ -83,7 +83,7 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
       {item.poster ? (
         <Image
           src={item.poster}
-          alt=""
+          alt={item.clientName?.trim() ? `Video testimonial from ${item.clientName}` : "Client video testimonial"}
           fill
           sizes="(max-width: 640px) 168px, (max-width: 768px) 200px, 230px"
           onLoad={() => setPosterLoaded(true)}
@@ -127,9 +127,12 @@ const VideoCard = ({ item, index, onOpenModal, isLight = false }) => {
 
 const emptySubscribe = () => () => {};
 
-const ShortVideoClientTestimonials = ({ isLight = false }) => {
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
+// `initialVideos`: reviews loaded on the server (VideoClientTestimonials), so the cards are in the HTML.
+// `pending`: the server is still loading them (Suspense fallback): show the skeleton, don't fetch.
+// Only when neither is given (or the server load failed: null) does the strip fetch in the browser.
+const ShortVideoClientTestimonials = ({ isLight = false, initialVideos = null, pending = false }) => {
+  const [videos, setVideos] = useState(initialVideos || []);
+  const [loading, setLoading] = useState(!initialVideos);
   const [activeModalIndex, setActiveModalIndex] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const closeTimerRef = useRef(null);
@@ -148,6 +151,7 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
   const modalOpenRef = useRef(false);
 
   useEffect(() => {
+    if (initialVideos || pending) return;
     let cancelled = false;
     fetch("/api/video-reviews")
       .then((res) => res.json())
@@ -161,7 +165,7 @@ const ShortVideoClientTestimonials = ({ isLight = false }) => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialVideos, pending]);
 
   useEffect(() => {
     return () => {

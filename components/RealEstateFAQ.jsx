@@ -2,9 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { ChevronDown, ArrowRight } from "lucide-react";
+import {
+  REAL_ESTATE_FAQS,
+  REAL_ESTATE_INDUSTRIES,
+  REAL_ESTATE_INDUSTRIES_INTRO,
+  REAL_ESTATE_INDUSTRIES_OUTRO,
+} from "@/app/lib/faqData";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -19,22 +24,8 @@ const playfair = Playfair_Display({
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
 
-export const industries = [
-  "Realtors and real estate teams",
-  "Mortgage brokers and loan officers",
-  "Insurance agents",
-  "Law firms and attorneys",
-  "Dentists, med spas and clinics",
-  "Chiropractors and physical therapists",
-  "Gyms and personal trainers",
-  "Restaurants, cafes and food trucks",
-  "Salons, barbershops and beauty studios",
-  "Home services (contractors, roofers, HVAC, landscapers)",
-  "Auto dealerships and detailers",
-  "Financial advisors and accountants",
-  "Coaches and consultants",
-  "E-commerce and local retail stores",
-];
+// Shared with the lead form (it imports `industries` from here)
+export const industries = REAL_ESTATE_INDUSTRIES;
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
@@ -44,6 +35,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
     >
       <button
         type="button"
+        aria-expanded={isOpen}
         className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer gap-4"
       >
         <span className="text-gray-900 font-semibold text-sm sm:text-[15px] leading-snug">
@@ -58,74 +50,45 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         </div>
       </button>
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-          >
-            <div className="px-5 sm:px-6 pb-5 text-gray-600 text-xs sm:text-[13.5px] leading-relaxed border-t border-gray-100/80 pt-3">
-              {answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* The answer is always in the HTML (crawlers and FAQ structured data need it); closed it
+          collapses to zero height with a grid-rows transition instead of being removed */}
+      <div
+        className={`grid transition-[grid-template-rows,opacity] duration-[250ms] ease-in-out motion-reduce:transition-none ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-5 sm:px-6 pb-5 text-gray-600 text-xs sm:text-[13.5px] leading-relaxed border-t border-gray-100/80 pt-3">
+            {answer}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
+// "What kinds of businesses do you work with?": same sentences as the shared data, with the industry chips
+const IndustriesAnswer = () => (
+  <div>
+    <p className="mb-3.5">{REAL_ESTATE_INDUSTRIES_INTRO}</p>
+    <div className="flex flex-wrap gap-2 mb-3.5">
+      {REAL_ESTATE_INDUSTRIES.map((industry) => (
+        <span
+          key={industry}
+          className="bg-[#EAF4FF] border border-[#48A2FF]/25 text-[#0A0A0A] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1 rounded-full"
+        >
+          {industry}
+        </span>
+      ))}
+    </div>
+    <p>{REAL_ESTATE_INDUSTRIES_OUTRO}</p>
+  </div>
+);
+
 const RealEstateFAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const faqs = [
-    {
-      question: "Do I have to be in the videos?",
-      answer:
-        "No. Some clients love being on camera, others would rather we film the product, the space or the team. We'll plan around whatever you're comfortable with.",
-    },
-    {
-      question: "What's the difference between mobile and cinema camera?",
-      answer:
-        "Mobile videos look native to Instagram and TikTok, which works really well for casual, behind-the-scenes content. Cinema camera footage has a richer, more professional look, which is better if you want your brand to feel premium.",
-    },
-    {
-      question: "Can I make changes to the videos?",
-      answer:
-        "Yes. You'll review every video before it goes live, and revisions are included.",
-    },
-    {
-      question: "What software do you use?",
-      answer:
-        "We edit in Adobe Premiere Pro and After Effects, and color grade in DaVinci Resolve. These are the same tools used for commercials and professional film work.",
-    },
-    {
-      question: "What kinds of businesses do you work with?",
-      answer: (
-        <div>
-          <p className="mb-3.5">
-            We work with any business that wants to grow through video,
-            especially:
-          </p>
-          <div className="flex flex-wrap gap-2 mb-3.5">
-            {industries.map((industry) => (
-              <span
-                key={industry}
-                className="bg-[#EAF4FF] border border-[#48A2FF]/25 text-[#0A0A0A] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1 rounded-full"
-              >
-                {industry}
-              </span>
-            ))}
-          </div>
-          <p>
-            Don&apos;t see your industry? Reach out anyway. If you have
-            customers to reach, we can make video work for you.
-          </p>
-        </div>
-      ),
-    },
-  ];
+  const faqs = REAL_ESTATE_FAQS;
 
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -188,7 +151,7 @@ const RealEstateFAQ = () => {
                 <FAQItem
                   key={index}
                   question={faq.question}
-                  answer={faq.answer}
+                  answer={faq.industries ? <IndustriesAnswer /> : faq.answer}
                   isOpen={openIndex === index}
                   onClick={() => handleToggle(index)}
                 />

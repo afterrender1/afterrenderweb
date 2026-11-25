@@ -4,12 +4,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Clock3, PhoneCall ,ClockFading} from "lucide-react";
 import FloatWhatsappButton from "@/components/FloatWhatsappButton";
+import { pageMetadata } from "@/app/lib/seo";
 
-export const metadata = {
-  title: "Book a Consultation | AfterRender",
+// The old description was about book publishing (copied from another site), not video editing
+export const metadata = pageMetadata({
+  title: "Book a Free Video Editing Consultation",
   description:
-    "Speak with our publishing team and get personalised guidance on editing, cover design, printing, distribution and marketing options for your book.",
-};
+    "Book a free call with AfterRender to plan your video editing strategy: editing, storytelling, motion graphics, colour grading and sound design for your brand.",
+  path: "/applynow",
+  keywords: ["video editing consultation", "book a call with a video editor", "video editing strategy call", "hire video editing agency"],
+});
 
 const ApplyNowPage = () => {
   return (

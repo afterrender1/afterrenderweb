@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
 import { ChevronDown, ArrowRight } from "lucide-react";
+import { WEBSITE_FAQS } from "@/app/lib/faqData";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -45,28 +46,7 @@ const processSteps = [
   },
 ];
 
-const faqs = [
-  {
-    q: "How long does it take to build a website?",
-    a: "A landing page usually takes 5–7 days. A full business website takes 2–3 weeks depending on pages and features.",
-  },
-  {
-    q: "Will my website work on mobile?",
-    a: "Yes. Every website we build is fully responsive and tested on mobile, tablet and desktop.",
-  },
-  {
-    q: "Do you help with domain and hosting?",
-    a: "Yes, we can set up your domain, hosting and business email, or deploy to your existing setup.",
-  },
-  {
-    q: "Can I edit the website myself later?",
-    a: "Absolutely. We can add a CMS so you can update text, images and blog posts without touching code.",
-  },
-  {
-    q: "What happens after the website goes live?",
-    a: "We provide post-launch support and offer care plans for ongoing updates, fixes and new sections.",
-  },
-];
+const faqs = WEBSITE_FAQS;
 
 // Fluid type shared by every /website section heading (≈28px on phones → 48px on desktop)
 export const SECTION_TITLE =
@@ -111,20 +91,19 @@ const FAQItem = ({ q, a, isOpen, onToggle }) => (
         className={`shrink-0 text-gray-500 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
       />
     </button>
-    <AnimatePresence initial={false}>
-      {isOpen && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-[13px] sm:text-[14px] text-gray-500 font-medium leading-relaxed">
-            {a}
-          </p>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    {/* The answer is always in the HTML (crawlers and FAQ structured data need it); closed it
+        collapses to zero height with a grid-rows transition instead of being removed */}
+    <div
+      className={`grid transition-[grid-template-rows,opacity] duration-[250ms] ease-in-out motion-reduce:transition-none ${
+        isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-[13px] sm:text-[14px] text-gray-500 font-medium leading-relaxed">
+          {a}
+        </p>
+      </div>
+    </div>
   </div>
 );
 
@@ -184,9 +163,9 @@ const WebsiteSections = ({ portfolio = null, testimonials = null }) => {
           <div className="space-y-2.5 sm:space-y-3">
             {faqs.map((item, index) => (
               <FAQItem
-                key={item.q}
-                q={item.q}
-                a={item.a}
+                key={item.question}
+                q={item.question}
+                a={item.answer}
                 isOpen={openFaq === index}
                 onToggle={() => setOpenFaq(openFaq === index ? null : index)}
               />

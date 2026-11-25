@@ -11,6 +11,7 @@ import { ReadingProgress, CopyLinkButton } from "@/components/BlogPostClient";
 import { sanitizeBlogHtml, toExcerpt } from "@/app/lib/blogContent";
 import { getBlogBySlug, getRecentBlogs } from "@/app/lib/blogs";
 import { toPlainText, readMinutes } from "@/app/lib/plainText";
+import { OG_IMAGE } from "@/app/lib/seo";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
@@ -38,7 +39,8 @@ export async function generateMetadata({ params }) {
 
     const description = describe(blog);
     const path = `/blog/${blog.slug}`;
-    const images = blog.image ? [{ url: blog.image, alt: blog.title }] : undefined;
+    // Posts without a cover use the site's social card (this openGraph replaces the layout's, image included)
+    const images = blog.image ? [{ url: blog.image, alt: blog.title }] : [{ ...OG_IMAGE, alt: blog.title }];
 
     return {
         // The root layout adds " | AfterRender"
@@ -52,6 +54,8 @@ export async function generateMetadata({ params }) {
             description,
             type: "article",
             url: path,
+            siteName: "AfterRender",
+            locale: "en_US",
             images,
             publishedTime: blog.createdAt || undefined,
             modifiedTime: blog.updatedAt || undefined,
@@ -59,10 +63,10 @@ export async function generateMetadata({ params }) {
             tags: blog.tags.length ? blog.tags : undefined,
         },
         twitter: {
-            card: blog.image ? "summary_large_image" : "summary",
+            card: "summary_large_image",
             title: blog.title,
             description,
-            images: blog.image ? [blog.image] : undefined,
+            images: images.map((image) => image.url),
         },
     };
 }

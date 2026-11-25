@@ -14,16 +14,18 @@ const inter = Inter({ subsets: ["latin"] });
 const CATEGORY_ORDER = ["Design", "Technology", "Innovation", "Development"];
 
 
+// UTC (like the post page) so the server-rendered date and the browser's always match
 const formatDate = (value) => {
     const d = new Date(value);
     return Number.isNaN(d.getTime())
         ? ""
-        : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 };
 
-// Adds the derived fields the cards need once, instead of on every render
+// Adds the derived fields the cards need once, instead of on every render.
+// Server-loaded posts (getBlogList) already carry `plainText` and `minutes`; API posts have `content`.
 const preparePost = (blog) => {
-    const text = toPlainText(blog.content);
+    const text = blog.plainText ?? toPlainText(blog.content);
     return {
         id: blog._id,
         slug: blog.slug,
@@ -32,7 +34,7 @@ const preparePost = (blog) => {
         category: blog.category?.trim() || "General",
         date: formatDate(blog.createdAt),
         excerpt: blog.excerpt?.trim() || text,
-        minutes: readMinutes(text),
+        minutes: blog.minutes ?? readMinutes(text),
     };
 };
 
@@ -54,7 +56,7 @@ const Cover = ({ post, sizes, priority = false }) =>
     post.image ? (
         <Image
             src={post.image}
-            alt=""
+            alt={post.title}
             fill
             sizes={sizes}
             priority={priority}
@@ -123,12 +125,15 @@ const CardSkeleton = () => (
     </div>
 );
 
-const AllBlogs = () => {
-    const [blogs, setBlogs] = useState(null); // null = loading
+// `initialBlogs`: posts loaded on the server (app/blogs/page.jsx), so they are in the HTML for
+// visitors and crawlers. Only when the server couldn't load them (null) does the list fetch in the browser.
+const AllBlogs = ({ initialBlogs = null }) => {
+    const [blogs, setBlogs] = useState(initialBlogs); // null = loading
     const [failed, setFailed] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
 
     useEffect(() => {
+        if (initialBlogs) return;
         let cancelled = false;
         getCachedBlogs()
             .then((data) => {
@@ -143,7 +148,7 @@ const AllBlogs = () => {
         return () => {
             cancelled = true;
         };
-    }, []);
+    }, [initialBlogs]);
 
     // Newest first, whatever order the API returns
     const posts = useMemo(

@@ -95,7 +95,7 @@ const VideoCard = ({ item, uniqueKey, currentPlayingKey, onTogglePlay }) => {
       {/* Poster (hidden while the video plays) */}
       <Image
         src={item.poster}
-        alt=""
+        alt={`${item.title}: short-form video edit by AfterRender`}
         fill
         sizes="(max-width: 640px) 168px, (max-width: 768px) 200px, 230px"
         onLoad={() => setPosterLoaded(true)}

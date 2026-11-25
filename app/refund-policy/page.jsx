@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import { pageMetadata } from "@/app/lib/seo";
 import { RefreshCcw, CheckCircle2, AlertCircle, Mail, MapPin, Phone } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -16,11 +17,12 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-export const metadata = {
-  title: "Refund & Cancellation Policy | AfterRender",
+export const metadata = pageMetadata({
+  title: "Refund & Cancellation Policy",
   description:
     "Review AfterRender's transparent refund policy, money-back satisfaction guarantee, revision arrangements, and claim process.",
-};
+  path: "/refund-policy",
+});
 
 export default function RefundPolicyPage() {
   return (

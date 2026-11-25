@@ -31,3 +31,30 @@ export async function getVideoReviewsByIds(ids) {
         return [];
     }
 }
+
+// Every video review, newest first, for the client testimonials strip (home, pricing, on demand,
+// AI avatars). Loaded on the server so the client names and roles are in the HTML instead of
+// appearing only after a browser fetch. Same shape as GET /api/video-reviews.
+// Returns null (not []) on failure, so the strip can still load in the browser.
+export async function getAllVideoReviews() {
+    try {
+        const { default: dbConnect } = await import("@/app/lib/db");
+        const { default: VideoReview } = await import("@/app/models/VideoReview");
+        await dbConnect();
+        const docs = await VideoReview.find()
+            .sort({ createdAt: -1 })
+            .select("clientName role videoUrl poster fit")
+            .lean();
+        return docs.map((d) => ({
+            _id: String(d._id),
+            clientName: d.clientName || "",
+            role: d.role || "",
+            videoUrl: d.videoUrl,
+            poster: d.poster || "",
+            fit: d.fit === "contain" ? "contain" : "cover",
+        }));
+    } catch (err) {
+        console.error("Failed to load video reviews:", err);
+        return null;
+    }
+}

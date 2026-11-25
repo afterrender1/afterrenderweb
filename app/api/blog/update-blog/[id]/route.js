@@ -76,6 +76,9 @@ export async function PUT(req, { params }) {
         // The post page is cached; refresh it (and the old URL if the title, and so the slug, changed)
         revalidatePath(`/blog/${updatedSlug}`);
         if (existingBlog.slug && existingBlog.slug !== updatedSlug) revalidatePath(`/blog/${existingBlog.slug}`);
+        // Title/cover/slug show in the blog list and the sitemap too
+        revalidatePath("/blogs");
+        revalidatePath("/sitemap.xml");
 
         return NextResponse.json({
             success: true,

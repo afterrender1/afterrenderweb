@@ -78,10 +78,18 @@ const Typewriter = ({ gradient = null }) => {
 
   // An invisible copy of the longest word reserves the width, so typing doesn't
   // reflow the headline on every tick (that movement counted as layout shift).
+  // It's drawn with a CSS ::before (data-reserve), not real text, so crawlers don't read the
+  // headline as "Unlimited Graphic Design". The whole animation is decorative (aria-hidden):
+  // the h1's readable text is the sr-only line next to it.
   return (
-    <span className={`${editorialSerif.className} italic font-normal tracking-normal inline-grid min-h-[1.2em]`}>
-      <span aria-hidden="true" className="invisible col-start-1 row-start-1 inline-flex items-center">
-        {LONGEST_WORD}
+    <span
+      aria-hidden="true"
+      className={`${editorialSerif.className} italic font-normal tracking-normal inline-grid min-h-[1.2em]`}
+    >
+      <span
+        data-reserve={LONGEST_WORD}
+        className="invisible col-start-1 row-start-1 inline-flex items-center before:content-[attr(data-reserve)]"
+      >
         {cursor}
       </span>
       <span
@@ -159,7 +167,7 @@ const HeroBackground = ({ url }) => {
         src={cloudinaryImage(url, { width: 1920 })}
         srcSet={cloudinarySrcSet(url, [640, 960, 1280, 1920, 2560])}
         sizes="100vw"
-        alt=""
+        alt="AfterRender video editing agency background"
         aria-hidden="true"
         fetchPriority="high"
         decoding="async"
@@ -172,7 +180,7 @@ const HeroBackground = ({ url }) => {
   return (
     <Image
       src="/images/hb1.png"
-      alt=""
+      alt="AfterRender unlimited video editing agency background"
       aria-hidden="true"
       fill
       priority
@@ -241,6 +249,8 @@ const HeroText = ({ event = null }) => {
           >
             <span>Unlimited</span>
             <Typewriter gradient={event?.headlineGradient} />
+            {/* What the typewriter cycles through, as real text for search engines and screen readers */}
+            <span className="sr-only">Video Editing, Graphic Design and AI Avatars</span>
           </h1>
 
           <h2
@@ -248,6 +258,13 @@ const HeroText = ({ event = null }) => {
           >
             One Scalable Subscription.
           </h2>
+
+          {/* Plain-text summary of the headline: the h1's words appear in the page text (SEO) */}
+          <p
+            className={`${urbanist.className} mt-3 sm:mt-4 mx-auto max-w-2xl text-balance text-sm sm:text-base md:text-lg font-medium leading-relaxed text-gray-300`}
+          >
+            Unlimited video editing, graphic design &amp; AI avatars for creators and brands across the USA.
+          </p>
         </div>
 
         <div className="flex justify-center items-center animate-hero-fade-up [animation-delay:0.15s]">
@@ -264,7 +281,7 @@ const HeroText = ({ event = null }) => {
             src={cloudinaryImage(POSTER_URL, { width: 1280 })}
             srcSet={cloudinarySrcSet(POSTER_URL, [480, 640, 768, 960, 1280, 1536])}
             sizes={POSTER_SIZES}
-            alt=""
+            alt="AfterRender video editing showreel"
             aria-hidden="true"
             fetchPriority="high"
             className={`absolute inset-0 w-full h-full object-cover ${videoFrame ? "rounded-[10px]" : ""}`}

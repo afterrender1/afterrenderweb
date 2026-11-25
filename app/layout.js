@@ -3,7 +3,18 @@ import { Analytics } from "@vercel/analytics/next";
 import CrispChat from "@/components/CrispChat";
 import LazyFloatingChat from "@/components/LazyFloatingChat";
 import DeferredAnalytics from "@/components/DeferredAnalytics";
+import JsonLd from "@/components/JsonLd";
 import { Poppins, Montserrat, Michroma, Space_Grotesk, Plus_Jakarta_Sans } from "@/app/lib/fonts";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  OG_IMAGE,
+  KEYWORDS,
+  jsonLdGraph,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@/app/lib/seo";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -40,43 +51,64 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const DEFAULT_TITLE = "Unlimited Video Editing Services in the USA | AfterRender";
+
+// Site-wide defaults. Every page sets its own title, description, keywords and canonical
+// through pageMetadata() (app/lib/seo.js). There is deliberately NO canonical here: a
+// canonical in the root layout is inherited by every page that doesn't override it, which
+// told Google that all those pages were duplicates of the home page.
 export const metadata = {
-  metadataBase: new URL("https://www.afterrender.com"),
+  metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "AfterRender",
+    default: DEFAULT_TITLE,
     template: "%s | AfterRender",
   },
-
-  description:
-    "We’ll build your YouTube growth funnel — organic + maximum potential. If we don’t deliver, you don’t pay us.",
+  description: SITE_DESCRIPTION,
+  keywords: KEYWORDS.core,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "Video Editing Services",
+  formatDetection: { telephone: false, address: false, email: false },
 
   openGraph: {
-    title: "AfterRender",
-    description:
-      "We’ll build your YouTube growth funnel — organic + maximum potential. If we don’t deliver, you don’t pay.",
-    url: "https://www.afterrender.com",
-    siteName: "AfterRender",
-    images: [
-      {
-        url: "/logos/logoxar.png",
-        width: 1200,
-        height: 630,
-        alt: "AfterRender – YouTube Growth Agency",
-      },
-    ],
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    images: [{ ...OG_IMAGE, alt: DEFAULT_TITLE }],
     locale: "en_US",
     type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
 
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 
-  alternates: {
-    canonical: "https://www.afterrender.com",
-  },
+  // Google Search Console ownership is verified with public/google252ea89853e9290a.html
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0A2540",
 };
 
 export default function RootLayout({ children }) {
@@ -87,6 +119,9 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${montserrat.variable} ${michroma.variable} ${spaceGrotesk.variable} ${jakarta.variable}`}
     >
       <body suppressHydrationWarning className={poppins.className}>
+        {/* Who AfterRender is (Organization) and the site itself (WebSite), on every page */}
+        <JsonLd data={jsonLdGraph(organizationJsonLd(), websiteJsonLd())} />
+
         {/* Google Analytics + Meta Pixel, loaded on first interaction (see component) */}
         <DeferredAnalytics />
 
@@ -97,7 +132,7 @@ export default function RootLayout({ children }) {
             width="1"
             style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=1024339690404455&ev=PageView&noscript=1"
-            alt=""
+            alt="Meta Pixel"
           />
         </noscript>
         {/* End Meta Pixel Code */}

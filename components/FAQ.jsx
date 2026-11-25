@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Urbanist, Playfair_Display } from "@/app/lib/fonts";
+import { GENERAL_FAQS } from "@/app/lib/faqData";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -68,44 +69,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const faqs = [
-    {
-      question: "Did you help scale a social media presence to 100K+?",
-      answer:
-        "Yes, we have. We successfully helped two of our clients TMG and Regenerative Farmers of America, grow their social media accounts to over 100,000 followers.",
-    },
-    {
-      question: "Do you work with coaches and business owners?",
-      answer:
-        "Yes, we do. We mainly work with coaches and business owners, and we help hundreds of them with their daily tasks. Our services are designed to support their business growth and make their work easier.",
-    },
-    {
-      question: "Can you create a SaaS video for me?",
-      answer:
-        "Yes, we can. We just need your brand guidelines and a short meeting to understand your product and goals. After that, we will handle everything from idea to final video.",
-    },
-    {
-      question: "What do I have to do from my side?",
-      answer:
-        "Minimal work from your end. You provide the brand voice, approve strategies, and show up for recording sessions (if applicable). We handle everything else—scripting, editing, posting, optimization, and reporting. It's designed to be completely done-for-you.",
-    },
-
-    {
-      question: "How do you guys have an LTV of 2+ years with clients?",
-      answer:
-        "Simple—we deliver results consistently. Our clients stick with us because they see real ROI month after month. We focus on building long-term growth systems, not quick wins. Plus, our team becomes an extension of your business, deeply understanding your brand and audience over time.",
-    },
-    {
-      question: "What is your pricing structure?",
-      answer:
-        "Our pricing is customized based on your specific needs and goals. We offer flexible packages for both one-time projects and ongoing retainers. Schedule a call with us to discuss a plan that works for your business.",
-    },
-    {
-      question: "What differentiates you from other agencies?",
-      answer: "We don't just create content—we build growth systems. With AI-powered workflows, proven frameworks, and a team that understands what actually drives results, we're operating 1-2 years ahead of traditional agencies. Plus, we only work with clients we know we can deliver massive value for.",
-    },
-
-  ];
+  const faqs = GENERAL_FAQS;
 
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);

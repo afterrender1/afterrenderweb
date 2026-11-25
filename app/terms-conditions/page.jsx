@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import { pageMetadata } from "@/app/lib/seo";
 import { FileText, CheckCircle2, Shield, Scale, Mail, MapPin, Phone } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -16,11 +17,12 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-export const metadata = {
-  title: "Terms & Conditions | AfterRender",
+export const metadata = pageMetadata({
+  title: "Terms & Conditions",
   description:
     "Read the terms and conditions governing the use of AfterRender's website, video editing, and graphic design subscription services.",
-};
+  path: "/terms-conditions",
+});
 
 export default function TermsConditionsPage() {
   return (

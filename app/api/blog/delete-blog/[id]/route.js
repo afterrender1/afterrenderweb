@@ -24,6 +24,8 @@ export async function DELETE(req, { params }) {
 
         // The post page is cached; drop it so the deleted post stops showing right away
         if (deletedBlog.slug) revalidatePath(`/blog/${deletedBlog.slug}`);
+        revalidatePath("/blogs");
+        revalidatePath("/sitemap.xml");
 
         return NextResponse.json({ success: true, message: "Blog deleted successfully!", deletedBlog }, { status: 200 });
     } catch (error) {

@@ -38,6 +38,8 @@ export async function PUT(req, { params }) {
         );
         if (!review) return notFound();
         revalidatePath("/website");
+        // The testimonials strip is server-rendered on these pages too
+        ["/", "/pricing", "/pricing/on-demand", "/ai-avatars"].forEach((path) => revalidatePath(path));
 
         return NextResponse.json({ success: true, review });
     } catch (err) {
@@ -57,6 +59,8 @@ export async function DELETE(req, { params }) {
         const review = await VideoReview.findByIdAndDelete(id);
         if (!review) return notFound();
         revalidatePath("/website");
+        // The testimonials strip is server-rendered on these pages too
+        ["/", "/pricing", "/pricing/on-demand", "/ai-avatars"].forEach((path) => revalidatePath(path));
 
         return NextResponse.json({ success: true });
     } catch (err) {

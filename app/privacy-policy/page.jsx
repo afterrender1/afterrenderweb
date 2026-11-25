@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
+import { pageMetadata } from "@/app/lib/seo";
 import { ShieldCheck, Lock, Mail, MapPin, Phone, CheckCircle2, ArrowRight } from "lucide-react";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -16,11 +17,12 @@ const playfair = Playfair_Display({
   weight: ["400", "600", "700"],
 });
 
-export const metadata = {
-  title: "Privacy & Compliance Policy | AfterRender",
+export const metadata = pageMetadata({
+  title: "Privacy & Compliance Policy",
   description:
     "Learn how AfterRender collects, protects, and handles client personal information and data in full compliance with global standards.",
-};
+  path: "/privacy-policy",
+});
 
 export default function PrivacyPolicyPage() {
   return (

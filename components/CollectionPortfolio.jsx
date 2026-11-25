@@ -725,7 +725,7 @@ function VideoThumb({ video, onOpen }) {
         {!loaded && <span aria-hidden="true" className="absolute inset-0 animate-pulse bg-black/[0.07]" />}
         <Image
           src={video.posterUrl}
-          alt=""
+          alt={`${video.title} (${video.category}): video editing sample by AfterRender`}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           onLoad={() => setLoaded(true)}

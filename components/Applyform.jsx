@@ -140,14 +140,15 @@ const ApplyForm = () => {
                         <span className="text-[10px] uppercase tracking-widest font-semibold text-gray-400">Hiring Talent</span>
                     </div>
                     <div>
-                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold mb-6 leading-tight">
+                        {/* The page's only main heading, so it's the h1 (same look as before) */}
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold mb-6 leading-tight">
                             Build Your{" "}
                             <span className="text-transparent bg-clip-text bg-linear-to-r from-[#48A2FF] to-[#C9E4FF]">
                                 Career
                             </span> With Us
-                        </h2>
+                        </h1>
                         <p className="text-gray-400 text-sm sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            We're looking for passionate developers and editors to join our creative team. Show us what you've got!
+                            We&apos;re looking for passionate developers and editors to join our creative team. Show us what you&apos;ve got!
                         </p>
                     </div>
 
