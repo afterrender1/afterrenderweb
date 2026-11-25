@@ -8,7 +8,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { Plus_Jakarta_Sans, Playfair_Display } from "@/app/lib/fonts";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Zap } from "lucide-react";
 import Link from "next/link";
 import OfferBadge from "./OfferBadge";
 import EventHeroBackdrop from "./EventHeroBackdrop";
@@ -27,23 +27,27 @@ const playfair = Playfair_Display({
 
 const CALENDLY_URL = "https://calendly.com/afterrenderagency/new-meeting";
 
-const INTRO = [
-  "Unlimited requests and revisions.",
-  "Continuous editing on a rolling basis.",
-  "As soon as you approve a request, we start the next.",
-];
+const INTRO = {
+  lead: "Unlimited requests and revisions.",
+  detail: "Continuous editing on a rolling basis. As soon as you approve a request, we start the next.",
+};
 
 const BASIC_FEATURES = [
-  "Same editor for all projects*",
-  "Same post-production manager for all projects",
-  "No limits on duration",
-  "Unlimited brands and/or businesses",
-  "Animations (motion graphics)",
-  "Speed ramps",
-  "Photography editing (Lightroom)",
-  "Graphic design (Adobe Illustrator or Canva)",
+  { label: "Same editor for all projects*" },
+  { label: "Same post-production manager for all projects" },
+  { label: "No limits on duration" },
+  { label: "Unlimited brands and/or businesses" },
+  { label: "Animations", note: "(motion graphics)" },
+  { label: "Speed ramps" },
+  { label: "Photography editing", note: "(Lightroom)" },
+  { label: "Graphic design", note: "(Adobe Illustrator or Canva)" },
 ];
-const NONSTOP_FEATURE = "Unlimited requests and revisions (one at a time, nonstop workflow)";
+
+const NONSTOP_FEATURE = {
+  label: "Unlimited requests and revisions",
+  note: "(one at a time, nonstop workflow)",
+  highlight: true,
+};
 
 // Plan text only. Prices come from admin (Events → Pricing) via the `prices` prop.
 const PLANS = [
@@ -56,14 +60,14 @@ const PLANS = [
       { count: "4-8", label: "Long-form" },
     ],
     standard: [
-      ["Short-form", "Next day (Batch of 3)"],
-      ["Long-form", "1 to 3 days"],
+      { label: "Short-form", time: "Next day", batch: "Batch of 3" },
+      { label: "Long-form", time: "1 to 3 days" },
     ],
     complex: [
-      ["Short-form", "1 to 2 days"],
-      ["Long-form", "2 to 5 days"],
+      { label: "Short-form", time: "1 to 2 days" },
+      { label: "Long-form", time: "2 to 5 days" },
     ],
-    featuresTitle: "Features:",
+    featuresTitle: "Features",
     features: {
       monthly: BASIC_FEATURES,
       quarterly: [NONSTOP_FEATURE, ...BASIC_FEATURES],
@@ -80,16 +84,16 @@ const PLANS = [
       { count: "8-16", label: "Long-form" },
     ],
     standard: [
-      ["Short-form", "Next day (Batch of 6)"],
-      ["Long-form", "1 to 3 days (Batch of 2)"],
+      { label: "Short-form", time: "Next day", batch: "Batch of 6" },
+      { label: "Long-form", time: "1 to 3 days", batch: "Batch of 2" },
     ],
     complex: [
-      ["Short-form", "1 to 2 days (Batch of 2)"],
-      ["Long-form", "2 to 5 days (Batch of 2)"],
-      ["1 Wedding Edit", "10 days"],
+      { label: "Short-form", time: "1 to 2 days", batch: "Batch of 2" },
+      { label: "Long-form", time: "2 to 5 days", batch: "Batch of 2" },
+      { label: "1 Wedding Edit", time: "10 days" },
     ],
     featuresTitle: "All features in BASIC and also:",
-    features: ["Video edits for weddings"],
+    features: [{ label: "Video edits for weddings" }],
     theme: "indigo",
     featured: true,
   },
@@ -102,29 +106,31 @@ const PLANS = [
       { count: "12-24", label: "Long-form" },
     ],
     standard: [
-      ["6 Short-form", "SAME DAY"],
-      ["2 Long-form", "SAME DAY"],
+      { label: "6 Short-form", time: "Same day", badge: "fast" },
+      { label: "2 Long-form", time: "Same day", badge: "fast" },
     ],
     complex: [
-      ["2 Short-form", "SAME DAY"],
-      ["1 Long-form", "NEXT DAY"],
-      ["1 Wedding Edit", "5 days"],
+      { label: "2 Short-form", time: "Same day", badge: "fast" },
+      { label: "1 Long-form", time: "Next day", badge: "next" },
+      { label: "1 Wedding Edit", time: "5 days" },
     ],
     featuresTitle: "All features in PLUS and also:",
     features: [
-      "Same day deliveries where it applies",
-      "Weekly calls with the team (upon request)",
-      "Software integration (BETA)",
+      { label: "Same day deliveries where it applies" },
+      { label: "Weekly calls with the team", note: "(upon request)" },
+      { label: "Software integration", note: "(BETA)" },
     ],
     theme: "sky",
   },
 ];
 
-// Soft tinted corner + pattern at the top of each card
+// Soft tinted corner + pattern at the top of each card, plus one quiet accent color for the body
 const CARD_THEMES = {
   peach: {
     glow: "radial-gradient(120% 75% at 0% 0%, rgba(255,190,160,0.55) 0%, rgba(255,222,205,0.28) 35%, rgba(255,255,255,0) 65%)",
     pattern: null,
+    dot: "bg-[#EE9F78]",
+    check: "text-[#D9784C]",
   },
   indigo: {
     glow: "radial-gradient(120% 80% at 50% 0%, rgba(150,165,255,0.45) 0%, rgba(205,212,255,0.25) 40%, rgba(255,255,255,0) 70%)",
@@ -134,6 +140,8 @@ const CARD_THEMES = {
       maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%)",
       WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 85%)",
     },
+    dot: "bg-[#5F6FD3]/80",
+    check: "text-[#5F6FD3]",
   },
   sky: {
     glow: "radial-gradient(120% 75% at 100% 0%, rgba(150,210,255,0.5) 0%, rgba(200,232,255,0.26) 40%, rgba(255,255,255,0) 68%)",
@@ -144,7 +152,17 @@ const CARD_THEMES = {
       maskImage: "radial-gradient(90% 100% at 100% 0%, rgba(0,0,0,0.95), transparent 75%)",
       WebkitMaskImage: "radial-gradient(90% 100% at 100% 0%, rgba(0,0,0,0.95), transparent 75%)",
     },
+    dot: "bg-sky-400",
+    check: "text-sky-600",
   },
+};
+
+// Gradient border for the featured (Plus) card: strong indigo at the top (meets the
+// "Most popular" cap) and the bottom, fading softly through the middle
+const FEATURED_BORDER = {
+  border: "1.5px solid transparent",
+  background:
+    "linear-gradient(#fff, #fff) padding-box, linear-gradient(180deg, #5F6FD3 0%, rgba(95,111,211,0.35) 28%, rgba(95,111,211,0.16) 50%, rgba(124,108,240,0.45) 78%, #6D5FE0 100%) border-box",
 };
 
 // Counts up/down from the previous value to the new one whenever `value` changes
@@ -167,18 +185,46 @@ function AnimatedNumber({ value }) {
   return <>{display}</>;
 }
 
-const SectionTitle = ({ children }) => (
-  <p className="text-[13.5px] font-semibold text-gray-900 tracking-tight mb-2.5">{children}</p>
+const SectionTitle = ({ children, hint }) => (
+  <div className="mb-3.5">
+    <h4 className="text-[14px] font-semibold text-gray-950 tracking-tight leading-snug">
+      {children}
+    </h4>
+    {hint && <p className="mt-0.5 text-[12.5px] text-gray-500">{hint}</p>}
+  </div>
 );
 
-const DeliveryGroup = ({ title, rows }) => (
+// Same-day deliveries (Ultra) just get a small bolt in front; no colored pill
+function DeliveryTime({ time, badge }) {
+  return (
+    <span className="inline-flex items-baseline gap-1 text-[13.5px] font-semibold text-gray-950 whitespace-nowrap">
+      {badge === "fast" && (
+        <Zap className="self-center w-3 h-3 text-gray-900" fill="currentColor" strokeWidth={0} aria-hidden="true" />
+      )}
+      {time}
+    </span>
+  );
+}
+
+// Menu-style rows: what you get on the left, how fast on the right, dotted leader in between
+const DeliveryGroup = ({ title, rows, dot }) => (
   <div>
-    <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-gray-400 mb-1.5">{title}</p>
-    <ul className="space-y-1.5">
-      {rows.map(([label, value]) => (
-        <li key={label} className="flex items-start justify-between gap-3 text-[13px] leading-snug">
-          <span className="text-gray-600">{label}</span>
-          <span className="font-semibold text-gray-900 text-right">{value}</span>
+    <p className="flex items-center gap-2 text-[12.5px] font-medium text-gray-500">
+      <span aria-hidden="true" className={`w-1.5 h-1.5 rounded-full shrink-0 ${dot}`} />
+      {title}
+    </p>
+    <ul className="mt-2.5 space-y-2.5">
+      {rows.map(({ label, time, batch, badge }) => (
+        <li key={label}>
+          <div className="flex items-baseline gap-2">
+            <span className="text-[13.5px] text-gray-700 whitespace-nowrap">{label}</span>
+            <span
+              aria-hidden="true"
+              className="flex-1 min-w-4 border-b border-dotted border-gray-300 -translate-y-[3px]"
+            />
+            <DeliveryTime time={time} badge={badge} />
+          </div>
+          {batch && <p className="mt-0.5 text-[12px] text-gray-500">{batch}</p>}
         </li>
       ))}
     </ul>
@@ -278,7 +324,25 @@ function PlanCard({ plan, period, eventPromise, index }) {
           <Sparkles className="w-4 h-4" strokeWidth={2.25} aria-hidden="true" />
         </div>
       )}
-      <div className="relative flex-1 flex flex-col overflow-hidden rounded-[20px] bg-white border border-gray-200/80 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_14px_36px_-14px_rgba(16,24,40,0.14)]">
+      <div
+        className={`relative flex-1 flex flex-col overflow-hidden rounded-[20px] ${
+          plan.featured
+            ? "shadow-[0_1px_2px_rgba(16,24,40,0.04),0_26px_50px_-22px_rgba(95,111,211,0.5)]"
+            : "bg-white border border-gray-200/80 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_14px_36px_-14px_rgba(16,24,40,0.14)]"
+        }`}
+        style={plan.featured ? FEATURED_BORDER : undefined}
+      >
+        {/* Featured card: soft indigo glow along the bottom edge, under the gradient border */}
+        {plan.featured && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-48"
+            style={{
+              background:
+                "radial-gradient(90% 100% at 50% 100%, rgba(150,165,255,0.22) 0%, rgba(205,212,255,0.1) 45%, rgba(255,255,255,0) 75%)",
+            }}
+          />
+        )}
         {/* Tinted corner glow + pattern */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-72" style={{ background: theme.glow }} />
         {theme.pattern && (
@@ -331,46 +395,69 @@ function PlanCard({ plan, period, eventPromise, index }) {
 
         <div className="relative mx-5 min-[380px]:mx-6 sm:mx-7 lg:mx-6 xl:mx-7 border-t border-gray-200" />
 
-        {/* Body: workflow, output, delivery, features */}
-        <div className="relative flex-1 p-5 min-[380px]:p-6 sm:p-7 lg:p-6 xl:p-7 space-y-6">
-          <div>
-            <p className="text-[13.5px] font-semibold text-gray-900 tracking-tight">{INTRO[0]}</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-gray-600">
-              {INTRO[1]} {INTRO[2]}
+        {/* Body: the promise, monthly output, delivery times, features — one section each */}
+        <div className="relative flex-1 px-5 min-[380px]:px-6 sm:px-7 lg:px-6 xl:px-7 pb-2 divide-y divide-gray-100">
+          <div className="py-5">
+            <p className="text-[15px] font-semibold text-gray-950 tracking-tight leading-snug">
+              {INTRO.lead}
             </p>
+            <p className="mt-1.5 text-[13.5px] leading-relaxed text-gray-600">{INTRO.detail}</p>
           </div>
 
-          <div>
-            <SectionTitle>Average Monthly Output:</SectionTitle>
-            <div className="rounded-xl bg-gray-50 border border-gray-100 px-4 py-3">
-              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[13px] text-gray-600">
-                <span>
-                  <span className="text-[15px] font-bold text-gray-950">{plan.output[0].count}</span> {plan.output[0].label}
-                </span>
-                <span className="text-[10.5px] font-bold tracking-[0.08em] text-gray-400">OR</span>
-                <span>
-                  <span className="text-[15px] font-bold text-gray-950">{plan.output[1].count}</span> {plan.output[1].label}
-                </span>
-              </div>
-              <p className="mt-1 text-[12.5px] text-gray-500">Or a custom mix of both!</p>
+          <div className="py-5">
+            <SectionTitle>Average monthly output</SectionTitle>
+            <div className="grid grid-cols-[1fr_auto_1fr] rounded-xl bg-gray-50 ring-1 ring-inset ring-gray-200/70">
+              {[plan.output[0], null, plan.output[1]].map((item, i) =>
+                item ? (
+                  <div key={item.label} className="px-3 py-3.5 text-center">
+                    <p className="text-[22px] font-bold text-gray-950 tracking-tight tabular-nums leading-none">
+                      {item.count}
+                    </p>
+                    <p className="mt-1.5 text-[12.5px] text-gray-500">{item.label}</p>
+                  </div>
+                ) : (
+                  <div key={`or-${i}`} className="flex flex-col items-center py-2.5">
+                    <span aria-hidden="true" className="w-px flex-1 bg-gray-200" />
+                    <span className="my-1 text-[11.5px] font-medium text-gray-400">or</span>
+                    <span aria-hidden="true" className="w-px flex-1 bg-gray-200" />
+                  </div>
+                )
+              )}
+            </div>
+            <p className="mt-2.5 text-center text-[12.5px] text-gray-500">Or a custom mix of both!</p>
+          </div>
+
+          <div className="py-5">
+            <SectionTitle hint="On a rolling basis*">Estimated delivery times</SectionTitle>
+            <div className="space-y-5">
+              <DeliveryGroup title="Standard edits" rows={plan.standard} dot={theme.dot} />
+              <DeliveryGroup
+                title="Complex / Animated / After Effects"
+                rows={plan.complex}
+                dot={theme.dot}
+              />
             </div>
           </div>
 
-          <div>
-            <SectionTitle>Estimated delivery times on a rolling basis*:</SectionTitle>
-            <div className="space-y-3.5">
-              <DeliveryGroup title="For Standard Edits" rows={plan.standard} />
-              <DeliveryGroup title="For Complex/Animated/After Effects" rows={plan.complex} />
-            </div>
-          </div>
-
-          <div className="pt-5 border-t border-gray-200">
+          <div className="py-5">
             <SectionTitle>{plan.featuresTitle}</SectionTitle>
             <ul className="space-y-2.5">
-              {features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2.5 text-[13px] leading-snug text-gray-700">
-                  <Check className="w-4 h-4 mt-px shrink-0 text-gray-900" strokeWidth={2.25} aria-hidden="true" />
-                  <span>{feature}</span>
+              {features.map(({ label, note, highlight }) => (
+                <li key={label} className="flex items-start gap-2.5 text-[13.5px] leading-[1.45]">
+                  <Check
+                    aria-hidden="true"
+                    className={`mt-[3px] w-3.5 h-3.5 shrink-0 ${highlight ? "text-gray-950" : theme.check}`}
+                    strokeWidth={2.75}
+                  />
+                  <span className={highlight ? "font-semibold text-gray-950" : "text-gray-700"}>
+                    {label}
+                    {note && (
+                      <>
+                        {" "}
+                        <span className="text-gray-500">{note}</span>
+                      </>
+                    )}
+                  </span>
                 </li>
               ))}
             </ul>
