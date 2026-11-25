@@ -50,7 +50,8 @@ const NONSTOP_FEATURE = {
 };
 
 // Plan text only. Prices come from admin (Events → Pricing) via the `prices` prop.
-const PLANS = [
+// Also used by the plan comparison table (PricingCompare), so both always show the same delivery times
+export const PLANS = [
   {
     id: "basic",
     name: "Basic",

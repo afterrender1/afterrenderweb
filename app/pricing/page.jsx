@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import PricingHero from "@/components/PricingHero";
 import ReelEditingStyles from "@/components/ReelEditingStyles";
-import PricingListOfServices from "@/components/PricingListOfServices";
+import PricingCompare from "@/components/PricingCompare";
 import PricingWorkWall from "@/components/PricingWorkWall";
 import PricingBenefits from "@/components/PricingBenefits";
 import ShortVideoClientTestimonials from "@/components/VideoClientTestimonials";
@@ -53,7 +53,7 @@ const PricingPage = () => {
       <Navbar />
       <PricingHero eventPromise={eventPromise} />
       <ReelEditingStyles />
-      <PricingListOfServices />
+      <PricingCompare />
       <PricingWorkWall />
       <PricingBenefits />
       <ShortVideoClientTestimonials isLight={true} />
